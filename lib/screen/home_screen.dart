@@ -38,6 +38,64 @@ class _HomeScreenState extends State<HomeScreen> {
               onDaySelected: onDaySelected,
               selectedDate: selectedDate,
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.blue[100],
+                ),
+                child: const Center(
+                  child: Text(
+                    '해당 날짜에는\n등록된 일정이 없어요.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Divider(
+              thickness: 5,
+              height: 1,
+              color: Colors.grey[200],
+            ),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '내 스터디',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text('가입한 순'),
+                ],
+              ),
+            ),
+            const Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 70),
+                  Icon(
+                    Icons.settings,
+                    size: 48,
+                  ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: Text(
+                      '진행 중인 스터디가 없어요.',
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

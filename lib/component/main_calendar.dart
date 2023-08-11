@@ -27,11 +27,11 @@ class MainCalendar extends StatelessWidget {
         calendarFormat: CalendarFormat.week,
         calendarStyle: CalendarStyle(
           isTodayHighlighted: false,
-          defaultTextStyle: TextStyle(
+          defaultTextStyle: const TextStyle(
             fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
-          weekendTextStyle: TextStyle(
+          weekendTextStyle: const TextStyle(
             fontWeight: FontWeight.w500,
             color: Colors.black,
           ),
@@ -39,7 +39,7 @@ class MainCalendar extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             color: Colors.blue[600],
           ),
-          selectedTextStyle: TextStyle(
+          selectedTextStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
