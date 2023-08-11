@@ -36,12 +36,36 @@ class MainCalendar extends StatelessWidget {
             color: Colors.black,
           ),
           selectedDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.blue[500],
             borderRadius: BorderRadius.circular(8),
-            color: Colors.blue[600],
           ),
+          defaultDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          weekendDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          todayDecoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          // BoxDecoration(
+          //   borderRadius: BorderRadius.circular(8),
+          //   color: Colors.blue[600],
+          // ),
           selectedTextStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.white,
+          ),
+          markerSize: 3,
+          markersAlignment: Alignment.bottomCenter,
+          markerDecoration: BoxDecoration(
+            color: Colors.black,
+            shape: BoxShape.circle,
           ),
         ),
       ),

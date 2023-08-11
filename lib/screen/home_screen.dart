@@ -10,6 +10,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _valueList = ['가입한 순', '인기 순', '최신 순'];
+  var _selectValue = '가입한 순';
+
   DateTime selectedDate = DateTime.utc(
     DateTime.now().year,
     DateTime.now().month,
@@ -61,19 +64,37 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 1,
               color: Colors.grey[200],
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     '내 스터디',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Text('가입한 순'),
+                  // DropdownMenuItem,
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      value: _selectValue,
+                      items: _valueList.map(
+                        (val) {
+                          return DropdownMenuItem(
+                            value: val,
+                            child: Text(val),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _selectValue = val!;
+                        });
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
