@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../common/layout/default_layout.dart';
 import '../component/main_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,20 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          '이번주 일정',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      body: SafeArea(
+    return DefaultLayout(
+      title: '이번주 일정',
+      child: SafeArea(
         child: Column(
           children: [
             MainCalendar(
