@@ -21,12 +21,12 @@ class MainCalendar extends StatelessWidget {
         onDaySelected: onDaySelected,
         selectedDayPredicate: (date) =>
             date.year == selectedDate.year && date.month == selectedDate.month && date.day == selectedDate.day,
-        focusedDay: DateTime.now(),
+        focusedDay: selectedDate,
         firstDay: DateTime(1900, 1, 1),
         lastDay: DateTime(2300, 1, 1),
         calendarFormat: CalendarFormat.week,
         calendarStyle: CalendarStyle(
-          isTodayHighlighted: false,
+          isTodayHighlighted: true,
           defaultTextStyle: const TextStyle(
             fontWeight: FontWeight.w500,
             color: Colors.black,
@@ -38,34 +38,30 @@ class MainCalendar extends StatelessWidget {
           selectedDecoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.blue[500],
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
           ),
           defaultDecoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
           ),
           weekendDecoration: BoxDecoration(
+            color: Colors.white,
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(16),
           ),
           todayDecoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
           ),
-          // BoxDecoration(
-          //   borderRadius: BorderRadius.circular(8),
-          //   color: Colors.blue[600],
-          // ),
+          todayTextStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.green,
+          ),
           selectedTextStyle: const TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.white,
-          ),
-          markerSize: 3,
-          markersAlignment: Alignment.bottomCenter,
-          markerDecoration: BoxDecoration(
-            color: Colors.black,
-            shape: BoxShape.circle,
           ),
         ),
       ),
