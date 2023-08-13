@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.grey[200],
             ),
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -88,20 +88,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            const Expanded(
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(height: 70),
-                  Icon(
-                    Icons.settings,
-                    size: 48,
-                  ),
-                  SizedBox(height: 10),
-                  Center(
+                  const SizedBox(height: 70),
+                  Image.asset('asset/exclamation.png', width: 40, height: 40),
+                  const SizedBox(height: 10),
+                  const Center(
                     child: Text(
                       '진행 중인 스터디가 없어요.',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
                     ),
                   ),
                 ],

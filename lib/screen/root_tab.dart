@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/const/colors.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/screen/home_screen.dart';
 
@@ -37,34 +36,52 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultLayout(
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: PRIMARY_COLOR,
-        unselectedItemColor: BODY_TEXT_COLOR,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        type: BottomNavigationBarType.shifting,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
         onTap: (index) {
           tabController.animateTo(index);
         },
         currentIndex: index,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
+            icon: Image.asset(
+              'asset/home.png',
+              width: 32,
+              height: 32,
+            ),
             label: '홈',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: '찾기',
+            icon: Image.asset(
+              'asset/search.png',
+              width: 32,
+              height: 32,
+            ),
+            label: '검색',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
+            icon: Image.asset(
+              'asset/calendar.png',
+              width: 32,
+              height: 32,
+            ),
             label: '일정',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.alarm),
+            icon: Image.asset(
+              'asset/bell.png',
+              width: 32,
+              height: 32,
+            ),
             label: '알림',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
+            icon: Image.asset(
+              'asset/user.png',
+              width: 32,
+              height: 32,
+            ),
             label: '마이페이지',
           ),
         ],
@@ -72,12 +89,12 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
-        children: [
-          const Center(child: HomeScreen()),
-          Center(child: Container(child: Text('찾기'))),
-          Center(child: Container(child: Text('일정'))),
-          Center(child: Container(child: Text('알림'))),
-          Center(child: Container(child: Text('마이페이지'))),
+        children: const [
+          Center(child: HomeScreen()),
+          Center(child: Text('찾기')),
+          Center(child: Text('일정')),
+          Center(child: Text('알림')),
+          Center(child: Text('마이페이지')),
         ],
       ),
     );
