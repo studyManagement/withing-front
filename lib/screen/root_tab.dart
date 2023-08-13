@@ -35,7 +35,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    bool isSelected = false;
     return DefaultLayout(
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

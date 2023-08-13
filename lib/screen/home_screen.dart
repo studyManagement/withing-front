@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // 스터디 유무
-    bool hasStudy = false;
+    bool hasStudy = true;
 
     return DefaultLayout(
       title: '이번주 일정',
@@ -35,7 +35,82 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedDate: selectedDate,
             ),
             // 만약 스터디가 있으면
-            if (hasStudy) Container(),
+            if (hasStudy)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.blueGrey[100],
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('11:00'),
+                            SizedBox(width: 8),
+                            VerticalDivider(thickness: 1, width: 10, indent: 20, endIndent: 20, color: Colors.grey),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '최강 마지막 네이버 면접 스터디 파이팅 테스트 테스트',
+                                    style: TextStyle(color: Colors.blue),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text('실무 면접 및 대면 피드백'),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.blueGrey[100],
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('15:00'),
+                            SizedBox(width: 8),
+                            VerticalDivider(thickness: 1, width: 10, indent: 20, endIndent: 20, color: Colors.grey),
+                            SizedBox(width: 8),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '스터디 관리 사이드 프로젝트',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                SizedBox(height: 2),
+                                Text('5차 정기 회의(07:30'),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             if (!hasStudy)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
