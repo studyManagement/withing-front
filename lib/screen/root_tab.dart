@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/layout/default_layout.dart';
-import 'package:withing/screen/home_screen.dart';
+
+import '../common/layout/default_layout.dart';
+import 'home_screen.dart';
 
 class RootTab extends StatefulWidget {
   const RootTab({super.key});
@@ -34,6 +35,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    bool isSelected = false;
     return DefaultLayout(
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
@@ -49,6 +51,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               'asset/home.png',
               width: 32,
               height: 32,
+              color: index == 0 ? Colors.black : Colors.grey,
             ),
             label: '홈',
           ),
@@ -57,6 +60,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               'asset/search.png',
               width: 32,
               height: 32,
+              color: index == 1 ? Colors.black : Colors.grey,
             ),
             label: '검색',
           ),
@@ -65,6 +69,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               'asset/calendar.png',
               width: 32,
               height: 32,
+              color: index == 2 ? Colors.black : Colors.grey,
             ),
             label: '일정',
           ),
@@ -73,6 +78,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               'asset/bell.png',
               width: 32,
               height: 32,
+              color: index == 3 ? Colors.black : Colors.grey,
             ),
             label: '알림',
           ),
@@ -81,8 +87,9 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               'asset/user.png',
               width: 32,
               height: 32,
+              color: index == 4 ? Colors.black : Colors.grey,
             ),
-            label: '마이페이지',
+            label: '마이 페이지',
           ),
         ],
       ),
