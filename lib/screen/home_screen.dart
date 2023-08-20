@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
 import '../common/layout/default_layout.dart';
+import '../component/home_my_study.dart';
 import '../component/main_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,8 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _valueList = ['가입한 순', '인기 순', '최신 순'];
-  var _selectValue = '가입한 순';
+  int index = 0;
+  late final PageController _pageController;
 
   DateTime selectedDate = DateTime.utc(
     DateTime.now().year,
@@ -21,9 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // 스터디 유무
     bool hasStudy = true;
+    const pageCount = 3;
 
     return DefaultLayout(
       title: '이번주 일정',
@@ -108,6 +117,105 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
+                    // PageView(
+                    //   controller: _pageController,
+                    //   onPageChanged: (newIndex) {
+                    //     setState(() {
+                    //       index = newIndex;
+                    //     });
+                    //   },
+                    //   children: [
+                    //     Container(
+                    //       width: MediaQuery.of(context).size.width,
+                    //       height: 80,
+                    //       decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //         color: Colors.blueGrey[100],
+                    //       ),
+                    //       child: const Padding(
+                    //         padding: EdgeInsets.symmetric(horizontal: 8),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: [
+                    //             Text('11:00'),
+                    //             SizedBox(width: 8),
+                    //             VerticalDivider(thickness: 1, width: 10, indent: 20, endIndent: 20, color: Colors.grey),
+                    //             SizedBox(width: 8),
+                    //             Expanded(
+                    //               child: Column(
+                    //                 mainAxisAlignment: MainAxisAlignment.center,
+                    //                 crossAxisAlignment: CrossAxisAlignment.start,
+                    //                 children: [
+                    //                   Text(
+                    //                     '최강 마지막 네이버 면접 스터디 파이팅 테스트 테스트',
+                    //                     style: TextStyle(color: Colors.blue),
+                    //                     overflow: TextOverflow.ellipsis,
+                    //                   ),
+                    //                   SizedBox(height: 2),
+                    //                   Text('실무 면접 및 대면 피드백'),
+                    //                 ],
+                    //               ),
+                    //             )
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     const SizedBox(height: 8),
+                    //     Container(
+                    //       width: MediaQuery.of(context).size.width,
+                    //       height: 80,
+                    //       decoration: BoxDecoration(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //         color: Colors.blueGrey[100],
+                    //       ),
+                    //       child: const Padding(
+                    //         padding: EdgeInsets.symmetric(horizontal: 8),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: [
+                    //             Text('15:00'),
+                    //             SizedBox(width: 8),
+                    //             VerticalDivider(thickness: 1, width: 10, indent: 20, endIndent: 20, color: Colors.grey),
+                    //             SizedBox(width: 8),
+                    //             Column(
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               crossAxisAlignment: CrossAxisAlignment.start,
+                    //               children: [
+                    //                 Text(
+                    //                   '스터디 관리 사이드 프로젝트',
+                    //                   style: TextStyle(color: Colors.blue),
+                    //                 ),
+                    //                 SizedBox(height: 2),
+                    //                 Text('5차 정기 회의(07:30'),
+                    //               ],
+                    //             )
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: PageViewDotIndicator(
+                        size: const Size(6, 6),
+                        unselectedSize: const Size(6, 6),
+                        currentItem: index,
+                        count: pageCount,
+                        unselectedColor: Colors.black26,
+                        selectedColor: Colors.black,
+                        duration: const Duration(milliseconds: 200),
+                        boxShape: BoxShape.circle,
+                        onItemClicked: (index) {
+                          _pageController.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -136,64 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 1,
               color: Colors.grey[200],
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    '내 스터디',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  // DropdownMenuItem,
-                  DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      value: _selectValue,
-                      items: _valueList.map(
-                        (val) {
-                          return DropdownMenuItem(
-                            value: val,
-                            child: Text(val),
-                          );
-                        },
-                      ).toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          _selectValue = val!;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // 만약 스터디가 있으면
-                  if (hasStudy) Container(),
-                  // 스터디 없으면
-                  if (!hasStudy)
-                    Column(
-                      children: [
-                        const SizedBox(height: 70),
-                        Image.asset('asset/exclamation.png', width: 40, height: 40),
-                        const SizedBox(height: 10),
-                        const Center(
-                          child: Text(
-                            '진행 중인 스터디가 없어요.',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
-                          ),
-                        ),
-                      ],
-                    ),
-                ],
-              ),
-            ),
+            const HomeMyStudy(),
           ],
         ),
       ),

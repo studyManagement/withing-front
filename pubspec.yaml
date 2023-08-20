@@ -19,6 +19,7 @@ dependencies:
   firebase_messaging: ^14.6.5
   flutter_local_notifications: ^15.1.0+1
   font_awesome_flutter: ^10.5.0 # 아이콘
+  page_view_dot_indicator: ^2.3.0
 
 
 dev_dependencies:
