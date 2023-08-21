@@ -21,7 +21,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:withing/screen/root_tab.dart';
+import 'package:withing/onboarding/screen/splash_screen.dart';
 
 import 'common/const/notification.dart';
 import 'firebase_options.dart';
@@ -59,7 +59,7 @@ void main() async {
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RootTab(),
+      home: SplashScreen(),
     ),
   );
 }

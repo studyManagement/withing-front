@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
-import '../common/layout/default_layout.dart';
+import '../../common/layout/default_layout.dart';
 import '../component/home_my_study.dart';
 import '../component/main_calendar.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../common/layout/default_layout.dart';
-import 'home_screen.dart';
+import '../home/screen/home_screen.dart';
+import 'layout/default_layout.dart';
 
 class RootTab extends StatefulWidget {
   const RootTab({super.key});
