@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:withing/common/dio.dart';
 
 class HomeMyStudy extends StatefulWidget {
   const HomeMyStudy({super.key});
@@ -87,95 +88,108 @@ class MyStudyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.separated(
-        itemBuilder: (_, index) => Padding(
-          padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(25),
+      child: FutureBuilder(
+        future: getMyStudyList(),
+        builder: (_, snapshot) {
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+          return ListView.separated(
+            itemBuilder: (_, index) {
+              final item = snapshot.data![index];
+
+              return Padding(
+                padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            Positioned(
+                              top: 5,
+                              right: 0,
+                              child: Container(
+                                width: 10,
+                                height: 10,
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Positioned(
-                        top: 5,
-                        right: 0,
-                        child: Container(
-                          width: 10,
-                          height: 10,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
+                        const SizedBox(width: 16),
+                        Text(
+                          '${item['team_name']}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 16),
-                  const Text(
-                    '스터디 이름',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Row(
-                children: [
-                  Text(
-                    '정기 모임',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(height: 8),
+                    const Row(
+                      children: [
+                        Text(
+                          '정기 모임',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          '매주 목요일 21:00',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    '매주 목요일 21:00',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
+                    const Row(
+                      children: [
+                        Text(
+                          '다음 만남',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          '2023.08.03 (목) 21:00',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-              const Row(
-                children: [
-                  Text(
-                    '다음 만남',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    '2023.08.03 (목) 21:00',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        separatorBuilder: (_, index) => Divider(
-          height: 10,
-          color: Colors.grey[100],
-          thickness: 2,
-          indent: 20,
-          endIndent: 20,
-        ),
-        itemCount: 4,
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (_, index) => Divider(
+              height: 10,
+              color: Colors.grey[100],
+              thickness: 2,
+              indent: 20,
+              endIndent: 20,
+            ),
+            itemCount: snapshot.data!.length,
+          );
+        },
       ),
     );
   }
