@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Text('실무 면접 및 대면 피드백'),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
