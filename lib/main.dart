@@ -21,9 +21,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:withing/onboarding/screen/signup_screen.dart';
 
 import 'common/const/notification.dart';
+import 'common/router.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -57,9 +57,9 @@ void main() async {
   ]);
 
   runApp(
-    const MaterialApp(
+    MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: SignupScreen(),
+      routerConfig: router,
     ),
   );
 }
