@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 
 import '../../common/layout/default_layout.dart';
-import '../component/home_my_study.dart';
-import '../component/main_calendar.dart';
+import 'home_my_study.dart';
+import './main_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -63,7 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text('11:00'),
                             SizedBox(width: 8),
-                            VerticalDivider(thickness: 1, width: 10, indent: 20, endIndent: 20, color: Colors.grey),
+                            VerticalDivider(
+                                thickness: 1,
+                                width: 10,
+                                indent: 20,
+                                endIndent: 20,
+                                color: Colors.grey),
                             SizedBox(width: 8),
                             Expanded(
                               child: Column(
@@ -99,7 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text('15:00'),
                             SizedBox(width: 8),
-                            VerticalDivider(thickness: 1, width: 10, indent: 20, endIndent: 20, color: Colors.grey),
+                            VerticalDivider(
+                                thickness: 1,
+                                width: 10,
+                                indent: 20,
+                                endIndent: 20,
+                                color: Colors.grey),
                             SizedBox(width: 8),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,

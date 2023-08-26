@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../home/screen/home_screen.dart';
+import '../screens/home/home_screen.dart';
 import 'layout/default_layout.dart';
 
 class RootTab extends StatefulWidget {
