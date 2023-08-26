@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:withing/screens/search/search_screen.dart';
 
 import '../screens/home/home_screen.dart';
 import 'layout/default_layout.dart';
@@ -97,7 +98,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         controller: tabController,
         children: const [
           Center(child: HomeScreen()),
-          Center(child: Text('찾기')),
+          Center(child: SearchScreen()),
           Center(child: Text('일정')),
           Center(child: Text('알림')),
           Center(child: Text('마이페이지')),
