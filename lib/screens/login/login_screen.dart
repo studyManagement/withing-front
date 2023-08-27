@@ -11,6 +11,7 @@ class LoginScreen extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _Title(),
@@ -29,11 +30,14 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      '스터디 관리도\n즐겁고 쉽게, 위딩',
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.w600,
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Text(
+        '스터디 관리도\n즐겁고 쉽게, 위딩',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -44,10 +48,13 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 300,
-      color: Colors.grey[200],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        width: 300,
+        height: 300,
+        color: Colors.grey[200],
+      ),
     );
   }
 }
@@ -61,10 +68,15 @@ class _Bottom extends StatelessWidget {
       children: [
         const Text('SNS 간편 로그인'),
         const SizedBox(height: 8),
-        Image.asset(
-          'asset/kakao.png',
-          width: 50,
-          height: 50,
+        InkWell(
+          onTap: () {
+            print('hi');
+          },
+          child: Image.asset(
+            'asset/kakao.png',
+            width: 50,
+            height: 50,
+          ),
         ),
       ],
     );
