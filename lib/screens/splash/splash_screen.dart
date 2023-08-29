@@ -67,22 +67,10 @@ class SplashScreenState extends State<SplashScreen> with SingleTickerProviderSta
                   ),
                 );
               },
-              child: Column(
-                children: [
-                  Image.asset(
-                    'asset/splash.png',
-                    width: 100,
-                    height: 100,
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Withing',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ],
+              child: Image.asset(
+                'asset/splash.png',
+                width: 100,
+                height: 100,
               ),
             ),
           ],

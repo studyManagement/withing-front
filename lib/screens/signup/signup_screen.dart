@@ -5,6 +5,8 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool nicknameDuplicateCheckSuccessful = true;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -53,9 +55,15 @@ class SignupScreen extends StatelessWidget {
                   color: Colors.grey[500],
                   fontWeight: FontWeight.w500,
                 ),
+                suffixIcon: Image.asset(
+                  'asset/duplicationCheck.png',
+                  width: 65,
+                  height: 31,
+                ),
               ),
               autofocus: true,
               maxLength: 10,
+              onTapOutside: (_) => FocusScope.of(context).unfocus(),
             ),
             const SizedBox(height: 50),
             const Text(
@@ -86,9 +94,16 @@ class SignupScreen extends StatelessWidget {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey[300],
+                      color: nicknameDuplicateCheckSuccessful ? const Color(0xFF1F3358) : const Color(0xFFCED7E1),
                     ),
-                    child: const Center(child: Text('가입 완료')),
+                    child: const Center(
+                      child: Text(
+                        '가입 완료',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
