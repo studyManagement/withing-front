@@ -19,16 +19,18 @@ void main() async {
   await initializeDateFormatting();
 
   // 가로, 세로 모드 허용
-  await SystemChrome.setPreferredOrientations([
-    // 세로 상향 고정
-    DeviceOrientation.portraitUp,
-    // 세로 하향 고정
-    DeviceOrientation.portraitDown,
-    // 왼쪽으로 가로 회전
-    DeviceOrientation.landscapeLeft,
-    // 오른쪽으로 가로 회전
-    DeviceOrientation.landscapeRight,
-  ]);
+  await SystemChrome.setPreferredOrientations(
+    [
+      // 세로 상향 고정
+      DeviceOrientation.portraitUp,
+      // 세로 하향 고정
+      DeviceOrientation.portraitDown,
+      // 왼쪽으로 가로 회전
+      DeviceOrientation.landscapeLeft,
+      // 오른쪽으로 가로 회전
+      DeviceOrientation.landscapeRight,
+    ],
+  );
 
   runApp(
     MaterialApp.router(
