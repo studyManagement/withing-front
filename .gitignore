@@ -49,7 +49,8 @@ app.*.map.json
 **/macos/Flutter/GeneratedPluginRegistrant.swift
 **/linux/flutter/generated_plugins.cmake
 **/linux/flutter/generated_plugin_registrant.cc
-lib/common/kakao_info.dart
+lib/info/kakao_info.dart
+lib/info/ip_info.dart
 /android/app/src/main/AndroidManifest.xml
 
 
