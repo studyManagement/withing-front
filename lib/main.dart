@@ -3,12 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import 'common/kakao_info.dart';
 import 'common/router.dart';
+import 'common/sp.dart';
+import 'info/kakao_info.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   KakaoSdk.init(nativeAppKey: kakaoAppKey);
+
+  // 인스턴스 생성
+  await SP.of();
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
