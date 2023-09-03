@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/dio.dart';
+import 'package:withing/common/api.dart';
 
 class HomeMyStudy extends StatefulWidget {
   const HomeMyStudy({super.key});
@@ -89,7 +89,7 @@ class MyStudyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: FutureBuilder(
-        future: getMyStudyList(),
+        future: Api.getMyStudyList(),
         builder: (_, snapshot) {
           if (!snapshot.hasData) {
             return Container();
