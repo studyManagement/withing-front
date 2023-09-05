@@ -38,7 +38,6 @@ class Api {
         ),
       );
     } on DioException catch (e) {
-      // 액세스 토큰 만료 된경우 액세스 토큰 재발급 요청 로직 필요
       return await _request(
         method: method,
         url: url,
@@ -49,22 +48,50 @@ class Api {
   }
 
   /// 내 스터디 API
-  static Future<List> getMyStudyList() async {
-    final resp = await _dio.get('$api/study/mystudy/5');
+  static Future<List> getMyStudyList({
+    required int users,
+    required String mystudy,
+  }) async {
+    // final resp = await _dio.get('$api/study/mystudy/5');
+    final resp = await _request(method: _HttpMethod.get, url: '$api/study/mystudy/5', queryParameters: {
+      'users': users,
+      'mystudy': mystudy,
+    });
 
     return resp.data['data'];
   }
 
   /// 회원가입 API
-  static Future<void> singUp() async {
-    final resp = await _dio.post('$api/users/signup');
+  static Future<void> singUp({
+    required String nickname,
+    String? introduce,
+    String? userImage,
+  }) async {
+    final resp = await _request(method: _HttpMethod.post, url: '$api/users/signup');
+
     print(resp.data);
   }
 
-  /// 중복확인 API
-  static Future<void> checkDuplicateNickname() async {
-    final resp = await _dio.get('$api/users/check?nickname={nickname}');
+  /// 닉네임 중복확인 API
+  static Future<Response?> checkDuplicateNickname({
+    required String nickname,
+  }) async {
+    return await _request(
+      method: _HttpMethod.get,
+      queryParameters: {
+        'nickname': nickname,
+      },
+      url: '$api/users/check',
+    );
+  }
 
-    print(resp.data);
+  /// 회원가입 여부 API
+  static Future<Response?> getUserInfo({
+    required int userId,
+  }) async {
+    return await _request(
+      method: _HttpMethod.get,
+      url: '$api/users/$userId',
+    );
   }
 }
