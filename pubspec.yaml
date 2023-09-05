@@ -21,6 +21,7 @@ dependencies:
   kakao_flutter_sdk_user: 1.5.0 # 카카오 로그인
   go_router: 10.1.0 # 경로 이동
   shared_preferences: 2.2.1 # 저장소
+  image_picker: 1.0.4 # 갤러리 이미지
 
 
 
