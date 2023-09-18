@@ -21,8 +21,13 @@ final router = GoRouter(
           builder: (context, state) => const LoginScreen(),
         ),
         GoRoute(
-          path: 'signup',
-          builder: (context, state) => const SignupScreen(),
+          path: 'signup/:kakaoId',
+          builder: (context, state) {
+            final kakaoId = int.parse(state.pathParameters['kakaoId']!);
+            return SignupScreen(
+              kakaoId: kakaoId,
+            );
+          },
         ),
         GoRoute(
           path: 'search',

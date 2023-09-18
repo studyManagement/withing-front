@@ -89,7 +89,7 @@ class MyStudyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: FutureBuilder(
-        future: Api.getMyStudyList(),
+        future: Api.getMyStudyList(users: 5, mystudy: 'mystudy'),
         builder: (_, snapshot) {
           if (!snapshot.hasData) {
             return Container();

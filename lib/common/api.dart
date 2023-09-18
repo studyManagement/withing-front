@@ -47,29 +47,23 @@ class Api {
     }
   }
 
-  /// 내 스터디 API
-  static Future<List> getMyStudyList({
-    required int users,
-    required String mystudy,
-  }) async {
-    // final resp = await _dio.get('$api/study/mystudy/5');
-    final resp = await _request(method: _HttpMethod.get, url: '$api/study/mystudy/5', queryParameters: {
-      'users': users,
-      'mystudy': mystudy,
-    });
-
-    return resp.data['data'];
-  }
-
   /// 회원가입 API
-  static Future<void> singUp({
+  static Future<Response?> singUp({
+    required int userId,
     required String nickname,
     String? introduce,
     String? userImage,
   }) async {
-    final resp = await _request(method: _HttpMethod.post, url: '$api/users/signup');
-
-    print(resp.data);
+    return await _request(
+      method: _HttpMethod.post,
+      url: '$api/users/signup',
+      data: {
+        'user_id': userId,
+        'nickname': nickname,
+        'introduce': introduce,
+        'user_image': userImage,
+      },
+    );
   }
 
   /// 닉네임 중복확인 API
@@ -93,5 +87,19 @@ class Api {
       method: _HttpMethod.get,
       url: '$api/users/$userId',
     );
+  }
+
+  /// 내 스터디 API
+  static Future<List> getMyStudyList({
+    required int users,
+    required String mystudy,
+  }) async {
+    // final resp = await _dio.get('$api/study/mystudy/5');
+    final resp = await _request(method: _HttpMethod.get, url: '$api/study/mystudy/5', queryParameters: {
+      'users': users,
+      'mystudy': mystudy,
+    });
+
+    return resp.data['data'];
   }
 }

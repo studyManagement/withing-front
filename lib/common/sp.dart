@@ -10,13 +10,13 @@ class SP {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  /// 가입 여부 저장
+  /// 회원 가입 여부 저장
   static Future<bool> setJoinStatus(bool value) {
-    return _prefs.setBool('is_join', value);
+    return _prefs.setBool('is_member', value);
   }
 
-  /// 가입 여부 획득
+  /// 회원 가입 여부 획득
   static bool? getJoinStatus() {
-    return _prefs.getBool('is_join');
+    return _prefs.getBool('is_member');
   }
 }
