@@ -23,7 +23,7 @@ final router = GoRouter(
         GoRoute(
           path: 'signup/:kakaoId',
           builder: (context, state) {
-            final kakaoId = int.parse(state.pathParameters['kakaoId']!);
+            final kakaoId = state.pathParameters['kakaoId']!;
             return SignupScreen(
               kakaoId: kakaoId,
             );

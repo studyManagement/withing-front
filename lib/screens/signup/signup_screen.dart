@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../common/api.dart';
 
 class SignupScreen extends StatefulWidget {
-  final int kakaoId;
+  final String kakaoId;
   const SignupScreen({
     super.key,
     required this.kakaoId,
@@ -175,7 +175,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  /// 중복확인 버튼
+  /// 중복확인
   void checkDuplicateNickname() async {
     final nickname = nickNameController.text;
     final resp = await Api.checkDuplicateNickname(nickname: nickname);

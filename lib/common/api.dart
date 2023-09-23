@@ -49,10 +49,11 @@ class Api {
 
   /// 회원가입 API
   static Future<Response?> singUp({
-    required int userId,
+    required String userId,
     required String nickname,
     String? introduce,
     String? userImage,
+    String? socialType,
   }) async {
     return await _request(
       method: _HttpMethod.post,
