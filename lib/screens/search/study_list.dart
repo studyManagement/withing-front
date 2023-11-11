@@ -34,7 +34,7 @@ class StudyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('/studies/1');
+        context.push('/studies/1');
       },
       child: const Padding(
         padding: EdgeInsets.all(16),

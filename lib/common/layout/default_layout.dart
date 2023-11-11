@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
-  final Widget? child;
+  final Widget child;
   final String? title;
   final BottomNavigationBar? bottomNavigationBar;
   const DefaultLayout({
     this.backgroundColor,
-    this.child,
+    required this.child,
     this.title,
     this.bottomNavigationBar,
     super.key,
@@ -18,7 +18,7 @@ class DefaultLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(),
-      body: child,
+      body: SafeArea(child: child),
       bottomNavigationBar: bottomNavigationBar,
     );
   }
@@ -33,6 +33,8 @@ class DefaultLayout extends StatelessWidget {
         title: Text(
           title!,
           style: const TextStyle(
+            color: Color(0xFF22262B),
+            fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),

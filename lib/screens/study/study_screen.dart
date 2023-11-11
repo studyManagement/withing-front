@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../common/components/study_categories.dart';
 import '../../common/layout/default_layout.dart';
@@ -21,7 +22,7 @@ class StudyScreen extends StatelessWidget {
           const _Header(),
           const SizedBox(height: 16),
           const Padding(
-            padding: EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               '매주 목요일 저녁 9시, Zoom으로 진행.\n2회 무단 결석 시 퇴출입니다. 온/오프라인 병행입니다.',
               style: TextStyle(
@@ -68,7 +69,7 @@ class StudyScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           const Padding(
-            padding: EdgeInsets.only(left: 16, right: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 Row(
@@ -143,7 +144,9 @@ class StudyScreen extends StatelessWidget {
           const Divider(
             thickness: 6,
             color: Color(0xFFF4F7FC),
-          )
+          ),
+          const SizedBox(height: 10),
+          const _Notice(),
         ],
       ),
     );
@@ -156,7 +159,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
           SizedBox(
@@ -187,6 +190,118 @@ class _Header extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _Notice extends StatelessWidget {
+  const _Notice();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _NoticeHeader(),
+          _NoticeList(),
+        ],
+      ),
+    );
+  }
+}
+
+class _NoticeHeader extends StatelessWidget {
+  const _NoticeHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        children: [
+          Text(
+            '공지',
+            style: TextStyle(
+              color: Color(0xFF22262B),
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Spacer(),
+          Text(
+            '전체보기',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Color(0xFF8B97A4),
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NoticeList extends StatelessWidget {
+  const _NoticeList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.separated(
+        itemBuilder: (context, index) {
+          return const _NoticeItem();
+        },
+        separatorBuilder: (context, index) {
+          return const Divider(
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+            color: Color(0xFFEBF1F5),
+          );
+        },
+        itemCount: 5,
+      ),
+    );
+  }
+}
+
+class _NoticeItem extends StatelessWidget {
+  const _NoticeItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        context.push('/studies/1/notices/1');
+      },
+      child: const Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '스터디 공지글 제목',
+              style: TextStyle(
+                color: Color(0xFF22262B),
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              '2023. 08. 20. 22:20',
+              style: TextStyle(
+                color: Color(0xFF8B97A4),
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
