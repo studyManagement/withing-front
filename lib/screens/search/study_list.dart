@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../common/components/study_categories.dart';
 
 class StudyList extends StatelessWidget {
   const StudyList({super.key});
@@ -30,16 +32,28 @@ class StudyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        children: [
-          StudyHeader(),
-          SizedBox(height: 10),
-          StudyDetails(),
-          SizedBox(height: 12),
-          StudyCategories()
-        ],
+    return InkWell(
+      onTap: () {
+        context.push('/studies/1');
+      },
+      child: const Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            StudyHeader(),
+            SizedBox(height: 10),
+            StudyDetails(),
+            SizedBox(height: 12),
+            StudyCategories(
+              categories: [
+                "카테고리1",
+                "카테고리2",
+                "카테고리3",
+                "카테고리4",
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -126,50 +140,5 @@ class StudyDetails extends StatelessWidget {
     }
 
     return Column(children: widgets);
-  }
-}
-
-class StudyCategories extends StatelessWidget {
-  static const categories = [
-    "카테고리1",
-    "카테고리2",
-    "카테고리3",
-    "카테고리4",
-  ];
-
-  const StudyCategories({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> widgets = [];
-
-    for (var category in categories) {
-      widgets.add(
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-          decoration: ShapeDecoration(
-            color: const Color(0xFFE3F1FF),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          ),
-          child: Text(
-            category,
-            style: const TextStyle(
-              color: Color(0xFF3771E0),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      );
-
-      if (category != categories.last) {
-        widgets.add(const SizedBox(width: 6));
-      }
-    }
-
-    return Row(children: widgets);
   }
 }
