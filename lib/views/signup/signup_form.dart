@@ -12,8 +12,8 @@ class SignupForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SignupViewModel viewModel = context.read();
-    String nicknameNotification =
-        context.select((SignupViewModel vm) => vm.message);
+    String message = context.select((SignupViewModel vm) => vm.message);
+    int rgb = context.select((SignupViewModel vm) => vm.rgb);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,10 +49,10 @@ class SignupForm extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          nicknameNotification,
-          style: const TextStyle(
+          message,
+          style: TextStyle(
             fontSize: 12,
-            color: Color(0xFF8B97A4),
+            color: Color(rgb),
           ),
         ),
         const SizedBox(height: 50),
@@ -73,6 +73,7 @@ class SignupForm extends StatelessWidget {
             ),
           ),
           maxLength: 30,
+          onChanged: (value) => viewModel.changeDescription(value),
         ),
         Expanded(
           child: Padding(

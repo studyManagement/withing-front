@@ -26,4 +26,20 @@ class SignupService extends ChangeNotifier {
 
     return false;
   }
+
+  setProvider(String provider) {
+    _signupModel.provider = provider;
+  }
+
+  setAccessToken(String accessToken) {
+    _signupModel.accessToken = accessToken;
+  }
+
+  setNickname(String nickname) {
+    _signupModel.nickname = nickname;
+  }
+
+  setIntroduce(String introduce) {
+    _signupModel.introduce = introduce;
+  }
 }
