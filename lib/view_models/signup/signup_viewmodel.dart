@@ -4,7 +4,7 @@ import 'package:withing/models/signup/signup_service.dart';
 
 class SignupViewModel extends ChangeNotifier {
   SignupService service = SignupService();
-
+  
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
 
