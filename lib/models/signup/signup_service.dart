@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:withing/common/const/environment.dart';
 import 'package:withing/common/environment/environment.dart';
+import 'package:withing/common/requester/api_response.dart';
+import 'package:withing/common/requester/requester.dart';
 import 'package:withing/models/signup/signup_model.dart';
 
 class SignupService extends ChangeNotifier {
@@ -18,28 +20,32 @@ class SignupService extends ChangeNotifier {
       'nickname': nickname,
     };
 
-    final uri = Uri.http(
-        Environment.getEnv(API_SERVER), '/users/check', queryParameters);
-    final response = await http.get(uri);
+    ApiResponse response = await Requester.get('/users/check', queryParameters);
 
-    if (response.statusCode == 409) {
+    if (response.code == 409) {
       return true;
     }
 
     return false;
   }
 
-  signup() async {
+  Future<bool> signup() async {
     final uri = Uri.http(Environment.getEnv(API_SERVER), '/users/signup');
     final response = await http.post(uri,
         headers: {"Content-Type": "application/json"},
         body: _signupModel.toJson());
 
-    log(_signupModel.toJson());
+    _signupModel.accessToken = 'test1234';
 
-    if (response.statusCode != 201) {
-      return;
+    log(_signupModel.toJson());
+    log('response code: ${response.statusCode}');
+    log('response body: ${response.body}');
+
+    if (response.statusCode == 400) {
+      return false;
     }
+
+    return true;
   }
 
   setProvider(String provider) {

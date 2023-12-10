@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:withing/models/signup/signup_exception.dart';
 import 'package:withing/models/signup/signup_service.dart';
 
 class SignupViewModel extends ChangeNotifier {
   SignupService service = SignupService();
-  
+
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
 
@@ -48,7 +49,14 @@ class SignupViewModel extends ChangeNotifier {
     service.setIntroduce(introduce);
   }
 
-  signup() {
-    service.signup();
+  signup(BuildContext context) async {
+    bool isOk = await service.signup();
+
+    if (!isOk) {
+      return;
+    }
+
+    if (!context.mounted) return;
+    context.go('/home');
   }
 }
