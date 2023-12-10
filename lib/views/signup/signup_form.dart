@@ -85,7 +85,7 @@ class SignupForm extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    viewModel.signup();
+                    viewModel.signup(context);
                   },
                   child: Container(
                     width: 343,
