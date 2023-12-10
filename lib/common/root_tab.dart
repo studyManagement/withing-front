@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:withing/screens/search/search_screen.dart';
 
-import '../screens/home/home_screen.dart';
+import '../views/home/home_screen.dart';
+import '../views/search/search_screen.dart';
 import 'layout/default_layout.dart';
 
 class RootTab extends StatefulWidget {
