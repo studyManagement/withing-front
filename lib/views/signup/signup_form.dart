@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/view_models/signup/signup_viewmodel.dart';
 import 'package:withing/views/signup/signup_profile.dart';
@@ -12,8 +11,8 @@ class SignupForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SignupViewModel viewModel = context.read();
-    String nicknameNotification =
-        context.select((SignupViewModel vm) => vm.message);
+    String message = context.select((SignupViewModel vm) => vm.message);
+    int rgb = context.select((SignupViewModel vm) => vm.rgb);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,10 +48,10 @@ class SignupForm extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          nicknameNotification,
-          style: const TextStyle(
+          message,
+          style: TextStyle(
             fontSize: 12,
-            color: Color(0xFF8B97A4),
+            color: Color(rgb),
           ),
         ),
         const SizedBox(height: 50),
@@ -73,6 +72,7 @@ class SignupForm extends StatelessWidget {
             ),
           ),
           maxLength: 30,
+          onChanged: (value) => viewModel.changeDescription(value),
         ),
         Expanded(
           child: Padding(
@@ -85,7 +85,7 @@ class SignupForm extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    context.go('/home');
+                    viewModel.signup();
                   },
                   child: Container(
                     width: 343,
