@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:withing/common/requester/api_response.dart';
 import 'package:withing/common/requester/requester.dart';
 import 'package:withing/models/signup/signup_model.dart';
 
-class SignupService extends ChangeNotifier {
+class SignupService {
   late SignupModel _signupModel;
 
   SignupService() {
@@ -26,9 +25,7 @@ class SignupService extends ChangeNotifier {
 
   Future<bool> signup() async {
     ApiResponse apiResponse =
-        Requester.post('/users/signup', _signupModel.toJson());
-
-    _signupModel.accessToken = 'test1234';
+        await Requester.post('/users/signup', _signupModel.toJson());
 
     if (apiResponse.code == 400) {
       return false;
