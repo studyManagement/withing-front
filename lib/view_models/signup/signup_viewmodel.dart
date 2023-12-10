@@ -41,4 +41,8 @@ class SignupViewModel extends ChangeNotifier {
   changeDescription(String introduce) {
     service.setIntroduce(introduce);
   }
+
+  signup() {
+    service.signup();
+  }
 }

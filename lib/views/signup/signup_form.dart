@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/view_models/signup/signup_viewmodel.dart';
 import 'package:withing/views/signup/signup_profile.dart';
@@ -86,7 +85,7 @@ class SignupForm extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    context.go('/home');
+                    viewModel.signup();
                   },
                   child: Container(
                     width: 343,

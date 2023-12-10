@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:withing/common/const/environment.dart';
@@ -25,6 +27,22 @@ class SignupService extends ChangeNotifier {
     }
 
     return false;
+  }
+
+  signup() async {
+    _signupModel.accessToken = 'test';
+    _signupModel.provider = 'kakao';
+
+    final uri = Uri.http(Environment.getEnv(API_SERVER), '/users/signup');
+    final response = await http.post(uri,
+        headers: {"Content-Type": "application/json"},
+        body: _signupModel.toJson());
+
+    log(response.body);
+
+    if (response.statusCode != 201) {
+      return;
+    }
   }
 
   setProvider(String provider) {
