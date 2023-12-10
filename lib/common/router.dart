@@ -11,11 +11,16 @@ final router = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
     GoRoute(
-        path: '/signup',
-        builder: (context, state) => Provider(
-              create: (context) => SignupService(),
-              child: const SignupScreen(),
-            )),
+        path: '/signup/:provider/:accessToken',
+        builder: (context, GoRouterState state) {
+          final provider = state.pathParameters['provider']!;
+          final accessToken = state.pathParameters['accessToken']!;
+
+          return Provider(
+            create: (context) => SignupService(),
+            child: SignupScreen(provider, accessToken),
+          );
+        }),
     GoRoute(
       path: '/studies/new',
       builder: (context, state) => const NewStudyScreen(),

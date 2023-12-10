@@ -30,15 +30,12 @@ class SignupService extends ChangeNotifier {
   }
 
   signup() async {
-    _signupModel.accessToken = 'test';
-    _signupModel.provider = 'kakao';
-
     final uri = Uri.http(Environment.getEnv(API_SERVER), '/users/signup');
     final response = await http.post(uri,
         headers: {"Content-Type": "application/json"},
         body: _signupModel.toJson());
 
-    log(response.body);
+    log(_signupModel.toJson());
 
     if (response.statusCode != 201) {
       return;
