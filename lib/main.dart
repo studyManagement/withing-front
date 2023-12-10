@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:withing/common/environment/environment.dart';
 import 'package:withing/constants/auth.dart';
 
 import 'common/const/notification.dart';
@@ -44,6 +45,8 @@ void main() async {
     nativeAppKey: KAKAO_NATIVE_KEY,
     javaScriptAppKey: KAKAO_JAVSCRIPT_KEY,
   );
+
+  await Environment.initialize(BuildType.LOCAL);
 
   runApp(
     MaterialApp.router(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:withing/screens/search/search_box.dart';
+import 'package:withing/views/search/search_box.dart';
 
-import 'category_selector.dart';
 import './study_list.dart';
 import './study_list_header.dart';
+import 'category_selector.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
