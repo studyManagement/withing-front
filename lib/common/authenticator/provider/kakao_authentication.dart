@@ -18,4 +18,9 @@ class KakaoAuthentication implements Authenticator {
 
     return token.accessToken;
   }
+
+  @override
+  String getProvider() {
+    return "kakao";
+  }
 }

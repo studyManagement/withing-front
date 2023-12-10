@@ -4,7 +4,10 @@ import 'package:withing/view_models/signup/signup_viewmodel.dart';
 import 'package:withing/views/signup/signup_form.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  String provider;
+  String accessToken;
+
+  SignupScreen(this.provider, this.accessToken, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class SignupScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ChangeNotifierProvider(
-          create: (context) => SignupViewModel(),
+          create: (context) => SignupViewModel(provider, accessToken),
           child: const SignupForm(),
         ),
       ),

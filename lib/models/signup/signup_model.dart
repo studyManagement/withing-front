@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class SignupModel {
   late String _provider;
   late String _accessToken;
@@ -20,12 +22,12 @@ class SignupModel {
     _introduce = value;
   }
 
-  dynamic toJson() {
-    return {
+  String toJson() {
+    return jsonEncode({
       "social_id_type": _provider,
       "social_id": _accessToken,
       "nickname": _nickname,
       "introduce": _introduce,
-    };
+    });
   }
 }
