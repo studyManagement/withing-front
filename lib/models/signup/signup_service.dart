@@ -26,9 +26,9 @@ class SignupService extends ChangeNotifier {
 
   Future<bool> signup() async {
     ApiResponse apiResponse =
-        Requester.post('/users/signup', _signupModel.toJson());
+        await Requester.post('/users/signup', _signupModel.toJson());
 
-    _signupModel.accessToken = 'test1234';
+    _signupModel.accessToken = 'test-2024010701';
 
     if (apiResponse.code == 400) {
       return false;

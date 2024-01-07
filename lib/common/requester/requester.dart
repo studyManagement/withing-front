@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'package:withing/common/requester/api_response.dart';
 
@@ -16,6 +18,8 @@ class Requester {
     final uri = Uri.http(Environment.getEnv(API_SERVER), url);
     final response = await http.post(uri,
         headers: {"Content-Type": "application/json"}, body: bodyParameter);
+
+    log(response.body);
 
     return ApiResponse.fromJson(response.body);
   }

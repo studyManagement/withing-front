@@ -14,4 +14,9 @@ class ApiResponse {
     return ApiResponse(jsonMap['code'] as int, jsonMap['message'] as String,
         jsonMap['data'] as dynamic, jsonMap['success'] as bool);
   }
+
+  @override
+  String toString() {
+    return 'ApiResponse(code=$code,message=$message,data=$data,success=$success)';
+  }
 }
