@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:withing/common/environment/environment.dart';
 import 'package:withing/constants/auth.dart';
+import 'package:withing/withing_app.dart';
 
 import 'common/const/notification.dart';
 import 'common/router.dart';
@@ -48,10 +49,5 @@ void main() async {
 
   await Environment.initialize(BuildType.LOCAL);
 
-  runApp(
-    MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: router,
-    ),
-  );
+  runApp(WithingApp());
 }
