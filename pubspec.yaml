@@ -28,6 +28,7 @@ dependencies:
   provider: ^6.1.1
   http: ^1.1.2
   flutter_dotenv: ^5.1.0
+  carousel_slider: ^4.2.1 # 캐러셀 슬라이드
 
 dev_dependencies:
   flutter_test:

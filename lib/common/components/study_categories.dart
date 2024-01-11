@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:withing/common/theme/app/app_colors.dart';
 
 class StudyCategories extends StatelessWidget {
   final List<String> categories;
@@ -17,17 +19,13 @@ class StudyCategories extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
           decoration: ShapeDecoration(
-            color: const Color(0xFFE3F1FF),
+            color: AppColors.blue100,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           ),
           child: Text(
             category,
-            style: const TextStyle(
-              color: Color(0xFF3771E0),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blue500),
           ),
         ),
       );
