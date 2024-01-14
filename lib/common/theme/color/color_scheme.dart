@@ -8,8 +8,10 @@ ColorScheme withingColorScheme(WithingDefaultColors withingColors) {
     brightness: Brightness.light,
     background: withingColors.backgroundColor,
     primary: withingColors.primaryColor,
+    primaryContainer: withingColors.primaryContainerColor,
     secondary: withingColors.subColor,
     error: withingColors.errorColor,
+    outline: withingColors.lineColor,
 
     // 필요시 추가 할당
     surface: tmpColor,
