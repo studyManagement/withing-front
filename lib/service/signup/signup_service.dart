@@ -12,9 +12,9 @@ abstract class SignupApi {
   @POST("/users/signup")
   @Headers({'X-Exclude-Access-Token': 'true'})
   Future<SignupModel> signup(
-    @Field("provider") String provider,
+    @Field("social_id_type") String provider,
     @Field("nickname") String nickname,
-    @Field("access_token") String accessToken,
+    @Field("social_id") String accessToken,
     @Field("introduce") String introduce,
   );
 
@@ -28,10 +28,10 @@ class SignupService {
   SignupService(this._signupApi);
 
   Future<SignupModel> signup(String provider, String nickname,
-      String accessToken, String introduce) async {
+      String socialUUID, String introduce) async {
     try {
       final response =
-          await _signupApi.signup(provider, nickname, accessToken, introduce);
+          await _signupApi.signup(provider, nickname, socialUUID, introduce);
 
       return response;
     } on DioException catch (e) {
