@@ -1,6 +1,6 @@
+/*
 import 'package:flutter/cupertino.dart';
 import 'package:withing/common/requester/api_response.dart';
-import 'package:withing/common/requester/requester.dart';
 import 'package:withing/models/signup/signup_model.dart';
 
 class SignupService extends ChangeNotifier {
@@ -53,3 +53,4 @@ class SignupService extends ChangeNotifier {
     _signupModel.introduce = introduce;
   }
 }
+ */
