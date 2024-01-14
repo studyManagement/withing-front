@@ -11,6 +11,8 @@ abstract class AbstractThemeColors {
   Color get primaryColor => AppColors.blue600;
   Color get subColor => AppColors.blue200;
 
+  Color get primaryContainerColor => AppColors.gray150;
+
   Color get backgroundColor => AppColors.white;
 
   Color get lineColor => AppColors.gray150;

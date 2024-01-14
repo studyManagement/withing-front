@@ -6,7 +6,7 @@ import 'package:withing/common/theme/withing_theme.dart';
 import 'package:withing/screens/new-study/new_study_screen.dart';
 import 'package:withing/screens/study/study_screen.dart';
 import 'package:withing/views/login/login_screen.dart';
-
+import 'package:withing/views/search/screen/search_result_screen.dart';
 import '../models/signup/signup_service.dart';
 import '../views/signup/signup_screen.dart';
 
@@ -28,6 +28,10 @@ class WithingApp extends StatelessWidget {
               child: SignupScreen(provider, accessToken),
             );
           }),
+      GoRoute(
+        path: '/search/result',
+        builder: (context, state) => SearchResultScreen(),
+      ),
       GoRoute(
         path: '/studies/new',
         builder: (context, state) => const NewStudyScreen(),
