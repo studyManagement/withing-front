@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:withing/models/signup/signup_exception.dart';
-import 'package:withing/models/signup/signup_service.dart';
+import 'package:withing/common/requester/request_builder.dart';
+import 'package:withing/model/signup/signup_exception.dart';
+import 'package:withing/service/signup/signup_service.dart';
 
 class SignupViewModel extends ChangeNotifier {
-  SignupService service = SignupService();
+  SignupService service =
+      SignupService(SignupApi(RequestBuilder.getInstance()));
 
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
 
-  SignupViewModel(String provider, String accessToken) {
-    service.setProvider(provider);
-    service.setAccessToken(accessToken);
-  }
+  SignupViewModel(String provider, String accessToken);
+
+  //SignupViewModel(String provider, String accessToken) {
+  //  service.setProvider(provider);
+  //  service.setAccessToken(accessToken);
+  //}
 
   _checkViolationWords(String nickname) {
     final matchPattern = RegExp(r'(\s|[^a-zA-Zㄱ-힣0-9])');
@@ -36,7 +39,6 @@ class SignupViewModel extends ChangeNotifier {
 
       message = '사용 가능한 닉네임이에요.';
       rgb = 0xFF4282FF;
-      service.setNickname(nickname);
     } on SignupException catch (error) {
       message = error.cause;
       rgb = 0xFFFF416A;
@@ -45,18 +47,16 @@ class SignupViewModel extends ChangeNotifier {
     }
   }
 
-  changeDescription(String introduce) {
-    service.setIntroduce(introduce);
-  }
+  changeDescription(String introduce) {}
 
   signup(BuildContext context) async {
-    bool isOk = await service.signup();
+    //bool isOk = await service.signup();
 
-    if (!isOk) {
-      return;
-    }
+    //if (!isOk) {
+    //  return;
+    //}
 
-    if (!context.mounted) return;
-    context.go('/home');
+    //if (!context.mounted) return;
+    //context.go('/home');
   }
 }
