@@ -7,9 +7,9 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:withing/common/environment/environment.dart';
 import 'package:withing/constants/auth.dart';
 import 'package:withing/withing_app.dart';
-
 import 'common/const/notification.dart';
 import 'common/router.dart';
+import 'di/injection.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -48,6 +48,8 @@ void main() async {
   );
 
   await Environment.initialize(BuildType.LOCAL);
+
+  setupDependencyInjection();
 
   runApp(WithingApp());
 }

@@ -75,11 +75,12 @@ class _Bottom extends StatelessWidget {
         CircleButton(
             image: 'asset/kakao.png',
             onTap: () async {
-              Authenticator auth = KakaoAuthentication();
-              String token = await auth.login();
-
-              if (!context.mounted) return;
-              context.go('/signup/${auth.getProvider()}/$token');
+              // Authenticator auth = KakaoAuthentication();
+              // String token = await auth.login();
+              //
+              // if (!context.mounted) return;
+              // context.go('/signup/${auth.getProvider()}/$token');
+              context.go('/home');
             }),
         const Padding(padding: EdgeInsets.only(bottom: 60)),
         const Text(
