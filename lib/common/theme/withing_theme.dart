@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme_resources.dart';
 
+
 class WithingTheme {
   static WithingDefaultColors withingDefaultColors =
       const WithingDefaultColors();
