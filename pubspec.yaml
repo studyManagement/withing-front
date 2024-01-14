@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.9 # 캘린더
   intl: ^0.18.1 # 다국어 처리
