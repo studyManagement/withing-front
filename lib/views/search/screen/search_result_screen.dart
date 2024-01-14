@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/views/search/widgets/search_widget_resources.dart';
-
+import '../widgets/search_widget_resources.dart';
+import '../../../di/injection.dart';
+import '../../../data/repository/category_search_repository.dart';
 import '../../../view_models/search/search_viewmodel.dart';
 
 class SearchResultScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class SearchResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SearchViewModel(),
+      create: (_) => SearchViewModel(getIt<CategorySearchRepository>()),
       child: Scaffold(
         appBar: SearchAppBar(
           controller: _controller,

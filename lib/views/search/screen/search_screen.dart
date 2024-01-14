@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/view_models/search/search_viewmodel.dart';
-import 'package:withing/views/search/widgets/search_widget_resources.dart';
+import '../widgets/search_widget_resources.dart';
+import '../../../di/injection.dart';
+import '../../../data/data_resources.dart';
+import '../../../view_models/search/search_viewmodel.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -10,7 +12,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SearchViewModel(),
+      create: (_) => SearchViewModel(getIt<CategorySearchRepository>()),
       child: Scaffold(
           body: SafeArea(
             child: Column(

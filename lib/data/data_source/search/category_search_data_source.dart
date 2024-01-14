@@ -4,18 +4,18 @@ import 'package:withing/data/model/category_search_model.dart';
 
 part 'category_search_data_source.g.dart';
 
-// Retrofit API Interface
-@RestApi(baseUrl: "https://openapi.naver.com/v1/search")
+/// Api
+@RestApi(baseUrl: "https://3.34.129.8:8080")
 abstract class CategorySearchApi {
   factory CategorySearchApi(Dio dio, {String baseUrl}) = _CategorySearchApi;
 
-  @GET("/image")
+  @GET("/studies/search")
   Future<CategorySearchModel> search(
-    @Query("category_id") String categoryId,
+    @Query("category") String categoryId,
   );
 }
 
-// Data Source Class
+/// DataSource
 class CategorySearchDataSource {
   final CategorySearchApi _categorySearchApi;
 
