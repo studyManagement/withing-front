@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/model/signup/signup_model.dart';
@@ -10,6 +10,7 @@ abstract class SignupApi {
   factory SignupApi(Dio dio, {String baseUrl}) = _SignupApi;
 
   @POST("/users/signup")
+  @Headers({'X-Exclude-Access-Token': 'true'})
   Future<SignupModel> signup(
     @Field("provider") String provider,
     @Field("nickname") String nickname,
@@ -18,6 +19,7 @@ abstract class SignupApi {
   );
 
   @GET("/users/check")
+  @Headers({'X-Exclude-Access-Token': 'true'})
   Future<String> isDuplicate(@Query("nickname") String nickname);
 }
 
