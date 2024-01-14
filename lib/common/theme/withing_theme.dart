@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'color/abs_theme_colors.dart';
-import 'color/color_scheme.dart';
-import 'text/abs_theme_texts.dart';
-import 'text/text_scheme.dart';
+import 'theme_resources.dart';
+
 
 class WithingTheme {
   static WithingDefaultColors withingDefaultColors =
@@ -19,6 +17,8 @@ class WithingTheme {
     colorScheme: withingColorScheme(
       withingDefaultColors,
     ),
+    canvasColor: AppColors.gray50,
+    hintColor: AppColors.gray300,
     useMaterial3: true,
   );
 }

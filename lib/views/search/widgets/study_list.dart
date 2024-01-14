@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../common/components/study_categories.dart';
+import 'package:withing/common/theme/app/app_colors.dart';
+import 'package:withing/common/theme/app/app_fonts.dart';
+import 'package:withing/views/search/widgets/gray100_divider.dart';
+import '../../../common/components/study_categories.dart';
 
 class StudyList extends StatelessWidget {
   const StudyList({super.key});
@@ -14,12 +16,7 @@ class StudyList extends StatelessWidget {
           return const StudyCard();
         },
         separatorBuilder: (context, index) {
-          return const Divider(
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
-            color: Color(0xFFEBF1F5),
-          );
+          return const Gray100Divider();
         },
         itemCount: 10,
       ),
@@ -76,20 +73,16 @@ class StudyHeader extends StatelessWidget {
               width: 38,
               height: 38,
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFFE0E8F0),
+                  color: Theme.of(context).colorScheme.primaryContainer,
                 ),
               ),
             ),
             const SizedBox(width: 12),
-            const Text(
+            Text(
               title,
-              style: TextStyle(
-                color: Color(0xFF22262B),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ],
         )
@@ -119,20 +112,18 @@ class StudyDetails extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                color: Color(0xFF8B97A4),
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: AppFonts.fontSize13,
+                    color: AppColors.gray400,
+                  ),
             ),
             const SizedBox(width: 8),
             Text(
               content,
-              style: const TextStyle(
-                color: Color(0xFF22262B),
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: AppFonts.fontSize13,
+                    color: AppColors.gray800,
+                  ),
             )
           ],
         ),
