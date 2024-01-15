@@ -27,6 +27,9 @@ dependencies:
   provider: ^6.1.1
   http: ^1.1.2
   flutter_dotenv: ^5.1.0
+
+  carousel_slider: ^4.2.1 # 캐러셀 슬라이드
+
   retrofit: ^4.0.3
   retrofit_generator: ^8.0.1
   freezed_annotation: ^2.4.1
@@ -35,6 +38,7 @@ dependencies:
   json_serializable: ^6.7.1
   freezed: ^2.4.6
   get_it: ^7.6.6
+
 
 dev_dependencies:
   flutter_test:
