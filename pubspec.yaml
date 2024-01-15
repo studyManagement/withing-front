@@ -53,5 +53,6 @@ flutter:
   uses-material-design: true
   assets:
     - asset/
+    - asset/study_manage/
     - .local.env
 
