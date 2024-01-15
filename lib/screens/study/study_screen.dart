@@ -45,7 +45,9 @@ class StudyScreen extends StatelessWidget {
                 width: 32,
                 height: 32,
               ),
-              onPressed: () => {print("스터디 메인에서 설정 아이콘 클릭")},
+              onPressed: () => {
+               context.push('/studies/:studyId/manage')
+              },
             ),
           ),
         ],
