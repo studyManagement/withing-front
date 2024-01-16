@@ -7,19 +7,19 @@ class CustomLogInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    log('[REQUEST] ${options.path} ${options.queryParameters} ${options.data}');
+    log('[REQUEST] ${options.path} ${options.queryParameters} ${options.headers} ${options.data}');
     super.onRequest(options, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    log('[ERROR] ${err.response?.requestOptions.path} ${err.response?.requestOptions.queryParameters} ${err.response?.requestOptions.data} - ${err.response?.data}');
+    log('[ERROR] ${err.response?.requestOptions.path} ${err.response?.requestOptions.queryParameters} ${err.response?.requestOptions.data} - ${err.response?.headers} ${err.response?.data}');
     super.onError(err, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    log('[RESPONSE] ${response.requestOptions.path} ${response.requestOptions.queryParameters} ${response.headers} - ${response.data}');
+    log('[RESPONSE] ${response.requestOptions.path} ${response.requestOptions.queryParameters} ${response.headers} - ${response.headers} ${response.data}');
     super.onResponse(response, handler);
   }
 }
