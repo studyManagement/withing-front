@@ -11,16 +11,27 @@ class ResponseInterceptor extends Interceptor {
     ApiResponse apiResponse = ApiResponse.fromJson(response.data);
 
     if (apiResponse.code >= 400) {
-      throw ApiException(apiResponse.message, apiResponse.code);
+      throw ApiException(
+          requestOptions: response.requestOptions,
+          cause: apiResponse.message,
+          code: apiResponse.code);
     }
 
-    response.data = apiResponse;
+    response.data = apiResponse.data;
 
     return super.onResponse(response, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    throw NetworkException(err.error.toString());
+    if (err is! ApiException) {
+      super.onError(
+          NetworkException(
+              requestOptions: err.requestOptions,
+              cause: err.message ?? 'Unknown Error'),
+          handler);
+    }
+
+    super.onError(err, handler);
   }
 }

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/requester/request_builder.dart';
 import 'package:withing/model/signup/signup_exception.dart';
 import 'package:withing/service/signup/signup_service.dart';
 
 class SignupViewModel extends ChangeNotifier {
-  SignupService service =
-      SignupService(SignupApi(RequestBuilder.getInstance()));
+  final SignupService _service;
 
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
 
-  SignupViewModel(String provider, String accessToken);
+  SignupViewModel(this._service);
 
   //SignupViewModel(String provider, String accessToken) {
   //  service.setProvider(provider);
@@ -32,7 +30,7 @@ class SignupViewModel extends ChangeNotifier {
         throw SignupException('특수문자, 띄어쓰기는 사용 불가능해요.');
       }
 
-      bool isDuplicate = await service.isDuplicate(nickname);
+      bool isDuplicate = await _service.isDuplicate(nickname);
       if (isDuplicate) {
         throw SignupException('이미 사용중인 닉네임이에요.');
       }
@@ -50,7 +48,7 @@ class SignupViewModel extends ChangeNotifier {
   changeDescription(String introduce) {}
 
   signup(BuildContext context) async {
-    //bool isOk = await service.signup('kakao', '1010101', 'test1234', 'test1234');
+    await _service.signup('kakao', '1010101', 'test1234', 'test1234');
 
     //if (!isOk) {
     //  return;

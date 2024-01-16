@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:withing/di/injection.dart';
+import 'package:withing/service/signup/signup_service.dart';
 import 'package:withing/view_models/signup/signup_viewmodel.dart';
 import 'package:withing/views/signup/signup_form.dart';
 
@@ -34,7 +36,7 @@ class SignupScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ChangeNotifierProvider(
-          create: (context) => SignupViewModel(provider, accessToken),
+          create: (context) => SignupViewModel(getIt<SignupService>()),
           child: const SignupForm(),
         ),
       ),

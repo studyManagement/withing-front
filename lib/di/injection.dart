@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:withing/common/requester/request_builder.dart';
+import 'package:withing/service/signup/signup_service.dart';
+
 import '../data/data_resources.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -21,8 +24,15 @@ void setupDependencyInjection() {
     () => CategorySearchDataSource(getIt<CategorySearchApi>()),
   );
 
+  getIt.registerLazySingleton<SignupApi>(
+    () => SignupApi(RequestBuilder.getInstance()),
+  );
+
   /// Repository
   getIt.registerLazySingleton<CategorySearchRepository>(
     () => CategorySearchRepository(getIt<CategorySearchDataSource>()),
   );
+
+  getIt.registerLazySingleton<SignupService>(
+      () => SignupService(getIt<SignupApi>()));
 }

@@ -42,9 +42,9 @@ class SignupService {
   Future<bool> isDuplicate(String nickname) async {
     try {
       await _signupApi.isDuplicate(nickname);
-      return true;
-    } on ApiException catch (e) {
       return false;
+    } on ApiException catch (e) {
+      return true;
     }
   }
 }

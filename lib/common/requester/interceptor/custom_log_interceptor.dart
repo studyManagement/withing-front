@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-class LogInterceptor extends Interceptor {
+class CustomLogInterceptor extends Interceptor {
+  CustomLogInterceptor();
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     log('[REQUEST] ${options.path} ${options.queryParameters} ${options.data}');
@@ -17,7 +19,7 @@ class LogInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    log('[RESPONSE] ${response.requestOptions.path} ${response.requestOptions.queryParameters} ${response.data} - ${response.data}');
+    log('[RESPONSE] ${response.requestOptions.path} ${response.requestOptions.queryParameters} ${response.headers} - ${response.data}');
     super.onResponse(response, handler);
   }
 }
