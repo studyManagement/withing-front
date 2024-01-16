@@ -13,7 +13,7 @@ class _CategorySearchApi implements CategorySearchApi {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://openapi.naver.com/v1/search';
+    baseUrl ??= 'http://3.34.129.8:8080';
   }
 
   final Dio _dio;
@@ -23,7 +23,7 @@ class _CategorySearchApi implements CategorySearchApi {
   @override
   Future<CategorySearchModel> search(String categoryId) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'category_id': categoryId};
+    final queryParameters = <String, dynamic>{r'category': categoryId};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -34,7 +34,7 @@ class _CategorySearchApi implements CategorySearchApi {
     )
             .compose(
               _dio.options,
-              '/image',
+              '/studies/search',
               queryParameters: queryParameters,
               data: _data,
             )

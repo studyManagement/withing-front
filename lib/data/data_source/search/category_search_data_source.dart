@@ -5,7 +5,7 @@ import 'package:withing/data/model/category_search_model.dart';
 part 'category_search_data_source.g.dart';
 
 /// Api
-@RestApi(baseUrl: "https://3.34.129.8:8080")
+@RestApi(baseUrl: "http://3.34.129.8:8080")
 abstract class CategorySearchApi {
   factory CategorySearchApi(Dio dio, {String baseUrl}) = _CategorySearchApi;
 

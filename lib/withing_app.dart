@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:withing/common/root_tab.dart';
 import 'package:withing/common/theme/withing_theme.dart';
 import 'package:withing/screens/new-study/new_study_screen.dart';
-import 'package:withing/screens/study/study_screen.dart';
+import 'package:withing/views/study/study_screen.dart';
 import 'package:withing/views/login/login_screen.dart';
 import 'package:withing/views/search/screen/search_result_screen.dart';
 
