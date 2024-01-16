@@ -57,26 +57,6 @@ class StudyDetails extends StatelessWidget{
             )
           ],
         ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Text(
-              '다음 만남',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray400,
-                fontSize: 13.0,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              '2023. 08. 03 (목) 21:00',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray800,
-                fontSize: 13.0,
-              ),
-            )
-          ],
-        ),
       ],
     );
 
