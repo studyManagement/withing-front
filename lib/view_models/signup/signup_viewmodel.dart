@@ -48,7 +48,7 @@ class SignupViewModel extends ChangeNotifier {
   changeDescription(String introduce) {}
 
   signup(BuildContext context) async {
-    await _service.signup('kakao', '1010101', 'test1234', 'test1234');
+    await _service.signup('kakao', 'test1', '2024011601', 'test1234');
 
     //if (!isOk) {
     //  return;
