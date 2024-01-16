@@ -7,9 +7,9 @@ import 'package:withing/views/signup/signup_form.dart';
 
 class SignupScreen extends StatelessWidget {
   String provider;
-  String accessToken;
+  String uuid;
 
-  SignupScreen(this.provider, this.accessToken, {super.key});
+  SignupScreen(this.provider, this.uuid, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,8 @@ class SignupScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ChangeNotifierProvider(
-          create: (context) => SignupViewModel(getIt<SignupService>()),
+          create: (context) =>
+              SignupViewModel(provider, uuid, getIt<SignupService>()),
           child: const SignupForm(),
         ),
       ),

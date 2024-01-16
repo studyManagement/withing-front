@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 import 'package:withing/common/requester/api_exception.dart';
+import 'package:withing/common/requester/network_exception.dart';
 import 'package:withing/model/signup/signup_model.dart';
 
 part 'signup_service.g.dart';
@@ -34,7 +35,7 @@ class SignupService {
           await _signupApi.signup(provider, nickname, socialUUID, introduce);
 
       return response;
-    } on DioException catch (e) {
+    } on NetworkException catch (e) {
       rethrow;
     }
   }

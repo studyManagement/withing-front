@@ -77,9 +77,10 @@ class _Bottom extends StatelessWidget {
             onTap: () async {
               Authenticator auth = KakaoAuthentication();
               String token = await auth.login();
+              int socialUUID = await auth.fetchUUID();
 
               if (!context.mounted) return;
-              context.go('/signup/${auth.getProvider()}/$token');
+              context.go('/signup/${auth.getProvider()}/$socialUUID');
               //context.go('/home');
             }),
         const Padding(padding: EdgeInsets.only(bottom: 60)),
