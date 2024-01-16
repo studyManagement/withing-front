@@ -10,12 +10,12 @@ final router = GoRouter(
     GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
     GoRoute(path: '/home', builder: (context, state) => const RootTab()),
     GoRoute(
-        path: '/signup/:provider/:accessToken',
+        path: '/signup/:provider/:uuid',
         builder: (context, GoRouterState state) {
           final provider = state.pathParameters['provider']!;
-          final accessToken = state.pathParameters['accessToken']!;
+          final socialUUID = state.pathParameters['uuid']!;
 
-          return SignupScreen(provider, accessToken);
+          return SignupScreen(provider, socialUUID);
         }),
     GoRoute(
       path: '/studies/new',
