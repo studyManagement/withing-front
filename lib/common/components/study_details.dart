@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:withing/common/router.dart';
+import 'package:withing/views/study/study_member_screen.dart';
 import '../theme/app/app_colors.dart';
 
 class StudyDetails extends StatelessWidget{
@@ -32,7 +35,8 @@ class StudyDetails extends StatelessWidget{
                 height: 16,
               ),
               onTap: () => {
-                print("참여 인원 아이콘 클릭")
+                context.push('/studies/:studyId/member')
+
               },
             ),
           ],
