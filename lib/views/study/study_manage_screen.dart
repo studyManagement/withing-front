@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
+import 'package:withing/views/study/study_manage_modal.dart';
 
 class StudyManageScreen extends StatelessWidget {
   const StudyManageScreen({super.key});
@@ -39,7 +40,9 @@ class StudyManageScreen extends StatelessWidget {
             const SizedBox(height: 369),
             Center(
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    showStudyDeleteDialog(context);
+                  },
                   child: Text('스터디 삭제하기',
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: AppColors.gray300,
@@ -67,8 +70,10 @@ class StudyManageListItem extends StatelessWidget {
    // List<String> studyManagePages = ["0", "1", "2", "3", "4"]; // 각 페이지 경로 넣기
     return GestureDetector(
         onTap: () {
+          if(index == 4) showStudyFinishDialog(context);
           //goto pageindex
           //  print(study_manage_pages[index]);
+
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
