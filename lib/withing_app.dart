@@ -18,12 +18,12 @@ class WithingApp extends StatelessWidget {
       GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/home', builder: (context, state) => const RootTab()),
       GoRoute(
-          path: '/signup/:provider/:accessToken',
+          path: '/signup/:provider/:uuid',
           builder: (context, GoRouterState state) {
             final provider = state.pathParameters['provider']!;
-            final accessToken = state.pathParameters['accessToken']!;
+            final uuid = state.pathParameters['uuid']!;
 
-            return SignupScreen(provider, accessToken);
+            return SignupScreen(provider, uuid);
           }),
       GoRoute(
         path: '/search/result',
