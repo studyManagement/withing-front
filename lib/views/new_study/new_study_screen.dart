@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:withing/common/components/badge_multi_selector.dart';
 import 'package:withing/common/layout/default_layout.dart';
-
+import 'package:withing/view_models/new_study/text_input_validation_provider.dart';
+import 'package:withing/views/new_study/widgets/text_input_group.dart';
 import '../../common/theme/app/app_colors.dart';
 
 class NewStudyScreen extends StatelessWidget {
@@ -9,138 +11,66 @@ class NewStudyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      title: '스터디 생성하기',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 20),
-          Center(
-            child: Container(
-              width: 105,
-              height: 105,
-              decoration: const ShapeDecoration(
-                color: AppColors.gray150,
-                shape: OvalBorder(),
-              ),
-              alignment: Alignment.bottomRight,
-              child: GestureDetector(
-                onTap: () {
-                  debugPrint('프로필 사진 선택');
-                },
-                child: Image.asset(
-                  'asset/camera.png',
-                  scale: 2,
+    return ChangeNotifierProvider(
+      create: (_) => TextInputValidationProvider(),
+      child: Consumer<TextInputValidationProvider>(
+        builder: (context, validate, child) {
+          return DefaultLayout(
+            title: '스터디 생성하기',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                Center(
+                  child: Container(
+                    width: 105,
+                    height: 105,
+                    decoration: const ShapeDecoration(
+                      color: AppColors.gray150,
+                      shape: OvalBorder(),
+                    ),
+                    alignment: Alignment.bottomRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        debugPrint('프로필 사진 선택');
+                      },
+                      child: Image.asset(
+                        'asset/camera.png',
+                        scale: 2,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 50),
-          const TextInputGroup(
-            title: '스터디 이름',
-            hintText: '스터디 이름을 입력해주세요.',
-          ),
-          const SizedBox(height: 20),
-          const TextInputGroup(
-            title: '스터디 설명',
-            hintText: '스터디를 소개할 수 있는 설명을 추가해보세요.',
-            maxLength: 65,
-          ),
-          const SizedBox(height: 20),
-          const _CategorySelector(),
-          const SizedBox(height: 40),
-          const _StudyMemberCount(),
-          const Spacer(),
-          const _CreateButton(),
-        ],
-      ),
-    );
-  }
-}
-
-class TextInputGroup extends StatelessWidget {
-  final String title;
-  final String hintText;
-  final int? maxLength;
-
-  const TextInputGroup({
-    super.key,
-    required this.title,
-    required this.hintText,
-    this.maxLength = 20,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.gray500,
+                const SizedBox(height: 50),
+                TextInputGroup(
+                  title: '스터디 이름',
+                  hintText: '스터디 이름을 입력해주세요.',
+                  errorText: '2 ~ 20자 사이의 이름을 설정해주세요.',
+                  type: NewStudyType.studyName,
+                  isValidation: validate.isStudyNameError!,
+                  validationCheck: (value) => validate.validateStudyName(value),
                 ),
-          ),
-          TextField(
-            onChanged: (value) => null,
-            decoration: InputDecoration(
-              hintText: hintText,
-              hintStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.gray200,
-                  ),
-              errorText: '2~20자 사이의 이름을 설정해주세요.',
-              errorStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppColors.gray400,
-                  ),
-              counterStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppColors.gray500,
-                  ),
-              enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
-              ),
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
-              ),
-              errorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
-              ),
-              focusedErrorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
-              ),
+                const SizedBox(height: 20),
+                TextInputGroup(
+                  title: '스터디 설명',
+                  hintText: '스터디를 소개할 수 있는 설명을 추가해보세요.',
+                  errorText: '10 ~ 65자 사이의 설명을 추가해주세요.',
+                  maxLength: 65,
+                  type: NewStudyType.studyDescription,
+                  isValidation: validate.isStudyDescriptionError!,
+                  validationCheck: (value) =>
+                      validate.validateStudyDescription(value),
+                ),
+                const SizedBox(height: 20),
+                const _CategorySelector(),
+                const SizedBox(height: 40),
+                const _StudyMemberCount(),
+                const Spacer(),
+                const _CreateButton(),
+              ],
             ),
-            maxLength: maxLength,
-          ),
-          const SizedBox(height: 8),
-          // if (validationDescription != null)
-          // const Row(
-          //   children: [
-          //     Expanded(
-          //       child: SizedBox(
-          //         child: Text(
-          //           '멋진 스터디 이름이네요!',
-          //           style: TextStyle(
-          //             color: Color(0xFF4182FF),
-          //             fontSize: 12,
-          //             fontWeight: FontWeight.w500,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //     SizedBox(width: 10),
-          //     Text(
-          //       '10/20',
-          //       textAlign: TextAlign.right,
-          //       style: TextStyle(
-          //         color: Color(0xFF6E7986),
-          //         fontSize: 12,
-          //         fontWeight: FontWeight.w500,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-        ],
+          );
+        },
       ),
     );
   }
