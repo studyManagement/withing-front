@@ -21,7 +21,7 @@ class CategorySelector extends StatelessWidget {
     var viewModel = Provider.of<SearchViewModel>(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

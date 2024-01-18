@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:withing/common/components/badge_multi_selector.dart';
 import 'package:withing/common/layout/default_layout.dart';
 
+import '../../common/theme/app/app_colors.dart';
+
 class NewStudyScreen extends StatelessWidget {
   const NewStudyScreen({super.key});
 
@@ -18,21 +20,31 @@ class NewStudyScreen extends StatelessWidget {
               width: 105,
               height: 105,
               decoration: const ShapeDecoration(
-                color: Color(0xFFEBF1F5),
+                color: AppColors.gray150,
                 shape: OvalBorder(),
+              ),
+              alignment: Alignment.bottomRight,
+              child: GestureDetector(
+                onTap: () {
+                  debugPrint('프로필 사진 선택');
+                },
+                child: Image.asset(
+                  'asset/camera.png',
+                  scale: 2,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 50),
           const TextInputGroup(
             title: '스터디 이름',
-            placeholder: '스터디 이름을 입력해주세요.',
-            validationDescription: '2-20자 사이의 이름을 설정해주세요.',
+            hintText: '스터디 이름을 입력해주세요.',
           ),
           const SizedBox(height: 20),
           const TextInputGroup(
             title: '스터디 설명',
-            placeholder: '스터디를 소개할 수 있는 설명을 추가해보세요.',
+            hintText: '스터디를 소개할 수 있는 설명을 추가해보세요.',
+            maxLength: 65,
           ),
           const SizedBox(height: 20),
           const _CategorySelector(),
@@ -48,14 +60,14 @@ class NewStudyScreen extends StatelessWidget {
 
 class TextInputGroup extends StatelessWidget {
   final String title;
-  final String placeholder;
-  final String? validationDescription;
+  final String hintText;
+  final int? maxLength;
 
   const TextInputGroup({
     super.key,
     required this.title,
-    required this.placeholder,
-    this.validationDescription,
+    required this.hintText,
+    this.maxLength = 20,
   });
 
   @override
@@ -67,28 +79,38 @@ class TextInputGroup extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Color(0xFF6E7986),
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.gray500,
+                ),
           ),
-          const SizedBox(height: 12),
           TextField(
+            onChanged: (value) => null,
             decoration: InputDecoration(
-              hintText: placeholder,
-              hintStyle: const TextStyle(
-                color: Color(0xFFCED7E1),
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+              hintText: hintText,
+              hintStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: AppColors.gray200,
+                  ),
+              errorText: '2~20자 사이의 이름을 설정해주세요.',
+              errorStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.gray400,
+                  ),
+              counterStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: AppColors.gray500,
+                  ),
               enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFE0E8F0)),
               ),
               focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFE0E8F0)),
               ),
+              errorBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
+              ),
+              focusedErrorBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
+              ),
             ),
+            maxLength: maxLength,
           ),
           const SizedBox(height: 8),
           // if (validationDescription != null)
