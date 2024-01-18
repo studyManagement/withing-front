@@ -27,11 +27,12 @@ class _SignupApi implements SignupApi {
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'X-Exclude-Access-Token': 'true'};
+    _headers.removeWhere((k, v) => v == null);
     final _data = {
-      'provider': provider,
+      'social_id_type': provider,
       'nickname': nickname,
-      'access_token': accessToken,
+      'social_id': accessToken,
       'introduce': introduce,
     };
     final _result = await _dio
@@ -59,7 +60,8 @@ class _SignupApi implements SignupApi {
   Future<String> isDuplicate(String nickname) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'nickname': nickname};
-    final _headers = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'X-Exclude-Access-Token': 'true'};
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
       method: 'GET',

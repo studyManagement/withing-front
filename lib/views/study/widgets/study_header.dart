@@ -37,8 +37,8 @@ class Header extends StatelessWidget { // 이미지, 스터디 이름, 스터디
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                 vm.studyInfo!.studyName,
-                  //'네이버 면접 스터디',
+               //  vm.studyInfo!.studyName,
+                  '네이버 면접 스터디',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),

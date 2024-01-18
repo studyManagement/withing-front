@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:withing/common/authenticator/authenticator.dart';
-import 'package:withing/common/authenticator/provider/kakao_authentication.dart';
 import 'package:withing/components/circle_button.dart';
+import 'package:withing/di/injection.dart';
+import 'package:withing/service/signin/signin_service.dart';
+import 'package:withing/view_models/signin/signin_viewmodel.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -68,6 +69,8 @@ class _Bottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SigninViewModel vm = SigninViewModel(getIt<SigninService>());
+
     return Column(
       children: [
         const Text('SNS 간편 로그인 하기'),
@@ -75,12 +78,16 @@ class _Bottom extends StatelessWidget {
         CircleButton(
             image: 'asset/kakao.png',
             onTap: () async {
-              Authenticator auth = KakaoAuthentication();
-              String token = await auth.login();
+              //Authenticator auth = KakaoAuthentication();
+              //String token = await auth.login();
+              //int socialUUID = await auth.fetchUUID();
 
-              if (!context.mounted) return;
-              context.go('/signup/${auth.getProvider()}/$token');
-           //   context.go('/home');
+              //await vm.signin(token);
+
+              //if (!context.mounted) return;
+              //context.go('/signup/${auth.getProvider()}/$socialUUID');
+              context.go('/home');
+
             }),
         const Padding(padding: EdgeInsets.only(bottom: 60)),
         const Text(

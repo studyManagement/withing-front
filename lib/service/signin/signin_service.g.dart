@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category_search_data_source.dart';
+part of 'signin_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,35 +8,35 @@ part of 'category_search_data_source.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _CategorySearchApi implements CategorySearchApi {
-  _CategorySearchApi(
+class _SigninApi implements SigninApi {
+  _SigninApi(
     this._dio, {
     this.baseUrl,
-  }) {
-
-    baseUrl ??= 'http://3.34.129.8:8080';
-
-  }
+  });
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<CategorySearchModel> search(String categoryId) async {
+  Future<SigninModel> signin(String accessToken) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'category': categoryId};
-    final _headers = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'X-Exclude-Access-Token': 'true',
+      r'Authorization': accessToken,
+    };
+    _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CategorySearchModel>(Options(
-      method: 'GET',
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SigninModel>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/studies/search',
+              '/users/login/kakao',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -45,7 +45,7 @@ class _CategorySearchApi implements CategorySearchApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CategorySearchModel.fromJson(_result.data!);
+    final value = SigninModel.fromJson(_result.data!);
     return value;
   }
 

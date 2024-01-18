@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:withing/common/requester/interceptor/custom_log_interceptor.dart';
 import 'package:withing/common/requester/interceptor/response_interceptor.dart';
 
 import '../const/environment.dart';
@@ -17,9 +18,9 @@ class RequestBuilder {
 
   static Dio getInstance() {
     if (!_isInitialize) {
-      _dio.interceptors.add(LogInterceptor());
-      _dio.interceptors.add(AuthInterceptor());
+      _dio.interceptors.add(CustomLogInterceptor());
       _dio.interceptors.add(ResponseInterceptor());
+      //_dio.interceptors.add(AuthInterceptor());
       _isInitialize = true;
     }
 
