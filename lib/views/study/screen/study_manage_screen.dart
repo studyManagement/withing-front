@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/views/study/study_manage_modal.dart';
+import 'package:withing/views/study/widgets/study_manage_bottomsheet.dart';
+import 'package:withing/views/study/widgets/study_manage_modal.dart';
 
 class StudyManageScreen extends StatelessWidget {
   const StudyManageScreen({super.key});
@@ -67,13 +68,37 @@ class StudyManageListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   // List<String> studyManagePages = ["0", "1", "2", "3", "4"]; // 각 페이지 경로 넣기
     return GestureDetector(
         onTap: () {
           if(index == 4) showStudyFinishDialog(context);
-          //goto pageindex
-          //  print(study_manage_pages[index]);
-
+          if(index == 2){
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder:(context){
+              return const StudyManageBottomSheet(
+                title: "스터디장 변경",
+                content: "스터디장을 위임받을 멤버를 선택해주세요.",
+                buttontext: "스터디장 위임하기",
+                isMultiple: false,
+              );
+                }
+            );
+          }
+          if(index == 3){
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder:(context){
+                  return const StudyManageBottomSheet(
+                    title: "멤버 강제 퇴장",
+                    content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
+                    buttontext: "강제 퇴장",
+                    isMultiple: true,
+                  );
+                }
+            );
+          }
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
