@@ -3,8 +3,12 @@ class Authenticator {
     // inherit subclass
     return '';
   }
-  
+
   String getProvider() {
     return '';
+  }
+
+  Future<int> fetchUUID() async {
+    return -1;
   }
 }

@@ -57,6 +57,7 @@ class StudyDetails extends StatelessWidget{
             )
           ],
         ),
+
       ],
     );
 
