@@ -1,52 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
+import '../../../view_models/new_study/new_study_view_model.dart';
 
 enum NewStudyType {
   studyName,
   studyDescription,
 }
 
-class TextInputGroup extends StatelessWidget {
+class StudyTextField extends StatelessWidget {
   final NewStudyType type;
-  final String title;
-  final String hintText;
-  final String errorText;
-  final int? maxLength;
-  final bool isValidation;
-  final void Function(String) validationCheck;
 
-  const TextInputGroup({
+  const StudyTextField({
     super.key,
     required this.type,
-    required this.title,
-    required this.hintText,
-    required this.errorText,
-    this.maxLength = 20,
-    required this.isValidation,
-    required this.validationCheck,
   });
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<NewStudyViewModel>(context);
+    final bool isValidation = (type == NewStudyType.studyName)
+        ? viewModel.isStudyNameError
+        : viewModel.isStudyDescriptionError;
+    final int maxLength = (type == NewStudyType.studyName) ? 20 : 65;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            getStudyTitle(type),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.gray500,
                 ),
           ),
           TextField(
-            onChanged: validationCheck,
+            onChanged: (value) =>
+                viewModel.checkStudyNameAndDescription(type, value),
+            cursorHeight: 16,
+            cursorWidth: 1.5,
+            cursorColor: AppColors.blue500,
             decoration: InputDecoration(
-              hintText: hintText,
+              hintText: getHintText(type),
               hintStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: AppColors.gray200,
                   ),
-              errorText: getErrorMessage(type, isValidation),
+              errorText: getErrorText(type, isValidation),
               errorStyle: isValidation
                   ? Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: AppColors.blue400,
@@ -58,16 +58,16 @@ class TextInputGroup extends StatelessWidget {
                     color: AppColors.gray500,
                   ),
               enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
+                borderSide: BorderSide(color: AppColors.gray150),
               ),
               focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
+                borderSide: BorderSide(color: AppColors.gray150),
               ),
               errorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
+                borderSide: BorderSide(color: AppColors.gray150),
               ),
               focusedErrorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFE0E8F0)),
+                borderSide: BorderSide(color: AppColors.gray150),
               ),
             ),
             maxLength: maxLength,
@@ -76,15 +76,5 @@ class TextInputGroup extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-String getErrorMessage(NewStudyType type, bool isValidation) {
-  if (type == NewStudyType.studyName) {
-    return isValidation ? '멋진 이름이네요!' : '2 ~ 20자 사이의 이름을 설정해주세요.';
-  } else if (type == NewStudyType.studyDescription) {
-    return isValidation ? '멋진 설명이네요!' : '10 ~ 65자 사이의 이름을 설정해주세요.';
-  } else {
-    return '유효하지 않은 입력입니다.';
   }
 }
