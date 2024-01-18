@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
-import '../../common/components/study_details.dart';
-import '../../common/components/study_categories.dart';
-import '../../common/components/study_notices.dart';
+import '../../../common/components/study_details.dart';
+import '../../../common/components/study_categories.dart';
+import '../../../common/components/study_notices.dart';
 
 
 

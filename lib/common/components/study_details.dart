@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:withing/common/router.dart';
-import 'package:withing/views/study/study_member_screen.dart';
+import 'package:withing/views/study/screen/study_member_screen.dart';
 import '../theme/app/app_colors.dart';
 
 class StudyDetails extends StatelessWidget{
