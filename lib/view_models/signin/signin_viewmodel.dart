@@ -18,7 +18,7 @@ class SigninViewModel {
 
       log('dd');
       if (!_context.mounted) return;
-      _context.go('/home');
+      _context.go('/signup/kakao/10203123');
     } on UserNotFoundException catch (e) {
       _context.go('/signup/$provider/$socialUUID');
     } on ApiException catch (e) {
