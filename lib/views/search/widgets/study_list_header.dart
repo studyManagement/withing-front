@@ -34,7 +34,7 @@ class StudyListHeader extends StatelessWidget {
             ],
           ),
           const FilterDropDownBox(
-            valueList: ['최신순', '인기순', '등록순'],
+            valueList: ['최신순', '인기순'],
           )
         ],
       ),
