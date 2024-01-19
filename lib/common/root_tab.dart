@@ -7,7 +7,7 @@ import 'package:withing/view_models/study/study_viewmodel.dart';
 import 'package:withing/views/my/my_screen.dart';
 
 import '../views/home/home_screen.dart';
-import '../views/search/screen/search_screen.dart';
+import '../views/search/screen/category_search_screen.dart';
 import 'layout/default_layout.dart';
 
 class RootTab extends StatefulWidget {
@@ -112,7 +112,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             ],
             child: HomeScreen(),
           )),
-          const Center(child: SearchScreen()),
+          const Center(child: CategorySearchScreen()),
           const Center(child: Text('일정')),
           const Center(child: Text('알림')),
           const Center(child: MyScreen()),

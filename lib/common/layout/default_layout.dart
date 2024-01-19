@@ -17,13 +17,13 @@ class DefaultLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
-      appBar: renderAppBar(),
+      appBar: renderAppBar(context),
       body: SafeArea(child: child),
       bottomNavigationBar: bottomNavigationBar,
     );
   }
 
-  AppBar? renderAppBar() {
+  AppBar? renderAppBar(BuildContext context) {
     if (title == null) {
       return null;
     } else {
@@ -32,12 +32,8 @@ class DefaultLayout extends StatelessWidget {
         elevation: 0,
         title: Text(
           title!,
-          style: const TextStyle(
-            color: Color(0xFF22262B),
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+          style: Theme.of(context).textTheme.titleMedium,
           ),
-        ),
         foregroundColor: Colors.black,
       );
     }

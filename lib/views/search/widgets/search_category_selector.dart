@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../view_models/search/search_viewmodel.dart';
+import '../../../common/theme/app/app_colors.dart';
+import '../../../view_models/search_study/search_study_viewmodel.dart';
 
-class CategorySelector extends StatelessWidget {
+class SearchCategorySelector extends StatelessWidget {
   final List<String> categories = [
     '전체',
     '어학',
@@ -13,15 +14,25 @@ class CategorySelector extends StatelessWidget {
     '프로그래밍',
     '기타'
   ];
+  final List<String> categoryImages = [
+    'asset/search_category/0_entire.png',
+    'asset/search_category/1_language.png',
+    'asset/search_category/2_certification.png',
+    'asset/search_category/3_employment.png',
+    'asset/search_category/4_exam.png',
+    'asset/search_category/5_hobby.png',
+    'asset/search_category/6_programming.png',
+    'asset/search_category/7_etc.png',
+  ];
 
-  CategorySelector({super.key});
+  SearchCategorySelector({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = Provider.of<SearchViewModel>(context);
+    var viewModel = Provider.of<SearchStudyViewModel>(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -33,11 +44,12 @@ class CategorySelector extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              viewModel.selectedCategoryValue = index;
+              viewModel.searchCategory = index;
               debugPrint(categories[index]);
             },
-            child: CategoryItem(
+            child: _CategoryItem(
               title: categories[index],
+              imgUrl: categoryImages[index],
               isSelected: viewModel.selectedCategoryValue == index,
             ),
           );
@@ -47,13 +59,14 @@ class CategorySelector extends StatelessWidget {
   }
 }
 
-class CategoryItem extends StatelessWidget {
+class _CategoryItem extends StatelessWidget {
   final String title;
+  final String imgUrl;
   final bool isSelected;
 
-  const CategoryItem({
-    super.key,
+  const _CategoryItem({
     required this.title,
+    required this.imgUrl,
     this.isSelected = false,
   });
 
@@ -67,13 +80,11 @@ class CategoryItem extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                width: 2.0,
-                color: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.transparent,
-              ),
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: isSelected ? AppColors.blue100 : Colors.transparent,
+            ),
+            child: Image.asset(
+              imgUrl,
+              scale: 2,
             ),
           ),
         ),
