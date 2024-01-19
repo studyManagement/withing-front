@@ -21,10 +21,4 @@ class AuthInterceptor extends Interceptor {
 
     return super.onRequest(options, handler);
   }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {}
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {}
 }

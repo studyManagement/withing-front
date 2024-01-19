@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:withing/common/requester/request_builder.dart';
 import 'package:withing/service/signin/signin_service.dart';
 import 'package:withing/service/signup/signup_service.dart';
+import 'package:withing/service/study/study_service.dart';
 
 import '../data/data_resources.dart';
 
@@ -33,6 +34,10 @@ void setupDependencyInjection() {
     () => SigninApi(RequestBuilder.getInstance()),
   );
 
+  getIt.registerLazySingleton<StudyApi>(
+    () => StudyApi(RequestBuilder.getInstance()),
+  );
+
   /// Repository
   getIt.registerLazySingleton<CategorySearchRepository>(
     () => CategorySearchRepository(getIt<CategorySearchDataSource>()),
@@ -43,4 +48,7 @@ void setupDependencyInjection() {
 
   getIt.registerLazySingleton<SigninService>(
       () => SigninService(getIt<SigninApi>()));
+
+  getIt.registerLazySingleton<StudyService>(
+      () => StudyService(getIt<StudyApi>()));
 }

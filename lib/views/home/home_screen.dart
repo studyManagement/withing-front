@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:withing/service/study/StudyType.dart';
+import 'package:withing/view_models/study/study_viewmodel.dart';
 
 import '../../common/layout/default_layout.dart';
-import 'home_my_study.dart';
 import './main_calendar.dart';
+import 'home_my_study.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,6 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
     // 스터디 유무
     bool hasStudy = true;
     const pageCount = 3;
+
+    final StudyViewModel vm = context.read<StudyViewModel>();
+    vm.fetchStudies(StudyType.MY);
 
     return DefaultLayout(
       title: '이번주 일정',
@@ -264,6 +270,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void onDaySelected(DateTime selectedDate, DateTime focusedDate) {
     setState(() {
       this.selectedDate = selectedDate;
+      StudyViewModel vm = context.read<StudyViewModel>();
+      vm.setSelectedDate(selectedDate);
     });
   }
 }
