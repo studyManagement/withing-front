@@ -21,6 +21,6 @@ class ApiResponse {
     }
 
     return ApiResponse(jsonMap['code'] as int, jsonMap['message'] as String,
-        jsonMap['data'] as dynamic, jsonMap['success'] as bool);
+        jsonMap['data'] as dynamic ?? List.empty(), jsonMap['success'] as bool);
   }
 }

@@ -6,37 +6,17 @@ part of 'searched_study_list_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SearchedStudyListModelImpl _$$SearchedStudyListModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$SearchedStudyListModelImpl(
-      code: json['code'] as int,
-      message: json['message'] as String,
-      success: json['success'] as bool,
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => StudyInfo.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$SearchedStudyListModelImplToJson(
-        _$SearchedStudyListModelImpl instance) =>
-    <String, dynamic>{
-      'code': instance.code,
-      'message': instance.message,
-      'success': instance.success,
-      'data': instance.data,
-    };
-
 _$StudyInfoImpl _$$StudyInfoImplFromJson(Map<String, dynamic> json) =>
     _$StudyInfoImpl(
       studyId: json['studyId'] as int,
       studyName: json['studyName'] as String,
       max: json['max'] as int,
       headCount: json['headcount'] as int,
-      studyImage: json['studyImage'] as String,
+      studyImage: json['studyImage'] as String?,
       categoryList: (json['categoryList'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      regularMeetingId: json['regularMeetingId'] as int,
+      regularMeetingId: json['regularMeetingId'] as int?,
       gap: json['gap'] as int,
       day1: json['day1'] as int,
       day2: json['day2'] as int,

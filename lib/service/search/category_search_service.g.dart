@@ -19,7 +19,7 @@ class _CategorySearchApi implements CategorySearchApi {
   String? baseUrl;
 
   @override
-  Future<SearchedStudyListModel> search(
+  Future<List<StudyInfo>> search(
     String categoryId,
     String sort,
     String index,
@@ -32,8 +32,8 @@ class _CategorySearchApi implements CategorySearchApi {
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<SearchedStudyListModel>(Options(
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<StudyInfo>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -49,7 +49,9 @@ class _CategorySearchApi implements CategorySearchApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SearchedStudyListModel.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => StudyInfo.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

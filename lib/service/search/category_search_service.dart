@@ -13,7 +13,7 @@ abstract class CategorySearchApi {
   factory CategorySearchApi(Dio dio, {String baseUrl}) = _CategorySearchApi;
 
   @GET("/studies/search")
-  Future<SearchedStudyListModel> search(
+  Future<List<StudyInfo>> search(
     @Query("category_id") String categoryId,
     @Query("sort") String sort,
     @Query("index") String index,
@@ -25,7 +25,7 @@ class CategorySearchService {
 
   CategorySearchService(this._api);
 
-  Future<SearchedStudyListModel> callApi(
+  Future<List<StudyInfo>> callApi(
     String categoryId,
     String sort,
     String index,
