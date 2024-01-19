@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/views/study/widgets/study_manage_button.dart';
+import 'package:withing/common/components/study_bottom_button.dart';
 import 'package:withing/views/study/widgets/study_member_list_item.dart';
 
 class StudyManageBottomSheet extends StatelessWidget {
