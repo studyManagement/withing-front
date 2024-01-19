@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:withing/di/injection.dart';
+import 'package:withing/service/study/study_service.dart';
+import 'package:withing/view_models/home/home_viewmodel.dart';
+import 'package:withing/view_models/study/study_viewmodel.dart';
+import 'package:withing/views/my/my_screen.dart';
 
 import '../views/home/home_screen.dart';
 import '../views/search/screen/search_screen.dart';
@@ -96,12 +102,20 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
       child: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
-        children: const [
-          Center(child: HomeScreen()),
-          Center(child: SearchScreen()),
-          Center(child: Text('일정')),
-          Center(child: Text('알림')),
-          Center(child: Text('마이페이지')),
+        children: [
+          Center(
+              child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(create: (_) => HomeViewModel()),
+              ChangeNotifierProvider(
+                  create: (_) => StudyViewModel(getIt<StudyService>())),
+            ],
+            child: HomeScreen(),
+          )),
+          const Center(child: SearchScreen()),
+          const Center(child: Text('일정')),
+          const Center(child: Text('알림')),
+          const Center(child: MyScreen()),
         ],
       ),
     );
