@@ -10,7 +10,6 @@ import 'package:withing/views/search/screen/keyword_search_screen.dart';
 import 'package:withing/views/study/screen/study_manage_screen.dart';
 import 'package:withing/views/study/screen/study_member_screen.dart';
 import 'package:withing/views/study/screen/study_screen.dart';
-
 import '../views/signup/signup_screen.dart';
 
 class WithingApp extends StatelessWidget {

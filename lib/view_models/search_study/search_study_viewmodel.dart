@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:withing/service/search/category_search_service.dart';
+
+import '../../model/search/searched_study_list_model.dart';
 
 enum SearchType { category, keyword }
 
 class SearchStudyViewModel with ChangeNotifier {
+  final CategorySearchService _categorySearchService;
+  SearchStudyViewModel(this._categorySearchService);
+
+  List<StudyInfo>? _searchedStudiesWithCategory;
   String _selectedCategoryFilterValue = '최신순';
   String _selectedKeywordFilterValue = '최신순';
   String _keywordValue = '';
@@ -10,6 +17,7 @@ class SearchStudyViewModel with ChangeNotifier {
   int _studyCountWithCategory = 0;
   int _studyCountWithKeyword = 0;
 
+  List<StudyInfo>? get studyWithCategory => _searchedStudiesWithCategory;
   String get categoryFilterValue => _selectedCategoryFilterValue;
   String get keywordFilterValue => _selectedKeywordFilterValue;
   String get keywordValue => _keywordValue;
@@ -56,7 +64,15 @@ class SearchStudyViewModel with ChangeNotifier {
   }
 
   /// category search api
-  Future<void> categorySearch(String categoryId) async {}
+  Future<void> categorySearch(int categoryId) async {
+    String id = categoryId.toString();
+    _studyCountWithCategory = await _categorySearchService.callCountApi(id);
+    _searchedStudiesWithCategory = await _categorySearchService.callSearchApi(
+      id,
+      getFilter(_selectedCategoryFilterValue),
+      "0", // index
+    );
+  }
 
   /// keyword search api
   Future<void> keywordSearch(String keyword) async {}
