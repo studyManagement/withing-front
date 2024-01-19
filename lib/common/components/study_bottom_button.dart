@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../common/theme/app/app_colors.dart';
+import '../theme/app/app_colors.dart';
 
 class StudyManageButton extends StatelessWidget {
   final Function()? onTap;

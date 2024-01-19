@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:withing/common/components/modal_button.dart';
+import 'package:withing/common/components/study_modal.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/views/study/widgets/study_manage_bottomsheet.dart';
-import 'package:withing/views/study/widgets/study_manage_modal.dart';
 
 class StudyManageScreen extends StatelessWidget {
   const StudyManageScreen({super.key});
@@ -42,7 +44,26 @@ class StudyManageScreen extends StatelessWidget {
             Center(
               child: GestureDetector(
                   onTap: () {
-                    showStudyDeleteDialog(context);
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return  StudyModal(
+                            title: "스터디를 삭제하시겠어요?",
+                            content: "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.",
+                            button1: ModalButton(
+                                onTap: (){
+                                  context.pop();
+                                },
+                                text: "취소",
+                                backgroundcolor: AppColors.blue200),
+                            button2: ModalButton(
+                                onTap: (){
+
+                                },
+                                text: "스터디 삭제",
+                                backgroundcolor: AppColors.red400),
+                          );
+                        });
                   },
                   child: Text('스터디 삭제하기',
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -70,34 +91,52 @@ class StudyManageListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          if(index == 4) showStudyFinishDialog(context);
-          if(index == 2){
-            showModalBottomSheet(
-                isScrollControlled: true,
+          if (index == 4) {
+            showDialog(
                 context: context,
-                builder:(context){
-              return const StudyManageBottomSheet(
-                title: "스터디장 변경",
-                content: "스터디장을 위임받을 멤버를 선택해주세요.",
-                buttontext: "스터디장 위임하기",
-                isMultiple: false,
-              );
-                }
-            );
-          }
-          if(index == 3){
-            showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder:(context){
-                  return const StudyManageBottomSheet(
-                    title: "멤버 강제 퇴장",
-                    content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
-                    buttontext: "강제 퇴장",
-                    isMultiple: true,
+                builder: (context) {
+                  return StudyModal(
+                    title: "스터디를 종료하시겠어요?",
+                    content: "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.",
+                    button1: ModalButton(
+                        onTap:() {
+                          context.pop();
+                        },
+                        text: "취소",
+                        backgroundcolor: AppColors.blue200),
+                    button2: ModalButton(
+                        onTap: (){},
+                        text: "스터디 종료",
+                        backgroundcolor:AppColors.blue600),
                   );
-                }
-            );
+                });
+            if (index == 2) {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    print("!");
+                    return const StudyManageBottomSheet(
+                      title: "스터디장 변경",
+                      content: "스터디장을 위임받을 멤버를 선택해주세요.",
+                      buttontext: "스터디장 위임하기",
+                      isMultiple: false,
+                    );
+                  });
+            }
+            if (index == 3) {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    return const StudyManageBottomSheet(
+                      title: "멤버 강제 퇴장",
+                      content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
+                      buttontext: "강제 퇴장",
+                      isMultiple: true,
+                    );
+                  });
+            }
           }
         },
         child: Padding(
