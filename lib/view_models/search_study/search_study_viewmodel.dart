@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:withing/service/search/category_search_service.dart';
 
 enum SearchType { category, keyword }
 
 class SearchStudyViewModel with ChangeNotifier {
+  final CategorySearchService _categorySearchService;
+  SearchStudyViewModel(this._categorySearchService);
+
   String _selectedCategoryFilterValue = '최신순';
   String _selectedKeywordFilterValue = '최신순';
   String _keywordValue = '';
@@ -56,7 +60,13 @@ class SearchStudyViewModel with ChangeNotifier {
   }
 
   /// category search api
-  Future<void> categorySearch(String categoryId) async {}
+  Future<void> categorySearch(int categoryId) async {
+    await _categorySearchService.callApi(
+      categoryId.toString(),
+      getFilter(_selectedCategoryFilterValue),
+      "0", // index
+    );
+  }
 
   /// keyword search api
   Future<void> keywordSearch(String keyword) async {}
