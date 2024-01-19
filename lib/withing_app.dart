@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:withing/common/root_tab.dart';
 import 'package:withing/common/theme/withing_theme.dart';
+import 'package:withing/views/study/screen/study_manage_screen.dart';
+
+import 'package:withing/views/study/screen/study_member_screen.dart';
+import 'package:withing/views/study/screen/study_screen.dart';
+
 import 'package:withing/views/new_study/new_study_screen.dart';
-import 'package:withing/screens/study/study_screen.dart';
+
 import 'package:withing/views/login/login_screen.dart';
 import 'package:withing/views/search/screen/keyword_search_screen.dart';
 
@@ -36,9 +41,16 @@ class WithingApp extends StatelessWidget {
         path: '/studies/:studyId',
         builder: (context, state) =>
             StudyScreen(studyId: int.parse(state.pathParameters['studyId']!)),
-      ),
-    ],
-  );
+        routes: [
+          GoRoute(
+            path: 'manage',
+            builder: (context, state) => const StudyManageScreen(),
+          ),
+          GoRoute(
+              path: 'member',
+              builder: (context, state) => const StudyMemberScreen())
+        ]),
+  ]);
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
-import '../../common/components/study_details.dart';
-import '../../common/components/study_categories.dart';
-import '../../common/components/study_notices.dart';
+import '../../../common/components/study_details.dart';
+import '../../../common/components/study_categories.dart';
+import '../../../common/components/study_notices.dart';
 
 
 
@@ -45,7 +45,9 @@ class StudyScreen extends StatelessWidget {
                 width: 32,
                 height: 32,
               ),
-              onPressed: () => {print("스터디 메인에서 설정 아이콘 클릭")},
+              onPressed: () => {
+               context.push('/studies/:studyId/manage')
+              },
             ),
           ),
         ],
