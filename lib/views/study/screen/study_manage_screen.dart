@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:withing/common/components/modal_button.dart';
 import 'package:withing/common/components/study_modal.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
@@ -47,21 +46,14 @@ class StudyManageScreen extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return  StudyModal(
+                          return StudyModal(
                             title: "스터디를 삭제하시겠어요?",
                             content: "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.",
-                            button1: ModalButton(
-                                onTap: (){
-                                  context.pop();
-                                },
-                                text: "취소",
-                                backgroundcolor: AppColors.blue200),
-                            button2: ModalButton(
-                                onTap: (){
-
-                                },
-                                text: "스터디 삭제",
-                                backgroundcolor: AppColors.red400),
+                            onCancel: () {
+                              context.pop();
+                            },
+                            onOk: () {},
+                            isCancel: true,
                           );
                         });
                   },
@@ -98,16 +90,11 @@ class StudyManageListItem extends StatelessWidget {
                   return StudyModal(
                     title: "스터디를 종료하시겠어요?",
                     content: "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.",
-                    button1: ModalButton(
-                        onTap:() {
-                          context.pop();
-                        },
-                        text: "취소",
-                        backgroundcolor: AppColors.blue200),
-                    button2: ModalButton(
-                        onTap: (){},
-                        text: "스터디 종료",
-                        backgroundcolor:AppColors.blue600),
+                    isCancel: true,
+                    onOk: () {
+                      context.pop();
+                    },
+                    onCancel: () {},
                   );
                 });
             if (index == 2) {

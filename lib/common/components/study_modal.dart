@@ -1,19 +1,22 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:withing/common/theme/app/app_colors.dart';
+
 import 'modal_button.dart';
 
 class StudyModal extends StatelessWidget {
   final String title;
   final String content;
-  final ModalButton button1;
-  final ModalButton button2;
+  final bool isCancel;
+  final Function() onOk;
+  final Function() onCancel;
 
   const StudyModal(
-      {super.key,
-      required this.title,
+      {required this.title,
       required this.content,
-      required this.button1,
-        required this.button2});
+      required this.isCancel,
+      required this.onOk,
+      required this.onCancel,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +44,11 @@ class StudyModal extends StatelessWidget {
       actions: <Widget>[
         Row(
           children: [
-            button1,
-            const SizedBox(width:5),
-            button2,
+            ModalButton(
+                onTap: onOk, text: '확인', backgroundcolor: AppColors.blue200),
+            const SizedBox(width: 5),
+            ModalButton(
+                onTap: onCancel, text: '취소', backgroundcolor: AppColors.red400),
           ],
         ),
       ],
