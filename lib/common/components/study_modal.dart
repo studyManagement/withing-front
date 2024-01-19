@@ -20,7 +20,20 @@ class StudyModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> buttons = [
+      ModalButton(onTap: onOk, text: '확인', backgroundcolor: AppColors.blue200),
+    ];
+
+    if (isCancel) {
+      buttons.addAll([
+        const SizedBox(width: 5),
+        ModalButton(
+            onTap: onCancel, text: '취소', backgroundcolor: AppColors.red400),
+      ]);
+    }
+
     return AlertDialog(
+      surfaceTintColor: Colors.white,
       titlePadding:
           const EdgeInsets.only(left: 12, right: 12, top: 27, bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -43,13 +56,7 @@ class StudyModal extends StatelessWidget {
           const EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
       actions: <Widget>[
         Row(
-          children: [
-            ModalButton(
-                onTap: onOk, text: '확인', backgroundcolor: AppColors.blue200),
-            const SizedBox(width: 5),
-            ModalButton(
-                onTap: onCancel, text: '취소', backgroundcolor: AppColors.red400),
-          ],
+          children: buttons,
         ),
       ],
     );
