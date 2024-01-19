@@ -10,6 +10,9 @@ import 'package:withing/views/study/screen/study_screen.dart';
 import 'package:withing/views/new_study/new_study_screen.dart';
 
 import 'package:withing/views/login/login_screen.dart';
+import 'package:withing/views/my/my_profile_screen.dart';
+import 'package:withing/views/my/my_study_screen.dart';
+import 'package:withing/views/search/screen/search_result_screen.dart';
 import 'package:withing/views/search/screen/keyword_search_screen.dart';
 
 import '../views/signup/signup_screen.dart';
@@ -29,6 +32,10 @@ class WithingApp extends StatelessWidget {
 
             return SignupScreen(provider, uuid);
           }),
+      GoRoute(
+          path: '/my/profile', builder: (context, state) => MyProfileScreen()),
+      GoRoute(
+          path: '/my/studies', builder: (context, state) => MyStudyScreen()),
       GoRoute(
         path: '/search/result',
         builder: (context, state) => KeywordSearchScreen(),

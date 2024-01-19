@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'signin_service.dart';
+part of 'study_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'signin_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _SigninApi implements SigninApi {
-  _SigninApi(
+class _StudyApi implements StudyApi {
+  _StudyApi(
     this._dio, {
     this.baseUrl,
   });
@@ -19,24 +19,20 @@ class _SigninApi implements SigninApi {
   String? baseUrl;
 
   @override
-  Future<SigninModel> signin(String accessToken) async {
+  Future<List<StudyModel>> fetchMyStudies(String key) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'X-Exclude-Access-Token': 'true',
-      r'Authorization': accessToken,
-    };
-    _headers.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{r'key': key};
+    final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<SigninModel>(Options(
-      method: 'POST',
+        .fetch<List<dynamic>>(_setStreamType<List<StudyModel>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/login/kakao',
+              '/studies/users/20',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -45,7 +41,36 @@ class _SigninApi implements SigninApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SigninModel.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => StudyModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<RegularMeetingModel> fetchRegularMeeting(int id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<RegularMeetingModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/regular_meeting',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = RegularMeetingModel.fromJson(_result.data!);
     return value;
   }
 
