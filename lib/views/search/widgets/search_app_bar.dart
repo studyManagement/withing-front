@@ -19,7 +19,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.transparent,
-      leadingWidth: 58.0,
+      leadingWidth: 60.0,
       titleSpacing: 0,
       title: Padding(
         padding: const EdgeInsets.only(right: 16.0),
@@ -37,7 +37,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               counterText: "",
-              hintText: '장소명, 메뉴명, 카테고리 검색',
+              hintText: '스터디 이름을 검색해보세요.',
               hintStyle: Theme.of(context).textTheme.bodySmall,
               filled: true,
               fillColor: Theme.of(context).canvasColor,
