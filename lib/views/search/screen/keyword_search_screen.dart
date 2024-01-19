@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/search_widget_resources.dart';
-import '../../../di/injection.dart';
-import '../../../data/repository/category_search_repository.dart';
-import '../../../view_models/search/search_viewmodel.dart';
+import '../../../view_models/search_study/search_study_viewmodel.dart';
+import '../widgets/_search_widget_resources.dart';
 
-class SearchResultScreen extends StatelessWidget {
-  SearchResultScreen({super.key});
+class KeywordSearchScreen extends StatelessWidget {
+  KeywordSearchScreen({super.key});
 
   final TextEditingController _controller = TextEditingController();
 
@@ -15,7 +13,7 @@ class SearchResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SearchViewModel(getIt<CategorySearchRepository>()),
+      create: (_) => SearchStudyViewModel(),
       child: Scaffold(
         appBar: SearchAppBar(
           controller: _controller,
@@ -25,7 +23,7 @@ class SearchResultScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 10),
-              StudyListHeader(),
+              StudyListHeader(type: SearchType.keyword),
               StudyList(),
             ],
           ),

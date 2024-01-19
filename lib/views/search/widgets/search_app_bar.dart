@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../view_models/search_study/search_study_viewmodel.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SearchAppBar({
     super.key,
     required TextEditingController controller,
     required FocusNode focusNode,
-  })  : _controller = controller,
-        _focusNode = focusNode;
-
-  final TextEditingController _controller;
-  final FocusNode _focusNode;
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<SearchStudyViewModel>(context);
+
     return AppBar(
       surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.transparent,
@@ -26,11 +26,9 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: SizedBox(
           height: 36.0,
           child: TextField(
-            controller: _controller,
-            focusNode: _focusNode,
             autofocus: true,
             onSubmitted: (String value) {
-              debugPrint('입력값: $value');
+              if (value != '') viewModel.searchKeyword = value;
             },
             cursorHeight: 20,
             maxLength: 20,

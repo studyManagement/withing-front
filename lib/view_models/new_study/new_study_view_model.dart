@@ -118,6 +118,9 @@ class NewStudyViewModel with ChangeNotifier {
   }
 }
 
+///
+/// Utils - new study
+
 String getNewStudyTitle() {
   return '스터디 생성하기';
 }
