@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:withing/common/modal/withing_modal.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/model/signup/signup_exception.dart';
 import 'package:withing/service/signup/signup_service.dart';
@@ -58,14 +59,10 @@ class SignupViewModel extends ChangeNotifier {
     try {
       await _service.signup(_provider, _nickname, _uuid, _introduce);
 
-      if (!isOk) {
-        return;
-      }
-
       if (!context.mounted) return;
       context.go('/home');
     } on ApiException catch (e) {
-      log
+      WithingModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
   }
 }
