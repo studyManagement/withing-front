@@ -16,7 +16,6 @@ class SigninViewModel {
     try {
       await _signinService.signin(accessToken);
 
-      log('dd');
       if (!_context.mounted) return;
       _context.go('/home');
     } on UserNotFoundException catch (e) {
