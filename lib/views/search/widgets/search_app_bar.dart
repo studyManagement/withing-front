@@ -5,8 +5,6 @@ import '../../../view_models/search_study/search_study_viewmodel.dart';
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SearchAppBar({
     super.key,
-    required TextEditingController controller,
-    required FocusNode focusNode,
   });
 
   @override
@@ -29,6 +27,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
             autofocus: true,
             onSubmitted: (String value) {
               if (value != '') viewModel.searchKeyword = value;
+              viewModel.keywordSearch();
             },
             cursorHeight: 20,
             maxLength: 20,
