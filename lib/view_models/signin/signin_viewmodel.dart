@@ -16,9 +16,8 @@ class SigninViewModel {
     try {
       await _signinService.signin(accessToken);
 
-      log('dd');
       if (!_context.mounted) return;
-      _context.go('/signup/kakao/10203123');
+      _context.go('/home');
     } on UserNotFoundException catch (e) {
       _context.go('/signup/$provider/$socialUUID');
     } on ApiException catch (e) {
