@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/layout/default_layout.dart';
-import 'widgets/new_study_widget_resources.dart';
+import 'widgets/_new_study_widget_resources.dart';
 import '../search/widgets/gray50_divider.dart';
 import '../../view_models/new_study/new_study_view_model.dart';
 

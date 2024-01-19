@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../views/home/home_screen.dart';
-import '../views/search/screen/search_screen.dart';
+import '../views/search/screen/category_search_screen.dart';
 import 'layout/default_layout.dart';
 
 class RootTab extends StatefulWidget {
@@ -98,7 +98,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         controller: tabController,
         children: const [
           Center(child: HomeScreen()),
-          Center(child: SearchScreen()),
+          Center(child: CategorySearchScreen()),
           Center(child: Text('일정')),
           Center(child: Text('알림')),
           Center(child: Text('마이페이지')),
