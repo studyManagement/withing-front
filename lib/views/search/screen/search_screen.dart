@@ -20,7 +20,6 @@ class SearchScreen extends StatelessWidget {
                 SearchBox(),
                 CategorySelector(),
                 Gray50Divider(dividerHeight: 6),
-                Gray50Divider(dividerHeight: 6),
                 SizedBox(height: 10),
                 StudyListHeader(),
                 StudyList(),
