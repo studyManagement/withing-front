@@ -46,7 +46,7 @@ class SearchCategorySelector extends StatelessWidget {
             onTap: () {
               viewModel.searchCategory = index;
               debugPrint(categories[index]);
-              viewModel.categorySearch(index);
+              viewModel.categorySearch();
             },
             child: _CategoryItem(
               title: categories[index],
