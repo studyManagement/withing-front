@@ -20,11 +20,9 @@ RegularMeetingModel _$RegularMeetingModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RegularMeetingModel {
-  int get regularMeetingId => throw _privateConstructorUsedError;
+  int get studyId => throw _privateConstructorUsedError;
   int get gap => throw _privateConstructorUsedError;
-  int get day1 => throw _privateConstructorUsedError;
-  int get day2 => throw _privateConstructorUsedError;
-  int get day3 => throw _privateConstructorUsedError;
+  List<int> get days => throw _privateConstructorUsedError;
   String get startTime => throw _privateConstructorUsedError;
   String get endTime => throw _privateConstructorUsedError;
 
@@ -41,13 +39,7 @@ abstract class $RegularMeetingModelCopyWith<$Res> {
       _$RegularMeetingModelCopyWithImpl<$Res, RegularMeetingModel>;
   @useResult
   $Res call(
-      {int regularMeetingId,
-      int gap,
-      int day1,
-      int day2,
-      int day3,
-      String startTime,
-      String endTime});
+      {int studyId, int gap, List<int> days, String startTime, String endTime});
 }
 
 /// @nodoc
@@ -63,35 +55,25 @@ class _$RegularMeetingModelCopyWithImpl<$Res, $Val extends RegularMeetingModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? regularMeetingId = null,
+    Object? studyId = null,
     Object? gap = null,
-    Object? day1 = null,
-    Object? day2 = null,
-    Object? day3 = null,
+    Object? days = null,
     Object? startTime = null,
     Object? endTime = null,
   }) {
     return _then(_value.copyWith(
-      regularMeetingId: null == regularMeetingId
-          ? _value.regularMeetingId
-          : regularMeetingId // ignore: cast_nullable_to_non_nullable
+      studyId: null == studyId
+          ? _value.studyId
+          : studyId // ignore: cast_nullable_to_non_nullable
               as int,
       gap: null == gap
           ? _value.gap
           : gap // ignore: cast_nullable_to_non_nullable
               as int,
-      day1: null == day1
-          ? _value.day1
-          : day1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day2: null == day2
-          ? _value.day2
-          : day2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day3: null == day3
-          ? _value.day3
-          : day3 // ignore: cast_nullable_to_non_nullable
-              as int,
+      days: null == days
+          ? _value.days
+          : days // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -113,13 +95,7 @@ abstract class _$$RegularMeetingModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int regularMeetingId,
-      int gap,
-      int day1,
-      int day2,
-      int day3,
-      String startTime,
-      String endTime});
+      {int studyId, int gap, List<int> days, String startTime, String endTime});
 }
 
 /// @nodoc
@@ -133,35 +109,25 @@ class __$$RegularMeetingModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? regularMeetingId = null,
+    Object? studyId = null,
     Object? gap = null,
-    Object? day1 = null,
-    Object? day2 = null,
-    Object? day3 = null,
+    Object? days = null,
     Object? startTime = null,
     Object? endTime = null,
   }) {
     return _then(_$RegularMeetingModelImpl(
-      regularMeetingId: null == regularMeetingId
-          ? _value.regularMeetingId
-          : regularMeetingId // ignore: cast_nullable_to_non_nullable
+      studyId: null == studyId
+          ? _value.studyId
+          : studyId // ignore: cast_nullable_to_non_nullable
               as int,
       gap: null == gap
           ? _value.gap
           : gap // ignore: cast_nullable_to_non_nullable
               as int,
-      day1: null == day1
-          ? _value.day1
-          : day1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day2: null == day2
-          ? _value.day2
-          : day2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day3: null == day3
-          ? _value.day3
-          : day3 // ignore: cast_nullable_to_non_nullable
-              as int,
+      days: null == days
+          ? _value._days
+          : days // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -178,27 +144,28 @@ class __$$RegularMeetingModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RegularMeetingModelImpl implements _RegularMeetingModel {
   const _$RegularMeetingModelImpl(
-      {required this.regularMeetingId,
+      {required this.studyId,
       required this.gap,
-      required this.day1,
-      required this.day2,
-      required this.day3,
+      required final List<int> days,
       required this.startTime,
-      required this.endTime});
+      required this.endTime})
+      : _days = days;
 
   factory _$RegularMeetingModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RegularMeetingModelImplFromJson(json);
 
   @override
-  final int regularMeetingId;
+  final int studyId;
   @override
   final int gap;
+  final List<int> _days;
   @override
-  final int day1;
-  @override
-  final int day2;
-  @override
-  final int day3;
+  List<int> get days {
+    if (_days is EqualUnmodifiableListView) return _days;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_days);
+  }
+
   @override
   final String startTime;
   @override
@@ -206,7 +173,7 @@ class _$RegularMeetingModelImpl implements _RegularMeetingModel {
 
   @override
   String toString() {
-    return 'RegularMeetingModel(regularMeetingId: $regularMeetingId, gap: $gap, day1: $day1, day2: $day2, day3: $day3, startTime: $startTime, endTime: $endTime)';
+    return 'RegularMeetingModel(studyId: $studyId, gap: $gap, days: $days, startTime: $startTime, endTime: $endTime)';
   }
 
   @override
@@ -214,12 +181,9 @@ class _$RegularMeetingModelImpl implements _RegularMeetingModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegularMeetingModelImpl &&
-            (identical(other.regularMeetingId, regularMeetingId) ||
-                other.regularMeetingId == regularMeetingId) &&
+            (identical(other.studyId, studyId) || other.studyId == studyId) &&
             (identical(other.gap, gap) || other.gap == gap) &&
-            (identical(other.day1, day1) || other.day1 == day1) &&
-            (identical(other.day2, day2) || other.day2 == day2) &&
-            (identical(other.day3, day3) || other.day3 == day3) &&
+            const DeepCollectionEquality().equals(other._days, _days) &&
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime));
@@ -227,8 +191,8 @@ class _$RegularMeetingModelImpl implements _RegularMeetingModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, regularMeetingId, gap, day1, day2, day3, startTime, endTime);
+  int get hashCode => Object.hash(runtimeType, studyId, gap,
+      const DeepCollectionEquality().hash(_days), startTime, endTime);
 
   @JsonKey(ignore: true)
   @override
@@ -247,11 +211,9 @@ class _$RegularMeetingModelImpl implements _RegularMeetingModel {
 
 abstract class _RegularMeetingModel implements RegularMeetingModel {
   const factory _RegularMeetingModel(
-      {required final int regularMeetingId,
+      {required final int studyId,
       required final int gap,
-      required final int day1,
-      required final int day2,
-      required final int day3,
+      required final List<int> days,
       required final String startTime,
       required final String endTime}) = _$RegularMeetingModelImpl;
 
@@ -259,15 +221,11 @@ abstract class _RegularMeetingModel implements RegularMeetingModel {
       _$RegularMeetingModelImpl.fromJson;
 
   @override
-  int get regularMeetingId;
+  int get studyId;
   @override
   int get gap;
   @override
-  int get day1;
-  @override
-  int get day2;
-  @override
-  int get day3;
+  List<int> get days;
   @override
   String get startTime;
   @override

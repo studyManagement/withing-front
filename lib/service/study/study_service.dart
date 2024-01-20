@@ -13,7 +13,7 @@ part 'study_service.g.dart';
 abstract class StudyApi {
   factory StudyApi(Dio dio, {String baseUrl}) = _StudyApi;
 
-  @GET("/studies/users/20")
+  @GET("/studies/users")
   Future<List<StudyModel>> fetchMyStudies(@Query("key") String key);
 
   @GET('/studies/{id}/regular_meeting')
