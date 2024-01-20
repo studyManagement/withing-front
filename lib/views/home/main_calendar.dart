@@ -108,11 +108,18 @@ class MainCalendar extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 10),
-                    Text(dateTime.day.toString(),
-                        style: TextStyle(
-                            color: (isSelected)
-                                ? Colors.white
-                                : AppColors.gray800)),
+                    Text(
+                      dateTime.day.toString(),
+                      style: TextStyle(
+                        color: (isSelected)
+                            ? Colors.white
+                            : (dateTime.weekday == 7)
+                                ? AppColors.red400
+                                : ((dateTime.weekday == 6)
+                                    ? AppColors.blue400
+                                    : AppColors.gray800),
+                      ),
+                    ),
                   ],
                 ));
           },
