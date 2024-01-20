@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/components/study_categories_widget.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/study/study_viewmodel.dart';
 
@@ -29,6 +30,18 @@ class Header extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 14),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                vm.study.studyName,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 8),
+              StudyCategoriesWidget(categories: vm.categories),
+            ],
+          ),
         ],
       ),
     );
