@@ -8,15 +8,8 @@ import '../../common/layout/default_layout.dart';
 import './main_calendar.dart';
 import 'home_my_study.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int index = 0;
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
   DateTime selectedDate = DateTime.utc(
     DateTime.now().year,
@@ -25,16 +18,16 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.read<StudyViewModel>();
 
-    vm.fetchStudies(StudyType.MY);
-    vm.setSelectedDate(selectedDate);
+    void onDaySelected(DateTime selectedDate, DateTime focusedDate) {
+      StudyViewModel vm = context.read<StudyViewModel>();
+      vm.fetchStudies(StudyType.MY);
+      vm.setSelectedDate(selectedDate);
+    }
+
+    onDaySelected(selectedDate, selectedDate);
 
     return DefaultLayout(
       title: '이번주 일정',
@@ -57,14 +50,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  void onDaySelected(DateTime selectedDate, DateTime focusedDate) {
-    setState(() {
-      this.selectedDate = selectedDate;
-      StudyViewModel vm = context.read<StudyViewModel>();
-      vm.fetchStudies(StudyType.MY);
-      vm.setSelectedDate(selectedDate);
-    });
   }
 }

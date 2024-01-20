@@ -161,6 +161,12 @@ class StudyViewModel extends ChangeNotifier {
         .map((e) => matchStudyAndMeetings(e)));
 
     _studyViews = studyViews;
+    this.studyViews = studyViews;
+    studyViewsInSelectedDay = _studyViews
+        .where((element) => element.hasSelectedDay(selectedDate))
+        .toList();
+
+    notifyListeners();
   }
 
   Future<StudyView> matchStudyAndMeetings(StudyView studyView) {
@@ -182,11 +188,5 @@ class StudyViewModel extends ChangeNotifier {
   void setSelectedDate(DateTime dateTime) {
     selectedDate = dateTime;
     weekString = _weekString[dateTime.weekday - 1];
-    studyViews = _studyViews;
-    studyViewsInSelectedDay = _studyViews
-        .where((element) => element.hasSelectedDay(dateTime))
-        .toList();
-
-    notifyListeners();
   }
 }

@@ -59,31 +59,13 @@ class MainCalendar extends StatelessWidget {
                 ));
           },
           defaultBuilder: (context, dateTime, event) {
-            return Container(
-                height: 120,
-                width: 200,
-                decoration: const BoxDecoration(color: Colors.transparent),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    Text(
-                      dateTime.day.toString(),
-                      style: TextStyle(
-                        color: (dateTime.weekday == 7)
-                            ? AppColors.red400
-                            : ((dateTime.weekday == 6)
-                                ? AppColors.blue400
-                                : AppColors.gray800),
-                      ),
-                    ),
-                  ],
-                ));
-          },
-          selectedBuilder: (context, dateTime, event) {
+            bool isSelected = dateTime.weekday == selectedStudyDate.weekday &&
+                dateTime.month == selectedStudyDate.month &&
+                dateTime.day == selectedStudyDate.day;
             return Container(
                 height: 120,
                 width: 44,
-                decoration: (dateTime.weekday == selectedStudyDate.weekday)
+                decoration: (isSelected)
                     ? const BoxDecoration(
                         color: AppColors.blue600,
                         borderRadius: BorderRadius.only(
@@ -95,8 +77,41 @@ class MainCalendar extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       dateTime.day.toString(),
-                      style: const TextStyle(color: AppColors.white),
+                      style: TextStyle(
+                        color: (isSelected)
+                            ? Colors.white
+                            : (dateTime.weekday == 7)
+                                ? AppColors.red400
+                                : ((dateTime.weekday == 6)
+                                    ? AppColors.blue400
+                                    : AppColors.gray800),
+                      ),
                     ),
+                  ],
+                ));
+          },
+          selectedBuilder: (context, dateTime, event) {
+            bool isSelected = dateTime.weekday == selectedStudyDate.weekday &&
+                dateTime.month == selectedStudyDate.month &&
+                dateTime.day == selectedStudyDate.day;
+            return Container(
+                height: 120,
+                width: 44,
+                decoration: (isSelected)
+                    ? const BoxDecoration(
+                        color: AppColors.blue600,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8)))
+                    : const BoxDecoration(color: Colors.transparent),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(dateTime.day.toString(),
+                        style: TextStyle(
+                            color: (isSelected)
+                                ? Colors.white
+                                : AppColors.gray800)),
                   ],
                 ));
           },
@@ -104,6 +119,9 @@ class MainCalendar extends StatelessWidget {
             bool hasStudy = studies
                 .where((element) => element.hasSelectedDay(dateTime))
                 .isNotEmpty;
+            bool isSelected = dateTime.weekday == selectedStudyDate.weekday &&
+                dateTime.month == selectedStudyDate.month &&
+                dateTime.day == selectedStudyDate.day;
             return Column(
               children: [
                 const SizedBox(height: 36),
@@ -112,9 +130,7 @@ class MainCalendar extends StatelessWidget {
                   height: 6,
                   decoration: BoxDecoration(
                     color: (hasStudy)
-                        ? ((selectedStudyDate.weekday == dateTime.weekday)
-                            ? AppColors.white
-                            : AppColors.blue600)
+                        ? ((isSelected) ? AppColors.white : AppColors.blue600)
                         : Colors.transparent,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(16),
@@ -124,15 +140,16 @@ class MainCalendar extends StatelessWidget {
             );
           },
           dowBuilder: (context, dateTime) {
+            bool isSelected = dateTime.weekday == selectedStudyDate.weekday &&
+                dateTime.month == selectedStudyDate.month &&
+                dateTime.day == selectedStudyDate.day;
             return Row(
               children: [
                 const Expanded(child: SizedBox()),
                 Container(
                   constraints: const BoxConstraints(maxWidth: 50),
                   width: 44,
-                  decoration: (dateTime.weekday == selectedStudyDate.weekday &&
-                          dateTime.month == selectedStudyDate.month &&
-                          dateTime.day == selectedStudyDate.day)
+                  decoration: (isSelected)
                       ? const BoxDecoration(
                           color: AppColors.blue600,
                           borderRadius: BorderRadius.only(
