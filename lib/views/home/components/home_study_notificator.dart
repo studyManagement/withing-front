@@ -14,7 +14,7 @@ class HomeStudyNotificator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<StudyView> studies = context.select<StudyViewModel, List<StudyView>>(
-        (provider) => provider.studyViews);
+        (provider) => provider.studyViewsInSelectedDay);
 
     const pageCount = 3;
 
