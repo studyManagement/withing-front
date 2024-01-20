@@ -34,11 +34,18 @@ class HomeScreen extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            MainCalendar(
-              onDaySelected: onDaySelected,
-              selectedDate: selectedDate,
+            SizedBox(
+              height: 280,
+              child: Column(
+                children: [
+                  MainCalendar(
+                    onDaySelected: onDaySelected,
+                    selectedDate: selectedDate,
+                  ),
+                  HomeStudyNotificationPageView(),
+                ],
+              ),
             ),
-            HomeStudyNotificator(),
             const SizedBox(height: 20),
             Divider(
               thickness: 5,
