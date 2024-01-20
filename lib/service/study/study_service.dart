@@ -17,7 +17,7 @@ part 'study_service.g.dart';
 abstract class StudyApi {
   factory StudyApi(Dio dio, {String baseUrl}) = _StudyApi;
 
-  @GET("/studies/users/20")
+  @GET("/studies/users")
   Future<List<StudyModel>> fetchMyStudies(@Query("key") String key);
 
   @GET('/studies/{id}/regular_meeting')
@@ -42,8 +42,7 @@ class StudyService {
     try {
       final List<StudyModel> myStudies =
           await _studyApi.fetchMyStudies(studyType.key);
-      log('[DEBUG] ${myStudies.toString()}');
-      return List.empty();
+      return myStudies;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -79,6 +78,7 @@ class StudyService {
     return categoryData;
   }
 
+
   Future<List<NoticeModel>> fetchNotices(int studyId) async {
     try {
       final List<NoticeModel> notices = await _studyApi.fetchNotices(studyId);
@@ -94,4 +94,5 @@ class StudyService {
       rethrow;
     }
   }
+
 }
