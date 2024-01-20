@@ -6,8 +6,8 @@ import 'package:withing/service/study/study_service.dart';
 import 'package:withing/view_models/study/study_viewmodel.dart';
 import 'package:withing/views/study/widgets/study_main_appbar.dart';
 import 'package:withing/views/study/widgets/study_main_buttons.dart';
-import '../../common/components/study_details.dart';
-import '../../common/components/study_notices.dart';
+import 'widgets/study_details.dart';
+import 'widgets/study_notices.dart';
 import '../../di/injection.dart';
 import 'widgets/study_header.dart';
 
@@ -21,7 +21,7 @@ class StudyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool hasNotice = true; // 공지글 존재 여부 (임시)
+
     int userId = 1;
     return ChangeNotifierProvider(
         create: (_) =>
@@ -29,6 +29,7 @@ class StudyScreen extends StatelessWidget {
         child: Consumer<StudyViewModel>(
             builder: (context, data, child) {
              data.fetchStudyInfo(studyId);
+             data.fetchNotices(studyId);
               if (data.study == null) return Container();
           return Scaffold(
             appBar: StudyMainAppBar(context, data.study.leaderId == userId),
@@ -84,7 +85,7 @@ class StudyScreen extends StatelessWidget {
                   color: AppColors.gray100,
                 ),
                 const SizedBox(height: 10),
-                Notice(hasNotice: hasNotice),
+                const Notice(),
               ],
             ),
           );
