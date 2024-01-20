@@ -3,41 +3,50 @@ import 'package:flutter/material.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class StudyMainButtons extends StatelessWidget {
-  final String Path;
+  final Function()? onTap;
+  final Widget? image;
   final String title;
+  final String subtitle;
 
   const StudyMainButtons({
     super.key,
-    required this.Path,
+    required this.onTap,
+    this.image,
     required this.title,
+    required this.subtitle
   });
 
   @override
   Widget build(BuildContext context) {
-    return  Flexible(
+    return  Expanded(
       child: GestureDetector(
-        onTap: () {
-
-        },
+        onTap: onTap,
         child: Stack(
           children: <Widget>[
-            Container(
-              height: 100,
-              decoration: ShapeDecoration(
-                color: AppColors.gray50,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-              ),
-            ),
+            ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: image),
             Positioned(
                 left: 14,
                 top: 14,
-                child: Text(
-                  title,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleMedium,))
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .titleMedium,),
+                    Text(
+                      subtitle,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .labelMedium?.copyWith(color:AppColors.gray400)),
+
+                  ],
+                ))
           ],
         ),
       ),

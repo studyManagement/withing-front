@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../common/theme/app/app_colors.dart';
 import 'package:go_router/go_router.dart';
 
-AppBar StudyMainAppBar(BuildContext context) {
-  bool isLeader = true;
+AppBar StudyMainAppBar(BuildContext context, bool isLeader) {
   return AppBar(
     backgroundColor: AppColors.white,
     leading: IconButton(
@@ -30,7 +29,9 @@ AppBar StudyMainAppBar(BuildContext context) {
             width: 32,
             height: 32,
           ),
-          onPressed: () => {print("스터디 메인에서 설정 아이콘 클릭")},
+          onPressed: () => {
+            context.push('/studies/:studyId/manage')
+          },
         ),
       ),
     ],

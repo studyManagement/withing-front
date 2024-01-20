@@ -12,31 +12,27 @@ class _StudyApi implements StudyApi {
   _StudyApi(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'http://3.34.129.8:8080';
-  }
+  });
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<StudyInfo> getStudyInfo(int studyId) async {
+  Future<List<StudyModel>> fetchMyStudies(String key) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
-    _headers.removeWhere((k, v) => v == null);
+    final queryParameters = <String, dynamic>{r'key': key};
+    final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyInfo>(Options(
+        .fetch<List<dynamic>>(_setStreamType<List<StudyModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
-      contentType: 'application/json',
     )
             .compose(
               _dio.options,
-              '/studies/${studyId}',
+              '/studies/users/20',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -45,12 +41,68 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyInfo.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => StudyModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
   @override
-  Future<StudyCategory> getStudyCategory(int studyId) async {
+  Future<RegularMeetingModel> fetchRegularMeeting(int id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<RegularMeetingModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/regular_meeting',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = RegularMeetingModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<StudyModel> fetchStudyInfo(int id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = StudyModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<StudyCategory> fetchStudyCategory(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -63,7 +115,7 @@ class _StudyApi implements StudyApi {
     )
             .compose(
               _dio.options,
-              '/studies/${studyId}/category',
+              '/studies/${id}/categories',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -73,33 +125,6 @@ class _StudyApi implements StudyApi {
               baseUrl,
             ))));
     final value = StudyCategory.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StudyRegularMeeting> getStudyRegularMeeting(int studyId) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<StudyRegularMeeting>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${studyId}/regular_meeting',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = StudyRegularMeeting.fromJson(_result.data!);
     return value;
   }
 

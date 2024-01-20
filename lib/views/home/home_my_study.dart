@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:withing/common/dio.dart';
+import 'package:withing/view_models/study/study_viewmodel.dart';
 
 class HomeMyStudy extends StatefulWidget {
   const HomeMyStudy({super.key});
@@ -14,8 +16,7 @@ class _HomeMyStudyState extends State<HomeMyStudy> {
 
   @override
   Widget build(BuildContext context) {
-    // 스터디 유무
-    bool hasStudy = true;
+    final StudyViewModel vm = context.read<StudyViewModel>();
 
     return Expanded(
       child: Column(
@@ -58,17 +59,21 @@ class _HomeMyStudyState extends State<HomeMyStudy> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                hasStudy
+                vm.myStudies.isNotEmpty
                     ? const MyStudyList()
                     : Column(
                         children: [
                           const SizedBox(height: 70),
-                          Image.asset('asset/exclamation.png', width: 40, height: 40),
+                          Image.asset('asset/exclamation.png',
+                              width: 40, height: 40),
                           const SizedBox(height: 10),
                           const Center(
                             child: Text(
                               '진행 중인 스터디가 없어요.',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey),
                             ),
                           ),
                         ],

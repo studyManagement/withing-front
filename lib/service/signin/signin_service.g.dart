@@ -36,7 +36,7 @@ class _SigninApi implements SigninApi {
     )
             .compose(
               _dio.options,
-              '/users/login/kakao',
+              '/login/kakao',
               queryParameters: queryParameters,
               data: _data,
             )

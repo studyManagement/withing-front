@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/model/study/study_info_model.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/study/study_viewmodel.dart';
@@ -11,11 +10,7 @@ class Header extends StatelessWidget { // 이미지, 스터디 이름, 스터디
 
   @override
   Widget build(BuildContext context) {
-    StudyInfoViewModel vm = Provider.of<StudyInfoViewModel>(context);
-
-
-    List<String> categories =[];
-
+    final StudyViewModel vm = context.read<StudyViewModel>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -37,12 +32,11 @@ class Header extends StatelessWidget { // 이미지, 스터디 이름, 스터디
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-               //  vm.studyInfo!.studyName,
-                  '네이버 면접 스터디',
+                 vm.study.studyName,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
-                StudyCategoriesWidget(categories: categories),
+                StudyCategoriesWidget(categories: vm.categories),
               ],
             ),
           ],

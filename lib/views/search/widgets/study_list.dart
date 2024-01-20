@@ -34,7 +34,7 @@ class StudyCard extends StatelessWidget {
         context.push('/studies/1');
       },
       child: const Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
             StudyHeader(),
@@ -95,7 +95,7 @@ class StudyDetails extends StatelessWidget {
   static const details = [
     ("참여 인원", "15/15"),
     ("정기 모임", "매주 목요일 21:00"),
-    ("다음 만남", "2023. 08. 03 (목) 21:00"),
+    // ("다음 만남", "2023. 08. 03 (목) 21:00"),
   ];
 
   const StudyDetails({

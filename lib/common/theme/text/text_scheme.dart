@@ -7,7 +7,7 @@ TextTheme withingTextTheme(
   WithingDefaultTexts withingTexts,
 ) {
   return TextTheme(
-    /// Title <- Headline
+    /// Headline
     headlineLarge: TextStyle(
       color: withingColors.headlineTextColor,
       fontSize: withingTexts.headlineLargeSize,
@@ -21,7 +21,7 @@ TextTheme withingTextTheme(
       height: withingTexts.lineHeightOnePointFour,
     ),
 
-    /// SubTitle <- Title
+    /// Title
     titleLarge: TextStyle(
       color: withingColors.titleTextColor,
       fontSize: withingTexts.titleLargeSize,
@@ -61,7 +61,7 @@ TextTheme withingTextTheme(
       height: withingTexts.lineHeightOnePointFour,
     ),
 
-    /// Caption <- Label
+    /// Label
     labelLarge: TextStyle(
       color: withingColors.captionTextColor,
       fontSize: withingTexts.captionLargeSize,
