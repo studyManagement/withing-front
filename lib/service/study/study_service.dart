@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:withing/common/components/study_categories_widget.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/common/requester/network_exception.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
 import 'package:withing/model/study/regular_meeting_model.dart';
+import 'package:withing/model/study/study_category_model.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
 
@@ -18,10 +20,17 @@ abstract class StudyApi {
 
   @GET('/studies/{id}/regular_meeting')
   Future<RegularMeetingModel> fetchRegularMeeting(@Path('id') int id);
+
+  @GET('/studies/{id}')
+  Future<StudyModel> fetchStudyInfo(@Path('id') int id);
+
+  @GET('/studies/{id}/categories')
+  Future<StudyCategory> fetchStudyCategory(@Path('id') int id);
 }
 
 class StudyService {
   final StudyApi _studyApi;
+
   StudyService(this._studyApi);
 
   Future<List<StudyModel>> fetchMyStudies(StudyType studyType) async {
@@ -45,4 +54,23 @@ class StudyService {
       rethrow;
     }
   }
+
+  Future<StudyModel> fetchStudyInfo(int studyId) async {
+    try {
+      final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
+      return study;
+    } on NetworkException catch(e){
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<StudyCategory> fetchStudyCategory(int studyId) async {
+    final StudyCategory categoryData = await _studyApi.fetchStudyCategory(studyId);
+
+    log('[DEBUG] ${categoryData.toString()}');
+    return categoryData;
+  }
+
+
 }

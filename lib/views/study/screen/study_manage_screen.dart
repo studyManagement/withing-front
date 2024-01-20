@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:withing/common/components/study_modal.dart';
 import 'package:withing/common/layout/default_layout.dart';
+import 'package:withing/common/modal/withing_modal.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/views/study/widgets/study_manage_bottomsheet.dart';
 
@@ -43,22 +42,16 @@ class StudyManageScreen extends StatelessWidget {
             Center(
               child: GestureDetector(
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return StudyModal(
-                            title: "스터디를 삭제하시겠어요?",
-                            content: "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.",
-                            onCancel: () {
-                              context.pop();
-                            },
-                            onOk: () {},
-                            isCancel: true,
-                          );
-                        });
+                    WithingModal.openDialog(context, "스터디를 삭제하시겠어요?",
+                        "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.",
+                        true, null, null);
                   },
                   child: Text('스터디 삭제하기',
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .labelMedium!
+                          .copyWith(
                           color: AppColors.gray300,
                           decoration: TextDecoration.underline,
                           decorationColor: AppColors.gray300))),
@@ -73,57 +66,46 @@ class StudyManageListItem extends StatelessWidget {
   final String iconUrl;
   final int index;
 
-  const StudyManageListItem(
-      {super.key,
-      required this.title,
-      required this.iconUrl,
-      required this.index});
+  const StudyManageListItem({super.key,
+    required this.title,
+    required this.iconUrl,
+    required this.index});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           if (index == 4) {
-            showDialog(
+            WithingModal.openDialog(context, "스터디를 종료하시겠어요?",
+                "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.",
+                true, null, null);
+          }
+          else if (index == 2) {
+            showModalBottomSheet(
+                isScrollControlled: true,
                 context: context,
                 builder: (context) {
-                  return StudyModal(
-                    title: "스터디를 종료하시겠어요?",
-                    content: "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.",
-                    isCancel: true,
-                    onOk: () {
-                      context.pop();
-                    },
-                    onCancel: () {},
+                  print("!");
+                  return const StudyManageBottomSheet(
+                    title: "스터디장 변경",
+                    content: "스터디장을 위임받을 멤버를 선택해주세요.",
+                    buttontext: "스터디장 위임하기",
+                    isMultiple: false,
                   );
                 });
-            if (index == 2) {
-              showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) {
-                    print("!");
-                    return const StudyManageBottomSheet(
-                      title: "스터디장 변경",
-                      content: "스터디장을 위임받을 멤버를 선택해주세요.",
-                      buttontext: "스터디장 위임하기",
-                      isMultiple: false,
-                    );
-                  });
-            }
-            if (index == 3) {
-              showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) {
-                    return const StudyManageBottomSheet(
-                      title: "멤버 강제 퇴장",
-                      content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
-                      buttontext: "강제 퇴장",
-                      isMultiple: true,
-                    );
-                  });
-            }
+          }
+          else if (index == 3) {
+            showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return const StudyManageBottomSheet(
+                    title: "멤버 강제 퇴장",
+                    content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
+                    buttontext: "강제 퇴장",
+                    isMultiple: true,
+                  );
+                });
           }
         },
         child: Padding(
@@ -132,7 +114,10 @@ class StudyManageListItem extends StatelessWidget {
             children: [
               Image.asset(iconUrl, width: 38, height: 38),
               const Padding(padding: EdgeInsets.only(right: 6)),
-              Text(title, style: Theme.of(context).textTheme.bodyMedium)
+              Text(title, style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyMedium)
             ],
           ),
         ));

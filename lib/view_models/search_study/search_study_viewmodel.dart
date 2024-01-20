@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
+import '../../model/search/searched_study_list_model.dart';
+import '../../service/search/category_search_service.dart';
+import '../../service/search/keyword_search_service.dart';
 
 enum SearchType { category, keyword }
 
 class SearchStudyViewModel with ChangeNotifier {
+  final CategorySearchService _categorySearchService;
+  final KeywordSearchService _keywordSearchService;
+
+  SearchStudyViewModel(this._categorySearchService, this._keywordSearchService);
+
   String _selectedCategoryFilterValue = '최신순';
   String _selectedKeywordFilterValue = '최신순';
   String _keywordValue = '';
   int _selectedCategoryValue = 0;
   int _studyCountWithCategory = 0;
   int _studyCountWithKeyword = 0;
+  List<StudyInfo>? _searchedStudiesWithCategory;
+  List<StudyInfo>? _searchedStudiesWithKeyword;
 
   String get categoryFilterValue => _selectedCategoryFilterValue;
   String get keywordFilterValue => _selectedKeywordFilterValue;
@@ -16,6 +26,8 @@ class SearchStudyViewModel with ChangeNotifier {
   int get selectedCategoryValue => _selectedCategoryValue;
   int get studyCountWithCategory => _studyCountWithCategory;
   int get studyCountWithKeyword => _studyCountWithKeyword;
+  List<StudyInfo>? get studyWithCategory => _searchedStudiesWithCategory;
+  List<StudyInfo>? get studyWithKeyword => _searchedStudiesWithKeyword;
 
   /// update search filter
   void updateSearchFilterValue(SearchType type, String value) {
@@ -56,10 +68,32 @@ class SearchStudyViewModel with ChangeNotifier {
   }
 
   /// category search api
-  Future<void> categorySearch(String categoryId) async {}
+  Future<void> categorySearch() async {
+    String id = _selectedCategoryValue.toString();
+    _studyCountWithCategory = await _categorySearchService.callCountApi(id);
+    notifyListeners();
+
+    _searchedStudiesWithCategory = await _categorySearchService.callSearchApi(
+      id,
+      getFilter(_selectedCategoryFilterValue),
+      "0", // index
+    );
+    notifyListeners();
+  }
 
   /// keyword search api
-  Future<void> keywordSearch(String keyword) async {}
+  Future<void> keywordSearch() async {
+    _studyCountWithKeyword =
+        await _keywordSearchService.callCountApi(_keywordValue);
+    notifyListeners();
+
+    _searchedStudiesWithKeyword = await _keywordSearchService.callSearchApi(
+      _keywordValue,
+      getFilter(_selectedCategoryFilterValue),
+      "0", // index
+    );
+    notifyListeners();
+  }
 }
 
 ///

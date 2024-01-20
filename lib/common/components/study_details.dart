@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:withing/common/router.dart';
 import 'package:withing/views/study/screen/study_member_screen.dart';
+import '../../view_models/study/study_viewmodel.dart';
 import '../theme/app/app_colors.dart';
 
 class StudyDetails extends StatelessWidget{
@@ -9,6 +11,7 @@ class StudyDetails extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final StudyViewModel vm = context.read<StudyViewModel>();
     return Column(
       children: [
         Row(
@@ -22,7 +25,7 @@ class StudyDetails extends StatelessWidget{
             ),
             const SizedBox(width: 8),
             Text(
-              '30/30',
+              '${vm.study.headcount}/${vm.study.max}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.gray800,
                 fontSize: 13.0,
@@ -53,7 +56,7 @@ class StudyDetails extends StatelessWidget{
             ),
             const SizedBox(width: 8),
             Text(
-              '매주 목요일 21:00',
+              '매주 목요일 21:00', // 추가 수정 필요
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.gray800,
                 fontSize: 13.0,
@@ -61,26 +64,7 @@ class StudyDetails extends StatelessWidget{
             )
           ],
         ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Text(
-              '다음 만남',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray400,
-                fontSize: 13.0,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              '2023. 08. 03 (목) 21:00',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray800,
-                fontSize: 13.0,
-              ),
-            )
-          ],
-        ),
+
       ],
     );
 

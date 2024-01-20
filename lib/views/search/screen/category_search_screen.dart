@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../di/injection.dart';
+import '../../../service/search/category_search_service.dart';
+import '../../../service/search/keyword_search_service.dart';
 import '../../../view_models/search_study/search_study_viewmodel.dart';
 import '../widgets/_search_widget_resources.dart';
 
@@ -9,7 +12,10 @@ class CategorySearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SearchStudyViewModel(),
+      create: (_) => SearchStudyViewModel(
+        getIt<CategorySearchService>(),
+        getIt<KeywordSearchService>(),
+      ),
       child: Scaffold(
         body: SafeArea(
           child: Column(

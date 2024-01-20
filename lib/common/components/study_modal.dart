@@ -21,14 +21,14 @@ class StudyModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> buttons = [
-      ModalButton(onTap: onOk, text: '확인', backgroundcolor: AppColors.blue200),
+      ModalButton(onTap: onCancel, text: '취소', backgroundcolor: AppColors.blue200),
     ];
 
     if (isCancel) {
       buttons.addAll([
         const SizedBox(width: 5),
         ModalButton(
-            onTap: onCancel, text: '취소', backgroundcolor: AppColors.red400),
+            onTap: onOk, text: '확인', backgroundcolor: AppColors.red400),
       ]);
     }
 

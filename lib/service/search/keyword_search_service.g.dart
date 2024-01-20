@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category_search_data_source.dart';
+part of 'keyword_search_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,26 +8,32 @@ part of 'category_search_data_source.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _CategorySearchApi implements CategorySearchApi {
-  _CategorySearchApi(
+class _KeywordSearchApi implements KeywordSearchApi {
+  _KeywordSearchApi(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://3.34.129.8:8080';
-  }
+  });
 
   final Dio _dio;
 
   String? baseUrl;
 
   @override
-  Future<CategorySearchModel> search(String categoryId) async {
+  Future<List<StudyInfo>> search(
+    String keyword,
+    String sort,
+    String index,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'category': categoryId};
+    final queryParameters = <String, dynamic>{
+      r'keyword': keyword,
+      r'sort': sort,
+      r'index': index,
+    };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CategorySearchModel>(Options(
+    final _result =
+        await _dio.fetch<List<dynamic>>(_setStreamType<List<StudyInfo>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -43,7 +49,35 @@ class _CategorySearchApi implements CategorySearchApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CategorySearchModel.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => StudyInfo.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<int> count(String keyword) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'keyword': keyword};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/studies/count',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
     return value;
   }
 

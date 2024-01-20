@@ -82,7 +82,6 @@ class _Bottom extends StatelessWidget {
               Authenticator auth = KakaoAuthentication();
               String token = await auth.login();
               int socialUUID = await auth.fetchUUID();
-
               await vm.signin(auth.getProvider(), socialUUID.toString(), token);
             }),
         const Padding(padding: EdgeInsets.only(bottom: 60)),

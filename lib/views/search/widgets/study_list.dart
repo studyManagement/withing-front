@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/common/theme/app/app_fonts.dart';
 import 'package:withing/views/search/widgets/gray100_divider.dart';
-import '../../../common/components/study_categories.dart';
+import '../../../common/components/study_categories_widget.dart';
 
 class StudyList extends StatelessWidget {
   const StudyList({super.key});
@@ -41,7 +41,7 @@ class StudyCard extends StatelessWidget {
             SizedBox(height: 10),
             StudyDetails(),
             SizedBox(height: 12),
-            StudyCategories(
+            StudyCategoriesWidget(
               categories: [
                 "카테고리1",
                 "카테고리2",

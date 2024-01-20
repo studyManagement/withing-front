@@ -2,16 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 
-class StudyCategories extends StatelessWidget {
+
+class StudyCategoriesWidget extends StatelessWidget {
   final List<String> categories;
 
-  const StudyCategories({
+  const StudyCategoriesWidget({
     super.key,
     required this.categories,
   });
 
   @override
   Widget build(BuildContext context) {
+
     List<Widget> widgets = [];
 
     for (var category in categories) {
