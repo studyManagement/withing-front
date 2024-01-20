@@ -25,6 +25,7 @@ class MainCalendar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
       child: TableCalendar(
+        availableGestures: AvailableGestures.none,
         locale: 'ko_kr',
         headerVisible: false,
         onDaySelected: onDaySelected,
