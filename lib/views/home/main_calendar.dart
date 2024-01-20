@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -103,7 +101,6 @@ class MainCalendar extends StatelessWidget {
                 ));
           },
           markerBuilder: (context, dateTime, event) {
-            log('[DEBUG MSG] ${(studies.toString())}');
             bool hasStudy = studies
                 .where((element) => element.hasSelectedDay(dateTime))
                 .isNotEmpty;
