@@ -15,7 +15,6 @@ class SigninViewModel {
   signin(String provider, String socialUUID, String accessToken) async {
     try {
       await _signinService.signin(accessToken);
-
       if (!_context.mounted) return;
       _context.go('/home');
     } on UserNotFoundException catch (e) {
