@@ -29,7 +29,7 @@ class StudyScreen extends StatelessWidget {
         child: Consumer<StudyViewModel>(
             builder: (context, data, child) {
              data.fetchStudyInfo(studyId);
-             data.fetchNotices(studyId);
+         //    data.fetchNotices(studyId);
               if (data.study == null) return Container();
           return Scaffold(
             appBar: StudyMainAppBar(context, data.study.leaderId == userId),
@@ -85,7 +85,7 @@ class StudyScreen extends StatelessWidget {
                   color: AppColors.gray100,
                 ),
                 const SizedBox(height: 10),
-                const Notice(),
+                Notice(hasNotice: data.hasNotice),
               ],
             ),
           );

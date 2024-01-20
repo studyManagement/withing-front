@@ -7,9 +7,7 @@ import 'package:withing/views/login/login_screen.dart';
 import 'package:withing/views/my/my_profile_screen.dart';
 import 'package:withing/views/my/my_study_screen.dart';
 import 'package:withing/views/search/screen/keyword_search_screen.dart';
-import 'package:withing/views/study/screen/study_manage_screen.dart';
-import 'package:withing/views/study/screen/study_member_screen.dart';
-import 'package:withing/views/study/study_screen.dart';
+import 'package:withing/views/study/study_screen_resources.dart';
 import '../views/signup/signup_screen.dart';
 
 class WithingApp extends StatelessWidget {
@@ -42,9 +40,16 @@ class WithingApp extends StatelessWidget {
             StudyScreen(studyId: int.parse(state.pathParameters['studyId']!)),
         routes: [
           GoRoute(
-            path: 'manage',
-            builder: (context, state) => const StudyManageScreen(),
-          ),
+              path: 'manage',
+              builder: (context, state) => const StudyManageScreen(),
+              routes: [
+                GoRoute(
+                    path: 'update',
+                    builder: (context, state) => const StudyEditScreen()),
+                GoRoute(
+                    path: 'regular_meeting',
+                    builder: (context, state) => SetRegularMeetingScreen()),
+              ]),
           GoRoute(
               path: 'member',
               builder: (context, state) => const StudyMemberScreen())
