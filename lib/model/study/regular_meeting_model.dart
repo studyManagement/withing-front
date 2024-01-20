@@ -6,13 +6,11 @@ part 'regular_meeting_model.g.dart';
 @freezed
 class RegularMeetingModel with _$RegularMeetingModel {
   const factory RegularMeetingModel({
-    required int regularMeetingId,
+    required int studyId,
     required int gap,
-    required int day1,
-    required int day2,
-    required int day3,
-    required DateTime startTime,
-    required DateTime endTime,
+    required List<int> days,
+    required String startTime,
+    required String endTime,
   }) = _RegularMeetingModel;
 
   factory RegularMeetingModel.fromJson(Map<String, dynamic> json) =>

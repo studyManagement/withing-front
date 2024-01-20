@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:withing/common/components/study_categories_widget.dart';
@@ -17,7 +15,7 @@ part 'study_service.g.dart';
 abstract class StudyApi {
   factory StudyApi(Dio dio, {String baseUrl}) = _StudyApi;
 
-  @GET("/studies/users/20")
+  @GET("/studies/users")
   Future<List<StudyModel>> fetchMyStudies(@Query("key") String key);
 
   @GET('/studies/{id}/regular_meeting')
@@ -39,8 +37,7 @@ class StudyService {
     try {
       final List<StudyModel> myStudies =
           await _studyApi.fetchMyStudies(studyType.key);
-      log('[DEBUG] ${myStudies.toString()}');
-      return List.empty();
+      return myStudies;
     } on NetworkException catch (e) {
       rethrow;
     }

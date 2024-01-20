@@ -24,7 +24,6 @@ class WithingApp extends StatelessWidget {
         builder: (context, GoRouterState state) {
           final provider = state.pathParameters['provider']!;
           final uuid = state.pathParameters['uuid']!;
-
           return SignupScreen(provider, uuid);
         }),
     GoRoute(
