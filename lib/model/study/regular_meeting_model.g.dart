@@ -14,8 +14,8 @@ _$RegularMeetingModelImpl _$$RegularMeetingModelImplFromJson(
       day1: json['day1'] as int,
       day2: json['day2'] as int,
       day3: json['day3'] as int,
-      startTime: DateTime.parse(json['startTime'] as String),
-      endTime: DateTime.parse(json['endTime'] as String),
+      startTime: json['startTime'] as String,
+      endTime: json['endTime'] as String,
     );
 
 Map<String, dynamic> _$$RegularMeetingModelImplToJson(
@@ -26,6 +26,6 @@ Map<String, dynamic> _$$RegularMeetingModelImplToJson(
       'day1': instance.day1,
       'day2': instance.day2,
       'day3': instance.day3,
-      'startTime': instance.startTime.toIso8601String(),
-      'endTime': instance.endTime.toIso8601String(),
+      'startTime': instance.startTime,
+      'endTime': instance.endTime,
     };

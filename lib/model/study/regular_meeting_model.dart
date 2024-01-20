@@ -11,8 +11,8 @@ class RegularMeetingModel with _$RegularMeetingModel {
     required int day1,
     required int day2,
     required int day3,
-    required DateTime startTime,
-    required DateTime endTime,
+    required String startTime,
+    required String endTime,
   }) = _RegularMeetingModel;
 
   factory RegularMeetingModel.fromJson(Map<String, dynamic> json) =>

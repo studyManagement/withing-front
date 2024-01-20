@@ -25,8 +25,8 @@ mixin _$RegularMeetingModel {
   int get day1 => throw _privateConstructorUsedError;
   int get day2 => throw _privateConstructorUsedError;
   int get day3 => throw _privateConstructorUsedError;
-  DateTime get startTime => throw _privateConstructorUsedError;
-  DateTime get endTime => throw _privateConstructorUsedError;
+  String get startTime => throw _privateConstructorUsedError;
+  String get endTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,8 +46,8 @@ abstract class $RegularMeetingModelCopyWith<$Res> {
       int day1,
       int day2,
       int day3,
-      DateTime startTime,
-      DateTime endTime});
+      String startTime,
+      String endTime});
 }
 
 /// @nodoc
@@ -95,11 +95,11 @@ class _$RegularMeetingModelCopyWithImpl<$Res, $Val extends RegularMeetingModel>
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
     ) as $Val);
   }
 }
@@ -118,8 +118,8 @@ abstract class _$$RegularMeetingModelImplCopyWith<$Res>
       int day1,
       int day2,
       int day3,
-      DateTime startTime,
-      DateTime endTime});
+      String startTime,
+      String endTime});
 }
 
 /// @nodoc
@@ -165,11 +165,11 @@ class __$$RegularMeetingModelImplCopyWithImpl<$Res>
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
       endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as String,
     ));
   }
 }
@@ -200,9 +200,9 @@ class _$RegularMeetingModelImpl implements _RegularMeetingModel {
   @override
   final int day3;
   @override
-  final DateTime startTime;
+  final String startTime;
   @override
-  final DateTime endTime;
+  final String endTime;
 
   @override
   String toString() {
@@ -252,8 +252,8 @@ abstract class _RegularMeetingModel implements RegularMeetingModel {
       required final int day1,
       required final int day2,
       required final int day3,
-      required final DateTime startTime,
-      required final DateTime endTime}) = _$RegularMeetingModelImpl;
+      required final String startTime,
+      required final String endTime}) = _$RegularMeetingModelImpl;
 
   factory _RegularMeetingModel.fromJson(Map<String, dynamic> json) =
       _$RegularMeetingModelImpl.fromJson;
@@ -269,9 +269,9 @@ abstract class _RegularMeetingModel implements RegularMeetingModel {
   @override
   int get day3;
   @override
-  DateTime get startTime;
+  String get startTime;
   @override
-  DateTime get endTime;
+  String get endTime;
   @override
   @JsonKey(ignore: true)
   _$$RegularMeetingModelImplCopyWith<_$RegularMeetingModelImpl> get copyWith =>

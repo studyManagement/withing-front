@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:withing/common/requester/api_exception.dart';
@@ -30,8 +28,7 @@ class StudyService {
     try {
       final List<StudyModel> myStudies =
           await _studyApi.fetchMyStudies(studyType.key);
-      log('[DEBUG] ${myStudies.toString()}');
-      return List.empty();
+      return myStudies;
     } on NetworkException catch (e) {
       rethrow;
     }
