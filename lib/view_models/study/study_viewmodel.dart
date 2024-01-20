@@ -6,6 +6,8 @@ import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
 import 'package:withing/service/study/study_service.dart';
 
+import '../../common/requester/network_exception.dart';
+
 final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
 class StudyRegularMeeting {
@@ -152,6 +154,9 @@ class StudyViewModel extends ChangeNotifier {
   List<StudyView> studyViews = [];
   List<StudyView> studyViewsInSelectedDay = [];
 
+  var study;
+  List<String> categories = List.empty();
+
   StudyViewModel(this._service);
 
   Future<void> fetchStudies(StudyType studyType) async {
@@ -188,5 +193,26 @@ class StudyViewModel extends ChangeNotifier {
   void setSelectedDate(DateTime dateTime) {
     selectedDate = dateTime;
     weekString = _weekString[dateTime.weekday - 1];
+  }
+
+  Future<void> fetchStudyInfo(int studyId) async {
+    if (study == null) {
+      try {
+        study = await _service.fetchStudyInfo(studyId);
+        notifyListeners();
+      } on NetworkException catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  Future<void> fetchCategories(int studyId) async {
+    var categoryModel = await _service.fetchStudyCategory(studyId);
+    if (categoryModel.category1 != null)
+      categories.add(categoryModel.category1!);
+    if (categoryModel.category2 != null)
+      categories.add(categoryModel.category2!);
+    if (categoryModel.category3 != null)
+      categories.add(categoryModel.category3!);
   }
 }

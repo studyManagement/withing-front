@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
-import 'package:withing/common/components/study_categories_widget.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/common/requester/network_exception.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
@@ -59,18 +60,17 @@ class StudyService {
     try {
       final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
       return study;
-    } on NetworkException catch(e){
+    } on NetworkException catch (e) {
       print(e);
       rethrow;
     }
   }
 
   Future<StudyCategory> fetchStudyCategory(int studyId) async {
-    final StudyCategory categoryData = await _studyApi.fetchStudyCategory(studyId);
+    final StudyCategory categoryData =
+        await _studyApi.fetchStudyCategory(studyId);
 
     log('[DEBUG] ${categoryData.toString()}');
     return categoryData;
   }
-
-
 }
