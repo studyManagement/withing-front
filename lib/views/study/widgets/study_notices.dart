@@ -9,14 +9,15 @@ import '../../../model/study/notice_model.dart';
 import 'notice_item.dart';
 
 class Notice extends StatelessWidget {
-  const Notice({super.key});
+  final bool hasNotice;
+  const Notice({super.key,required this.hasNotice});
 
   @override
   Widget build(BuildContext context) {
-
     StudyViewModel vm = context.read<StudyViewModel>();
     List<NoticeModel> notices = vm.notices;
-    bool hasNotice = vm.hasNotice;
+    //bool hasNotice = vm.hasNotice;
+
     return Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,10 +97,11 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
   final CarouselController carouselController =
   CarouselController(); // 캐러셀 컨트롤러
   int currentIndex = 0; // 캐러셀 인디케이터 인덱스
-  int numOfNotice = 0;
 
   @override
   Widget build(BuildContext context) {
+    int numOfNotice = widget.notices.length;
+
     return Column(
       children: [
         CarouselSlider.builder(
@@ -109,37 +111,47 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
                 currentIndex = index;
               });
             }),
-            height: 224,
+            height: 270,
             viewportFraction: 1.0,
           ),
-          itemCount: numOfNotice ~/ 3 + 1,
+          itemCount: (numOfNotice / 3).ceil(),
           itemBuilder: (context, index, realIndex) {
-            return ListView.separated(
-              itemBuilder: (context, index) {
-                return NoticeItem(
-                    boardId: widget.notices[index].boardId,
-                    title: widget.notices[index].title,
-                    content: widget.notices[index].contents,
-                    date: widget.notices[index].createdAt);
-              },
-              separatorBuilder: (context, index) {
-                return const Divider(
-                  thickness: 1,
-                  indent: 16,
-                  endIndent: 16,
-                  color: AppColors.gray100,
+                final int startIndex = index * 3;
+                final int endIndex = (index + 1) * 3;
+                final List<NoticeModel> sublist = widget.notices.sublist(
+                  startIndex,
+                  endIndex > numOfNotice ? numOfNotice : endIndex,
                 );
-              },
-              itemCount: (numOfNotice >= 3)
-                  ? 3
-                  : numOfNotice % 3, // 한 슬라이드에 공지글 최대 3개까지 표시.
-            );
-          },
-        ),
+                return _buildCarouselItem(sublist);
+                },
+    // 한 슬라이드에 공지글 최대 3개까지 표시.
+            ),
         slideIndicator(currentIndex, numOfNotice),
       ],
     );
   }
+}
+
+Widget _buildCarouselItem(List<NoticeModel> sublist) {
+  return ListView.separated(
+    itemBuilder: (context, index) {
+      return NoticeItem(
+        boardId: sublist[index].boardId,
+        title: sublist[index].title,
+        content: sublist[index].contents,
+        createdAt: sublist[index].createdAt,
+      );
+    },
+    separatorBuilder: (context, index) {
+      return const Divider(
+        thickness: 1,
+        indent: 16,
+        endIndent: 16,
+        color: AppColors.gray100,
+      );
+    },
+    itemCount: sublist.length,
+  );
 }
 
 Widget slideIndicator(int currentIndex, int numOfItem) {

@@ -91,7 +91,7 @@ class StudyManageBottomSheet extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        StudyManageButton(onTap: () {}, text: buttontext)
+        StudyBottomButton(onTap: () {}, text: buttontext)
       ]),
     );
   }

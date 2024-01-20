@@ -147,6 +147,7 @@ class StudyView {
   }
 }
 
+
 class StudyViewModel extends ChangeNotifier {
   final StudyService _service;
   late DateTime selectedDate;
@@ -205,21 +206,31 @@ class StudyViewModel extends ChangeNotifier {
     if (study == null) {
       try {
         study = await _service.fetchStudyInfo(studyId);
-        notifyListeners();
+        if(notices.isEmpty){
+          notices = await _service.fetchNotices(studyId);
+          if(notices.isNotEmpty){
+            hasNotice = true;
+            numOfNotices = notices.length;
+            notifyListeners();
+          }
+        }
       } on NetworkException catch (e) {
         print(e);
       }
     }
   }
 
-  Future<void> fetchNotices(int studyId) async {
-    notices = await _service.fetchNotices(studyId);
-    if(notices.isNotEmpty){
-      hasNotice = true;
-      numOfNotices = notices.length;
-      notifyListeners();
-    }
-  }
+
+  // Future<void> fetchNotices(int studyId) async {
+  //   if(notices.isEmpty){
+  //     notices = await _service.fetchNotices(studyId);
+  //     if(notices.isNotEmpty){
+  //       hasNotice = true;
+  //       numOfNotices = notices.length;
+  //       notifyListeners();
+  //     }
+  //   }
+  // }
 
   Future<void> fetchCategories(int studyId) async {
     var categoryModel = await _service.fetchStudyCategory(studyId);
@@ -229,5 +240,6 @@ class StudyViewModel extends ChangeNotifier {
       categories.add(categoryModel.category2!);
     if (categoryModel.category3 != null)
       categories.add(categoryModel.category3!);
+
   }
 }

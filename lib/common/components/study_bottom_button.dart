@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app/app_colors.dart';
 
-class StudyManageButton extends StatelessWidget {
+class StudyBottomButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
 
-  const StudyManageButton({required this.onTap, required this.text});
+  const StudyBottomButton({super.key, required this.onTap, required this.text});
 
   @override
   Widget build(BuildContext context) {

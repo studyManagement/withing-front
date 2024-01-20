@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/common/modal/withing_modal.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
@@ -106,6 +107,9 @@ class StudyManageListItem extends StatelessWidget {
                     isMultiple: true,
                   );
                 });
+          }
+          else if (index == 1){
+            context.push('/studies/:studyId/manage/regular_meeting');
           }
         },
         child: Padding(
