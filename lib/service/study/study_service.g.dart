@@ -32,7 +32,7 @@ class _StudyApi implements StudyApi {
     )
             .compose(
               _dio.options,
-              '/studies/users/20',
+              '/studies/users',
               queryParameters: queryParameters,
               data: _data,
             )

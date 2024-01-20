@@ -1,54 +1,192 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/requester/network_exception.dart';
-import 'package:withing/model/study/study_category_model.dart';
+import 'package:intl/intl.dart';
+import 'package:withing/model/study/regular_meeting_exception.dart';
+import 'package:withing/model/study/regular_meeting_model.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
 import 'package:withing/service/study/study_service.dart';
 
+final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
+
+class StudyRegularMeeting {
+  int studyId;
+  int gap;
+  List<int> days;
+  String startTime;
+  String endTime;
+
+  StudyRegularMeeting(
+      this.studyId, this.gap, this.days, this.startTime, this.endTime);
+
+  factory StudyRegularMeeting.from(RegularMeetingModel model) {
+    return StudyRegularMeeting(
+        model.studyId, model.gap, model.days, model.startTime, model.endTime);
+  }
+
+  DateTime getPromiseDays(DateTime selectedDay) {
+    int weekday = selectedDay.weekday;
+    List<int> days = this.days.where((element) => element > 0).toList();
+
+    days.sort();
+
+    int currentIndex = days.indexOf(weekday);
+
+    List<DateTime> daysToDateTime = [];
+    for (final i in days) {
+      if (i == days[currentIndex]) {
+        daysToDateTime.add(selectedDay);
+      } else if (i > days[currentIndex]) {
+        daysToDateTime
+            .add(selectedDay.add(Duration(days: (i - days[currentIndex]))));
+      } else if (i < days[currentIndex]) {
+        daysToDateTime.add(selectedDay.add(Duration(days: i)));
+      }
+    }
+
+    if (currentIndex + 1 == days.length) {
+      return daysToDateTime[0];
+    } else {
+      return daysToDateTime[currentIndex + 1];
+    }
+  }
+
+  String getNextWeek(DateTime selectedDay) {
+    int weekday = selectedDay.weekday;
+    List<int> days = this.days.where((element) => element > 0).toList();
+    int currentIndex = days.indexOf(weekday);
+
+    if (currentIndex + 1 == days.length) {
+      return _weekString[days[0] - 1];
+    } else {
+      return _weekString[days[currentIndex + 1] - 1];
+    }
+  }
+
+  bool hasSelectedDay(DateTime selectedDay) {
+    int weekday = selectedDay.weekday;
+    Iterable<int> days = this.days.where((element) => element > 0);
+    return days.contains(weekday);
+  }
+
+  @override
+  @override
+  String toString() {
+    return "StudyRegularMeeting(studyId=$studyId,gap=$gap,days=$days,startTime=$startTime,endTime=$endTime)";
+  }
+}
+
+class StudyView {
+  int studyId;
+  String studyName;
+  int max;
+  int headcount;
+  int isPrivate;
+  int isFinished;
+  String explanation;
+  DateTime createdDate;
+  DateTime deadline;
+  int leaderId;
+  String? studyImage;
+  List<StudyRegularMeeting> regularMeetings = [];
+
+  StudyView(
+      this.studyId,
+      this.studyName,
+      this.max,
+      this.headcount,
+      this.isPrivate,
+      this.isFinished,
+      this.explanation,
+      this.createdDate,
+      this.deadline,
+      this.leaderId,
+      this.studyImage);
+
+  void addRegularMeeting(StudyRegularMeeting regularMeeting) {
+    regularMeetings.add(regularMeeting);
+  }
+
+  factory StudyView.from(StudyModel model) {
+    return StudyView(
+        model.studyId,
+        model.studyName,
+        model.max,
+        model.headcount,
+        model.isPrivate,
+        model.isFinished,
+        model.explanation,
+        model.createdDate,
+        model.deadline,
+        model.leaderId,
+        model.studyImage);
+  }
+
+  String getNextDay(DateTime selectedDay) {
+    final nextDay = regularMeetings.first.getPromiseDays(selectedDay);
+    final DateFormat formatter = DateFormat('yyyy.MM.dd');
+    return formatter.format(nextDay);
+  }
+
+  String getNextWeek(DateTime selectedDay) {
+    return regularMeetings.first.getNextWeek(selectedDay);
+  }
+
+  bool hasSelectedDay(DateTime selectedDay) {
+    return regularMeetings
+        .where((element) => element.hasSelectedDay(selectedDay))
+        .isNotEmpty;
+  }
+
+  @override
+  String toString() {
+    return "StudyView(studyId=$studyId,studyName=$studyName,max=$max,headcount=$headcount,isPrivate=$isPrivate,isFinished=$isFinished,explanation=$explanation,createdDate=$createdDate,deadline=$deadline,leaderId=$leaderId,regularMeetings=$regularMeetings)";
+  }
+}
+
 class StudyViewModel extends ChangeNotifier {
   final StudyService _service;
-  DateTime _selectedDateTime = DateTime.utc(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
-  );
-  List<StudyModel> _fetchMyStudies = List.empty();
-  List<StudyModel> myStudies = List.empty();
-  var study;
-  List<String> categories = List.empty();
+  late DateTime selectedDate;
+  List<StudyView> _studyViews = [];
+
+  String weekString = '';
+  List<StudyView> studyViews = [];
+  List<StudyView> studyViewsInSelectedDay = [];
 
   StudyViewModel(this._service);
 
   Future<void> fetchStudies(StudyType studyType) async {
-    _fetchMyStudies = await _service.fetchMyStudies(studyType);
+    List<StudyModel> studyModels = await _service.fetchMyStudies(studyType);
+    List<StudyView> studyViews = await Future.wait(studyModels
+        .map((e) => StudyView.from(e))
+        .map((e) => matchStudyAndMeetings(e)));
 
-    final regularMeetings =
-        _fetchMyStudies.map((e) => _service.fetchRegularMeeting(e.studyId));
-    await Future.wait(regularMeetings);
+    _studyViews = studyViews;
+    this.studyViews = studyViews;
+    studyViewsInSelectedDay = _studyViews
+        .where((element) => element.hasSelectedDay(selectedDate))
+        .toList();
 
     notifyListeners();
   }
 
-  Future<void> fetchStudyInfo(int studyId) async {
-    if (study == null) {
+  Future<StudyView> matchStudyAndMeetings(StudyView studyView) {
+    return Future(() async {
       try {
-        study = await _service.fetchStudyInfo(studyId);
-        notifyListeners();
-      } on NetworkException catch(e) {
-        print(e);
+        RegularMeetingModel regularMeetingModel =
+            await _service.fetchRegularMeeting(studyView.studyId);
+        StudyRegularMeeting regularMeeting =
+            StudyRegularMeeting.from(regularMeetingModel);
+
+        studyView.addRegularMeeting(regularMeeting);
+        return studyView;
+      } on RegularMeetingException catch (e) {
+        return studyView;
       }
-    }
-
-  }
-
-  Future<void> fetchCategories(int studyId) async{
-    var categoryModel = await _service.fetchStudyCategory(studyId);
-    if(categoryModel.category1 != null) categories.add(categoryModel.category1!);
-    if(categoryModel.category2 != null) categories.add(categoryModel.category2!);
-    if(categoryModel.category3 != null) categories.add(categoryModel.category3!);
+    });
   }
 
   void setSelectedDate(DateTime dateTime) {
-    _selectedDateTime = dateTime;
+    selectedDate = dateTime;
+    weekString = _weekString[dateTime.weekday - 1];
   }
 }
