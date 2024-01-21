@@ -25,7 +25,7 @@ class CategorySearchScreen extends StatelessWidget {
               const Gray50Divider(dividerHeight: 6),
               const SizedBox(height: 16),
               const StudyListHeader(type: SearchType.category),
-              const StudyList(),
+              SearchedStudyList(SearchType.category),
             ],
           ),
         ),

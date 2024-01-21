@@ -20,14 +20,14 @@ class KeywordSearchScreen extends StatelessWidget {
         getIt<CategorySearchService>(),
         getIt<KeywordSearchService>(),
       ),
-      child: const Scaffold(
-        appBar: SearchAppBar(),
+      child: Scaffold(
+        appBar: const SearchAppBar(),
         body: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 10),
-              StudyListHeader(type: SearchType.keyword),
-              StudyList(),
+              const SizedBox(height: 10),
+              const StudyListHeader(type: SearchType.keyword),
+              SearchedStudyList(SearchType.keyword),
             ],
           ),
         ),

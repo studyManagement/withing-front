@@ -22,7 +22,7 @@ class _KeywordSearchApi implements KeywordSearchApi {
   Future<List<SearchedStudyInfo>> search(
     String keyword,
     String sort,
-    String index,
+    int index,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
