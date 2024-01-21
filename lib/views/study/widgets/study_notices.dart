@@ -106,6 +106,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
       children: [
         CarouselSlider.builder(
           options: CarouselOptions(
+            enableInfiniteScroll: false,
             onPageChanged: ((index, reason){
               setState(() {
                 currentIndex = index;
