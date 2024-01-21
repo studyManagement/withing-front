@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import '../../../common/theme/app/app_fonts.dart';
-import '../../../view_models/search_study/search_study_viewmodel.dart';
+import '../../../view_models/search/search_study_viewmodel.dart';
 
 class StudyListHeader extends StatelessWidget {
   final SearchType type;

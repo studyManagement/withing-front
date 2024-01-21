@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'keyword_search_service.dart';
+part of 'study_image_update_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'keyword_search_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _KeywordSearchApi implements KeywordSearchApi {
-  _KeywordSearchApi(
+class _StudyImageUpdateApi implements StudyImageUpdateApi {
+  _StudyImageUpdateApi(
     this._dio, {
     this.baseUrl,
   });
@@ -19,57 +19,36 @@ class _KeywordSearchApi implements KeywordSearchApi {
   String? baseUrl;
 
   @override
-  Future<List<SearchedStudyInfo>> search(
-    String keyword,
-    String sort,
-    String index,
+  Future<int> update(
+    String studyId,
+    File? image,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'keyword': keyword,
-      r'sort': sort,
-      r'index': index,
-    };
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<SearchedStudyInfo>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/search',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var value = _result.data!
-        .map((dynamic i) =>
-            SearchedStudyInfo.fromJson(i as Map<String, dynamic>))
-        .toList();
-    return value;
-  }
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = FormData();
 
-  @override
-  Future<int> count(String keyword) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'keyword': keyword};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    /// ⚠️ image가 null이 아닌 경우에만 추가되도록 수정
+    if (image != null) {
+      _data.files.add(MapEntry(
+        'study_image',
+        MultipartFile.fromFileSync(
+          image.path,
+          filename: image.path.split(Platform.pathSeparator).last,
+        ),
+      ));
+    }
     final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
-      method: 'GET',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
-          '/studies/count',
+          '/studies/${studyId}/images',
           queryParameters: queryParameters,
           data: _data,
         )

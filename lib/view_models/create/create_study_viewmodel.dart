@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import '../../views/new_study/widgets/study_text_field.dart';
+import '../../service/create/study_create_service.dart';
+import '../../service/image/study_image_create_service.dart';
+import '../../views/create/widgets/study_text_field.dart';
 
-// 스터디 프로필 이미지 필요
+class CreateStudyViewModel with ChangeNotifier {
+  final StudyCreateService _studyCreateService;
+  final StudyImageCreateService _studyImageCreateService;
 
-class NewStudyViewModel with ChangeNotifier {
+  CreateStudyViewModel(this._studyCreateService, this._studyImageCreateService);
+
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
   bool _isStudyDiscloseToggled = false;
@@ -11,16 +18,16 @@ class NewStudyViewModel with ChangeNotifier {
   String _studyDescription = '';
   String _studyDisclosePassword = '';
   int _studyMemberCount = 0;
-  final List<String> _selectedCategories = [];
+  int? _studyImageId;
+  List<String> _selectedCategories = [];
+  List<int> _selectedCategoryIndicies = [];
+  File? _studyImageFile;
 
   bool get isStudyNameError => _isStudyNameError;
   bool get isStudyDescriptionError => _isStudyDescriptionError;
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
-  // String get studyName => _studyName;
-  // String get studyDescription => _studyDescription;
-  // String get studyDisclosePassword => _studyDisclosePassword;
-  // int get studyMemberCount => _studyMemberCount;
   List<String> get selectedCategories => _selectedCategories;
+  File? get studyImage => _studyImageFile;
 
   /// check everything filled
   bool checkEverythingFilled() {
@@ -92,7 +99,17 @@ class NewStudyViewModel with ChangeNotifier {
       _selectedCategories.add(option);
       debugPrint('$option 추가');
     }
+    updateSelectedCategoryIndicies();
     notifyListeners();
+  }
+
+  /// update selected category indicies
+  void updateSelectedCategoryIndicies() {
+    _selectedCategoryIndicies = _selectedCategories
+        .map((category) => getStudyCategories().indexOf(category))
+        .toList();
+    print(_selectedCategories);
+    print(_selectedCategoryIndicies);
   }
 
   /// update study member count
@@ -115,6 +132,46 @@ class NewStudyViewModel with ChangeNotifier {
       debugPrint('패스워드 입력 중...');
       notifyListeners();
     }
+  }
+
+  /// update study image
+  set studyImage(File? file) {
+    _studyImageFile = file;
+    debugPrint('스터디 이미지 업데이트');
+    notifyListeners();
+  }
+
+  /// update study image id
+  set studyId(int id) {
+    _studyImageId = id;
+    debugPrint('스터디 이미지 id 업데이트');
+    notifyListeners();
+  }
+
+  /// create image api
+  Future<void> createImage() async {
+    if (_studyImageFile != null) {
+      _studyImageId =
+          await _studyImageCreateService.callCreateApi(_studyImageFile);
+      print(_studyImageId);
+    }
+    notifyListeners();
+  }
+
+  /// create study api
+  Future<void> createStudy() async {
+    await createImage();
+    await _studyCreateService.callCreateApi(
+      _studyName,
+      _studyMemberCount,
+      (isStudyDiscloseToggled) ? 1 : 0,
+      _studyDisclosePassword,
+      _studyDescription,
+      0, // leaderId?
+      _selectedCategoryIndicies..sort(),
+      _studyImageId,
+    );
+    notifyListeners();
   }
 }
 
