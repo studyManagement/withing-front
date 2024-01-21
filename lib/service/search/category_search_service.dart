@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter/material.dart';
 import 'package:retrofit/http.dart';
-import 'package:withing/model/search/searched_study_list_model.dart';
+import 'package:withing/model/search/searched_study_info_model.dart';
 import '../../common/requester/network_exception.dart';
 
 part 'category_search_service.g.dart';
@@ -12,7 +12,7 @@ abstract class CategorySearchApi {
   factory CategorySearchApi(Dio dio, {String baseUrl}) = _CategorySearchApi;
 
   @GET("/studies/search")
-  Future<List<StudyInfo>> search(
+  Future<List<SearchedStudyInfo>> search(
     @Query("category_id") String categoryId,
     @Query("sort") String sort,
     @Query("index") String index,
@@ -30,7 +30,7 @@ class CategorySearchService {
 
   CategorySearchService(this._api);
 
-  Future<List<StudyInfo>> callSearchApi(
+  Future<List<SearchedStudyInfo>> callSearchApi(
     String categoryId,
     String sort,
     String index,

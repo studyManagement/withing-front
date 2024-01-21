@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/router.dart';
 import 'package:withing/views/study/screen/study_member_screen.dart';
-import '../../view_models/study/study_viewmodel.dart';
-import '../theme/app/app_colors.dart';
+import '../../../view_models/study/study_viewmodel.dart';
+import '../../../common/theme/app/app_colors.dart';
 
 class StudyDetails extends StatelessWidget{
   const StudyDetails({super.key});
