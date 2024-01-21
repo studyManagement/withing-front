@@ -21,6 +21,7 @@ class RequestBuilder {
     if (!_isInitialize) {
       _dio.interceptors.add(AuthInterceptor());
       _dio.interceptors.add(CustomLogInterceptor());
+      _dio.interceptors.add(AuthInterceptor());
       _dio.interceptors.add(ResponseInterceptor());
       _isInitialize = true;
     }

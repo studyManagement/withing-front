@@ -6,6 +6,9 @@ import 'package:withing/di/injection.dart';
 import 'package:withing/service/signin/signin_service.dart';
 import 'package:withing/view_models/signin/signin_viewmodel.dart';
 
+import '../../common/authenticator/authenticator.dart';
+import '../../common/authenticator/provider/kakao_authentication.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -82,6 +85,7 @@ class _Bottom extends StatelessWidget {
               Authenticator auth = KakaoAuthentication();
               String token = await auth.login();
               int socialUUID = await auth.fetchUUID();
+              
               await vm.signin(auth.getProvider(), socialUUID.toString(), token);
             }),
         const Padding(padding: EdgeInsets.only(bottom: 60)),
