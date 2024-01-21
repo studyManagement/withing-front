@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:withing/common/authenticator/authenticator.dart';
 import 'package:withing/common/authenticator/provider/kakao_authentication.dart';
-import 'package:withing/components/circle_button.dart';
+import 'package:withing/common/components/circle_button.dart';
 import 'package:withing/di/injection.dart';
 import 'package:withing/service/signin/signin_service.dart';
 import 'package:withing/view_models/signin/signin_viewmodel.dart';
