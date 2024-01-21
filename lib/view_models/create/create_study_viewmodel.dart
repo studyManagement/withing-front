@@ -152,7 +152,7 @@ class CreateStudyViewModel with ChangeNotifier {
   Future<void> createImage() async {
     if (_studyImageFile != null) {
       _studyImageId =
-          await _studyImageCreateService.callCreateApi(_studyImageFile);
+          await _studyImageCreateService.callCreateApi(_studyImageFile!);
       print(_studyImageId);
     }
     notifyListeners();

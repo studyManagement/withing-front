@@ -53,12 +53,14 @@ class SearchStudyViewModel with ChangeNotifier {
   /// update search category
   set searchCategory(int newValue) {
     _selectedCategoryValue = newValue;
+    _searchedStudiesWithCategory = [];
     notifyListeners();
   }
 
   /// update search keyword
   set searchKeyword(String newValue) {
     _keywordValue = newValue;
+    _searchedStudiesWithKeyword = [];
     debugPrint(_keywordValue);
     notifyListeners();
   }
