@@ -26,17 +26,13 @@ class _StudyImageCreateApi implements StudyImageCreateApi {
     final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
     _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
-
-    /// ⚠️ image가 null이 아닌 경우에만 추가되도록 수정
-    if (image != null) {
-      _data.files.add(MapEntry(
-        'study_image',
-        MultipartFile.fromFileSync(
-          image.path,
-          filename: image.path.split(Platform.pathSeparator).last,
-        ),
-      ));
-    }
+    _data.files.add(MapEntry(
+      'study_image',
+      MultipartFile.fromFileSync(
+        image.path,
+        filename: image.path.split(Platform.pathSeparator).last,
+      ),
+    ));
     final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
       method: 'POST',
       headers: _headers,

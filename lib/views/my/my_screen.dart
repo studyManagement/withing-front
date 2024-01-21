@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/layout/default_layout.dart';
 import 'package:withing/views/signup/signup_profile.dart';
 
@@ -20,10 +21,11 @@ class MyScreen extends StatelessWidget {
                 child: Profile(),
               ),
             ),
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Text('닉네임', style: TextStyle(fontSize: 16)),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text(Authentication.instance.nickname,
+                    style: TextStyle(fontSize: 16)),
               ),
             ),
             Padding(
@@ -35,11 +37,11 @@ class MyScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.grey[50],
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    '최대 30자로 자기 소개 문구가 들어가는 자리',
+                    Authentication.instance.introduce,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
               ),
