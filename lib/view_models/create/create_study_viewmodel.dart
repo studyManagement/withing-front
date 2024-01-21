@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import '../../service/create/study_create_service.dart';
 import '../../service/image/study_image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -152,7 +153,7 @@ class CreateStudyViewModel with ChangeNotifier {
   Future<void> createImage() async {
     if (_studyImageFile != null) {
       _studyImageId =
-          await _studyImageCreateService.callCreateApi(_studyImageFile);
+          await _studyImageCreateService.callCreateApi(_studyImageFile!);
       print(_studyImageId);
     }
     notifyListeners();

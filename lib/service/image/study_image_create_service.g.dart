@@ -19,10 +19,9 @@ class _StudyImageCreateApi implements StudyImageCreateApi {
   String? baseUrl;
 
   @override
-  Future<int> create(File? image) async {
+  Future<int> create(File image) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
     _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
