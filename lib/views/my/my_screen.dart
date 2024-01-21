@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/layout/default_layout.dart';
+import 'package:withing/common/theme/app/app_colors.dart';
+import 'package:withing/common/theme/app/app_fonts.dart';
 import 'package:withing/views/signup/signup_profile.dart';
 
 class MyScreen extends StatelessWidget {
@@ -25,7 +27,10 @@ class MyScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(Authentication.instance.nickname,
-                    style: TextStyle(fontSize: 16)),
+                    style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.gray800,
+                        fontWeight: AppFonts.fontWeight600)),
               ),
             ),
             Padding(
@@ -35,22 +40,24 @@ class MyScreen extends StatelessWidget {
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey[50],
+                  color: AppColors.gray50,
                 ),
                 child: Center(
                   child: Text(
                     Authentication.instance.introduce,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.grey),
+                    style: const TextStyle(
+                        color: AppColors.gray600,
+                        fontWeight: AppFonts.fontWeight500),
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            Divider(
+            const Divider(
               thickness: 5,
               height: 1,
-              color: Colors.grey[200],
+              color: AppColors.gray50,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -69,7 +76,10 @@ class MyScreen extends StatelessWidget {
                     ),
                     title: const Text(
                       '찜한 스터디',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.gray800,
+                          fontWeight: AppFonts.fontWeight600),
                     ),
                     horizontalTitleGap: 16,
                   ),
@@ -84,13 +94,19 @@ class MyScreen extends StatelessWidget {
                     ),
                     title: const Text(
                       '종료된 스터디',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.gray800,
+                          fontWeight: AppFonts.fontWeight600),
                     ),
                     horizontalTitleGap: 16,
                   ),
                   ListTile(
-                    trailing:
-                        const Text('v1.0.1', style: TextStyle(fontSize: 16)),
+                    trailing: const Text('v1.0.1',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.gray400,
+                            fontWeight: AppFonts.fontWeight500)),
                     leading: Image.asset(
                       'asset/version.png',
                       width: 40,
@@ -98,7 +114,10 @@ class MyScreen extends StatelessWidget {
                     ),
                     title: const Text(
                       '버전 정보',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.gray800,
+                          fontWeight: AppFonts.fontWeight600),
                     ),
                     horizontalTitleGap: 16,
                   ),
