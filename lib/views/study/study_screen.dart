@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/service/study/study_service.dart';
@@ -11,6 +12,8 @@ import 'widgets/study_notices.dart';
 import '../../di/injection.dart';
 import 'widgets/study_header.dart';
 
+import 'package:withing/common/authenticator/authenticator.dart';
+
 class StudyScreen extends StatelessWidget {
   final int studyId;
 
@@ -21,8 +24,6 @@ class StudyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    int userId = 1;
     return ChangeNotifierProvider(
         create: (_) =>
             StudyViewModel(getIt<StudyService>()),
@@ -32,7 +33,7 @@ class StudyScreen extends StatelessWidget {
          //    data.fetchNotices(studyId);
               if (data.study == null) return Container();
           return Scaffold(
-            appBar: StudyMainAppBar(context, data.study.leaderId == userId),
+            appBar: StudyMainAppBar(context, data.study.leaderId == Authentication.instance.userId),
             body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
