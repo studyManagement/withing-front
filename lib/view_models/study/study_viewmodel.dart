@@ -5,8 +5,8 @@ import 'package:withing/model/study/regular_meeting_model.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
 import 'package:withing/service/study/study_service.dart';
-
 import '../../common/requester/network_exception.dart';
+import '../../model/study/notice_model.dart';
 
 final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -155,7 +155,13 @@ class StudyViewModel extends ChangeNotifier {
   List<StudyView> studyViewsInSelectedDay = [];
 
   var study;
+
   List<String> categories = List.empty();
+
+  bool hasNotice = false;
+  int numOfNotices = 0;
+  List<NoticeModel> notices = [];
+
 
   StudyViewModel(this._service);
 
@@ -203,6 +209,16 @@ class StudyViewModel extends ChangeNotifier {
       } on NetworkException catch (e) {
         print(e);
       }
+    }
+  }
+
+
+  Future<void> fetchNotices(int studyId) async {
+    notices = await _service.fetchNotices(studyId);
+    if(notices.isNotEmpty){
+      hasNotice = true;
+      numOfNotices = notices.length;
+      notifyListeners();
     }
   }
 
