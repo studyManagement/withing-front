@@ -26,12 +26,10 @@ mixin _$SearchedStudyInfo {
   @JsonKey(name: 'headcount')
   int get headCount => throw _privateConstructorUsedError;
   String? get studyImage => throw _privateConstructorUsedError;
-  List<String> get categories => throw _privateConstructorUsedError;
+  List<int> get categories => throw _privateConstructorUsedError;
   int? get regularMeetingId => throw _privateConstructorUsedError;
   int get gap => throw _privateConstructorUsedError;
-  int get day1 => throw _privateConstructorUsedError;
-  int get day2 => throw _privateConstructorUsedError;
-  int get day3 => throw _privateConstructorUsedError;
+  List<int> get days => throw _privateConstructorUsedError;
   String get startTime => throw _privateConstructorUsedError; // LocalTime
   String get endTime => throw _privateConstructorUsedError;
 
@@ -53,12 +51,10 @@ abstract class $SearchedStudyInfoCopyWith<$Res> {
       int max,
       @JsonKey(name: 'headcount') int headCount,
       String? studyImage,
-      List<String> categories,
+      List<int> categories,
       int? regularMeetingId,
       int gap,
-      int day1,
-      int day2,
-      int day3,
+      List<int> days,
       String startTime,
       String endTime});
 }
@@ -84,9 +80,7 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
     Object? categories = null,
     Object? regularMeetingId = freezed,
     Object? gap = null,
-    Object? day1 = null,
-    Object? day2 = null,
-    Object? day3 = null,
+    Object? days = null,
     Object? startTime = null,
     Object? endTime = null,
   }) {
@@ -114,7 +108,7 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
       categories: null == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<int>,
       regularMeetingId: freezed == regularMeetingId
           ? _value.regularMeetingId
           : regularMeetingId // ignore: cast_nullable_to_non_nullable
@@ -123,18 +117,10 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
           ? _value.gap
           : gap // ignore: cast_nullable_to_non_nullable
               as int,
-      day1: null == day1
-          ? _value.day1
-          : day1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day2: null == day2
-          ? _value.day2
-          : day2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day3: null == day3
-          ? _value.day3
-          : day3 // ignore: cast_nullable_to_non_nullable
-              as int,
+      days: null == days
+          ? _value.days
+          : days // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -161,12 +147,10 @@ abstract class _$$SearchedStudyInfoImplCopyWith<$Res>
       int max,
       @JsonKey(name: 'headcount') int headCount,
       String? studyImage,
-      List<String> categories,
+      List<int> categories,
       int? regularMeetingId,
       int gap,
-      int day1,
-      int day2,
-      int day3,
+      List<int> days,
       String startTime,
       String endTime});
 }
@@ -190,9 +174,7 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
     Object? categories = null,
     Object? regularMeetingId = freezed,
     Object? gap = null,
-    Object? day1 = null,
-    Object? day2 = null,
-    Object? day3 = null,
+    Object? days = null,
     Object? startTime = null,
     Object? endTime = null,
   }) {
@@ -220,7 +202,7 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
       categories: null == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<int>,
       regularMeetingId: freezed == regularMeetingId
           ? _value.regularMeetingId
           : regularMeetingId // ignore: cast_nullable_to_non_nullable
@@ -229,18 +211,10 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
           ? _value.gap
           : gap // ignore: cast_nullable_to_non_nullable
               as int,
-      day1: null == day1
-          ? _value.day1
-          : day1 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day2: null == day2
-          ? _value.day2
-          : day2 // ignore: cast_nullable_to_non_nullable
-              as int,
-      day3: null == day3
-          ? _value.day3
-          : day3 // ignore: cast_nullable_to_non_nullable
-              as int,
+      days: null == days
+          ? _value._days
+          : days // ignore: cast_nullable_to_non_nullable
+              as List<int>,
       startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
@@ -262,15 +236,14 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
       required this.max,
       @JsonKey(name: 'headcount') required this.headCount,
       required this.studyImage,
-      required final List<String> categories,
+      required final List<int> categories,
       required this.regularMeetingId,
       required this.gap,
-      required this.day1,
-      required this.day2,
-      required this.day3,
+      required final List<int> days,
       required this.startTime,
       required this.endTime})
-      : _categories = categories;
+      : _categories = categories,
+        _days = days;
 
   factory _$SearchedStudyInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$SearchedStudyInfoImplFromJson(json);
@@ -286,9 +259,9 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
   final int headCount;
   @override
   final String? studyImage;
-  final List<String> _categories;
+  final List<int> _categories;
   @override
-  List<String> get categories {
+  List<int> get categories {
     if (_categories is EqualUnmodifiableListView) return _categories;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_categories);
@@ -298,12 +271,14 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
   final int? regularMeetingId;
   @override
   final int gap;
+  final List<int> _days;
   @override
-  final int day1;
-  @override
-  final int day2;
-  @override
-  final int day3;
+  List<int> get days {
+    if (_days is EqualUnmodifiableListView) return _days;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_days);
+  }
+
   @override
   final String startTime;
 // LocalTime
@@ -312,7 +287,7 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
 
   @override
   String toString() {
-    return 'SearchedStudyInfo(studyId: $studyId, studyName: $studyName, max: $max, headCount: $headCount, studyImage: $studyImage, categories: $categories, regularMeetingId: $regularMeetingId, gap: $gap, day1: $day1, day2: $day2, day3: $day3, startTime: $startTime, endTime: $endTime)';
+    return 'SearchedStudyInfo(studyId: $studyId, studyName: $studyName, max: $max, headCount: $headCount, studyImage: $studyImage, categories: $categories, regularMeetingId: $regularMeetingId, gap: $gap, days: $days, startTime: $startTime, endTime: $endTime)';
   }
 
   @override
@@ -333,9 +308,7 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
             (identical(other.regularMeetingId, regularMeetingId) ||
                 other.regularMeetingId == regularMeetingId) &&
             (identical(other.gap, gap) || other.gap == gap) &&
-            (identical(other.day1, day1) || other.day1 == day1) &&
-            (identical(other.day2, day2) || other.day2 == day2) &&
-            (identical(other.day3, day3) || other.day3 == day3) &&
+            const DeepCollectionEquality().equals(other._days, _days) &&
             (identical(other.startTime, startTime) ||
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime));
@@ -353,9 +326,7 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
       const DeepCollectionEquality().hash(_categories),
       regularMeetingId,
       gap,
-      day1,
-      day2,
-      day3,
+      const DeepCollectionEquality().hash(_days),
       startTime,
       endTime);
 
@@ -381,12 +352,10 @@ abstract class _SearchedStudyInfo implements SearchedStudyInfo {
       required final int max,
       @JsonKey(name: 'headcount') required final int headCount,
       required final String? studyImage,
-      required final List<String> categories,
+      required final List<int> categories,
       required final int? regularMeetingId,
       required final int gap,
-      required final int day1,
-      required final int day2,
-      required final int day3,
+      required final List<int> days,
       required final String startTime,
       required final String endTime}) = _$SearchedStudyInfoImpl;
 
@@ -405,17 +374,13 @@ abstract class _SearchedStudyInfo implements SearchedStudyInfo {
   @override
   String? get studyImage;
   @override
-  List<String> get categories;
+  List<int> get categories;
   @override
   int? get regularMeetingId;
   @override
   int get gap;
   @override
-  int get day1;
-  @override
-  int get day2;
-  @override
-  int get day3;
+  List<int> get days;
   @override
   String get startTime;
   @override // LocalTime

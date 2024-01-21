@@ -22,7 +22,7 @@ class _CategorySearchApi implements CategorySearchApi {
   Future<List<SearchedStudyInfo>> search(
     String categoryId,
     String sort,
-    String index,
+    int index,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
