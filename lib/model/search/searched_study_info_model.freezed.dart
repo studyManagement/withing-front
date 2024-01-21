@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'searched_study_list_model.dart';
+part of 'searched_study_info_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,19 +14,19 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-StudyInfo _$StudyInfoFromJson(Map<String, dynamic> json) {
-  return _StudyInfo.fromJson(json);
+SearchedStudyInfo _$SearchedStudyInfoFromJson(Map<String, dynamic> json) {
+  return _SearchedStudyInfo.fromJson(json);
 }
 
 /// @nodoc
-mixin _$StudyInfo {
+mixin _$SearchedStudyInfo {
   int get studyId => throw _privateConstructorUsedError;
   String get studyName => throw _privateConstructorUsedError;
   int get max => throw _privateConstructorUsedError;
   @JsonKey(name: 'headcount')
   int get headCount => throw _privateConstructorUsedError;
   String? get studyImage => throw _privateConstructorUsedError;
-  List<String> get categoryList => throw _privateConstructorUsedError;
+  List<String> get categories => throw _privateConstructorUsedError;
   int? get regularMeetingId => throw _privateConstructorUsedError;
   int get gap => throw _privateConstructorUsedError;
   int get day1 => throw _privateConstructorUsedError;
@@ -37,14 +37,15 @@ mixin _$StudyInfo {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $StudyInfoCopyWith<StudyInfo> get copyWith =>
+  $SearchedStudyInfoCopyWith<SearchedStudyInfo> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $StudyInfoCopyWith<$Res> {
-  factory $StudyInfoCopyWith(StudyInfo value, $Res Function(StudyInfo) then) =
-      _$StudyInfoCopyWithImpl<$Res, StudyInfo>;
+abstract class $SearchedStudyInfoCopyWith<$Res> {
+  factory $SearchedStudyInfoCopyWith(
+          SearchedStudyInfo value, $Res Function(SearchedStudyInfo) then) =
+      _$SearchedStudyInfoCopyWithImpl<$Res, SearchedStudyInfo>;
   @useResult
   $Res call(
       {int studyId,
@@ -52,7 +53,7 @@ abstract class $StudyInfoCopyWith<$Res> {
       int max,
       @JsonKey(name: 'headcount') int headCount,
       String? studyImage,
-      List<String> categoryList,
+      List<String> categories,
       int? regularMeetingId,
       int gap,
       int day1,
@@ -63,9 +64,9 @@ abstract class $StudyInfoCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$StudyInfoCopyWithImpl<$Res, $Val extends StudyInfo>
-    implements $StudyInfoCopyWith<$Res> {
-  _$StudyInfoCopyWithImpl(this._value, this._then);
+class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
+    implements $SearchedStudyInfoCopyWith<$Res> {
+  _$SearchedStudyInfoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -80,7 +81,7 @@ class _$StudyInfoCopyWithImpl<$Res, $Val extends StudyInfo>
     Object? max = null,
     Object? headCount = null,
     Object? studyImage = freezed,
-    Object? categoryList = null,
+    Object? categories = null,
     Object? regularMeetingId = freezed,
     Object? gap = null,
     Object? day1 = null,
@@ -110,9 +111,9 @@ class _$StudyInfoCopyWithImpl<$Res, $Val extends StudyInfo>
           ? _value.studyImage
           : studyImage // ignore: cast_nullable_to_non_nullable
               as String?,
-      categoryList: null == categoryList
-          ? _value.categoryList
-          : categoryList // ignore: cast_nullable_to_non_nullable
+      categories: null == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
       regularMeetingId: freezed == regularMeetingId
           ? _value.regularMeetingId
@@ -147,11 +148,11 @@ class _$StudyInfoCopyWithImpl<$Res, $Val extends StudyInfo>
 }
 
 /// @nodoc
-abstract class _$$StudyInfoImplCopyWith<$Res>
-    implements $StudyInfoCopyWith<$Res> {
-  factory _$$StudyInfoImplCopyWith(
-          _$StudyInfoImpl value, $Res Function(_$StudyInfoImpl) then) =
-      __$$StudyInfoImplCopyWithImpl<$Res>;
+abstract class _$$SearchedStudyInfoImplCopyWith<$Res>
+    implements $SearchedStudyInfoCopyWith<$Res> {
+  factory _$$SearchedStudyInfoImplCopyWith(_$SearchedStudyInfoImpl value,
+          $Res Function(_$SearchedStudyInfoImpl) then) =
+      __$$SearchedStudyInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -160,7 +161,7 @@ abstract class _$$StudyInfoImplCopyWith<$Res>
       int max,
       @JsonKey(name: 'headcount') int headCount,
       String? studyImage,
-      List<String> categoryList,
+      List<String> categories,
       int? regularMeetingId,
       int gap,
       int day1,
@@ -171,11 +172,11 @@ abstract class _$$StudyInfoImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$StudyInfoImplCopyWithImpl<$Res>
-    extends _$StudyInfoCopyWithImpl<$Res, _$StudyInfoImpl>
-    implements _$$StudyInfoImplCopyWith<$Res> {
-  __$$StudyInfoImplCopyWithImpl(
-      _$StudyInfoImpl _value, $Res Function(_$StudyInfoImpl) _then)
+class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
+    extends _$SearchedStudyInfoCopyWithImpl<$Res, _$SearchedStudyInfoImpl>
+    implements _$$SearchedStudyInfoImplCopyWith<$Res> {
+  __$$SearchedStudyInfoImplCopyWithImpl(_$SearchedStudyInfoImpl _value,
+      $Res Function(_$SearchedStudyInfoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -186,7 +187,7 @@ class __$$StudyInfoImplCopyWithImpl<$Res>
     Object? max = null,
     Object? headCount = null,
     Object? studyImage = freezed,
-    Object? categoryList = null,
+    Object? categories = null,
     Object? regularMeetingId = freezed,
     Object? gap = null,
     Object? day1 = null,
@@ -195,7 +196,7 @@ class __$$StudyInfoImplCopyWithImpl<$Res>
     Object? startTime = null,
     Object? endTime = null,
   }) {
-    return _then(_$StudyInfoImpl(
+    return _then(_$SearchedStudyInfoImpl(
       studyId: null == studyId
           ? _value.studyId
           : studyId // ignore: cast_nullable_to_non_nullable
@@ -216,9 +217,9 @@ class __$$StudyInfoImplCopyWithImpl<$Res>
           ? _value.studyImage
           : studyImage // ignore: cast_nullable_to_non_nullable
               as String?,
-      categoryList: null == categoryList
-          ? _value._categoryList
-          : categoryList // ignore: cast_nullable_to_non_nullable
+      categories: null == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
       regularMeetingId: freezed == regularMeetingId
           ? _value.regularMeetingId
@@ -254,14 +255,14 @@ class __$$StudyInfoImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$StudyInfoImpl implements _StudyInfo {
-  const _$StudyInfoImpl(
+class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
+  const _$SearchedStudyInfoImpl(
       {required this.studyId,
       required this.studyName,
       required this.max,
       @JsonKey(name: 'headcount') required this.headCount,
       required this.studyImage,
-      required final List<String> categoryList,
+      required final List<String> categories,
       required this.regularMeetingId,
       required this.gap,
       required this.day1,
@@ -269,10 +270,10 @@ class _$StudyInfoImpl implements _StudyInfo {
       required this.day3,
       required this.startTime,
       required this.endTime})
-      : _categoryList = categoryList;
+      : _categories = categories;
 
-  factory _$StudyInfoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$StudyInfoImplFromJson(json);
+  factory _$SearchedStudyInfoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SearchedStudyInfoImplFromJson(json);
 
   @override
   final int studyId;
@@ -285,12 +286,12 @@ class _$StudyInfoImpl implements _StudyInfo {
   final int headCount;
   @override
   final String? studyImage;
-  final List<String> _categoryList;
+  final List<String> _categories;
   @override
-  List<String> get categoryList {
-    if (_categoryList is EqualUnmodifiableListView) return _categoryList;
+  List<String> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_categoryList);
+    return EqualUnmodifiableListView(_categories);
   }
 
   @override
@@ -311,14 +312,14 @@ class _$StudyInfoImpl implements _StudyInfo {
 
   @override
   String toString() {
-    return 'StudyInfo(studyId: $studyId, studyName: $studyName, max: $max, headCount: $headCount, studyImage: $studyImage, categoryList: $categoryList, regularMeetingId: $regularMeetingId, gap: $gap, day1: $day1, day2: $day2, day3: $day3, startTime: $startTime, endTime: $endTime)';
+    return 'SearchedStudyInfo(studyId: $studyId, studyName: $studyName, max: $max, headCount: $headCount, studyImage: $studyImage, categories: $categories, regularMeetingId: $regularMeetingId, gap: $gap, day1: $day1, day2: $day2, day3: $day3, startTime: $startTime, endTime: $endTime)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StudyInfoImpl &&
+            other is _$SearchedStudyInfoImpl &&
             (identical(other.studyId, studyId) || other.studyId == studyId) &&
             (identical(other.studyName, studyName) ||
                 other.studyName == studyName) &&
@@ -328,7 +329,7 @@ class _$StudyInfoImpl implements _StudyInfo {
             (identical(other.studyImage, studyImage) ||
                 other.studyImage == studyImage) &&
             const DeepCollectionEquality()
-                .equals(other._categoryList, _categoryList) &&
+                .equals(other._categories, _categories) &&
             (identical(other.regularMeetingId, regularMeetingId) ||
                 other.regularMeetingId == regularMeetingId) &&
             (identical(other.gap, gap) || other.gap == gap) &&
@@ -349,7 +350,7 @@ class _$StudyInfoImpl implements _StudyInfo {
       max,
       headCount,
       studyImage,
-      const DeepCollectionEquality().hash(_categoryList),
+      const DeepCollectionEquality().hash(_categories),
       regularMeetingId,
       gap,
       day1,
@@ -361,35 +362,36 @@ class _$StudyInfoImpl implements _StudyInfo {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$StudyInfoImplCopyWith<_$StudyInfoImpl> get copyWith =>
-      __$$StudyInfoImplCopyWithImpl<_$StudyInfoImpl>(this, _$identity);
+  _$$SearchedStudyInfoImplCopyWith<_$SearchedStudyInfoImpl> get copyWith =>
+      __$$SearchedStudyInfoImplCopyWithImpl<_$SearchedStudyInfoImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$StudyInfoImplToJson(
+    return _$$SearchedStudyInfoImplToJson(
       this,
     );
   }
 }
 
-abstract class _StudyInfo implements StudyInfo {
-  const factory _StudyInfo(
+abstract class _SearchedStudyInfo implements SearchedStudyInfo {
+  const factory _SearchedStudyInfo(
       {required final int studyId,
       required final String studyName,
       required final int max,
       @JsonKey(name: 'headcount') required final int headCount,
       required final String? studyImage,
-      required final List<String> categoryList,
+      required final List<String> categories,
       required final int? regularMeetingId,
       required final int gap,
       required final int day1,
       required final int day2,
       required final int day3,
       required final String startTime,
-      required final String endTime}) = _$StudyInfoImpl;
+      required final String endTime}) = _$SearchedStudyInfoImpl;
 
-  factory _StudyInfo.fromJson(Map<String, dynamic> json) =
-      _$StudyInfoImpl.fromJson;
+  factory _SearchedStudyInfo.fromJson(Map<String, dynamic> json) =
+      _$SearchedStudyInfoImpl.fromJson;
 
   @override
   int get studyId;
@@ -403,7 +405,7 @@ abstract class _StudyInfo implements StudyInfo {
   @override
   String? get studyImage;
   @override
-  List<String> get categoryList;
+  List<String> get categories;
   @override
   int? get regularMeetingId;
   @override
@@ -420,6 +422,6 @@ abstract class _StudyInfo implements StudyInfo {
   String get endTime;
   @override
   @JsonKey(ignore: true)
-  _$$StudyInfoImplCopyWith<_$StudyInfoImpl> get copyWith =>
+  _$$SearchedStudyInfoImplCopyWith<_$SearchedStudyInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

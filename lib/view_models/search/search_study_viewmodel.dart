@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../model/search/searched_study_list_model.dart';
+import '../../model/search/searched_study_info_model.dart';
 import '../../service/search/category_search_service.dart';
 import '../../service/search/keyword_search_service.dart';
 
@@ -17,8 +17,8 @@ class SearchStudyViewModel with ChangeNotifier {
   int _selectedCategoryValue = 0;
   int _studyCountWithCategory = 0;
   int _studyCountWithKeyword = 0;
-  List<StudyInfo>? _searchedStudiesWithCategory;
-  List<StudyInfo>? _searchedStudiesWithKeyword;
+  List<SearchedStudyInfo>? _searchedStudiesWithCategory;
+  List<SearchedStudyInfo>? _searchedStudiesWithKeyword;
 
   String get categoryFilterValue => _selectedCategoryFilterValue;
   String get keywordFilterValue => _selectedKeywordFilterValue;
@@ -26,8 +26,9 @@ class SearchStudyViewModel with ChangeNotifier {
   int get selectedCategoryValue => _selectedCategoryValue;
   int get studyCountWithCategory => _studyCountWithCategory;
   int get studyCountWithKeyword => _studyCountWithKeyword;
-  List<StudyInfo>? get studyWithCategory => _searchedStudiesWithCategory;
-  List<StudyInfo>? get studyWithKeyword => _searchedStudiesWithKeyword;
+  List<SearchedStudyInfo>? get studyWithCategory =>
+      _searchedStudiesWithCategory;
+  List<SearchedStudyInfo>? get studyWithKeyword => _searchedStudiesWithKeyword;
 
   /// update search filter
   void updateSearchFilterValue(SearchType type, String value) {

@@ -1,17 +1,17 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'searched_study_list_model.freezed.dart';
-part 'searched_study_list_model.g.dart';
+part 'searched_study_info_model.freezed.dart';
+part 'searched_study_info_model.g.dart';
 
 @freezed
-class StudyInfo with _$StudyInfo {
-  const factory StudyInfo({
+class SearchedStudyInfo with _$SearchedStudyInfo {
+  const factory SearchedStudyInfo({
     required int studyId,
     required String studyName,
     required int max,
     @JsonKey(name: 'headcount') required int headCount,
     required String? studyImage,
-    required List<String> categoryList,
+    required List<String> categories,
     required int? regularMeetingId,
     required int gap,
     required int day1,
@@ -19,8 +19,8 @@ class StudyInfo with _$StudyInfo {
     required int day3,
     required String startTime, // LocalTime
     required String endTime, // LocalTime
-  }) = _StudyInfo;
+  }) = _SearchedStudyInfo;
 
-  factory StudyInfo.fromJson(Map<String, dynamic> json) =>
-      _$StudyInfoFromJson(json);
+  factory SearchedStudyInfo.fromJson(Map<String, dynamic> json) =>
+      _$SearchedStudyInfoFromJson(json);
 }

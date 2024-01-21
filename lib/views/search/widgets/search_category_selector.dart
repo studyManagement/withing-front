@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/search_study/search_study_viewmodel.dart';
+import '../../../view_models/search/search_study_viewmodel.dart';
 
 class SearchCategorySelector extends StatelessWidget {
   final List<String> categories = [

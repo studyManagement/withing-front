@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/new_study/new_study_view_model.dart';
+import '../../../view_models/create/create_study_viewmodel.dart';
 
 enum NewStudyType {
   studyName,
@@ -18,7 +18,7 @@ class StudyTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<NewStudyViewModel>(context);
+    final viewModel = Provider.of<CreateStudyViewModel>(context);
     final bool isValidation = (type == NewStudyType.studyName)
         ? viewModel.isStudyNameError
         : viewModel.isStudyDescriptionError;

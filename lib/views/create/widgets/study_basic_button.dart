@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/new_study/new_study_view_model.dart';
+import '../../../view_models/create/create_study_viewmodel.dart';
 
 class StudyBasicButton extends StatelessWidget {
   const StudyBasicButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<NewStudyViewModel>(context);
+    final viewModel = Provider.of<CreateStudyViewModel>(context);
     final bool isEverythingFilled = viewModel.checkEverythingFilled();
 
     return Padding(
@@ -24,7 +24,8 @@ class StudyBasicButton extends StatelessWidget {
           ),
         ),
         onPressed: () => {
-          if (isEverythingFilled) {debugPrint('스터디 생성하기')}
+          debugPrint('스터디 생성 버튼 클릭'),
+          if (isEverythingFilled) {viewModel.createStudy()}
         },
         child: Text(
           '생성하기',

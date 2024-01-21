@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'keyword_search_service.dart';
+part of 'study_create_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'keyword_search_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _KeywordSearchApi implements KeywordSearchApi {
-  _KeywordSearchApi(
+class _StudyCreateApi implements StudyCreateApi {
+  _StudyCreateApi(
     this._dio, {
     this.baseUrl,
   });
@@ -19,28 +19,26 @@ class _KeywordSearchApi implements KeywordSearchApi {
   String? baseUrl;
 
   @override
-  Future<List<SearchedStudyInfo>> search(
-    String keyword,
-    String sort,
-    String index,
-  ) async {
+  Future<CreatedStudyInfo> create(String studyCreateDto) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'keyword': keyword,
-      r'sort': sort,
-      r'index': index,
-    };
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'studyCreateDTO',
+      studyCreateDto,
+    ));
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<SearchedStudyInfo>>(Options(
-      method: 'GET',
+        .fetch<Map<String, dynamic>>(_setStreamType<CreatedStudyInfo>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,
-              '/studies/search',
+              '/studies/create',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -49,36 +47,7 @@ class _KeywordSearchApi implements KeywordSearchApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) =>
-            SearchedStudyInfo.fromJson(i as Map<String, dynamic>))
-        .toList();
-    return value;
-  }
-
-  @override
-  Future<int> count(String keyword) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'keyword': keyword};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/studies/count',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
-    final value = _result.data!;
+    final value = CreatedStudyInfo.fromJson(_result.data!);
     return value;
   }
 

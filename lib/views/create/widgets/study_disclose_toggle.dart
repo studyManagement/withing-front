@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
-import '../../../view_models/new_study/new_study_view_model.dart';
+import '../../../view_models/create/create_study_viewmodel.dart';
 
 class StudyDiscloseToggle extends StatelessWidget {
   const StudyDiscloseToggle({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<NewStudyViewModel>(context);
+    final viewModel = Provider.of<CreateStudyViewModel>(context);
     final bool isToggled = viewModel.isStudyDiscloseToggled;
 
     return Padding(
@@ -72,18 +72,23 @@ class StudyDiscloseToggle extends StatelessWidget {
                     onChanged: (value) {
                       if (value != '') viewModel.password = value;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       counterText: '',
-                      border: UnderlineInputBorder(
+                      hintText: '0000',
+                      hintStyle:
+                          Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: AppColors.gray200,
+                              ),
+                      border: const UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.gray150),
                       ),
-                      enabledBorder: UnderlineInputBorder(
+                      enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.gray150),
                       ),
-                      focusedBorder: UnderlineInputBorder(
+                      focusedBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.gray150),
                       ),
-                      focusedErrorBorder: UnderlineInputBorder(
+                      focusedErrorBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.gray150),
                       ),
                     ),

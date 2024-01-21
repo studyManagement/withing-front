@@ -1,19 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'searched_study_list_model.dart';
+part of 'searched_study_info_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$StudyInfoImpl _$$StudyInfoImplFromJson(Map<String, dynamic> json) =>
-    _$StudyInfoImpl(
+_$SearchedStudyInfoImpl _$$SearchedStudyInfoImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SearchedStudyInfoImpl(
       studyId: json['studyId'] as int,
       studyName: json['studyName'] as String,
       max: json['max'] as int,
       headCount: json['headcount'] as int,
       studyImage: json['studyImage'] as String?,
-      categoryList: (json['categoryList'] as List<dynamic>)
+      categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
       regularMeetingId: json['regularMeetingId'] as int?,
@@ -25,14 +26,15 @@ _$StudyInfoImpl _$$StudyInfoImplFromJson(Map<String, dynamic> json) =>
       endTime: json['endTime'] as String,
     );
 
-Map<String, dynamic> _$$StudyInfoImplToJson(_$StudyInfoImpl instance) =>
+Map<String, dynamic> _$$SearchedStudyInfoImplToJson(
+        _$SearchedStudyInfoImpl instance) =>
     <String, dynamic>{
       'studyId': instance.studyId,
       'studyName': instance.studyName,
       'max': instance.max,
       'headcount': instance.headCount,
       'studyImage': instance.studyImage,
-      'categoryList': instance.categoryList,
+      'categories': instance.categories,
       'regularMeetingId': instance.regularMeetingId,
       'gap': instance.gap,
       'day1': instance.day1,

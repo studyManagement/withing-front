@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/new_study/new_study_view_model.dart';
+import '../../../view_models/create/create_study_viewmodel.dart';
 
 class StudyCategorySelector extends StatelessWidget {
   const StudyCategorySelector({
@@ -10,7 +10,7 @@ class StudyCategorySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<NewStudyViewModel>(context);
+    final viewModel = Provider.of<CreateStudyViewModel>(context);
     final List<String> categories = getStudyCategories();
     final List<String> selectedCategories = viewModel.selectedCategories;
 
@@ -63,7 +63,7 @@ class _BadgeMultiSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<NewStudyViewModel>(context);
+    final viewModel = Provider.of<CreateStudyViewModel>(context);
 
     return Wrap(
       spacing: 10,
