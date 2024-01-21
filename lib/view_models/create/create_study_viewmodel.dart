@@ -162,6 +162,7 @@ class CreateStudyViewModel with ChangeNotifier {
   /// create study api
   Future<void> createStudy() async {
     await createImage();
+
     await _studyCreateService.callCreateApi(
       _studyName,
       _studyMemberCount,
@@ -217,4 +218,8 @@ String getErrorText(NewStudyType type, bool isValidation) {
   } else {
     return '유효하지 않은 입력입니다.';
   }
+}
+
+List<String> convertIndiciesToElements(List<int> indicies) {
+  return indicies.map((index) => getStudyCategories()[index]).toList();
 }

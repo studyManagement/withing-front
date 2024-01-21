@@ -15,7 +15,7 @@ abstract class KeywordSearchApi {
   Future<List<SearchedStudyInfo>> search(
     @Query("keyword") String keyword,
     @Query("sort") String sort,
-    @Query("index") String index,
+    @Query("index") int index,
   );
 
   @GET("/studies/count")
@@ -33,7 +33,7 @@ class KeywordSearchService {
   Future<List<SearchedStudyInfo>> callSearchApi(
     String keyword,
     String sort,
-    String index,
+    int index,
   ) async {
     try {
       debugPrint('[API]');

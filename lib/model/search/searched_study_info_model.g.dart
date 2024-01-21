@@ -14,14 +14,11 @@ _$SearchedStudyInfoImpl _$$SearchedStudyInfoImplFromJson(
       max: json['max'] as int,
       headCount: json['headcount'] as int,
       studyImage: json['studyImage'] as String?,
-      categories: (json['categories'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      categories:
+          (json['categories'] as List<dynamic>).map((e) => e as int).toList(),
       regularMeetingId: json['regularMeetingId'] as int?,
       gap: json['gap'] as int,
-      day1: json['day1'] as int,
-      day2: json['day2'] as int,
-      day3: json['day3'] as int,
+      days: (json['days'] as List<dynamic>).map((e) => e as int).toList(),
       startTime: json['startTime'] as String,
       endTime: json['endTime'] as String,
     );
@@ -37,9 +34,7 @@ Map<String, dynamic> _$$SearchedStudyInfoImplToJson(
       'categories': instance.categories,
       'regularMeetingId': instance.regularMeetingId,
       'gap': instance.gap,
-      'day1': instance.day1,
-      'day2': instance.day2,
-      'day3': instance.day3,
+      'days': instance.days,
       'startTime': instance.startTime,
       'endTime': instance.endTime,
     };
