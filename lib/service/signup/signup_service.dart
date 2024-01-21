@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/common/requester/network_exception.dart';
 import 'package:withing/model/signup/signup_model.dart';
@@ -28,13 +29,16 @@ class SignupService {
   final SignupApi _signupApi;
   SignupService(this._signupApi);
 
-  Future<SignupModel> signup(String provider, String nickname,
-      String socialUUID, String introduce) async {
+  Future<void> signup(String provider, String nickname, String socialUUID,
+      String introduce) async {
     try {
-      final response =
+      final token =
           await _signupApi.signup(provider, nickname, socialUUID, introduce);
 
-      return response;
+      Authentication.from(token.accessToken, token.refreshToken);
+      Authentication.instance.save();
+
+      return;
     } on NetworkException catch (e) {
       rethrow;
     }

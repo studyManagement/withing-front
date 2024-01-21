@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:retrofit/http.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/exception/signin/user_not_found_exception.dart';
 import 'package:withing/model/signin/signin_model.dart';
@@ -23,10 +23,9 @@ class SigninService {
   Future<void> signin(String accessToken) async {
     try {
       final SigninModel token = await _signinApi.signin(accessToken);
-      await const FlutterSecureStorage()
-          .write(key: 'access_token', value: token.accessToken);
-      await const FlutterSecureStorage()
-          .write(key: 'refresh_token', value: token.refreshToken);
+
+      Authentication.from(token.accessToken, token.refreshToken);
+      Authentication.instance.save();
 
       return;
     } on ApiException catch (e) {
