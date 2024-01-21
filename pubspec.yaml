@@ -38,6 +38,8 @@ dependencies:
   json_serializable: ^6.7.1
   freezed: ^2.4.6
   get_it: ^7.6.6
+  jwt_decoder: ^2.0.1
+  image_picker: ^1.0.7
 
 
 dev_dependencies:
@@ -53,5 +55,7 @@ flutter:
   uses-material-design: true
   assets:
     - asset/
+    - asset/search_category/
+    - asset/study_manage/
     - .local.env
 

@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/requester/api_exception.dart';
+import 'package:withing/exception/signin/user_not_found_exception.dart';
 import 'package:withing/model/signin/signin_model.dart';
 
 part 'signin_service.g.dart';
@@ -9,7 +11,7 @@ part 'signin_service.g.dart';
 abstract class SigninApi {
   factory SigninApi(Dio dio, {String baseUrl}) = _SigninApi;
 
-  @POST("/users/login/kakao")
+  @POST("/login/kakao")
   @Headers({'X-Exclude-Access-Token': 'true'})
   Future<SigninModel> signin(@Header("Authorization") String accessToken);
 }
@@ -18,12 +20,19 @@ class SigninService {
   final SigninApi _signinApi;
   SigninService(this._signinApi);
 
-  Future<String> signin(String accessToken) async {
+  Future<void> signin(String accessToken) async {
     try {
-      final response = await _signinApi.signin(accessToken);
+      final SigninModel token = await _signinApi.signin(accessToken);
 
-      return '';
+      Authentication.from(token.accessToken, token.refreshToken);
+      Authentication.instance.save();
+
+      return;
     } on ApiException catch (e) {
+      if (e.code == 404) {
+        throw UserNotFoundException();
+      }
+
       rethrow;
     }
   }

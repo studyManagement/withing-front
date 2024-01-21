@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/common/theme/app/app_fonts.dart';
 import 'package:withing/views/search/widgets/gray100_divider.dart';
-import '../../../common/components/study_categories.dart';
+import '../../../common/components/study_categories_widget.dart';
 
 class StudyList extends StatelessWidget {
   const StudyList({super.key});
@@ -34,14 +34,14 @@ class StudyCard extends StatelessWidget {
         context.push('/studies/1');
       },
       child: const Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
             StudyHeader(),
             SizedBox(height: 10),
             StudyDetails(),
             SizedBox(height: 12),
-            StudyCategories(
+            StudyCategoriesWidget(
               categories: [
                 "카테고리1",
                 "카테고리2",
@@ -95,7 +95,7 @@ class StudyDetails extends StatelessWidget {
   static const details = [
     ("참여 인원", "15/15"),
     ("정기 모임", "매주 목요일 21:00"),
-    ("다음 만남", "2023. 08. 03 (목) 21:00"),
+    // ("다음 만남", "2023. 08. 03 (목) 21:00"),
   ];
 
   const StudyDetails({

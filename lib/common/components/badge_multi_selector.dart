@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app/app_colors.dart';
 
 class BadgeMultiSelector extends StatefulWidget {
   final List<String> options;
@@ -58,7 +59,9 @@ class _Badge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: ShapeDecoration(
-        color: isSelected ? const Color(0xFF1F3258) : const Color(0xFFF4F7FC),
+        color: isSelected
+            ? Theme.of(context).colorScheme.primary
+            : AppColors.gray100,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       ),
       child: Row(
@@ -66,14 +69,10 @@ class _Badge extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            text,
-            style: TextStyle(
-              color: isSelected ? Colors.white : const Color(0xFF6E7986),
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          Text(text,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: isSelected ? Colors.white : AppColors.gray500,
+                  )),
         ],
       ),
     );
