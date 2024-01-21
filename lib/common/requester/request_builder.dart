@@ -5,7 +5,6 @@ import 'package:withing/common/requester/interceptor/response_interceptor.dart';
 
 import '../const/environment.dart';
 import '../environment/environment.dart';
-import 'interceptor/auth_interceptor.dart';
 
 class RequestBuilder {
   static final BaseOptions _options = BaseOptions(
@@ -21,7 +20,6 @@ class RequestBuilder {
     if (!_isInitialize) {
       _dio.interceptors.add(AuthInterceptor());
       _dio.interceptors.add(CustomLogInterceptor());
-      _dio.interceptors.add(AuthInterceptor());
       _dio.interceptors.add(ResponseInterceptor());
       _isInitialize = true;
     }
