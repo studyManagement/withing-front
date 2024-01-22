@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
@@ -5,10 +6,11 @@ import 'package:withing/model/study/regular_meeting_model.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
 import 'package:withing/service/study/study_service.dart';
+
 import '../../common/requester/network_exception.dart';
 import '../../model/study/notice_model.dart';
 
-import '../../common/requester/network_exception.dart';
+
 
 final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
@@ -158,6 +160,7 @@ class StudyViewModel extends ChangeNotifier {
   List<StudyView> studyViewsInSelectedDay = [];
 
   var study;
+
   List<String> categories = List.empty();
 
   bool hasNotice = false;
@@ -221,6 +224,7 @@ class StudyViewModel extends ChangeNotifier {
   }
 
 
+
   // Future<void> fetchNotices(int studyId) async {
   //   if(notices.isEmpty){
   //     notices = await _service.fetchNotices(studyId);
@@ -231,6 +235,7 @@ class StudyViewModel extends ChangeNotifier {
   //     }
   //   }
   // }
+
 
   Future<void> fetchCategories(int studyId) async {
     var categoryModel = await _service.fetchStudyCategory(studyId);

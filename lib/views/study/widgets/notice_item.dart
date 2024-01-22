@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+
 import '../../../common/theme/app/app_colors.dart';
 
 class NoticeItem extends StatelessWidget {
@@ -28,21 +29,22 @@ class NoticeItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Offstage(
-                  offstage: (isNew(createdAt)) ? false : true,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                    decoration: BoxDecoration(
-                        color: AppColors.red100,
-                        borderRadius: BorderRadius.circular(4)),
-                    child: Text(
-                      '신규',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(color: AppColors.red400),
-                    ),
+                offstage: (isNew(createdAt)) ? false : true,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                      color: AppColors.red100,
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Text(
+                    '신규',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: AppColors.red400),
                   ),
+                ),
               ),
               Text(
                 title,
