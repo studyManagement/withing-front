@@ -33,7 +33,7 @@ class StudyScreen extends StatelessWidget {
          //    data.fetchNotices(studyId);
               if (data.study == null) return Container();
           return Scaffold(
-            appBar: StudyMainAppBar(context, data.study.leaderId == Authentication.instance.userId),
+            appBar: StudyMainAppBar(context, data.study.leaderId ==1),
             body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -5,8 +5,7 @@ import '../../../common/theme/app/app_colors.dart';
 class RegularMeetingSelector extends StatefulWidget {
   final int itemIdx;
   bool isSelected;// 선택된 아이템 요일 인덱스
-  // final int itemCount;
-  // final int maxCount;
+
 
   RegularMeetingSelector(
       {super.key,required this.itemIdx, required this.isSelected});
@@ -16,7 +15,7 @@ class RegularMeetingSelector extends StatefulWidget {
 }
 
 class _RegularMeetingSelectorState extends State<RegularMeetingSelector> {
-  List<String> selected=[];
+  int selectedCnt = 0;
   List<String> days = ["월", "화", "수", "목", "금", "토", "일"];
 
 
@@ -28,15 +27,18 @@ class _RegularMeetingSelectorState extends State<RegularMeetingSelector> {
   Widget build(BuildContext context) {
     return GestureDetector(
             onTap:(){
-              setState(() {
-               if(widget.isSelected){
-                 widget.isSelected = false;
-
-               }
-               else{
-                 widget.isSelected = true;
-               }
-              });
+              if(selectedCnt < 4) {
+                setState(() {
+                  if (widget.isSelected) {
+                    widget.isSelected = false;
+                    selectedCnt--;
+                  }
+                  else {
+                    widget.isSelected = true;
+                    selectedCnt++;
+                  }
+                });
+              }
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
