@@ -25,54 +25,48 @@ class StudyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) =>
-            StudyViewModel(getIt<StudyService>()),
-        child: Consumer<StudyViewModel>(
-            builder: (context, data, child) {
-             data.fetchStudyInfo(studyId);
-         //    data.fetchNotices(studyId);
-              if (data.study == null) return Container();
+        create: (_) => StudyViewModel(getIt<StudyService>()),
+        child: Consumer<StudyViewModel>(builder: (context, data, child) {
+          data.fetchStudyInfo(studyId);
+          if (data.study == null) return Container();
           return Scaffold(
-            appBar: StudyMainAppBar(context, data.study.leaderId ==1),
+            appBar: StudyMainAppBar(context, data.study.leaderId == 1),
             body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                const Header(),
-            const SizedBox(height: 16),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  data.study.explanation,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodySmall,
-                )),
-            const SizedBox(height: 20),
-            const Divider(
-              thickness: 1,
-              indent: 16,
-              endIndent: 16,
-              color: AppColors.gray100,
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(width: 16),
-                StudyMainButtons(
-                  onTap: () {},
-                  title: "Schedule",
-                  subtitle: "일정",
-                  image: Image.asset('asset/schedule.png'),
+                const Header(),
+                const SizedBox(height: 16),
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      data.study.explanation,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    )),
+                const SizedBox(height: 20),
+                const Divider(
+                  thickness: 1,
+                  indent: 16,
+                  endIndent: 16,
+                  color: AppColors.gray100,
                 ),
-                const SizedBox(width: 9),
-                StudyMainButtons(
-                  onTap: () {},
-                  title: "Community",
-                  subtitle: "게시판",
-                  image: Image.asset('asset/community.png')),
-                  const SizedBox(width: 16),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(width: 16),
+                    StudyMainButtons(
+                      onTap: () {},
+                      title: "Schedule",
+                      subtitle: "일정",
+                      image: Image.asset('asset/schedule.png'),
+                    ),
+                    const SizedBox(width: 9),
+                    StudyMainButtons(
+                        onTap: () {},
+                        title: "Community",
+                        subtitle: "게시판",
+                        image: Image.asset('asset/community.png')),
+                    const SizedBox(width: 16),
                   ],
                 ),
                 const SizedBox(height: 20),

@@ -10,7 +10,8 @@ import 'notice_item.dart';
 
 class Notice extends StatelessWidget {
   final bool hasNotice;
-  const Notice({super.key,required this.hasNotice});
+
+  const Notice({super.key, required this.hasNotice});
 
   @override
   Widget build(BuildContext context) {
@@ -20,73 +21,64 @@ class Notice extends StatelessWidget {
 
     return Expanded(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 10),
-              child: Row(
-                children: [
-                  Text(
-                    '공지',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .titleLarge,
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      print("공지글 전체 보기 페이지로 이동");
-                    },
-                    child: Offstage(
-                      offstage: (hasNotice) ? false : true,
-                      child: Text(
-                        '전체보기',
-                        textAlign: TextAlign.right,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: [
+              Text(
+                '공지',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  print("공지글 전체 보기 페이지로 이동");
+                },
+                child: Offstage(
+                  offstage: (hasNotice) ? false : true,
+                  child: Text(
+                    '전체보기',
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.gray400,
                           fontSize: 13.0,
                         ),
-                      ),
-                    ),
                   ),
-                ],
+                ),
               ),
-            ),
-            (hasNotice)
-                ? _NoticeCarousel(notices)
-                : Center(
-              child: Column(children: [
-                const SizedBox(height: 70),
-                Image.asset(
-                  'asset/exclamation.png',
-                  width: 40,
-                  height: 40,
-                ),
-                const SizedBox(height: 12.0),
-                Text(
-                  "등록된 공지가 없어요.",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: AppColors.gray400),
-                ),
-              ]),
-            ),
-          ],
-        )
-    );
+            ],
+          ),
+        ),
+        (hasNotice)
+            ? _NoticeCarousel(notices)
+            : Center(
+                child: Column(children: [
+                  const SizedBox(height: 70),
+                  Image.asset(
+                    'asset/exclamation.png',
+                    width: 40,
+                    height: 40,
+                  ),
+                  const SizedBox(height: 12.0),
+                  Text(
+                    "등록된 공지가 없어요.",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall
+                        ?.copyWith(color: AppColors.gray400),
+                  ),
+                ]),
+              ),
+      ],
+    ));
   }
 }
 
 class _NoticeCarousel extends StatefulWidget {
   const _NoticeCarousel(this.notices);
+
   final List<NoticeModel> notices;
 
   @override
@@ -95,7 +87,7 @@ class _NoticeCarousel extends StatefulWidget {
 
 class _NoticeCarouselState extends State<_NoticeCarousel> {
   final CarouselController carouselController =
-  CarouselController(); // 캐러셀 컨트롤러
+      CarouselController(); // 캐러셀 컨트롤러
   int currentIndex = 0; // 캐러셀 인디케이터 인덱스
 
   @override
@@ -107,7 +99,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
         CarouselSlider.builder(
           options: CarouselOptions(
             enableInfiniteScroll: false,
-            onPageChanged: ((index, reason){
+            onPageChanged: ((index, reason) {
               setState(() {
                 currentIndex = index;
               });
@@ -117,16 +109,16 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           ),
           itemCount: (numOfNotice / 3).ceil(),
           itemBuilder: (context, index, realIndex) {
-                final int startIndex = index * 3;
-                final int endIndex = (index + 1) * 3;
-                final List<NoticeModel> sublist = widget.notices.sublist(
-                  startIndex,
-                  endIndex > numOfNotice ? numOfNotice : endIndex,
-                );
-                return _buildCarouselItem(sublist);
-                },
-    // 한 슬라이드에 공지글 최대 3개까지 표시.
-            ),
+            final int startIndex = index * 3;
+            final int endIndex = (index + 1) * 3;
+            final List<NoticeModel> sublist = widget.notices.sublist(
+              startIndex,
+              endIndex > numOfNotice ? numOfNotice : endIndex,
+            );
+            return _buildCarouselItem(sublist);
+          },
+          // 한 슬라이드에 공지글 최대 3개까지 표시.
+        ),
         slideIndicator(currentIndex, numOfNotice),
       ],
     );

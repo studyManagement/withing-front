@@ -78,6 +78,7 @@ class StudyService {
     return categoryData;
   }
 
+
   Future<List<NoticeModel>> fetchNotices(int studyId) async {
     try {
       final List<NoticeModel> notices = await _studyApi.fetchNotices(studyId);
@@ -93,4 +94,5 @@ class StudyService {
       rethrow;
     }
   }
+
 }
