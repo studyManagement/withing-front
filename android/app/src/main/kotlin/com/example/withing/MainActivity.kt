@@ -1,4 +1,4 @@
-package com.example.withing
+package kr.withing
 
 import io.flutter.embedding.android.FlutterActivity
 
