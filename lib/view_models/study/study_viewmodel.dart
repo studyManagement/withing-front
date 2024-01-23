@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
@@ -10,8 +9,6 @@ import 'package:withing/service/study/study_service.dart';
 import '../../common/requester/network_exception.dart';
 import '../../model/study/notice_model.dart';
 
-
-
 final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
 class StudyRegularMeeting {
@@ -21,8 +18,8 @@ class StudyRegularMeeting {
   String startTime;
   String endTime;
 
-  StudyRegularMeeting(
-      this.studyId, this.gap, this.days, this.startTime, this.endTime);
+  StudyRegularMeeting(this.studyId, this.gap, this.days, this.startTime,
+      this.endTime);
 
   factory StudyRegularMeeting.from(RegularMeetingModel model) {
     return StudyRegularMeeting(
@@ -86,27 +83,27 @@ class StudyView {
   String studyName;
   int max;
   int headcount;
-  int isPrivate;
-  int isFinished;
   String explanation;
-  DateTime createdDate;
-  DateTime deadline;
   int leaderId;
   String? studyImage;
+  List<String> categories;
+  int gap;
+  List<int>? days;
+  String startTime;
+
   List<StudyRegularMeeting> regularMeetings = [];
 
-  StudyView(
-      this.studyId,
+  StudyView(this.studyId,
       this.studyName,
       this.max,
       this.headcount,
-      this.isPrivate,
-      this.isFinished,
       this.explanation,
-      this.createdDate,
-      this.deadline,
       this.leaderId,
-      this.studyImage);
+      this.studyImage,
+      this.categories,
+      this.gap,
+      this.days,
+      this.startTime,);
 
   void addRegularMeeting(StudyRegularMeeting regularMeeting) {
     regularMeetings.add(regularMeeting);
@@ -114,17 +111,18 @@ class StudyView {
 
   factory StudyView.from(StudyModel model) {
     return StudyView(
-        model.studyId,
-        model.studyName,
-        model.max,
-        model.headcount,
-        model.isPrivate,
-        model.isFinished,
-        model.explanation,
-        model.createdDate,
-        model.deadline,
-        model.leaderId,
-        model.studyImage);
+      model.studyId,
+      model.studyName,
+      model.max,
+      model.headcount,
+      model.explanation,
+      model.leaderId,
+      model.studyImage,
+      model.categories,
+      model.gap,
+      model.days,
+      model.startTime,
+    );
   }
 
   String getNextDay(DateTime selectedDay) {
@@ -145,10 +143,9 @@ class StudyView {
 
   @override
   String toString() {
-    return "StudyView(studyId=$studyId,studyName=$studyName,max=$max,headcount=$headcount,isPrivate=$isPrivate,isFinished=$isFinished,explanation=$explanation,createdDate=$createdDate,deadline=$deadline,leaderId=$leaderId,regularMeetings=$regularMeetings)";
+    return "StudyView(studyId=$studyId,studyName=$studyName,max=$max,headcount=$headcount,explanation=$explanation,leaderId=$leaderId,studyImage=$studyImage,categories=$categories,gap=$gap,days=$days,startTime=$startTime,regularMeetings=$regularMeetings)";
   }
 }
-
 
 class StudyViewModel extends ChangeNotifier {
   final StudyService _service;
@@ -160,8 +157,8 @@ class StudyViewModel extends ChangeNotifier {
   List<StudyView> studyViewsInSelectedDay = [];
 
   var study;
-
-  List<String> categories = List.empty();
+  List<int> days=[];
+  String regularMeeting = '';
 
   bool hasNotice = false;
   int numOfNotices = 0;
@@ -188,9 +185,9 @@ class StudyViewModel extends ChangeNotifier {
     return Future(() async {
       try {
         RegularMeetingModel regularMeetingModel =
-            await _service.fetchRegularMeeting(studyView.studyId);
+        await _service.fetchRegularMeeting(studyView.studyId);
         StudyRegularMeeting regularMeeting =
-            StudyRegularMeeting.from(regularMeetingModel);
+        StudyRegularMeeting.from(regularMeetingModel);
 
         studyView.addRegularMeeting(regularMeeting);
         return studyView;
@@ -209,9 +206,10 @@ class StudyViewModel extends ChangeNotifier {
     if (study == null) {
       try {
         study = await _service.fetchStudyInfo(studyId);
-        if(notices.isEmpty){
+        if(study.days != null) days = study.days;
+        if (notices.isEmpty) {
           notices = await _service.fetchNotices(studyId);
-          if(notices.isNotEmpty){
+          if (notices.isNotEmpty) {
             hasNotice = true;
             numOfNotices = notices.length;
             notifyListeners();
@@ -223,28 +221,49 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
-
-
-  // Future<void> fetchNotices(int studyId) async {
-  //   if(notices.isEmpty){
-  //     notices = await _service.fetchNotices(studyId);
-  //     if(notices.isNotEmpty){
-  //       hasNotice = true;
-  //       numOfNotices = notices.length;
-  //       notifyListeners();
-  //     }
-  //   }
-  // }
-
-
-  Future<void> fetchCategories(int studyId) async {
-    var categoryModel = await _service.fetchStudyCategory(studyId);
-    if (categoryModel.category1 != null)
-      categories.add(categoryModel.category1!);
-    if (categoryModel.category2 != null)
-      categories.add(categoryModel.category2!);
-    if (categoryModel.category3 != null)
-      categories.add(categoryModel.category3!);
-
+ String getRegularMeetingString() {
+    String regularMeeting='';
+    if (study.gap == 0) {
+      regularMeeting = '매일 ${study.startTime.substring(0, 5)}';
+    }
+    else if (study.gap == 1) {
+      regularMeeting = '매주 ';
+      int cnt = 0 ;
+      for (int i = 0; i < days.length; i++) {
+        if (cnt<days.length){
+          regularMeeting = '$regularMeeting${_weekString[days[i]]}, ';
+          cnt++;
+        }
+        else{
+          regularMeeting = '$regularMeeting${_weekString[days[i]]} ';
+        }
+      }
+    }
+    else {
+      print('잘못된 정기모임 형식');
+    }
+    return regularMeeting;
   }
+
+// Future<void> fetchNotices(int studyId) async {
+//   if(notices.isEmpty){
+//     notices = await _service.fetchNotices(studyId);
+//     if(notices.isNotEmpty){
+//       hasNotice = true;
+//       numOfNotices = notices.length;
+//       notifyListeners();
+//     }
+//   }
+// }
+
+// Future<void> fetchCategories(int studyId) async {
+//   var categoryModel = await _service.fetchStudyCategory(studyId);
+//   if (categoryModel.category1 != null)
+//     categories.add(categoryModel.category1!);
+//   if (categoryModel.category2 != null)
+//     categories.add(categoryModel.category2!);
+//   if (categoryModel.category3 != null)
+//     categories.add(categoryModel.category3!);
+//
+// }
 }

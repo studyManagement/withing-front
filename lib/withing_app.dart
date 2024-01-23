@@ -25,7 +25,7 @@ class WithingApp extends StatelessWidget {
         }),
     GoRoute(
         path: '/my/profile', builder: (context, state) => MyProfileScreen()),
-    GoRoute(path: '/my/studies', builder: (context, state) => MyStudyScreen()),
+    GoRoute(path: '/my/studies', builder: (context, state) => const MyStudyScreen()),
     GoRoute(
       path: '/search/result',
       builder: (context, state) => KeywordSearchScreen(),
@@ -37,23 +37,23 @@ class WithingApp extends StatelessWidget {
     GoRoute(
         path: '/studies/:studyId',
         builder: (context, state) =>
-            StudyScreen(studyId: int.parse(state.pathParameters['studyId']!)),
-        routes: [
-          GoRoute(
-              path: 'manage',
-              builder: (context, state) => const StudyManageScreen(),
-              routes: [
-                GoRoute(
-                    path: 'update',
-                    builder: (context, state) => const StudyEditScreen()),
-                GoRoute(
-                    path: 'regular_meeting',
-                    builder: (context, state) => SetRegularMeetingScreen()),
-              ]),
-          GoRoute(
-              path: 'member',
-              builder: (context, state) => const StudyMemberScreen())
-        ]),
+            StudyScreen(studyId: int.parse(state.pathParameters['studyId']!))),
+    GoRoute(
+      path: '/studies/:studyId/member',
+      builder: (context, state) => const StudyMemberScreen(),
+    ),
+    GoRoute(
+      path: '/studies/:studyId/manage',
+      builder: (context, state) => StudyManageScreen(studyId: int.parse(state.pathParameters['studyId']!))),
+    GoRoute(
+      path: '/studies/:studyId/manage/edit',
+      builder: (context, state) =>  StudyEditScreen(studyId: int.parse(state.pathParameters['studyId']!)),
+    ),
+    GoRoute(
+      path: '/studies/:studyId/manage/regular_meeting',
+      builder: (context, state) => const SetRegularMeetingScreen(),
+    ),
+
   ]);
 
   @override
