@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "916269370069",
-    "project_id": "my-app-55315",
-    "storage_bucket": "my-app-55315.appspot.com"
+    "project_number": "903596645777",
+    "project_id": "withing-fc90c",
+    "storage_bucket": "withing-fc90c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:916269370069:android:4e0ea093f3fcd95854705c",
+        "mobilesdk_app_id": "1:903596645777:android:20065d61fdc2a147138e30",
         "android_client_info": {
-          "package_name": "com.example.withing"
+          "package_name": "kr.withing"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "916269370069-5l5c32a8e0t3rc8voo6pcs8nfgd1r4ei.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCyTGe36HxIeoSPJYnmjkOpt4hBg4bighE"
+          "current_key": "AIzaSyDxwNLehkX56glqmwYWUssbFmwMBeA-tmk"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "916269370069-5l5c32a8e0t3rc8voo6pcs8nfgd1r4ei.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
