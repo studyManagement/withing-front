@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../../common/theme/app/app_colors.dart';
 import 'package:go_router/go_router.dart';
+import '../../../common/theme/app/app_colors.dart';
 
-AppBar StudyMainAppBar(BuildContext context, bool isLeader) {
+AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId){
   return AppBar(
     backgroundColor: AppColors.white,
     leading: IconButton(
@@ -30,7 +29,7 @@ AppBar StudyMainAppBar(BuildContext context, bool isLeader) {
             height: 32,
           ),
           onPressed: () => {
-            context.push('/studies/:studyId/manage')
+            context.push('/studies/$studyId/manage')
           },
         ),
       ),

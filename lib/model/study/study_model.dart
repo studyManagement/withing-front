@@ -10,14 +10,13 @@ class StudyModel with _$StudyModel {
     required String studyName,
     required int max,
     required int headcount,
-    required int isPrivate,
-    required int isFinished,
     required String explanation,
-    required DateTime createdDate,
-    required DateTime deadline,
     required int leaderId,
     required String? studyImage,
-    required String? regularMeeting,
+    required List<String> categories,
+    required int gap,
+    required List<int>? days,
+    required String startTime,
   }) = _StudyModel;
 
   factory StudyModel.fromJson(Map<String, dynamic> json) =>

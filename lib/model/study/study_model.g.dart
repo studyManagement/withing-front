@@ -12,14 +12,15 @@ _$StudyModelImpl _$$StudyModelImplFromJson(Map<String, dynamic> json) =>
       studyName: json['studyName'] as String,
       max: json['max'] as int,
       headcount: json['headcount'] as int,
-      isPrivate: json['isPrivate'] as int,
-      isFinished: json['isFinished'] as int,
       explanation: json['explanation'] as String,
-      createdDate: DateTime.parse(json['createdDate'] as String),
-      deadline: DateTime.parse(json['deadline'] as String),
       leaderId: json['leaderId'] as int,
       studyImage: json['studyImage'] as String?,
-      regularMeeting: json['regularMeeting'] as String?,
+      categories: (json['categories'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      gap: json['gap'] as int,
+      days: (json['days'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      startTime: json['startTime'] as String,
     );
 
 Map<String, dynamic> _$$StudyModelImplToJson(_$StudyModelImpl instance) =>
@@ -28,12 +29,11 @@ Map<String, dynamic> _$$StudyModelImplToJson(_$StudyModelImpl instance) =>
       'studyName': instance.studyName,
       'max': instance.max,
       'headcount': instance.headcount,
-      'isPrivate': instance.isPrivate,
-      'isFinished': instance.isFinished,
       'explanation': instance.explanation,
-      'createdDate': instance.createdDate.toIso8601String(),
-      'deadline': instance.deadline.toIso8601String(),
       'leaderId': instance.leaderId,
       'studyImage': instance.studyImage,
-      'regularMeeting': instance.regularMeeting,
+      'categories': instance.categories,
+      'gap': instance.gap,
+      'days': instance.days,
+      'startTime': instance.startTime,
     };
