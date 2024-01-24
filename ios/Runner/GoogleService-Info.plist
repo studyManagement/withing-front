@@ -2,33 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>916269370069-8jkf7k3vhnqh7kurfjdrt2duslno21uq.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.916269370069-8jkf7k3vhnqh7kurfjdrt2duslno21uq</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD5pUmESWM1HfYDajLEgZmir2auTHk3uBM</string>
+	<string>AIzaSyDDU1uRGD_iiw59MuteW2AfmTWsAILUt9U</string>
 	<key>GCM_SENDER_ID</key>
-	<string>916269370069</string>
+	<string>903596645777</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.withing</string>
+	<string>kr.withing</string>
 	<key>PROJECT_ID</key>
-	<string>my-app-55315</string>
+	<string>withing-fc90c</string>
 	<key>STORAGE_BUCKET</key>
-	<string>my-app-55315.appspot.com</string>
+	<string>withing-fc90c.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:916269370069:ios:f977c505ae43890b54705c</string>
+	<string>1:903596645777:ios:4f895c90c6a32eb2138e30</string>
 </dict>
 </plist>
