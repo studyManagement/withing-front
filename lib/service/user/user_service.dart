@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 import 'package:withing/common/requester/api_exception.dart';
+import 'package:withing/model/user/token_model.dart';
 import 'package:withing/model/user/user_model.dart';
 
 part 'user_service.g.dart';
@@ -18,6 +19,11 @@ abstract class UserApi {
 
   @GET("/me")
   Future<UserModel> fetchMe();
+
+  @GET("/users/token")
+  @Headers({'X-Exclude-Access-Token': 'true'})
+  @Headers({'X-Include-Refresh-Token': 'true'})
+  Future<TokenModel> fetchRenewToken();
 }
 
 class UserService {
@@ -43,6 +49,14 @@ class UserService {
   Future<UserModel> fetchMe() async {
     try {
       return await _userApi.fetchMe();
+    } on ApiException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<TokenModel> fetchRenewToken() async {
+    try {
+      return await _userApi.fetchRenewToken();
     } on ApiException catch (e) {
       rethrow;
     }
