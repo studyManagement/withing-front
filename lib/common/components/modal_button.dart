@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
+import 'package:withing/common/theme/app/app_fonts.dart';
 
 class ModalButton extends StatelessWidget {
   final Function()? onTap;
@@ -26,10 +27,8 @@ class ModalButton extends StatelessWidget {
             child: Center(
               child: Text(
                 text,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: AppColors.white),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.white, fontWeight: AppFonts.fontWeight600),
                 textAlign: TextAlign.center,
               ),
             ),
