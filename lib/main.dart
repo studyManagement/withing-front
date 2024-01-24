@@ -50,6 +50,5 @@ void main() async {
   await Authentication.initialize();
 
   setupDependencyInjection();
-
   runApp(const WithingApp());
 }

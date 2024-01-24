@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:withing/common/authenticator/authentication_exception.dart';
@@ -32,7 +30,8 @@ class SigninViewModel {
       if (!_context.mounted) return;
       _context.go('/signup/$provider/$socialUUID');
     } on ApiException catch (e) {
-      log('[LOG] ${e.code} ${e.cause}');
+      WithingModal.openDialog(
+          _context, '문제가 발생했어요', e.cause, false, null, null);
     }
   }
 }
