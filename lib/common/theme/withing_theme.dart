@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'theme_resources.dart';
 
+import 'theme_resources.dart';
 
 class WithingTheme {
   static WithingDefaultColors withingDefaultColors =
@@ -9,7 +9,7 @@ class WithingTheme {
   static Color temporaryColor = withingDefaultColors.primaryColor;
 
   static ThemeData withingThemeData = ThemeData(
-    // fontFamily: ,
+    fontFamily: 'Pretendard',
     textTheme: withingTextTheme(
       withingDefaultColors,
       withingDefaultTexts,

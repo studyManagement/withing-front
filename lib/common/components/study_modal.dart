@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
+import 'package:withing/common/theme/app/app_fonts.dart';
 
 import 'modal_button.dart';
 
@@ -21,14 +22,14 @@ class StudyModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> buttons = [
-      ModalButton(onTap: onCancel, text: '취소', backgroundcolor: AppColors.blue200),
+      ModalButton(onTap: onOk, text: '확인', backgroundcolor: AppColors.blue600),
     ];
 
     if (isCancel) {
       buttons.addAll([
         const SizedBox(width: 5),
         ModalButton(
-            onTap: onOk, text: '확인', backgroundcolor: AppColors.red400),
+            onTap: onCancel, text: '취소', backgroundcolor: AppColors.blue200),
       ]);
     }
 
@@ -39,7 +40,11 @@ class StudyModal extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: const TextStyle(
+            fontSize: 16,
+            fontWeight: AppFonts.fontWeight600,
+            height: 1.4,
+            color: AppColors.gray900),
         textAlign: TextAlign.center,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
@@ -48,7 +53,12 @@ class StudyModal extends StatelessWidget {
         height: 40,
         child: Text(
           content,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: const TextStyle(
+            color: AppColors.gray500,
+            fontWeight: AppFonts.fontWeight500,
+            height: 1.5,
+            fontSize: 14,
+          ),
           textAlign: TextAlign.center,
         ),
       ),
