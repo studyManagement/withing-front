@@ -3,13 +3,17 @@ import 'dart:developer';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 import 'package:withing/common/requester/api_exception.dart';
+import 'package:withing/common/requester/api_response.dart';
 import 'package:withing/common/requester/network_exception.dart';
 import 'package:withing/model/study/notice_model.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
 import 'package:withing/model/study/regular_meeting_model.dart';
 import 'package:withing/model/study/study_category_model.dart';
+import 'package:withing/model/study/study_exception.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
+
+import '../../views/study/study_exception_screen.dart';
 
 part 'study_service.g.dart';
 
@@ -31,6 +35,15 @@ abstract class StudyApi {
 
   @GET('/studies/{id}/dashboard/notices')
   Future<List<NoticeModel>> fetchNotices(@Path("id") int id);
+
+  @PATCH('/studies/{id}/finish')
+  Future<StudyModel> finishStudy(@Path('id') int id);
+
+  @PATCH('/studies/{id}/leader/{user_id}')
+  Future<StudyModel> switchLeader(@Path('id') int id, @Path('user_id') int userId);
+
+  @DELETE('/studies/{id}')
+  Future<StudyModel> deleteStudy(@Path('id') int id);
 }
 
 class StudyService {
@@ -64,7 +77,12 @@ class StudyService {
     try {
       final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
       return study;
-    } on NetworkException catch (e) {
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        throw StudyException(e.cause);
+      }
+      rethrow;
+    }on NetworkException catch (e) {
       print(e);
       rethrow;
     }
@@ -91,6 +109,65 @@ class StudyService {
       }
       rethrow;
     } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+
+  Future<StudyModel> finishStudy(int studyId) async {
+    try {
+      final StudyModel study = await _studyApi.finishStudy(studyId);
+      print('Finished studyId: ${study.studyId}');
+      return study;
+    } on ApiException catch(e){
+      if(e.code == 400){ // 이미 종료
+        print(e);
+        rethrow;
+      }
+      else if(e.code == 401){ // accessToken 만료
+        print(e);
+        rethrow;
+      }
+      else if(e.code == 404){ // studyId 오류
+        print(e);
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      print(e.message);
+      rethrow;
+    }
+  }
+
+  Future<StudyModel> deleteStudy(int studyId) async {
+    try {
+      final StudyModel study = await _studyApi.deleteStudy(studyId);
+      print('Removed studyId: ${study.studyId}');
+      return study;
+    } on ApiException catch(e){
+      if(e.code == 404){ // studyId 오류
+        print(e);
+        rethrow;
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      print(e.message);
+      rethrow;
+    }
+  }
+
+  Future<StudyModel> switchLeader(int studyId, int userId) async {
+    try {
+      final StudyModel study = await _studyApi.switchLeader(studyId,userId);
+      print('Switched leaderId: ${study.leaderId}');
+      return study;
+    } on ApiException catch(e){
+      if(e.code == 401){ // accessToken error
+        print(e);
+        rethrow;
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      print(e.message);
       rethrow;
     }
   }

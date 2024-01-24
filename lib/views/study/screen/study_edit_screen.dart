@@ -19,7 +19,7 @@ class StudyEditScreen extends StatelessWidget {
         child: ChangeNotifierProvider(
           create: (_) => StudyViewModel(getIt<StudyService>()),
           child: Consumer<StudyViewModel>(builder: (context, data, child) {
-            data.fetchStudyInfo(studyId);
+            data.fetchStudyInfo(context, studyId);
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,10 +25,10 @@ class StudyScreen extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (_) => StudyViewModel(getIt<StudyService>()),
         child: Consumer<StudyViewModel>(builder: (context, data, child) {
-          data.fetchStudyInfo(studyId);
+          data.fetchStudyInfo(context, studyId);
           if (data.study == null) return Container();
           return Scaffold(
-            appBar:studyMainAppBar(context, data.study.leaderId == 1, studyId),
+            appBar:studyMainAppBar(context, data.study.leaderId == 2, studyId),
             body: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

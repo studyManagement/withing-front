@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../common/theme/app/app_colors.dart';
 
-AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId){
+AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId) {
   return AppBar(
     backgroundColor: AppColors.white,
     leading: IconButton(
@@ -11,9 +11,8 @@ AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId){
         width: 32,
         height: 32,
       ),
-      onPressed: () =>
-      {
-        context.pop()
+      onPressed: () => {
+        if (studyId == -1) {context.go('/home')} else {context.pop()}
       },
     ),
     centerTitle: true,
@@ -28,9 +27,7 @@ AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId){
             width: 32,
             height: 32,
           ),
-          onPressed: () => {
-            context.push('/studies/$studyId/manage')
-          },
+          onPressed: () => {context.push('/studies/$studyId/manage')},
         ),
       ),
     ],
