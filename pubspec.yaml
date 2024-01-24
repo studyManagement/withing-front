@@ -41,6 +41,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   image_picker: ^1.0.7
   bottom_picker: ^2.3.3
+  fluttertoast: ^8.0.8
 
 
 dev_dependencies:

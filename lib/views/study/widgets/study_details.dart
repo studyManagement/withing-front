@@ -36,7 +36,7 @@ class StudyDetails extends StatelessWidget {
                 width: 16,
                 height: 16,
               ),
-              onTap: () => {context.push('/studies/:studyId/member')},
+              onTap: () => {context.push('/studies/${vm.study.studyId}/member')},
             ),
           ],
         ),

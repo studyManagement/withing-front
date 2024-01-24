@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
 import 'package:withing/model/study/regular_meeting_model.dart';
+import 'package:withing/model/study/study_exception.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
 import 'package:withing/service/study/study_service.dart';
+import 'package:withing/views/study/study_exception_screen.dart';
 
 import '../../common/requester/network_exception.dart';
 import '../../model/study/notice_model.dart';
@@ -159,6 +161,7 @@ class StudyViewModel extends ChangeNotifier {
   var study;
   List<int> days=[];
   String regularMeeting = '';
+  int newLeaderId =0;
 
   bool hasNotice = false;
   int numOfNotices = 0;
@@ -202,7 +205,7 @@ class StudyViewModel extends ChangeNotifier {
     weekString = _weekString[dateTime.weekday - 1];
   }
 
-  Future<void> fetchStudyInfo(int studyId) async {
+  Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
     if (study == null) {
       try {
         study = await _service.fetchStudyInfo(studyId);
@@ -215,10 +218,32 @@ class StudyViewModel extends ChangeNotifier {
             notifyListeners();
           }
         }
-      } on NetworkException catch (e) {
+      } on StudyException catch(e){
+        print(e.cause);
+        if(!context.mounted) return;
+        navigateToStudyExceptionScreen(context);
+
+      }
+      on NetworkException catch (e) {
         print(e);
       }
     }
+  }
+
+  Future<void> finishStudy(int studyId) async{
+    await _service.finishStudy(studyId);
+    notifyListeners();
+  }
+
+  Future<void> deleteStudy(int studyId) async{
+    await _service.deleteStudy(studyId);
+    notifyListeners();
+  }
+
+  Future<void> switchLeader(int studyId, int userId) async{
+     final studyModel = await _service.switchLeader(studyId,userId);
+     newLeaderId = studyModel.leaderId;
+    notifyListeners();
   }
 
  String getRegularMeetingString() {
@@ -240,9 +265,17 @@ class StudyViewModel extends ChangeNotifier {
       }
     }
     else {
-      print('잘못된 정기모임 형식');
+      regularMeeting = '미등록';
     }
     return regularMeeting;
+  }
+
+  void navigateToStudyExceptionScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const StudyExceptionScreen()),
+    );
   }
 
 // Future<void> fetchNotices(int studyId) async {
