@@ -20,7 +20,8 @@ class KakaoAuthentication implements Authenticator {
 
       return token.accessToken;
     } on KakaoAuthException catch (e) {
-      throw AuthenticationException(e.errorDescription.toString());
+      throw AuthenticationException(
+          '[${await KakaoSdk.origin}] ${e.errorDescription.toString()}');
     }
   }
 
