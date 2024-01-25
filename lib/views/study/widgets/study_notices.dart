@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:withing/view_models/study/study_viewmodel.dart';
@@ -18,7 +19,6 @@ class Notice extends StatelessWidget {
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
     // List<NoticeModel> notices = vm.notices;
-
     return Expanded(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +34,7 @@ class Notice extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  print("공지글 전체 보기 페이지로 이동");
+                  context.push('/studies/${vm.study.studyId}/board/notice');
                 },
                 child: Offstage(
                   offstage: (hasNotice) ? false : true,

@@ -215,15 +215,14 @@ class StudyViewModel extends ChangeNotifier {
         if(study.days != null) days = study.days;
         if(study.startTime != null) startTime = study.startTime;
         await fetchNotices(studyId);
+        notifyListeners();
       } on StudyException catch(e){ // 스터디가 없는 경우
-        print(e.cause);
         if(!context.mounted) return;
         navigateToStudyExceptionScreen(context);
       }
       on NetworkException catch (e) {
         print(e);
       }
-      notifyListeners();
     }
   }
 
