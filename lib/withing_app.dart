@@ -20,7 +20,14 @@ class WithingApp extends StatelessWidget {
     return GoRouter(
         redirect: (BuildContext context, GoRouterState state) {
           bool isAuthentication = Authentication.state.isAuthentication;
-          return (isAuthentication) ? '/home' : '/';
+
+          if (!isAuthentication &&
+              (state.matchedLocation != '/' &&
+                  !state.matchedLocation.startsWith('/signup/'))) {
+            return '/';
+          }
+
+          return null;
         },
         initialLocation:
             (Authentication.state.isAuthentication) ? '/home' : '/',
