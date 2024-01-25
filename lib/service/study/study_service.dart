@@ -83,7 +83,6 @@ class StudyService {
       }
       rethrow;
     }on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
   }

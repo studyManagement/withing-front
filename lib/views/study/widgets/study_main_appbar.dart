@@ -6,11 +6,7 @@ AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId) {
   return AppBar(
     backgroundColor: AppColors.white,
     leading: IconButton(
-      icon: Image.asset(
-        'asset/arrowback.png',
-        width: 32,
-        height: 32,
-      ),
+      icon: const Icon(Icons.arrow_back_ios),
       onPressed: () => {
         if (studyId == -1) {context.go('/home')} else {context.pop()}
       },

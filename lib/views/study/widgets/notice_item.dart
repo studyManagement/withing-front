@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-
+import 'package:go_router/go_router.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class NoticeItem extends StatelessWidget {
@@ -20,7 +19,7 @@ class NoticeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // 공지 상세 페이지로 이동
+        context.go('/studies/1/board/$boardId');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
