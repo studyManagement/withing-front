@@ -100,13 +100,11 @@ class StudyService {
   Future<List<NoticeModel>> fetchNotices(int studyId) async {
     try {
       final List<NoticeModel> notices = await _studyApi.fetchNotices(studyId);
-      log('[DEBUG] ${notices.toString()}');
       return notices;
     } on ApiException catch (e) {
-      log('[DEBUG] ${e.code}, ${e.message}');
-      if (e.code == 404) {
-        return List.empty();
-      }
+      // if (e.code == 404) {
+      //   //throw List.empty();
+      // }
       rethrow;
     } on NetworkException catch (e) {
       rethrow;

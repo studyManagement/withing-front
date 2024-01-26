@@ -30,7 +30,7 @@ mixin _$StudyModel {
   List<String> get categories => throw _privateConstructorUsedError;
   int get gap => throw _privateConstructorUsedError;
   List<int>? get days => throw _privateConstructorUsedError;
-  String get startTime => throw _privateConstructorUsedError;
+  String? get startTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -55,7 +55,7 @@ abstract class $StudyModelCopyWith<$Res> {
       List<String> categories,
       int gap,
       List<int>? days,
-      String startTime});
+      String? startTime});
 }
 
 /// @nodoc
@@ -81,7 +81,7 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
     Object? categories = null,
     Object? gap = null,
     Object? days = freezed,
-    Object? startTime = null,
+    Object? startTime = freezed,
   }) {
     return _then(_value.copyWith(
       studyId: null == studyId
@@ -124,10 +124,10 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
           ? _value.days
           : days // ignore: cast_nullable_to_non_nullable
               as List<int>?,
-      startTime: null == startTime
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -151,7 +151,7 @@ abstract class _$$StudyModelImplCopyWith<$Res>
       List<String> categories,
       int gap,
       List<int>? days,
-      String startTime});
+      String? startTime});
 }
 
 /// @nodoc
@@ -175,7 +175,7 @@ class __$$StudyModelImplCopyWithImpl<$Res>
     Object? categories = null,
     Object? gap = null,
     Object? days = freezed,
-    Object? startTime = null,
+    Object? startTime = freezed,
   }) {
     return _then(_$StudyModelImpl(
       studyId: null == studyId
@@ -218,10 +218,10 @@ class __$$StudyModelImplCopyWithImpl<$Res>
           ? _value._days
           : days // ignore: cast_nullable_to_non_nullable
               as List<int>?,
-      startTime: null == startTime
+      startTime: freezed == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -282,7 +282,7 @@ class _$StudyModelImpl implements _StudyModel {
   }
 
   @override
-  final String startTime;
+  final String? startTime;
 
   @override
   String toString() {
@@ -356,7 +356,7 @@ abstract class _StudyModel implements StudyModel {
       required final List<String> categories,
       required final int gap,
       required final List<int>? days,
-      required final String startTime}) = _$StudyModelImpl;
+      required final String? startTime}) = _$StudyModelImpl;
 
   factory _StudyModel.fromJson(Map<String, dynamic> json) =
       _$StudyModelImpl.fromJson;
@@ -382,7 +382,7 @@ abstract class _StudyModel implements StudyModel {
   @override
   List<int>? get days;
   @override
-  String get startTime;
+  String? get startTime;
   @override
   @JsonKey(ignore: true)
   _$$StudyModelImplCopyWith<_$StudyModelImpl> get copyWith =>

@@ -16,7 +16,7 @@ class StudyModel with _$StudyModel {
     required List<String> categories,
     required int gap,
     required List<int>? days,
-    required String startTime,
+    required String? startTime,
   }) = _StudyModel;
 
   factory StudyModel.fromJson(Map<String, dynamic> json) =>

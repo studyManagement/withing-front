@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
 import 'package:withing/model/study/regular_meeting_model.dart';
 import 'package:withing/model/study/study_exception.dart';
@@ -91,7 +92,7 @@ class StudyView {
   List<String> categories;
   int gap;
   List<int>? days;
-  String startTime;
+  String? startTime;
 
   List<StudyRegularMeeting> regularMeetings = [];
 
@@ -150,6 +151,7 @@ class StudyView {
 }
 
 class StudyViewModel extends ChangeNotifier {
+  bool _disposed = false;
   final StudyService _service;
   late DateTime selectedDate;
   List<StudyView> _studyViews = [];
@@ -161,6 +163,7 @@ class StudyViewModel extends ChangeNotifier {
   var study;
   List<int> days=[];
   String regularMeeting = '';
+  String startTime = '';
   int newLeaderId =0;
 
   bool hasNotice = false;
@@ -210,23 +213,17 @@ class StudyViewModel extends ChangeNotifier {
       try {
         study = await _service.fetchStudyInfo(studyId);
         if(study.days != null) days = study.days;
-        if (notices.isEmpty) {
-          notices = await _service.fetchNotices(studyId);
-          if (notices.isNotEmpty) {
-            hasNotice = true;
-            numOfNotices = notices.length;
-            notifyListeners();
-          }
-        }
-      } on StudyException catch(e){
+        if(study.startTime != null) startTime = study.startTime;
+        await fetchNotices(studyId);
+      } on StudyException catch(e){ // 스터디가 없는 경우
         print(e.cause);
         if(!context.mounted) return;
         navigateToStudyExceptionScreen(context);
-
       }
       on NetworkException catch (e) {
         print(e);
       }
+      notifyListeners();
     }
   }
 
@@ -248,8 +245,8 @@ class StudyViewModel extends ChangeNotifier {
 
  String getRegularMeetingString() {
     String regularMeeting='';
-    if (study.gap == 0) {
-      regularMeeting = '매일 ${study.startTime.substring(0, 5)}';
+    if (study.gap == 0 && startTime.length >= 5) {
+      regularMeeting = '매일 ${startTime.substring(0,5)}';
     }
     else if (study.gap == 1) {
       regularMeeting = '매주 ';
@@ -278,16 +275,36 @@ class StudyViewModel extends ChangeNotifier {
     );
   }
 
-// Future<void> fetchNotices(int studyId) async {
-//   if(notices.isEmpty){
-//     notices = await _service.fetchNotices(studyId);
-//     if(notices.isNotEmpty){
-//       hasNotice = true;
-//       numOfNotices = notices.length;
-//       notifyListeners();
-//     }
-//   }
-// }
+  Future<void> fetchNotices(int studyId) async {
+    if (notices.isEmpty) {
+      try {
+        notices = await _service.fetchNotices(studyId);
+        if (notices.isNotEmpty) {
+          hasNotice = true;
+          numOfNotices = notices.length;
+        }
+      } on ApiException catch(e) {
+        if (e.code == 404) { // 공지사항이 없는 경우 처리
+          hasNotice = false;
+          numOfNotices = 0;
+        }
+      }
+      notifyListeners();
+    }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
+  }
 
 // Future<void> fetchCategories(int studyId) async {
 //   var categoryModel = await _service.fetchStudyCategory(studyId);
