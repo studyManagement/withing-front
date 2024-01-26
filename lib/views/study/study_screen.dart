@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/service/study/study_service.dart';
@@ -61,7 +62,9 @@ class StudyScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 9),
                       StudyMainButtons(
-                          onTap: () {},
+                          onTap: () {
+                            context.push('/studies/$studyId/board');
+                          },
                           title: "Community",
                           subtitle: "게시판",
                           image: Image.asset('asset/community.png')),
@@ -79,7 +82,7 @@ class StudyScreen extends StatelessWidget {
                     color: AppColors.gray100,
                   ),
                   const SizedBox(height: 10),
-                  Notice(hasNotice: data.hasNotice),
+                  Notice(hasNotice: data.hasNotice, notices: data.notices,),
                 ],
               ),
             ),

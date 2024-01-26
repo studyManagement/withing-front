@@ -10,7 +10,6 @@ class StudyDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.read<StudyViewModel>();
-    //print("정기모임: ${vm.getRegularMeetingString()}");
     return Column(
       children: [
         Row(

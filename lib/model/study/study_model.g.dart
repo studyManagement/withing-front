@@ -20,7 +20,7 @@ _$StudyModelImpl _$$StudyModelImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       gap: json['gap'] as int,
       days: (json['days'] as List<dynamic>?)?.map((e) => e as int).toList(),
-      startTime: json['startTime'] as String,
+      startTime: json['startTime'] as String?,
     );
 
 Map<String, dynamic> _$$StudyModelImplToJson(_$StudyModelImpl instance) =>

@@ -10,14 +10,14 @@ import 'notice_item.dart';
 
 class Notice extends StatelessWidget {
   final bool hasNotice;
+  final List<NoticeModel> notices;
 
-  const Notice({super.key, required this.hasNotice});
+  const Notice({super.key, required this.hasNotice, required this.notices});
 
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
-    List<NoticeModel> notices = vm.notices;
-    //bool hasNotice = vm.hasNotice;
+    // List<NoticeModel> notices = vm.notices;
 
     return Expanded(
         child: Column(
