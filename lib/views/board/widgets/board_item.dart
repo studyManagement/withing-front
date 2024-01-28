@@ -4,7 +4,7 @@ import '../../../common/theme/app/app_colors.dart';
 
 class BoardItem extends StatelessWidget {
   final int boardId; // 해당 게시글 상세 페이지로 이동
-  final int notice; // 공지 여부 (1일시 공지)
+  final bool notice; // 공지 여부 (1일시 공지)
   final String title;
   final String? content;
   final String nickname;
