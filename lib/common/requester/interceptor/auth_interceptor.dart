@@ -33,7 +33,7 @@ class AuthInterceptor extends Interceptor {
 
       if (refreshToken == null) {
         return Authentication.instance
-            .logout(reason: '로그인 세션이 만료되었습니다. 로그인을 다시 시도해 주세요.');
+            .logout(reason: '로그인 세션이 만료되었습니다.\n로그인을 다시 시도해 주세요.');
       }
 
       try {
@@ -54,7 +54,7 @@ class AuthInterceptor extends Interceptor {
         Authentication.from(renewAccessToken, renewRefreshToken);
       } on DioException catch (e) {
         return Authentication.instance
-            .logout(reason: '로그인 세션이 만료되었습니다. 로그인을 다시 시도해 주세요.');
+            .logout(reason: '로그인 세션이 만료되었습니다.\n로그인을 다시 시도해 주세요.');
       }
 
       final retryResponse = await RequestBuilder.getInstance().request(
