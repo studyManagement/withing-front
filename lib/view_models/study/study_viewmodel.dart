@@ -5,6 +5,7 @@ import 'package:withing/service/study/study_service.dart';
 import 'package:withing/views/study/study_exception_screen.dart';
 
 import '../../common/requester/network_exception.dart';
+import '../../model/board/board_model.dart';
 import '../../model/study/notice_model.dart';
 import '../../model/study/study_meeting_schedules_model.dart';
 
@@ -22,6 +23,8 @@ class StudyViewModel extends ChangeNotifier {
   bool hasNotice = false;
   int numOfNotices = 0;
   List<NoticeModel> notices = [];
+  List<BoardModel> posts = [];
+
 
   StudyViewModel(this._service);
 

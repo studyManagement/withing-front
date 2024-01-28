@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class NoticeItem extends StatelessWidget {
+  final int studyId;
   final int boardId;
   final String title;
   final String? content;
@@ -10,6 +11,7 @@ class NoticeItem extends StatelessWidget {
 
   NoticeItem(
       {super.key,
+      required this.studyId,
       required this.boardId,
       required this.title,
       this.content,
@@ -19,7 +21,7 @@ class NoticeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('/studies/1/board/$boardId');
+        context.go('/studies/1/boards/$boardId');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

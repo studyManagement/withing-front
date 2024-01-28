@@ -81,22 +81,22 @@ class WithingApp extends StatelessWidget {
             builder: (context, state) => const SetRegularMeetingScreen(),
           ),
           GoRoute(
-              path: '/studies/:studyId/board', // 게시판
+              path: '/studies/:studyId/boards', // 게시판
               builder: (context, state) => BoardMainScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
                   isNotice: false)),
           GoRoute(
-              path: '/studies/:studyId/board/create', // 게시판 글 작성
+              path: '/studies/:studyId/boards/create', // 게시판 글 작성
               builder: (context, state) => CreatePostScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
                   )),
           GoRoute(
-              path: '/studies/:studyId/board/notice', // 공지 전체보기
+              path: '/studies/:studyId/boards/notice', // 공지 전체보기
               builder: (context, state) => BoardMainScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
                   isNotice: true)),
           GoRoute(
-              path: '/studies/:studyId/board/:boardId', // 게시판(공지) 상세
+              path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
               builder: (context, state) => BoardInfoScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
                   isNotice: false,
