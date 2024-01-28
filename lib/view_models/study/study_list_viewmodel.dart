@@ -9,7 +9,7 @@ class StudyListViewModel extends ChangeNotifier {
   final StudyService _service;
   List<StudyListView> studyListView = [];
   List<StudyListView> selectStudyListView = [];
-  late DateTime selectedDate;
+  late DateTime selectedDate = DateTime.now();
   String weekString = '';
 
   StudyListViewModel(this._service);
@@ -34,8 +34,6 @@ class StudyListViewModel extends ChangeNotifier {
   }
 
   StudyMeetingSchedule getNextPromise(StudyListView currentStudy) {
-    int weekday = currentStudy.meetingSchedules.first.day;
-
     StudyMeetingSchedule currentMeetingSchedule =
         currentStudy.meetingSchedules.first;
 

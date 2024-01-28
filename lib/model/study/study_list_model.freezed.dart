@@ -27,7 +27,6 @@ mixin _$StudyListModel {
   bool get private => throw _privateConstructorUsedError;
   String get explanation => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get deadline => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   List<StudyMeetingSchedulesModel> get meetingSchedules =>
       throw _privateConstructorUsedError;
@@ -52,7 +51,6 @@ abstract class $StudyListModelCopyWith<$Res> {
       bool private,
       String explanation,
       DateTime createdAt,
-      DateTime deadline,
       List<String> categories,
       List<StudyMeetingSchedulesModel> meetingSchedules});
 }
@@ -77,7 +75,6 @@ class _$StudyListModelCopyWithImpl<$Res, $Val extends StudyListModel>
     Object? private = null,
     Object? explanation = null,
     Object? createdAt = null,
-    Object? deadline = null,
     Object? categories = null,
     Object? meetingSchedules = null,
   }) {
@@ -110,10 +107,6 @@ class _$StudyListModelCopyWithImpl<$Res, $Val extends StudyListModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      deadline: null == deadline
-          ? _value.deadline
-          : deadline // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       categories: null == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -142,7 +135,6 @@ abstract class _$$StudyListModelImplCopyWith<$Res>
       bool private,
       String explanation,
       DateTime createdAt,
-      DateTime deadline,
       List<String> categories,
       List<StudyMeetingSchedulesModel> meetingSchedules});
 }
@@ -165,7 +157,6 @@ class __$$StudyListModelImplCopyWithImpl<$Res>
     Object? private = null,
     Object? explanation = null,
     Object? createdAt = null,
-    Object? deadline = null,
     Object? categories = null,
     Object? meetingSchedules = null,
   }) {
@@ -198,10 +189,6 @@ class __$$StudyListModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      deadline: null == deadline
-          ? _value.deadline
-          : deadline // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       categories: null == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -225,7 +212,6 @@ class _$StudyListModelImpl implements _StudyListModel {
       required this.private,
       required this.explanation,
       required this.createdAt,
-      required this.deadline,
       required final List<String> categories,
       required final List<StudyMeetingSchedulesModel> meetingSchedules})
       : _categories = categories,
@@ -248,8 +234,6 @@ class _$StudyListModelImpl implements _StudyListModel {
   final String explanation;
   @override
   final DateTime createdAt;
-  @override
-  final DateTime deadline;
   final List<String> _categories;
   @override
   List<String> get categories {
@@ -269,7 +253,7 @@ class _$StudyListModelImpl implements _StudyListModel {
 
   @override
   String toString() {
-    return 'StudyListModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, explanation: $explanation, createdAt: $createdAt, deadline: $deadline, categories: $categories, meetingSchedules: $meetingSchedules)';
+    return 'StudyListModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, explanation: $explanation, createdAt: $createdAt, categories: $categories, meetingSchedules: $meetingSchedules)';
   }
 
   @override
@@ -288,8 +272,6 @@ class _$StudyListModelImpl implements _StudyListModel {
                 other.explanation == explanation) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.deadline, deadline) ||
-                other.deadline == deadline) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             const DeepCollectionEquality()
@@ -307,7 +289,6 @@ class _$StudyListModelImpl implements _StudyListModel {
       private,
       explanation,
       createdAt,
-      deadline,
       const DeepCollectionEquality().hash(_categories),
       const DeepCollectionEquality().hash(_meetingSchedules));
 
@@ -335,7 +316,6 @@ abstract class _StudyListModel implements StudyListModel {
           required final bool private,
           required final String explanation,
           required final DateTime createdAt,
-          required final DateTime deadline,
           required final List<String> categories,
           required final List<StudyMeetingSchedulesModel> meetingSchedules}) =
       _$StudyListModelImpl;
@@ -357,8 +337,6 @@ abstract class _StudyListModel implements StudyListModel {
   String get explanation;
   @override
   DateTime get createdAt;
-  @override
-  DateTime get deadline;
   @override
   List<String> get categories;
   @override

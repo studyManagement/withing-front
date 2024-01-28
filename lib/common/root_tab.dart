@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/di/injection.dart';
 import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/home/home_viewmodel.dart';
 import 'package:withing/view_models/study/study_list_viewmodel.dart';
 import 'package:withing/views/my/my_screen.dart';
 
@@ -106,7 +105,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           Center(
               child: MultiProvider(
             providers: [
-              ChangeNotifierProvider(create: (_) => HomeViewModel()),
               ChangeNotifierProvider(
                   create: (_) => StudyListViewModel(getIt<StudyService>())),
             ],

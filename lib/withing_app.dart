@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/root_tab.dart';
 import 'package:withing/common/theme/withing_theme.dart';
+import 'package:withing/di/injection.dart';
+import 'package:withing/service/study/study_service.dart';
+import 'package:withing/view_models/study/study_list_viewmodel.dart';
 import 'package:withing/views/board/screen/board_info_screen.dart';
 import 'package:withing/views/board/screen/board_main_screen.dart';
 import 'package:withing/views/board/screen/create_post_screen.dart';
@@ -49,8 +53,19 @@ class WithingApp extends StatelessWidget {
               path: '/my/profile',
               builder: (context, state) => MyProfileScreen()),
           GoRoute(
-              path: '/my/studies',
-              builder: (context, state) => const MyStudyScreen()),
+            path: '/my/studies/:type',
+            builder: (context, state) {
+              final studyType = state.pathParameters['type']!;
+
+              return MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                      create: (_) => StudyListViewModel(getIt<StudyService>())),
+                ],
+                child: MyStudyScreen(studyType),
+              );
+            },
+          ),
           GoRoute(
             path: '/search/result',
             builder: (context, state) => KeywordSearchScreen(),
@@ -88,7 +103,7 @@ class WithingApp extends StatelessWidget {
           GoRoute(
               path: '/studies/:studyId/board/create', // 게시판 글 작성
               builder: (context, state) => CreatePostScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!),
+                    studyId: int.parse(state.pathParameters['studyId']!),
                   )),
           GoRoute(
               path: '/studies/:studyId/board/notice', // 공지 전체보기

@@ -14,7 +14,6 @@ class StudyListModel with _$StudyListModel {
     required bool private,
     required String explanation,
     required DateTime createdAt,
-    required DateTime deadline,
     required List<String> categories,
     required List<StudyMeetingSchedulesModel> meetingSchedules,
   }) = _StudyListModel;
