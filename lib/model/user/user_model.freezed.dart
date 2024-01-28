@@ -20,10 +20,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  int get userId => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
   String get introduce => throw _privateConstructorUsedError;
-  String get userImage => throw _privateConstructorUsedError;
+  String? get profileImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({int userId, String nickname, String introduce, String userImage});
+  $Res call({int id, String nickname, String introduce, String? profileImage});
 }
 
 /// @nodoc
@@ -52,15 +52,15 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = null,
+    Object? id = null,
     Object? nickname = null,
     Object? introduce = null,
-    Object? userImage = null,
+    Object? profileImage = freezed,
   }) {
     return _then(_value.copyWith(
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
       nickname: null == nickname
           ? _value.nickname
@@ -70,10 +70,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.introduce
           : introduce // ignore: cast_nullable_to_non_nullable
               as String,
-      userImage: null == userImage
-          ? _value.userImage
-          : userImage // ignore: cast_nullable_to_non_nullable
-              as String,
+      profileImage: freezed == profileImage
+          ? _value.profileImage
+          : profileImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -86,7 +86,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int userId, String nickname, String introduce, String userImage});
+  $Res call({int id, String nickname, String introduce, String? profileImage});
 }
 
 /// @nodoc
@@ -100,15 +100,15 @@ class __$$UserModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? userId = null,
+    Object? id = null,
     Object? nickname = null,
     Object? introduce = null,
-    Object? userImage = null,
+    Object? profileImage = freezed,
   }) {
     return _then(_$UserModelImpl(
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
       nickname: null == nickname
           ? _value.nickname
@@ -118,10 +118,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.introduce
           : introduce // ignore: cast_nullable_to_non_nullable
               as String,
-      userImage: null == userImage
-          ? _value.userImage
-          : userImage // ignore: cast_nullable_to_non_nullable
-              as String,
+      profileImage: freezed == profileImage
+          ? _value.profileImage
+          : profileImage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -130,26 +130,26 @@ class __$$UserModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
-      {required this.userId,
+      {required this.id,
       required this.nickname,
       required this.introduce,
-      required this.userImage});
+      required this.profileImage});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
   @override
-  final int userId;
+  final int id;
   @override
   final String nickname;
   @override
   final String introduce;
   @override
-  final String userImage;
+  final String? profileImage;
 
   @override
   String toString() {
-    return 'UserModel(userId: $userId, nickname: $nickname, introduce: $introduce, userImage: $userImage)';
+    return 'UserModel(id: $id, nickname: $nickname, introduce: $introduce, profileImage: $profileImage)';
   }
 
   @override
@@ -157,19 +157,19 @@ class _$UserModelImpl implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserModelImpl &&
-            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.introduce, introduce) ||
                 other.introduce == introduce) &&
-            (identical(other.userImage, userImage) ||
-                other.userImage == userImage));
+            (identical(other.profileImage, profileImage) ||
+                other.profileImage == profileImage));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userId, nickname, introduce, userImage);
+      Object.hash(runtimeType, id, nickname, introduce, profileImage);
 
   @JsonKey(ignore: true)
   @override
@@ -187,22 +187,22 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final int userId,
+      {required final int id,
       required final String nickname,
       required final String introduce,
-      required final String userImage}) = _$UserModelImpl;
+      required final String? profileImage}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
 
   @override
-  int get userId;
+  int get id;
   @override
   String get nickname;
   @override
   String get introduce;
   @override
-  String get userImage;
+  String? get profileImage;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

@@ -34,7 +34,7 @@ class Notice extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  context.push('/studies/${vm.study.studyId}/board/notice');
+                  context.push('/studies/${vm.study.id}/board/notice');
                 },
                 child: Offstage(
                   offstage: (hasNotice) ? false : true,

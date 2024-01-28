@@ -17,7 +17,9 @@ _$StudyModelImpl _$$StudyModelImplFromJson(Map<String, dynamic> json) =>
       explanation: json['explanation'] as String,
       leaderId: json['leaderId'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      deadline: DateTime.parse(json['deadline'] as String),
+      deadline: json['deadline'] == null
+          ? null
+          : DateTime.parse(json['deadline'] as String),
       studyImage: json['studyImage'] as String,
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
@@ -42,7 +44,7 @@ Map<String, dynamic> _$$StudyModelImplToJson(_$StudyModelImpl instance) =>
       'explanation': instance.explanation,
       'leaderId': instance.leaderId,
       'createdAt': instance.createdAt.toIso8601String(),
-      'deadline': instance.deadline.toIso8601String(),
+      'deadline': instance.deadline?.toIso8601String(),
       'studyImage': instance.studyImage,
       'categories': instance.categories,
       'meetingSchedules': instance.meetingSchedules,

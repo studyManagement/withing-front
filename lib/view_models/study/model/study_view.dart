@@ -12,7 +12,7 @@ class StudyView {
   String explanation;
   int leaderId;
   DateTime createdAt;
-  DateTime deadline;
+  DateTime? deadline;
   String? studyImage;
   List<String> categories;
   List<StudyMeetingSchedule> meetingSchedules;
