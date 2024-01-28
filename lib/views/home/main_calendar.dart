@@ -40,6 +40,38 @@ class MainCalendar extends StatelessWidget {
         lastDay: DateTime(2300, 1, 1),
         calendarFormat: CalendarFormat.week,
         calendarBuilders: CalendarBuilders(
+          outsideBuilder: (context, dateTime, focusedDay) {
+            bool isSelected = dateTime.weekday == selectedStudyDate.weekday &&
+                dateTime.month == selectedStudyDate.month &&
+                dateTime.day == selectedStudyDate.day;
+            return Container(
+                height: 120,
+                width: 44,
+                decoration: (isSelected)
+                    ? const BoxDecoration(
+                        color: AppColors.blue600,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8)))
+                    : const BoxDecoration(color: Colors.transparent),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(
+                      dateTime.day.toString(),
+                      style: TextStyle(
+                        color: (isSelected)
+                            ? Colors.white
+                            : (dateTime.weekday == 7)
+                                ? AppColors.red400
+                                : ((dateTime.weekday == 6)
+                                    ? AppColors.blue400
+                                    : AppColors.gray800),
+                      ),
+                    ),
+                  ],
+                ));
+          },
           todayBuilder: (context, dateTime, event) {
             return Container(
                 height: 120,
