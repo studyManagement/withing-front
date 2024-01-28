@@ -19,20 +19,20 @@ class _StudyApi implements StudyApi {
   String? baseUrl;
 
   @override
-  Future<List<StudyModel>> fetchMyStudies(String key) async {
+  Future<List<StudyListModel>> fetchMyStudies(String key) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'key': key};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<StudyModel>>(Options(
+        .fetch<List<dynamic>>(_setStreamType<List<StudyListModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/studies/users',
+              '/studies',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -42,7 +42,7 @@ class _StudyApi implements StudyApi {
               baseUrl,
             ))));
     var value = _result.data!
-        .map((dynamic i) => StudyModel.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => StudyListModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
@@ -142,7 +142,7 @@ class _StudyApi implements StudyApi {
     )
             .compose(
               _dio.options,
-              '/studies/${id}/dashboard/notices',
+              '/studies/${id}/boards/notices',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -201,7 +201,7 @@ class _StudyApi implements StudyApi {
     )
             .compose(
               _dio.options,
-              '/studies/${id}/leader/${userId}',
+              '/studies/${id}/members/${userId}',
               queryParameters: queryParameters,
               data: _data,
             )
