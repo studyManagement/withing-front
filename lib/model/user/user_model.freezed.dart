@@ -21,8 +21,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserModel {
   int get userId => throw _privateConstructorUsedError;
-  String get socialId => throw _privateConstructorUsedError;
-  String get socialIdType => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
   String get introduce => throw _privateConstructorUsedError;
   String get userImage => throw _privateConstructorUsedError;
@@ -38,13 +36,7 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call(
-      {int userId,
-      String socialId,
-      String socialIdType,
-      String nickname,
-      String introduce,
-      String userImage});
+  $Res call({int userId, String nickname, String introduce, String userImage});
 }
 
 /// @nodoc
@@ -61,8 +53,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @override
   $Res call({
     Object? userId = null,
-    Object? socialId = null,
-    Object? socialIdType = null,
     Object? nickname = null,
     Object? introduce = null,
     Object? userImage = null,
@@ -72,14 +62,6 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as int,
-      socialId: null == socialId
-          ? _value.socialId
-          : socialId // ignore: cast_nullable_to_non_nullable
-              as String,
-      socialIdType: null == socialIdType
-          ? _value.socialIdType
-          : socialIdType // ignore: cast_nullable_to_non_nullable
-              as String,
       nickname: null == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -104,13 +86,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int userId,
-      String socialId,
-      String socialIdType,
-      String nickname,
-      String introduce,
-      String userImage});
+  $Res call({int userId, String nickname, String introduce, String userImage});
 }
 
 /// @nodoc
@@ -125,8 +101,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
-    Object? socialId = null,
-    Object? socialIdType = null,
     Object? nickname = null,
     Object? introduce = null,
     Object? userImage = null,
@@ -136,14 +110,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
               as int,
-      socialId: null == socialId
-          ? _value.socialId
-          : socialId // ignore: cast_nullable_to_non_nullable
-              as String,
-      socialIdType: null == socialIdType
-          ? _value.socialIdType
-          : socialIdType // ignore: cast_nullable_to_non_nullable
-              as String,
       nickname: null == nickname
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
@@ -165,8 +131,6 @@ class __$$UserModelImplCopyWithImpl<$Res>
 class _$UserModelImpl implements _UserModel {
   const _$UserModelImpl(
       {required this.userId,
-      required this.socialId,
-      required this.socialIdType,
       required this.nickname,
       required this.introduce,
       required this.userImage});
@@ -177,10 +141,6 @@ class _$UserModelImpl implements _UserModel {
   @override
   final int userId;
   @override
-  final String socialId;
-  @override
-  final String socialIdType;
-  @override
   final String nickname;
   @override
   final String introduce;
@@ -189,7 +149,7 @@ class _$UserModelImpl implements _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(userId: $userId, socialId: $socialId, socialIdType: $socialIdType, nickname: $nickname, introduce: $introduce, userImage: $userImage)';
+    return 'UserModel(userId: $userId, nickname: $nickname, introduce: $introduce, userImage: $userImage)';
   }
 
   @override
@@ -198,10 +158,6 @@ class _$UserModelImpl implements _UserModel {
         (other.runtimeType == runtimeType &&
             other is _$UserModelImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.socialId, socialId) ||
-                other.socialId == socialId) &&
-            (identical(other.socialIdType, socialIdType) ||
-                other.socialIdType == socialIdType) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.introduce, introduce) ||
@@ -212,8 +168,8 @@ class _$UserModelImpl implements _UserModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, userId, socialId, socialIdType,
-      nickname, introduce, userImage);
+  int get hashCode =>
+      Object.hash(runtimeType, userId, nickname, introduce, userImage);
 
   @JsonKey(ignore: true)
   @override
@@ -232,8 +188,6 @@ class _$UserModelImpl implements _UserModel {
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
       {required final int userId,
-      required final String socialId,
-      required final String socialIdType,
       required final String nickname,
       required final String introduce,
       required final String userImage}) = _$UserModelImpl;
@@ -243,10 +197,6 @@ abstract class _UserModel implements UserModel {
 
   @override
   int get userId;
-  @override
-  String get socialId;
-  @override
-  String get socialIdType;
   @override
   String get nickname;
   @override

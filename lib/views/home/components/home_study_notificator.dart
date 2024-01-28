@@ -3,7 +3,8 @@ import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/common/theme/app/app_fonts.dart';
-import 'package:withing/view_models/study/study_viewmodel.dart';
+import 'package:withing/view_models/study/model/study_list_view.dart';
+import 'package:withing/view_models/study/study_list_viewmodel.dart';
 
 class HomeStudyNotificationPageView extends StatefulWidget {
   const HomeStudyNotificationPageView({super.key});
@@ -26,8 +27,11 @@ class _HomeStudyNotificationPageViewState
 
   @override
   Widget build(BuildContext context) {
-    List<StudyView> studies = context.select<StudyViewModel, List<StudyView>>(
-        (provider) => provider.studyViewsInSelectedDay);
+    DateTime selectedDate = context.select<StudyListViewModel, DateTime>(
+        (provider) => provider.selectedDate);
+    List<StudyListView> studies =
+        context.select<StudyListViewModel, List<StudyListView>>(
+            (provider) => provider.selectStudyListView);
 
     return (studies.isNotEmpty)
         ? Expanded(
@@ -46,20 +50,25 @@ class _HomeStudyNotificationPageViewState
                       final int minIndex = index * 2;
                       final List<Widget> widgets = [];
 
-                      widgets.add(HomeStudyNotificationPageViewItem(
+                      widgets.add(
+                        HomeStudyNotificationPageViewItem(
                           studies[minIndex].studyName,
                           studies[minIndex].explanation,
-                          studies[minIndex].regularMeetings.first.startTime));
+                          studies[minIndex].getPromise(selectedDate).startTime,
+                        ),
+                      );
 
                       if (studies.length > minIndex + 1) {
                         widgets.add(const SizedBox(height: 8));
-                        widgets.add(HomeStudyNotificationPageViewItem(
+                        widgets.add(
+                          HomeStudyNotificationPageViewItem(
                             studies[minIndex + 1].studyName,
                             studies[minIndex + 1].explanation,
                             studies[minIndex + 1]
-                                .regularMeetings
-                                .first
-                                .startTime));
+                                .getPromise(selectedDate)
+                                .startTime,
+                          ),
+                        );
                       }
 
                       return Padding(
