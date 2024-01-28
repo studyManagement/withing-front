@@ -35,7 +35,7 @@ class StudyDetails extends StatelessWidget {
                 width: 16,
                 height: 16,
               ),
-              onTap: () => {context.push('/studies/${vm.study.studyId}/member')},
+              onTap: () => {context.push('/studies/${vm.study.id}/member')},
             ),
           ],
         ),
@@ -51,7 +51,7 @@ class StudyDetails extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              vm.getRegularMeetingString(), // 추가 수정 필요
+              vm.regularMeeting, // 추가 수정 필요
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.gray800,
                     fontSize: 13.0,

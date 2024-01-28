@@ -34,8 +34,9 @@ abstract class StudyApi {
   Future<StudyCategory> fetchStudyCategory(@Path('id') int id);
 
   // 삭제
-  @GET('/studies/{id}/boards/notices')
-  Future<List<NoticeModel>> fetchNotices(@Path("id") int id);
+  @GET('/studies/{id}/boards')
+  Future<List<NoticeModel>> fetchBoards(
+      @Path("id") int id, @Query("isNotice") bool isNotice);
 
   @PATCH('/studies/{id}/finish')
   Future<StudyModel> finishStudy(@Path('id') int id);
@@ -97,9 +98,10 @@ class StudyService {
     return categoryData;
   }
 
-  Future<List<NoticeModel>> fetchNotices(int studyId) async {
+  Future<List<NoticeModel>> fetchBoards(int studyId, bool isNotice) async {
     try {
-      final List<NoticeModel> notices = await _studyApi.fetchNotices(studyId);
+      final List<NoticeModel> notices =
+          await _studyApi.fetchBoards(studyId, isNotice);
       return notices;
     } on ApiException catch (e) {
       // if (e.code == 404) {

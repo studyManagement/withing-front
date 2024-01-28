@@ -129,9 +129,12 @@ class _StudyApi implements StudyApi {
   }
 
   @override
-  Future<List<NoticeModel>> fetchNotices(int id) async {
+  Future<List<NoticeModel>> fetchBoards(
+    int id,
+    bool isNotice,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'isNotice': isNotice};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
@@ -142,7 +145,7 @@ class _StudyApi implements StudyApi {
     )
             .compose(
               _dio.options,
-              '/studies/${id}/boards/notices',
+              '/studies/${id}/boards',
               queryParameters: queryParameters,
               data: _data,
             )
