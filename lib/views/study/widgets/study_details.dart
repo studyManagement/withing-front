@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/router.dart';
-import 'package:withing/views/study/screen/study_member_screen.dart';
 import '../../../view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
 
-class StudyDetails extends StatelessWidget{
+class StudyDetails extends StatelessWidget {
   const StudyDetails({super.key});
 
   @override
@@ -19,17 +17,17 @@ class StudyDetails extends StatelessWidget{
             Text(
               '참여 인원',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray400,
-                fontSize: 13.0,
-              ),
+                    color: AppColors.gray400,
+                    fontSize: 13.0,
+                  ),
             ),
             const SizedBox(width: 8),
             Text(
               '${vm.study.headcount}/${vm.study.max}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray800,
-                fontSize: 13.0,
-              ),
+                    color: AppColors.gray800,
+                    fontSize: 13.0,
+                  ),
             ),
             GestureDetector(
               child: Image.asset(
@@ -37,10 +35,7 @@ class StudyDetails extends StatelessWidget{
                 width: 16,
                 height: 16,
               ),
-              onTap: () => {
-                context.push('/studies/:studyId/member')
-
-              },
+              onTap: () => {context.push('/studies/${vm.study.studyId}/member')},
             ),
           ],
         ),
@@ -50,27 +45,22 @@ class StudyDetails extends StatelessWidget{
             Text(
               '정기 모임',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray400,
-                fontSize: 13.0,
-              ),
+                    color: AppColors.gray400,
+                    fontSize: 13.0,
+                  ),
             ),
             const SizedBox(width: 8),
             Text(
-              '매주 목요일 21:00', // 추가 수정 필요
+              vm.getRegularMeetingString(), // 추가 수정 필요
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.gray800,
-                fontSize: 13.0,
-              ),
+                    color: AppColors.gray800,
+                    fontSize: 13.0,
+                  ),
             )
           ],
         ),
-
       ],
     );
-
   }
 
-
-
 }
-

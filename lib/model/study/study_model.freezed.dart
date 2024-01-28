@@ -20,18 +20,21 @@ StudyModel _$StudyModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$StudyModel {
-  int get studyId => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get studyName => throw _privateConstructorUsedError;
   int get max => throw _privateConstructorUsedError;
   int get headcount => throw _privateConstructorUsedError;
-  int get isPrivate => throw _privateConstructorUsedError;
-  int get isFinished => throw _privateConstructorUsedError;
+  bool get private => throw _privateConstructorUsedError;
+  bool get finished => throw _privateConstructorUsedError;
   String get explanation => throw _privateConstructorUsedError;
-  DateTime get createdDate => throw _privateConstructorUsedError;
-  DateTime get deadline => throw _privateConstructorUsedError;
   int get leaderId => throw _privateConstructorUsedError;
-  String? get studyImage => throw _privateConstructorUsedError;
-  String? get regularMeeting => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get deadline => throw _privateConstructorUsedError;
+  String get studyImage => throw _privateConstructorUsedError;
+  List<String> get categories => throw _privateConstructorUsedError;
+  List<StudyMeetingSchedulesModel> get meetingSchedules =>
+      throw _privateConstructorUsedError;
+  List<UserModel> get users => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,18 +49,20 @@ abstract class $StudyModelCopyWith<$Res> {
       _$StudyModelCopyWithImpl<$Res, StudyModel>;
   @useResult
   $Res call(
-      {int studyId,
+      {int id,
       String studyName,
       int max,
       int headcount,
-      int isPrivate,
-      int isFinished,
+      bool private,
+      bool finished,
       String explanation,
-      DateTime createdDate,
-      DateTime deadline,
       int leaderId,
-      String? studyImage,
-      String? regularMeeting});
+      DateTime createdAt,
+      DateTime deadline,
+      String studyImage,
+      List<String> categories,
+      List<StudyMeetingSchedulesModel> meetingSchedules,
+      List<UserModel> users});
 }
 
 /// @nodoc
@@ -73,23 +78,25 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? studyId = null,
+    Object? id = null,
     Object? studyName = null,
     Object? max = null,
     Object? headcount = null,
-    Object? isPrivate = null,
-    Object? isFinished = null,
+    Object? private = null,
+    Object? finished = null,
     Object? explanation = null,
-    Object? createdDate = null,
-    Object? deadline = null,
     Object? leaderId = null,
-    Object? studyImage = freezed,
-    Object? regularMeeting = freezed,
+    Object? createdAt = null,
+    Object? deadline = null,
+    Object? studyImage = null,
+    Object? categories = null,
+    Object? meetingSchedules = null,
+    Object? users = null,
   }) {
     return _then(_value.copyWith(
-      studyId: null == studyId
-          ? _value.studyId
-          : studyId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
       studyName: null == studyName
           ? _value.studyName
@@ -103,38 +110,46 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
           ? _value.headcount
           : headcount // ignore: cast_nullable_to_non_nullable
               as int,
-      isPrivate: null == isPrivate
-          ? _value.isPrivate
-          : isPrivate // ignore: cast_nullable_to_non_nullable
-              as int,
-      isFinished: null == isFinished
-          ? _value.isFinished
-          : isFinished // ignore: cast_nullable_to_non_nullable
-              as int,
+      private: null == private
+          ? _value.private
+          : private // ignore: cast_nullable_to_non_nullable
+              as bool,
+      finished: null == finished
+          ? _value.finished
+          : finished // ignore: cast_nullable_to_non_nullable
+              as bool,
       explanation: null == explanation
           ? _value.explanation
           : explanation // ignore: cast_nullable_to_non_nullable
               as String,
-      createdDate: null == createdDate
-          ? _value.createdDate
-          : createdDate // ignore: cast_nullable_to_non_nullable
+      leaderId: null == leaderId
+          ? _value.leaderId
+          : leaderId // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       deadline: null == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      leaderId: null == leaderId
-          ? _value.leaderId
-          : leaderId // ignore: cast_nullable_to_non_nullable
-              as int,
-      studyImage: freezed == studyImage
+      studyImage: null == studyImage
           ? _value.studyImage
           : studyImage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      regularMeeting: freezed == regularMeeting
-          ? _value.regularMeeting
-          : regularMeeting // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      categories: null == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      meetingSchedules: null == meetingSchedules
+          ? _value.meetingSchedules
+          : meetingSchedules // ignore: cast_nullable_to_non_nullable
+              as List<StudyMeetingSchedulesModel>,
+      users: null == users
+          ? _value.users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
     ) as $Val);
   }
 }
@@ -148,18 +163,20 @@ abstract class _$$StudyModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int studyId,
+      {int id,
       String studyName,
       int max,
       int headcount,
-      int isPrivate,
-      int isFinished,
+      bool private,
+      bool finished,
       String explanation,
-      DateTime createdDate,
-      DateTime deadline,
       int leaderId,
-      String? studyImage,
-      String? regularMeeting});
+      DateTime createdAt,
+      DateTime deadline,
+      String studyImage,
+      List<String> categories,
+      List<StudyMeetingSchedulesModel> meetingSchedules,
+      List<UserModel> users});
 }
 
 /// @nodoc
@@ -173,23 +190,25 @@ class __$$StudyModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? studyId = null,
+    Object? id = null,
     Object? studyName = null,
     Object? max = null,
     Object? headcount = null,
-    Object? isPrivate = null,
-    Object? isFinished = null,
+    Object? private = null,
+    Object? finished = null,
     Object? explanation = null,
-    Object? createdDate = null,
-    Object? deadline = null,
     Object? leaderId = null,
-    Object? studyImage = freezed,
-    Object? regularMeeting = freezed,
+    Object? createdAt = null,
+    Object? deadline = null,
+    Object? studyImage = null,
+    Object? categories = null,
+    Object? meetingSchedules = null,
+    Object? users = null,
   }) {
     return _then(_$StudyModelImpl(
-      studyId: null == studyId
-          ? _value.studyId
-          : studyId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
       studyName: null == studyName
           ? _value.studyName
@@ -203,38 +222,46 @@ class __$$StudyModelImplCopyWithImpl<$Res>
           ? _value.headcount
           : headcount // ignore: cast_nullable_to_non_nullable
               as int,
-      isPrivate: null == isPrivate
-          ? _value.isPrivate
-          : isPrivate // ignore: cast_nullable_to_non_nullable
-              as int,
-      isFinished: null == isFinished
-          ? _value.isFinished
-          : isFinished // ignore: cast_nullable_to_non_nullable
-              as int,
+      private: null == private
+          ? _value.private
+          : private // ignore: cast_nullable_to_non_nullable
+              as bool,
+      finished: null == finished
+          ? _value.finished
+          : finished // ignore: cast_nullable_to_non_nullable
+              as bool,
       explanation: null == explanation
           ? _value.explanation
           : explanation // ignore: cast_nullable_to_non_nullable
               as String,
-      createdDate: null == createdDate
-          ? _value.createdDate
-          : createdDate // ignore: cast_nullable_to_non_nullable
+      leaderId: null == leaderId
+          ? _value.leaderId
+          : leaderId // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       deadline: null == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      leaderId: null == leaderId
-          ? _value.leaderId
-          : leaderId // ignore: cast_nullable_to_non_nullable
-              as int,
-      studyImage: freezed == studyImage
+      studyImage: null == studyImage
           ? _value.studyImage
           : studyImage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      regularMeeting: freezed == regularMeeting
-          ? _value.regularMeeting
-          : regularMeeting // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      categories: null == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      meetingSchedules: null == meetingSchedules
+          ? _value._meetingSchedules
+          : meetingSchedules // ignore: cast_nullable_to_non_nullable
+              as List<StudyMeetingSchedulesModel>,
+      users: null == users
+          ? _value._users
+          : users // ignore: cast_nullable_to_non_nullable
+              as List<UserModel>,
     ));
   }
 }
@@ -243,24 +270,29 @@ class __$$StudyModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StudyModelImpl implements _StudyModel {
   const _$StudyModelImpl(
-      {required this.studyId,
+      {required this.id,
       required this.studyName,
       required this.max,
       required this.headcount,
-      required this.isPrivate,
-      required this.isFinished,
+      required this.private,
+      required this.finished,
       required this.explanation,
-      required this.createdDate,
-      required this.deadline,
       required this.leaderId,
+      required this.createdAt,
+      required this.deadline,
       required this.studyImage,
-      required this.regularMeeting});
+      required final List<String> categories,
+      required final List<StudyMeetingSchedulesModel> meetingSchedules,
+      required final List<UserModel> users})
+      : _categories = categories,
+        _meetingSchedules = meetingSchedules,
+        _users = users;
 
   factory _$StudyModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$StudyModelImplFromJson(json);
 
   @override
-  final int studyId;
+  final int id;
   @override
   final String studyName;
   @override
@@ -268,25 +300,47 @@ class _$StudyModelImpl implements _StudyModel {
   @override
   final int headcount;
   @override
-  final int isPrivate;
+  final bool private;
   @override
-  final int isFinished;
+  final bool finished;
   @override
   final String explanation;
   @override
-  final DateTime createdDate;
+  final int leaderId;
+  @override
+  final DateTime createdAt;
   @override
   final DateTime deadline;
   @override
-  final int leaderId;
+  final String studyImage;
+  final List<String> _categories;
   @override
-  final String? studyImage;
+  List<String> get categories {
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_categories);
+  }
+
+  final List<StudyMeetingSchedulesModel> _meetingSchedules;
   @override
-  final String? regularMeeting;
+  List<StudyMeetingSchedulesModel> get meetingSchedules {
+    if (_meetingSchedules is EqualUnmodifiableListView)
+      return _meetingSchedules;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_meetingSchedules);
+  }
+
+  final List<UserModel> _users;
+  @override
+  List<UserModel> get users {
+    if (_users is EqualUnmodifiableListView) return _users;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_users);
+  }
 
   @override
   String toString() {
-    return 'StudyModel(studyId: $studyId, studyName: $studyName, max: $max, headcount: $headcount, isPrivate: $isPrivate, isFinished: $isFinished, explanation: $explanation, createdDate: $createdDate, deadline: $deadline, leaderId: $leaderId, studyImage: $studyImage, regularMeeting: $regularMeeting)';
+    return 'StudyModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, finished: $finished, explanation: $explanation, leaderId: $leaderId, createdAt: $createdAt, deadline: $deadline, studyImage: $studyImage, categories: $categories, meetingSchedules: $meetingSchedules, users: $users)';
   }
 
   @override
@@ -294,46 +348,50 @@ class _$StudyModelImpl implements _StudyModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudyModelImpl &&
-            (identical(other.studyId, studyId) || other.studyId == studyId) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.studyName, studyName) ||
                 other.studyName == studyName) &&
             (identical(other.max, max) || other.max == max) &&
             (identical(other.headcount, headcount) ||
                 other.headcount == headcount) &&
-            (identical(other.isPrivate, isPrivate) ||
-                other.isPrivate == isPrivate) &&
-            (identical(other.isFinished, isFinished) ||
-                other.isFinished == isFinished) &&
+            (identical(other.private, private) || other.private == private) &&
+            (identical(other.finished, finished) ||
+                other.finished == finished) &&
             (identical(other.explanation, explanation) ||
                 other.explanation == explanation) &&
-            (identical(other.createdDate, createdDate) ||
-                other.createdDate == createdDate) &&
-            (identical(other.deadline, deadline) ||
-                other.deadline == deadline) &&
             (identical(other.leaderId, leaderId) ||
                 other.leaderId == leaderId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.deadline, deadline) ||
+                other.deadline == deadline) &&
             (identical(other.studyImage, studyImage) ||
                 other.studyImage == studyImage) &&
-            (identical(other.regularMeeting, regularMeeting) ||
-                other.regularMeeting == regularMeeting));
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
+            const DeepCollectionEquality()
+                .equals(other._meetingSchedules, _meetingSchedules) &&
+            const DeepCollectionEquality().equals(other._users, _users));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      studyId,
+      id,
       studyName,
       max,
       headcount,
-      isPrivate,
-      isFinished,
+      private,
+      finished,
       explanation,
-      createdDate,
-      deadline,
       leaderId,
+      createdAt,
+      deadline,
       studyImage,
-      regularMeeting);
+      const DeepCollectionEquality().hash(_categories),
+      const DeepCollectionEquality().hash(_meetingSchedules),
+      const DeepCollectionEquality().hash(_users));
 
   @JsonKey(ignore: true)
   @override
@@ -351,24 +409,26 @@ class _$StudyModelImpl implements _StudyModel {
 
 abstract class _StudyModel implements StudyModel {
   const factory _StudyModel(
-      {required final int studyId,
+      {required final int id,
       required final String studyName,
       required final int max,
       required final int headcount,
-      required final int isPrivate,
-      required final int isFinished,
+      required final bool private,
+      required final bool finished,
       required final String explanation,
-      required final DateTime createdDate,
-      required final DateTime deadline,
       required final int leaderId,
-      required final String? studyImage,
-      required final String? regularMeeting}) = _$StudyModelImpl;
+      required final DateTime createdAt,
+      required final DateTime deadline,
+      required final String studyImage,
+      required final List<String> categories,
+      required final List<StudyMeetingSchedulesModel> meetingSchedules,
+      required final List<UserModel> users}) = _$StudyModelImpl;
 
   factory _StudyModel.fromJson(Map<String, dynamic> json) =
       _$StudyModelImpl.fromJson;
 
   @override
-  int get studyId;
+  int get id;
   @override
   String get studyName;
   @override
@@ -376,21 +436,25 @@ abstract class _StudyModel implements StudyModel {
   @override
   int get headcount;
   @override
-  int get isPrivate;
+  bool get private;
   @override
-  int get isFinished;
+  bool get finished;
   @override
   String get explanation;
   @override
-  DateTime get createdDate;
+  int get leaderId;
+  @override
+  DateTime get createdAt;
   @override
   DateTime get deadline;
   @override
-  int get leaderId;
+  String get studyImage;
   @override
-  String? get studyImage;
+  List<String> get categories;
   @override
-  String? get regularMeeting;
+  List<StudyMeetingSchedulesModel> get meetingSchedules;
+  @override
+  List<UserModel> get users;
   @override
   @JsonKey(ignore: true)
   _$$StudyModelImplCopyWith<_$StudyModelImpl> get copyWith =>

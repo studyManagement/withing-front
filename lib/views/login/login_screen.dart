@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/authenticator/authenticator.dart';
-import 'package:withing/common/authenticator/provider/kakao_authentication.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 import 'package:withing/common/components/circle_button.dart';
+import 'package:withing/common/modal/withing_modal.dart';
 import 'package:withing/di/injection.dart';
 import 'package:withing/service/signin/signin_service.dart';
 import 'package:withing/view_models/signin/signin_viewmodel.dart';
 
-import '../../common/authenticator/authenticator.dart';
-import '../../common/authenticator/provider/kakao_authentication.dart';
-
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
+  _showErrorMessage(BuildContext context) async {
+    String? errorMessage = Authentication.state.errorMessage;
+
+    await Future.delayed(const Duration(microseconds: 50));
+
+    if (errorMessage != null && context.mounted) {
+      WithingModal.openDialog(
+          context, '문제가 발생했어요', errorMessage, false, null, null);
+      Authentication.state.resolveErrorStatus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _showErrorMessage(context);
     return const Scaffold(
         body: SafeArea(
       child: Padding(
@@ -82,11 +92,7 @@ class _Bottom extends StatelessWidget {
         CircleButton(
             image: 'asset/kakao.png',
             onTap: () async {
-              Authenticator auth = KakaoAuthentication();
-              String token = await auth.login();
-              int socialUUID = await auth.fetchUUID();
-              
-              await vm.signin(auth.getProvider(), socialUUID.toString(), token);
+              await vm.signin('kakao');
             }),
         const Padding(padding: EdgeInsets.only(bottom: 60)),
         const Text(

@@ -7,17 +7,20 @@ class StudyManageBottomSheet extends StatelessWidget {
   final String title;
   final String content;
   final String buttontext;
-  final bool isMultiple;
+  final bool isOut;
 
   const StudyManageBottomSheet(
       {super.key,
       required this.title,
       required this.content,
       required this.buttontext,
-      required this.isMultiple});
+      required this.isOut});
 
   @override
   Widget build(BuildContext context) {
+    List<int> selected=[];
+    bool isSelected=false, isLeader;
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.87,
@@ -69,12 +72,25 @@ class StudyManageBottomSheet extends StatelessWidget {
             height: 522,
             child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return StudyMemberListItem(
-                    nickname: "nickname",
-                    image: Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.gray150,
+                  return GestureDetector(
+                    onTap: (){
+                      if(isOut==true){ // 강제 퇴장 , 여러 명 가능(아직 구현 X)
+                      }
+                      else{ // 스터디장 변경
+                        isSelected = (isSelected) ? false: true;
+                      }
+                    },
+                    child: StudyMemberListItem(
+                      nickname: "nickname",
+                      image: Container(
+                        decoration:BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.gray150,
+                          border: Border.all(
+                            color: isSelected ? AppColors.blue600 : Colors.transparent,
+                            width: 2
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -91,7 +107,7 @@ class StudyManageBottomSheet extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        StudyManageButton(onTap: () {}, text: buttontext)
+        StudyBottomButton(onTap: () {}, text: buttontext)
       ]),
     );
   }

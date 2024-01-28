@@ -11,12 +11,10 @@ class SearchedStudyInfo with _$SearchedStudyInfo {
     required int max,
     @JsonKey(name: 'headcount') required int headCount,
     required String? studyImage,
-    required List<String> categories,
+    required List<int> categories,
     required int? regularMeetingId,
     required int gap,
-    required int day1,
-    required int day2,
-    required int day3,
+    required List<int> days,
     required String startTime, // LocalTime
     required String endTime, // LocalTime
   }) = _SearchedStudyInfo;

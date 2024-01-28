@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/view_models/study/study_viewmodel.dart';
+import 'package:withing/view_models/study/model/study_list_view.dart';
+import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
+import 'package:withing/view_models/study/study_list_viewmodel.dart';
 
 class HomeMyStudy extends StatelessWidget {
   HomeMyStudy({super.key});
@@ -10,8 +13,9 @@ class HomeMyStudy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<StudyView> studies = context.select<StudyViewModel, List<StudyView>>(
-        (provider) => provider.studyViewsInSelectedDay);
+    List<StudyListView> studies =
+        context.select<StudyListViewModel, List<StudyListView>>(
+            (provider) => provider.selectStudyListView);
 
     return Expanded(
       child: Column(
@@ -103,19 +107,48 @@ class MyStudyListException extends StatelessWidget {
 class MyStudyList extends StatelessWidget {
   const MyStudyList({super.key});
 
+  String getNextScheduleDate(DateTime selectedDate,
+      StudyMeetingSchedule currentSchedule, StudyMeetingSchedule nextSchedule) {
+    DateFormat dateFormat = DateFormat('yyyy.MM.dd');
+
+    if (currentSchedule.id == nextSchedule.id) {
+      return dateFormat.format(selectedDate.add(const Duration(days: 7)));
+    }
+
+    if (currentSchedule.day == nextSchedule.day) {
+      return dateFormat.format(selectedDate);
+    }
+
+    int nextDay = 0;
+
+    if (nextSchedule.day > currentSchedule.day) {
+      nextDay = nextSchedule.day - currentSchedule.day;
+    } else {
+      nextDay = (7 - currentSchedule.day) + nextSchedule.day;
+    }
+
+    return dateFormat.format(selectedDate.add(Duration(days: nextDay)));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final StudyListViewModel vm = context.read<StudyListViewModel>();
     String weekString = context
-        .select<StudyViewModel, String>((provider) => provider.weekString);
-    DateTime selectedDate = context
-        .select<StudyViewModel, DateTime>((provider) => provider.selectedDate);
-    List<StudyView> studies = context.select<StudyViewModel, List<StudyView>>(
-        (provider) => provider.studyViewsInSelectedDay);
+        .select<StudyListViewModel, String>((provider) => provider.weekString);
+    DateTime selectedDate = context.select<StudyListViewModel, DateTime>(
+        (provider) => provider.selectedDate);
+    List<StudyListView> studies =
+        context.select<StudyListViewModel, List<StudyListView>>(
+            (provider) => provider.selectStudyListView);
 
     return Expanded(
         child: ListView.separated(
       itemBuilder: (_, index) {
         final item = studies[index];
+        final StudyMeetingSchedule nextMeetingSchedule =
+            vm.getNextPromise(item);
+        final String nextScheduleDate = getNextScheduleDate(
+            selectedDate, item.meetingSchedules.first, nextMeetingSchedule);
 
         return Padding(
           padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
@@ -169,7 +202,7 @@ class MyStudyList extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '매주 ${weekString}요일 ${item.regularMeetings.first.startTime}',
+                    '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
                     ),
@@ -187,7 +220,7 @@ class MyStudyList extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '${item.getNextDay(selectedDate)} (${item.getNextWeek(selectedDate)}) ${item.regularMeetings.first.startTime}',
+                    '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
                     ),

@@ -39,7 +39,7 @@ class Header extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
-              StudyCategoriesWidget(categories: vm.categories),
+              StudyCategoriesWidget(categories: vm.study.categories),
             ],
           ),
         ],

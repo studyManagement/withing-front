@@ -17,7 +17,7 @@ abstract class StudyImageUpdateApi {
   @Headers({'Content-Type': 'multipart/form-data'})
   Future<int> update(
     @Path("study_id") String studyId,
-    @Part(name: "study_image") File? image,
+    @Part(name: "study_image") File image,
   );
 }
 
@@ -29,7 +29,7 @@ class StudyImageUpdateService {
 
   Future<int> callCreateApi(
     String studyId,
-    File? image,
+    File image,
   ) async {
     try {
       debugPrint('[API]');

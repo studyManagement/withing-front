@@ -8,32 +8,43 @@ part of 'study_model.dart';
 
 _$StudyModelImpl _$$StudyModelImplFromJson(Map<String, dynamic> json) =>
     _$StudyModelImpl(
-      studyId: json['studyId'] as int,
+      id: json['id'] as int,
       studyName: json['studyName'] as String,
       max: json['max'] as int,
       headcount: json['headcount'] as int,
-      isPrivate: json['isPrivate'] as int,
-      isFinished: json['isFinished'] as int,
+      private: json['private'] as bool,
+      finished: json['finished'] as bool,
       explanation: json['explanation'] as String,
-      createdDate: DateTime.parse(json['createdDate'] as String),
-      deadline: DateTime.parse(json['deadline'] as String),
       leaderId: json['leaderId'] as int,
-      studyImage: json['studyImage'] as String?,
-      regularMeeting: json['regularMeeting'] as String?,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      deadline: DateTime.parse(json['deadline'] as String),
+      studyImage: json['studyImage'] as String,
+      categories: (json['categories'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      meetingSchedules: (json['meetingSchedules'] as List<dynamic>)
+          .map((e) =>
+              StudyMeetingSchedulesModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      users: (json['users'] as List<dynamic>)
+          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$StudyModelImplToJson(_$StudyModelImpl instance) =>
     <String, dynamic>{
-      'studyId': instance.studyId,
+      'id': instance.id,
       'studyName': instance.studyName,
       'max': instance.max,
       'headcount': instance.headcount,
-      'isPrivate': instance.isPrivate,
-      'isFinished': instance.isFinished,
+      'private': instance.private,
+      'finished': instance.finished,
       'explanation': instance.explanation,
-      'createdDate': instance.createdDate.toIso8601String(),
-      'deadline': instance.deadline.toIso8601String(),
       'leaderId': instance.leaderId,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'deadline': instance.deadline.toIso8601String(),
       'studyImage': instance.studyImage,
-      'regularMeeting': instance.regularMeeting,
+      'categories': instance.categories,
+      'meetingSchedules': instance.meetingSchedules,
+      'users': instance.users,
     };

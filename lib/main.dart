@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:withing/common/authenticator/authentication.dart';
@@ -10,7 +11,8 @@ import 'package:withing/withing_app.dart';
 import 'di/injection.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.white,
@@ -48,6 +50,5 @@ void main() async {
   await Authentication.initialize();
 
   setupDependencyInjection();
-
-  runApp(WithingApp());
+  runApp(const WithingApp());
 }

@@ -7,8 +7,6 @@ part 'user_model.g.dart';
 class UserModel with _$UserModel {
   const factory UserModel({
     required int userId,
-    required String socialId,
-    required String socialIdType,
     required String nickname,
     required String introduce,
     required String userImage,

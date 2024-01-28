@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/service/study/StudyType.dart';
-import 'package:withing/view_models/study/study_viewmodel.dart';
+import 'package:withing/view_models/study/study_list_viewmodel.dart';
 import 'package:withing/views/home/components/home_study_notificator.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -19,10 +19,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final StudyViewModel vm = context.read<StudyViewModel>();
+    final StudyListViewModel vm = context.read<StudyListViewModel>();
 
     void onDaySelected(DateTime selectedDate, DateTime focusedDate) {
-      StudyViewModel vm = context.read<StudyViewModel>();
       vm.fetchStudies(StudyType.MY);
       vm.setSelectedDate(selectedDate);
     }

@@ -2,7 +2,7 @@ name: withing
 description: withing Flutter project.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0+5
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -40,6 +40,8 @@ dependencies:
   get_it: ^7.6.6
   jwt_decoder: ^2.0.1
   image_picker: ^1.0.7
+  bottom_picker: ^2.3.3
+  fluttertoast: ^8.0.8
 
 
 dev_dependencies:
@@ -57,5 +59,27 @@ flutter:
     - asset/
     - asset/search_category/
     - asset/study_manage/
+    - asset/fonts/
     - .local.env
 
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: asset/fonts/Pretendard-Thin.ttf
+          weight: 100
+        - asset: asset/fonts/Pretendard-ExtraLight.ttf
+          weight: 200
+        - asset: asset/fonts/Pretendard-Light.ttf
+          weight: 300
+        - asset: asset/fonts/Pretendard-Regular.ttf
+          weight: 400
+        - asset: asset/fonts/Pretendard-Medium.ttf
+          weight: 500
+        - asset: asset/fonts/Pretendard-SemiBold.ttf
+          weight: 600
+        - asset: asset/fonts/Pretendard-Bold.ttf
+          weight: 700
+        - asset: asset/fonts/Pretendard-ExtraBold.ttf
+          weight: 800
+        - asset: asset/fonts/Pretendard-Black.ttf
+          weight: 900
