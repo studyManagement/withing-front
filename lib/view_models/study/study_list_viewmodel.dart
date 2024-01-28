@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:withing/model/study/study_list_model.dart';
 import 'package:withing/service/study/StudyType.dart';
@@ -48,8 +46,6 @@ class StudyListViewModel extends ChangeNotifier {
 
     int currentDateIndex = study.meetingSchedules
         .indexWhere((element) => element.id == currentMeetingSchedule.id);
-
-    log('[DEBUG MSG] ${study} / ${weekday} / ${currentStudy.id} / ${currentStudy.meetingSchedules} / ${currentDateIndex}');
 
     if (study.meetingSchedules.length == currentDateIndex + 1) {
       return study.meetingSchedules[0];
