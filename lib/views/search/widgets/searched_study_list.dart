@@ -5,8 +5,8 @@ import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../common/theme/app/app_fonts.dart';
 import '../../../common/components/study_categories_widget.dart';
+import '../../../common/utils/stringify_schedule.dart';
 import '../../../model/search/searched_study_info_model.dart';
-import '../../../view_models/create/create_study_viewmodel.dart';
 import '../../../view_models/search/search_study_viewmodel.dart';
 
 class SearchedStudyList extends StatelessWidget {
@@ -73,7 +73,7 @@ class _StudyCard extends StatelessWidget {
             _StudyDetails(
               [
                 ('참여 인원', '${info.headcount}/${info.max}'),
-                ('정기 모임', convertMeetingDetails(info.meetingSchedules)),
+                ('정기 모임', stringifySchedule(info.meetingSchedules)),
                 // ('다음 만남', '2023. 08. 03 (목) 21:00'),
               ],
             ),
