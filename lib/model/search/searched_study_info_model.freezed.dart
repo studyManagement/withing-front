@@ -31,7 +31,7 @@ mixin _$SearchedStudyInfo {
   int get leaderId => throw _privateConstructorUsedError;
   String? get studyImage => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
-  MeetingInfo get meetingSchedules => throw _privateConstructorUsedError;
+  List<MeetingInfo> get meetingSchedules => throw _privateConstructorUsedError;
   bool get private => throw _privateConstructorUsedError;
   bool get finished => throw _privateConstructorUsedError;
 
@@ -59,11 +59,9 @@ abstract class $SearchedStudyInfoCopyWith<$Res> {
       int leaderId,
       String? studyImage,
       List<String> categories,
-      MeetingInfo meetingSchedules,
+      List<MeetingInfo> meetingSchedules,
       bool private,
       bool finished});
-
-  $MeetingInfoCopyWith<$Res> get meetingSchedules;
 }
 
 /// @nodoc
@@ -142,7 +140,7 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
       meetingSchedules: null == meetingSchedules
           ? _value.meetingSchedules
           : meetingSchedules // ignore: cast_nullable_to_non_nullable
-              as MeetingInfo,
+              as List<MeetingInfo>,
       private: null == private
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
@@ -152,14 +150,6 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
           : finished // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MeetingInfoCopyWith<$Res> get meetingSchedules {
-    return $MeetingInfoCopyWith<$Res>(_value.meetingSchedules, (value) {
-      return _then(_value.copyWith(meetingSchedules: value) as $Val);
-    });
   }
 }
 
@@ -183,12 +173,9 @@ abstract class _$$SearchedStudyInfoImplCopyWith<$Res>
       int leaderId,
       String? studyImage,
       List<String> categories,
-      MeetingInfo meetingSchedules,
+      List<MeetingInfo> meetingSchedules,
       bool private,
       bool finished});
-
-  @override
-  $MeetingInfoCopyWith<$Res> get meetingSchedules;
 }
 
 /// @nodoc
@@ -263,9 +250,9 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
           : categories // ignore: cast_nullable_to_non_nullable
               as List<String>,
       meetingSchedules: null == meetingSchedules
-          ? _value.meetingSchedules
+          ? _value._meetingSchedules
           : meetingSchedules // ignore: cast_nullable_to_non_nullable
-              as MeetingInfo,
+              as List<MeetingInfo>,
       private: null == private
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
@@ -293,10 +280,11 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
       required this.leaderId,
       required this.studyImage,
       required final List<String> categories,
-      required this.meetingSchedules,
+      required final List<MeetingInfo> meetingSchedules,
       required this.private,
       required this.finished})
-      : _categories = categories;
+      : _categories = categories,
+        _meetingSchedules = meetingSchedules;
 
   factory _$SearchedStudyInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$SearchedStudyInfoImplFromJson(json);
@@ -329,8 +317,15 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
     return EqualUnmodifiableListView(_categories);
   }
 
+  final List<MeetingInfo> _meetingSchedules;
   @override
-  final MeetingInfo meetingSchedules;
+  List<MeetingInfo> get meetingSchedules {
+    if (_meetingSchedules is EqualUnmodifiableListView)
+      return _meetingSchedules;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_meetingSchedules);
+  }
+
   @override
   final bool private;
   @override
@@ -366,8 +361,8 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
                 other.studyImage == studyImage) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
-            (identical(other.meetingSchedules, meetingSchedules) ||
-                other.meetingSchedules == meetingSchedules) &&
+            const DeepCollectionEquality()
+                .equals(other._meetingSchedules, _meetingSchedules) &&
             (identical(other.private, private) || other.private == private) &&
             (identical(other.finished, finished) ||
                 other.finished == finished));
@@ -388,7 +383,7 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
       leaderId,
       studyImage,
       const DeepCollectionEquality().hash(_categories),
-      meetingSchedules,
+      const DeepCollectionEquality().hash(_meetingSchedules),
       private,
       finished);
 
@@ -420,7 +415,7 @@ abstract class _SearchedStudyInfo implements SearchedStudyInfo {
       required final int leaderId,
       required final String? studyImage,
       required final List<String> categories,
-      required final MeetingInfo meetingSchedules,
+      required final List<MeetingInfo> meetingSchedules,
       required final bool private,
       required final bool finished}) = _$SearchedStudyInfoImpl;
 
@@ -450,7 +445,7 @@ abstract class _SearchedStudyInfo implements SearchedStudyInfo {
   @override
   List<String> get categories;
   @override
-  MeetingInfo get meetingSchedules;
+  List<MeetingInfo> get meetingSchedules;
   @override
   bool get private;
   @override

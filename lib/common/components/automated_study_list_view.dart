@@ -5,7 +5,6 @@ import '../../../common/theme/theme_resources.dart';
 import '../../../common/components/gray100_divider.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../model/search/searched_study_info_model.dart';
-import '../../../view_models/create/create_study_viewmodel.dart'; // 제거
 import '../../../view_models/search/search_study_viewmodel.dart'; // 제거
 
 class AutomatedStudyListView extends StatelessWidget {
@@ -68,28 +67,26 @@ class _StudyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/studies/${info.studyId}');
+        context.push('/studies/${info.id}');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
             _StudyHeader(
-              studyName: info.studyName,
+              studyName: info.teamName ?? '',
               studyImageUrl: info.studyImage,
             ),
             _StudyDetails(
               [
-                ('참여 인원', '${info.headCount}/${info.max}'),
+                ('참여 인원', '${info.headcount}/${info.max}'),
                 (
                   '정기 모임',
-                  '${convertDays(info.days, info.gap)} ${convertTime(info.startTime)}'
+                  convertMeetingDetails(info.meetingSchedules),
                 ),
               ],
             ),
-            StudyCategoriesWidget(
-              categories: convertIndiciesToElements(info.categories),
-            ),
+            StudyCategoriesWidget(categories: info.categories),
           ],
         ),
       ),
@@ -114,11 +111,14 @@ class _StudyHeader extends StatelessWidget {
     return Column(
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipOval(
               child: (studyImageUrl != null)
                   ? Image.network(
                       studyImageUrl!,
+                      width: 38,
+                      height: 38,
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {

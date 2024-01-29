@@ -17,7 +17,7 @@ class SearchedStudyInfo with _$SearchedStudyInfo {
     required int leaderId,
     required String? studyImage,
     required List<String> categories,
-    required MeetingInfo meetingSchedules,
+    required List<MeetingInfo> meetingSchedules,
     required bool private,
     required bool finished,
   }) = _SearchedStudyInfo;

@@ -190,7 +190,7 @@ String getFilter(String value) {
   }
 }
 
-String convertDays(List<int> days, int gap) {
+String convertMeetingDetails(List<MeetingInfo> meetings) {
   Map<int, String> dayNames = {
     1: '월요일',
     2: '화요일',
@@ -201,40 +201,37 @@ String convertDays(List<int> days, int gap) {
     7: '일요일'
   };
 
-  if (gap == 0) {
-    return '매일';
-  }
-
-  String dayString;
-  if (days.length > 1) {
-    dayString = days.map((day) => dayNames[day]!.substring(0, 1)).join(',');
-  } else if (days.isNotEmpty) {
-    dayString = dayNames[days.first]!;
-  } else {
-    return '';
-  }
-
-  return gap == 1 ? '매주 $dayString' : dayString;
-}
-
-String convertTime(String time) {
-  DateFormat inputFormat;
-  if (time.length == 5) {
-    inputFormat = DateFormat('HH:mm');
-  } else if (time.length == 8) {
-    inputFormat = DateFormat('HH:mm:ss');
-  } else {
-    throw const FormatException('입력된 시간 정보에 오류가 있습니다.');
-  }
-
-  DateTime dateTime = inputFormat.parse(time);
-
-  String period = dateTime.hour >= 12 ? '오후' : '오전';
-  int hour = dateTime.hour >= 12 ? dateTime.hour - 12 : dateTime.hour;
-  hour = hour == 0 ? 12 : hour;
-
+  DateFormat inputFormat = DateFormat('HH:mm');
   DateFormat outputFormat = DateFormat('h:mm');
-  String formattedTime = outputFormat.format(dateTime);
 
-  return '$period $formattedTime';
+  List<String> meetingStrings = [];
+
+  for (var meeting in meetings) {
+    DateTime startTime = inputFormat.parse(meeting.startTime);
+    DateTime endTime = inputFormat.parse(meeting.endTime);
+
+    String startPeriod = startTime.hour >= 12 ? '오후' : '오전';
+    int startHour = startTime.hour >= 12 ? startTime.hour - 12 : startTime.hour;
+    startHour = startHour == 0 ? 12 : startHour;
+
+    String endPeriod = endTime.hour >= 12 ? '오후' : '오전';
+    int endHour = endTime.hour >= 12 ? endTime.hour - 12 : endTime.hour;
+    endHour = endHour == 0 ? 12 : endHour;
+
+    String formattedStartTime = outputFormat.format(startTime);
+    String formattedEndTime = outputFormat.format(endTime);
+
+    // String meetingTime =
+    //     '$startPeriod $formattedStartTime - $endPeriod $formattedEndTime';
+    String meetingTime = '$startPeriod $formattedStartTime';
+    String meetingDay = dayNames[meeting.day]!;
+
+    // meetingStrings.isEmpty
+    //     ? meetingStrings.add('매주 $meetingDay $meetingTime')
+    //     : meetingStrings.add('        $meetingDay $meetingTime');
+
+    meetingStrings.add('매주 $meetingDay $meetingTime');
+  }
+
+  return meetingStrings.join('\n');
 }

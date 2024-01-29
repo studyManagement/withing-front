@@ -61,26 +61,23 @@ class _StudyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/studies/${info.studyId}');
+        context.push('/studies/${info.id}');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
-            _StudyHeader(info.studyName, info.studyImage),
+            _StudyHeader(
+                teamName: info.teamName ?? "스터디",
+                studyImageUrl: info.studyImage),
             _StudyDetails(
               [
-                ('참여 인원', '${info.headCount}/${info.max}'),
-                (
-                  '정기 모임',
-                  '${convertDays(info.days, info.gap)} ${convertTime(info.startTime)}'
-                ),
+                ('참여 인원', '${info.headcount}/${info.max}'),
+                ('정기 모임', convertMeetingDetails(info.meetingSchedules)),
                 // ('다음 만남', '2023. 08. 03 (목) 21:00'),
               ],
             ),
-            StudyCategoriesWidget(
-              categories: convertIndiciesToElements(info.categories),
-            ),
+            StudyCategoriesWidget(categories: info.categories),
           ],
         ),
       ),
@@ -89,10 +86,13 @@ class _StudyCard extends StatelessWidget {
 }
 
 class _StudyHeader extends StatelessWidget {
-  final String studyName;
-  final String? studyImage;
+  final String teamName;
+  final String? studyImageUrl;
 
-  const _StudyHeader(this.studyName, this.studyImage);
+  const _StudyHeader({
+    required this.teamName,
+    required this.studyImageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +104,11 @@ class _StudyHeader extends StatelessWidget {
         Row(
           children: [
             ClipOval(
-              child: (studyImage != null)
+              child: (studyImageUrl != null)
                   ? Image.network(
-                      studyImage!,
+                      studyImageUrl!,
+                      width: 38,
+                      height: 38,
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {
@@ -117,7 +119,7 @@ class _StudyHeader extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Text(
-              studyName,
+              teamName,
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],
@@ -140,6 +142,7 @@ class _StudyDetails extends StatelessWidget {
     for (var (title, content) in studyDetails) {
       widgets.add(
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,

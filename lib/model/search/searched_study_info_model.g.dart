@@ -22,8 +22,9 @@ _$SearchedStudyInfoImpl _$$SearchedStudyInfoImplFromJson(
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      meetingSchedules: MeetingInfo.fromJson(
-          json['meetingSchedules'] as Map<String, dynamic>),
+      meetingSchedules: (json['meetingSchedules'] as List<dynamic>)
+          .map((e) => MeetingInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
       private: json['private'] as bool,
       finished: json['finished'] as bool,
     );
