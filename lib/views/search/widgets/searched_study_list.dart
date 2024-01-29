@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'gray100_divider.dart';
-import 'package:withing/model/search/searched_study_info_model.dart';
-import 'package:withing/view_models/create/create_study_viewmodel.dart';
+import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../common/theme/app/app_fonts.dart';
 import '../../../common/components/study_categories_widget.dart';
+import '../../../model/search/searched_study_info_model.dart';
+import '../../../view_models/create/create_study_viewmodel.dart';
 import '../../../view_models/search/search_study_viewmodel.dart';
 
 class SearchedStudyList extends StatelessWidget {
