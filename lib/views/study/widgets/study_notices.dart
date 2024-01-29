@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:withing/view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
 
-import '../../../model/study/notice_model.dart';
-import 'notice_item.dart';
+import '../../../model/board/board_model.dart';
+import '../../board/widgets/board_item.dart';
 
 class Notice extends StatelessWidget {
   const Notice({super.key});
@@ -15,8 +15,8 @@ class Notice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
-     List<NoticeModel> notices = vm.notices;
-     bool hasNotice = vm.hasNotice;
+     List<BoardModel> notices = vm.posts;
+     bool hasNotice = vm.hasPost;
     return Expanded(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +76,7 @@ class Notice extends StatelessWidget {
 
 class _NoticeCarousel extends StatefulWidget {
   final int studyId;
-  final List<NoticeModel> notices;
+  final List<BoardModel> notices;
   const _NoticeCarousel({required this.studyId,required this.notices});
 
 
@@ -110,7 +110,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           itemBuilder: (context, index, realIndex) {
             final int startIndex = index * 3;
             final int endIndex = (index + 1) * 3;
-            final List<NoticeModel> sublist = widget.notices.sublist(
+            final List<BoardModel> sublist = widget.notices.sublist(
               startIndex,
               endIndex > numOfNotice ? numOfNotice : endIndex,
             );
@@ -124,15 +124,16 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
   }
 }
 
-Widget _buildCarouselItem(int studyId, List<NoticeModel> sublist) {
+Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
   return ListView.separated(
     itemBuilder: (context, index) {
-      return NoticeItem(
+      return BoardItem(
         studyId: studyId,
-        boardId: sublist[index].boardId,
+        isOnlyNotice: true,
+        boardId: sublist[index].id,
         title: sublist[index].title,
-        content: sublist[index].contents,
-        createdAt: sublist[index].createdAt,
+        notice: sublist[index].notice,
+        createdAt: sublist[index].createdAt.toString(),
       );
     },
     separatorBuilder: (context, index) {

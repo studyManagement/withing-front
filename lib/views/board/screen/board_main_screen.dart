@@ -34,7 +34,7 @@ class BoardMainScreen extends StatelessWidget {
         child: Consumer<StudyViewModel>(
           builder:(context,data,child){
             data.fetchBoards(studyId, false);
-          return SafeArea(child: (data.hasNotice) ? BoardList() : const NoPost());}
+          return SafeArea(child: (data.hasPost) ? const BoardList() : const NoPost());}
         ),
       ),
     );

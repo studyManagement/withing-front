@@ -6,7 +6,6 @@ import 'package:withing/views/study/study_exception_screen.dart';
 
 import '../../common/requester/network_exception.dart';
 import '../../model/board/board_model.dart';
-import '../../model/study/notice_model.dart';
 import '../../model/study/study_meeting_schedules_model.dart';
 
 class StudyViewModel extends ChangeNotifier {
@@ -20,9 +19,8 @@ class StudyViewModel extends ChangeNotifier {
   String startTime = '';
   int newLeaderId = 0;
 
-  bool hasNotice = false;
-  int numOfNotices = 0;
-  List<NoticeModel> notices = [];
+  bool hasPost = false;
+  int numOfPosts = 0;
   List<BoardModel> posts = [];
 
 
@@ -93,18 +91,18 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchBoards(int studyId, bool isNotice) async {
-    if (notices.isEmpty) {
+    if (posts.isEmpty) {
       try {
-        notices = await _service.fetchBoards(studyId, isNotice);
-        if (notices.isNotEmpty) {
-          hasNotice = true;
-          numOfNotices = notices.length;
+        posts = await _service.fetchBoards(studyId, isNotice);
+        if (posts.isNotEmpty) {
+          hasPost = true;
+          numOfPosts = posts.length;
         }
       } on ApiException catch (e) {
         if (e.code == 404) {
           // 공지사항이 없는 경우 처리
-          hasNotice = false;
-          numOfNotices = 0;
+          hasPost = false;
+          numOfPosts = 0;
         }
       }
       notifyListeners();

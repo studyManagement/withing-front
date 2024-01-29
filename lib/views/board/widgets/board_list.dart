@@ -4,8 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:withing/view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
-import '../../../model/study/notice_model.dart';
-import '../../study/widgets/notice_item.dart';
+import 'board_item.dart';
 import 'board_item.dart';
 
 class BoardList extends StatelessWidget {
@@ -19,12 +18,13 @@ class BoardList extends StatelessWidget {
     return ListView.separated(
       itemBuilder: (context, index) {
         return BoardItem(
+          studyId: vm.study.studyId,
+          isOnlyNotice: false,
           nickname: list[index].user.nickname,
           notice: list[index].notice,
           boardId: list[index].id,
           title: list[index].title,
           content:list[index].content,
-             // '게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다.게시글 내용입니다. 게시글 내용입니다 .게시글 내용입니다. 게시글 내용입니다  ',
           createdAt: list[index].createdAt.toString(),
         );
       },
