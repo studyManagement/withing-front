@@ -4,7 +4,6 @@ import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/common/requester/network_exception.dart';
-import 'package:withing/model/study/notice_model.dart';
 import 'package:withing/model/study/regular_meeting_exception.dart';
 import 'package:withing/model/study/regular_meeting_model.dart';
 import 'package:withing/model/study/study_category_model.dart';
@@ -12,6 +11,8 @@ import 'package:withing/model/study/study_exception.dart';
 import 'package:withing/model/study/study_list_model.dart';
 import 'package:withing/model/study/study_model.dart';
 import 'package:withing/service/study/StudyType.dart';
+
+import '../../model/board/board_model.dart';
 
 part 'study_service.g.dart';
 
@@ -33,9 +34,9 @@ abstract class StudyApi {
   @GET('/studies/{id}/categories')
   Future<StudyCategory> fetchStudyCategory(@Path('id') int id);
 
-  // 삭제
+
   @GET('/studies/{id}/boards')
-  Future<List<NoticeModel>> fetchBoards(
+  Future<List<BoardModel>> fetchBoards(
       @Path("id") int id, @Query("isNotice") bool isNotice);
 
   @PATCH('/studies/{id}/finish')
@@ -98,9 +99,9 @@ class StudyService {
     return categoryData;
   }
 
-  Future<List<NoticeModel>> fetchBoards(int studyId, bool isNotice) async {
+  Future<List<BoardModel>> fetchBoards(int studyId, bool isNotice) async {
     try {
-      final List<NoticeModel> notices =
+      final List<BoardModel> notices =
           await _studyApi.fetchBoards(studyId, isNotice);
       return notices;
     } on ApiException catch (e) {
