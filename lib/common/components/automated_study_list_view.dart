@@ -1,50 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../common/theme/theme_resources.dart';
 import '../../../common/components/gray100_divider.dart';
-import '../../../common/theme/app/app_colors.dart';
-import '../../../common/theme/app/app_fonts.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../model/search/searched_study_info_model.dart';
-import '../../../view_models/create/create_study_viewmodel.dart';
-import '../../../view_models/search/search_study_viewmodel.dart';
+import '../../../view_models/create/create_study_viewmodel.dart'; // 제거
+import '../../../view_models/search/search_study_viewmodel.dart'; // 제거
 
-class SearchedStudyList extends StatelessWidget {
-  final SearchType type;
+class AutomatedStudyListView extends StatelessWidget {
+  // final ViewModel viewModel;
 
-  SearchedStudyList(this.type);
+  AutomatedStudyListView(
+      // {required this.viewModel}
+      );
 
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
 
     return Expanded(
+      // 주입받은 뷰모델로 대체
       child: Consumer<SearchStudyViewModel>(builder: (
         context,
         viewModel,
         child,
       ) {
-        bool isCategoryType = type == SearchType.category;
-        int studyCount = isCategoryType
-            ? (viewModel.studyWithCategory?.length ?? 0)
-            : (viewModel.studyWithKeyword?.length ?? 0);
-        List<SearchedStudyInfo>? studies = isCategoryType
-            ? viewModel.studyWithCategory
-            : viewModel.studyWithKeyword;
+        // 뷰모델에서 참조
+        int searchesCount = 0; // viewModel.searchesCount
+        List<SearchedStudyInfo>? studyList = []; // viewModel.studyList
 
         return NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification scrollInfo) {
               if (scrollInfo.metrics.pixels ==
                   scrollInfo.metrics.maxScrollExtent) {
-                viewModel.scrollListener(type);
+                // viewModel.scrollListener();
+                /// scroll listener 예시 - 뷰모델에 정의
+                //   Future<void> scrollListener() async {
+                //     if (_isLoading) return;
+                //     _isLoading = true;
+                //
+                //     fetchStudies();
+                //
+                //     _isLoading = false;
+                //   }
               }
               return true;
             },
             child: ListView.separated(
               controller: scrollController,
-              itemCount: studyCount,
+              itemCount: searchesCount,
               itemBuilder: (context, index) =>
-                  (index < studyCount) ? _StudyCard(studies![index]) : null,
+                  (index < searchesCount) ? _StudyCard(studyList[index]) : null,
               separatorBuilder: (context, index) => const Gray100Divider(),
             ));
       }),
@@ -67,7 +74,10 @@ class _StudyCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           children: [
-            _StudyHeader(info.studyName, info.studyImage),
+            _StudyHeader(
+              studyName: info.studyName,
+              studyImageUrl: info.studyImage,
+            ),
             _StudyDetails(
               [
                 ('참여 인원', '${info.headCount}/${info.max}'),
@@ -75,7 +85,6 @@ class _StudyCard extends StatelessWidget {
                   '정기 모임',
                   '${convertDays(info.days, info.gap)} ${convertTime(info.startTime)}'
                 ),
-                // ('다음 만남', '2023. 08. 03 (목) 21:00'),
               ],
             ),
             StudyCategoriesWidget(
@@ -90,9 +99,12 @@ class _StudyCard extends StatelessWidget {
 
 class _StudyHeader extends StatelessWidget {
   final String studyName;
-  final String? studyImage;
+  final String? studyImageUrl;
 
-  const _StudyHeader(this.studyName, this.studyImage);
+  const _StudyHeader({
+    required this.studyName,
+    required this.studyImageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +116,9 @@ class _StudyHeader extends StatelessWidget {
         Row(
           children: [
             ClipOval(
-              child: (studyImage != null)
+              child: (studyImageUrl != null)
                   ? Image.network(
-                      studyImage!,
+                      studyImageUrl!,
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object exception,
                           StackTrace? stackTrace) {

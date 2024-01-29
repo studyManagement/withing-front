@@ -78,14 +78,18 @@ class CategorySearchService {
   Future<int> callCountApi(
     String categoryId,
   ) async {
-    try {
-      debugPrint('[API]');
-      final studyCnt = await _api.count(categoryId);
-      debugPrint('검색된 스터디 수 :  $studyCnt');
-      return studyCnt;
-    } on NetworkException catch (e) {
-      print(e);
-      rethrow;
-    }
+    // try {
+    //   debugPrint('[API]');
+    //   final studyCnt = await _api.count(categoryId);
+    //   debugPrint('검색된 스터디 수 :  $studyCnt');
+    //   return studyCnt;
+    // } on NetworkException catch (e) {
+    //   print(e);
+    //   rethrow;
+    // }
+
+    int mockResponse = 10;
+
+    return mockResponse;
   }
 }
