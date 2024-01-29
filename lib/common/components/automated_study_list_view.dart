@@ -5,7 +5,6 @@ import '../../../common/components/gray100_divider.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../model/search/searched_study_info_model.dart';
 import '../../view_models/search/searched_studies_viewmodel.dart';
-import '../utils/stringify_schedule.dart';
 
 class AutomatedStudyListView extends StatelessWidget {
   final SearchedStudiesViewModel viewModel;
@@ -15,7 +14,7 @@ class AutomatedStudyListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
-    int searchesCount = viewModel.searchesCount;
+    int searchesCount = viewModel.studiesCount;
     List<SearchedStudyInfo>? studyList = viewModel.studyList;
 
     return Expanded(
@@ -91,7 +90,7 @@ class _StudyHeader extends StatelessWidget {
     return Column(
       children: [
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipOval(
               child: (studyImageUrl != null)
