@@ -102,6 +102,10 @@ class MyScreen extends StatelessWidget {
                     horizontalTitleGap: 16,
                   ),
                   ListTile(
+                    onTap: () {
+                      return Authentication.instance
+                          .logout(reason: '[디버그] 로그아웃 되었습니다.');
+                    },
                     trailing: const Text('v1.0.1',
                         style: TextStyle(
                             fontSize: 14,
