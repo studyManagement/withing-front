@@ -61,21 +61,28 @@ class StudyViewModel extends ChangeNotifier {
   void getRegularMeetingString(
       List<StudyMeetingSchedulesModel> meetingSchedules) {
     int cnt = 0;
-    if (meetingSchedules.isEmpty || meetingSchedules == null) {
+    List<int> days = [];
+    for(int i = 0;i<meetingSchedules.length;i++) {
+      if (!days.contains(meetingSchedules[i].day)) {
+        days.add(meetingSchedules[i].day);
+      }
+    }
+    if(days.isEmpty){
       regularMeeting = '미등록';
-    } else if (meetingSchedules.length == 7) {
+    }
+    else if(days.length==7){
       regularMeeting = '매일 ${meetingSchedules[0].startTime}';
     } else {
       regularMeeting = '매주 ';
-      for (int i = 0; i < meetingSchedules.length; i++) {
-        if (cnt < meetingSchedules.length) {
-          regularMeeting =
-              '$regularMeeting${_weekString[meetingSchedules[i].day]}, ';
-          cnt++;
-        } else {
-          regularMeeting =
-              '$regularMeeting${_weekString[meetingSchedules[i].day]}';
-        }
+        for (int i = 0; i < days.length; i++) {
+          if (cnt < days.length-1) {
+            regularMeeting =
+            '$regularMeeting${_weekString[days[i]]}, ';
+            cnt++;
+          } else {
+            regularMeeting =
+            '$regularMeeting${_weekString[days[i]]}';
+          }
       }
     }
   }
