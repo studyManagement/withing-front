@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
-import 'package:modi/views/study/widgets/study_member_list_item.dart';
+import 'package:modi/views/study/widgets/study_member_list.dart';
+
 
 class StudyManageBottomSheet extends StatelessWidget {
   final String title;
@@ -81,19 +83,20 @@ class StudyManageBottomSheet extends StatelessWidget {
                         isSelected = (isSelected) ? false : true;
                       }
                     },
-                    child: StudyMemberListItem(
-                      nickname: "nickname",
-                      image: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.gray150,
-                          border: Border.all(
-                              color: isSelected
-                                  ? AppColors.blue600
-                                  : Colors.transparent,
-                              width: 2),
-                        ),
-                      ),
+
+                    child: StudyMemberList(users: [],
+                      // nickname: "nickname",
+                      // image: Container(
+                      //   decoration:BoxDecoration(
+                      //     shape: BoxShape.circle,
+                      //     color: AppColors.gray150,
+                      //     border: Border.all(
+                      //       color: isSelected ? AppColors.blue600 : Colors.transparent,
+                      //       width: 2
+                      //     ),
+                      //   ),
+                      // ),
+
                     ),
                   );
                 },

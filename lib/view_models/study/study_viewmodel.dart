@@ -3,21 +3,24 @@ import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/study/study_exception.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/views/study/study_exception_screen.dart';
-
 import '../../common/requester/network_exception.dart';
 import '../../model/board/board_model.dart';
 import '../../model/study/study_meeting_schedules_model.dart';
+import '../../model/user/user_model.dart';
 
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
-  List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
+  final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
   var study;
   List<int> days = [];
   String regularMeeting = '';
   String startTime = '';
   int newLeaderId = 0;
+
+  List<UserModel> _users = [];
+  List<UserModel> get users => _users;
 
   bool hasPost = false;
   int numOfPosts = 0;
@@ -29,6 +32,7 @@ class StudyViewModel extends ChangeNotifier {
     if (study == null) {
       try {
         study = await _service.fetchStudyInfo(studyId);
+        _users = study.users;
         getRegularMeetingString(study.meetingSchedules);
         await fetchBoards(studyId, true);
         notifyListeners();
@@ -39,6 +43,26 @@ class StudyViewModel extends ChangeNotifier {
       } on NetworkException catch (e) {
         print(e);
       }
+    }
+  }
+
+
+  Future<void> fetchBoards(int studyId, bool isNotice) async {
+    if (posts.isEmpty) {
+      try {
+        posts = await _service.fetchBoards(studyId, isNotice);
+        if (posts.isNotEmpty) {
+          hasPost = true;
+          numOfPosts = posts.length;
+        }
+      } on ApiException catch (e) {
+        if (e.code == 404) {
+          // 공지사항이 없는 경우 처리
+          hasPost = false;
+          numOfPosts = 0;
+        }
+      }
+      notifyListeners();
     }
   }
 
@@ -87,6 +111,8 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
+
+
   void navigateToStudyExceptionScreen(BuildContext context) {
     Navigator.push(
       context,
@@ -94,24 +120,6 @@ class StudyViewModel extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchBoards(int studyId, bool isNotice) async {
-    if (posts.isEmpty) {
-      try {
-        posts = await _service.fetchBoards(studyId, isNotice);
-        if (posts.isNotEmpty) {
-          hasPost = true;
-          numOfPosts = posts.length;
-        }
-      } on ApiException catch (e) {
-        if (e.code == 404) {
-          // 공지사항이 없는 경우 처리
-          hasPost = false;
-          numOfPosts = 0;
-        }
-      }
-      notifyListeners();
-    }
-  }
 
   @override
   void dispose() {

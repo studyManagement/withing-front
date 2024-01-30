@@ -81,7 +81,7 @@ class StudyScreen extends StatelessWidget {
                     color: AppColors.gray100,
                   ),
                   const SizedBox(height: 10),
-                  Notice(),
+                  const Notice(),
                 ],
               ),
             ),
