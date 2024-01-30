@@ -12,22 +12,28 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Container grayContainer =
+    Container(width: 64, height: 64, color: AppColors.gray150);
+
     final StudyViewModel vm = context.read<StudyViewModel>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          SizedBox(
-            width: 64,
-            height: 64,
-            child: Container(
-              decoration: const BoxDecoration(
-                // image 추가 필요
-                shape: BoxShape.circle,
-                color: AppColors.gray150,
-              ),
-            ),
+          ClipOval(
+            child:  (vm.study.studyImage != null)
+                ? Image.network(
+              vm.study.studyImage!,
+              width: 64,
+              height: 64,
+              fit: BoxFit.cover,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return grayContainer;
+              },
+            )
+                : grayContainer,
           ),
           const SizedBox(width: 14),
           Column(
