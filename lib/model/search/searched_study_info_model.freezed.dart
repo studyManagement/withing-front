@@ -20,18 +20,20 @@ SearchedStudyInfo _$SearchedStudyInfoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SearchedStudyInfo {
-  int get studyId => throw _privateConstructorUsedError;
-  String get studyName => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  String? get teamName => throw _privateConstructorUsedError;
   int get max => throw _privateConstructorUsedError;
-  @JsonKey(name: 'headcount')
-  int get headCount => throw _privateConstructorUsedError;
+  int get headcount => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
+  String get explanation => throw _privateConstructorUsedError;
+  String get createdDate => throw _privateConstructorUsedError;
+  String get deadline => throw _privateConstructorUsedError;
+  int get leaderId => throw _privateConstructorUsedError;
   String? get studyImage => throw _privateConstructorUsedError;
-  List<int> get categories => throw _privateConstructorUsedError;
-  int? get regularMeetingId => throw _privateConstructorUsedError;
-  int get gap => throw _privateConstructorUsedError;
-  List<int> get days => throw _privateConstructorUsedError;
-  String get startTime => throw _privateConstructorUsedError; // LocalTime
-  String get endTime => throw _privateConstructorUsedError;
+  List<String> get categories => throw _privateConstructorUsedError;
+  List<MeetingInfo> get meetingSchedules => throw _privateConstructorUsedError;
+  bool get private => throw _privateConstructorUsedError;
+  bool get finished => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,17 +48,20 @@ abstract class $SearchedStudyInfoCopyWith<$Res> {
       _$SearchedStudyInfoCopyWithImpl<$Res, SearchedStudyInfo>;
   @useResult
   $Res call(
-      {int studyId,
-      String studyName,
+      {int id,
+      String? teamName,
       int max,
-      @JsonKey(name: 'headcount') int headCount,
+      int headcount,
+      String password,
+      String explanation,
+      String createdDate,
+      String deadline,
+      int leaderId,
       String? studyImage,
-      List<int> categories,
-      int? regularMeetingId,
-      int gap,
-      List<int> days,
-      String startTime,
-      String endTime});
+      List<String> categories,
+      List<MeetingInfo> meetingSchedules,
+      bool private,
+      bool finished});
 }
 
 /// @nodoc
@@ -72,34 +77,57 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? studyId = null,
-    Object? studyName = null,
+    Object? id = null,
+    Object? teamName = freezed,
     Object? max = null,
-    Object? headCount = null,
+    Object? headcount = null,
+    Object? password = null,
+    Object? explanation = null,
+    Object? createdDate = null,
+    Object? deadline = null,
+    Object? leaderId = null,
     Object? studyImage = freezed,
     Object? categories = null,
-    Object? regularMeetingId = freezed,
-    Object? gap = null,
-    Object? days = null,
-    Object? startTime = null,
-    Object? endTime = null,
+    Object? meetingSchedules = null,
+    Object? private = null,
+    Object? finished = null,
   }) {
     return _then(_value.copyWith(
-      studyId: null == studyId
-          ? _value.studyId
-          : studyId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
-      studyName: null == studyName
-          ? _value.studyName
-          : studyName // ignore: cast_nullable_to_non_nullable
-              as String,
+      teamName: freezed == teamName
+          ? _value.teamName
+          : teamName // ignore: cast_nullable_to_non_nullable
+              as String?,
       max: null == max
           ? _value.max
           : max // ignore: cast_nullable_to_non_nullable
               as int,
-      headCount: null == headCount
-          ? _value.headCount
-          : headCount // ignore: cast_nullable_to_non_nullable
+      headcount: null == headcount
+          ? _value.headcount
+          : headcount // ignore: cast_nullable_to_non_nullable
+              as int,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      explanation: null == explanation
+          ? _value.explanation
+          : explanation // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdDate: null == createdDate
+          ? _value.createdDate
+          : createdDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      deadline: null == deadline
+          ? _value.deadline
+          : deadline // ignore: cast_nullable_to_non_nullable
+              as String,
+      leaderId: null == leaderId
+          ? _value.leaderId
+          : leaderId // ignore: cast_nullable_to_non_nullable
               as int,
       studyImage: freezed == studyImage
           ? _value.studyImage
@@ -108,27 +136,19 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
       categories: null == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<int>,
-      regularMeetingId: freezed == regularMeetingId
-          ? _value.regularMeetingId
-          : regularMeetingId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      gap: null == gap
-          ? _value.gap
-          : gap // ignore: cast_nullable_to_non_nullable
-              as int,
-      days: null == days
-          ? _value.days
-          : days // ignore: cast_nullable_to_non_nullable
-              as List<int>,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
+      meetingSchedules: null == meetingSchedules
+          ? _value.meetingSchedules
+          : meetingSchedules // ignore: cast_nullable_to_non_nullable
+              as List<MeetingInfo>,
+      private: null == private
+          ? _value.private
+          : private // ignore: cast_nullable_to_non_nullable
+              as bool,
+      finished: null == finished
+          ? _value.finished
+          : finished // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -142,17 +162,20 @@ abstract class _$$SearchedStudyInfoImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int studyId,
-      String studyName,
+      {int id,
+      String? teamName,
       int max,
-      @JsonKey(name: 'headcount') int headCount,
+      int headcount,
+      String password,
+      String explanation,
+      String createdDate,
+      String deadline,
+      int leaderId,
       String? studyImage,
-      List<int> categories,
-      int? regularMeetingId,
-      int gap,
-      List<int> days,
-      String startTime,
-      String endTime});
+      List<String> categories,
+      List<MeetingInfo> meetingSchedules,
+      bool private,
+      bool finished});
 }
 
 /// @nodoc
@@ -166,34 +189,57 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? studyId = null,
-    Object? studyName = null,
+    Object? id = null,
+    Object? teamName = freezed,
     Object? max = null,
-    Object? headCount = null,
+    Object? headcount = null,
+    Object? password = null,
+    Object? explanation = null,
+    Object? createdDate = null,
+    Object? deadline = null,
+    Object? leaderId = null,
     Object? studyImage = freezed,
     Object? categories = null,
-    Object? regularMeetingId = freezed,
-    Object? gap = null,
-    Object? days = null,
-    Object? startTime = null,
-    Object? endTime = null,
+    Object? meetingSchedules = null,
+    Object? private = null,
+    Object? finished = null,
   }) {
     return _then(_$SearchedStudyInfoImpl(
-      studyId: null == studyId
-          ? _value.studyId
-          : studyId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
-      studyName: null == studyName
-          ? _value.studyName
-          : studyName // ignore: cast_nullable_to_non_nullable
-              as String,
+      teamName: freezed == teamName
+          ? _value.teamName
+          : teamName // ignore: cast_nullable_to_non_nullable
+              as String?,
       max: null == max
           ? _value.max
           : max // ignore: cast_nullable_to_non_nullable
               as int,
-      headCount: null == headCount
-          ? _value.headCount
-          : headCount // ignore: cast_nullable_to_non_nullable
+      headcount: null == headcount
+          ? _value.headcount
+          : headcount // ignore: cast_nullable_to_non_nullable
+              as int,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      explanation: null == explanation
+          ? _value.explanation
+          : explanation // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdDate: null == createdDate
+          ? _value.createdDate
+          : createdDate // ignore: cast_nullable_to_non_nullable
+              as String,
+      deadline: null == deadline
+          ? _value.deadline
+          : deadline // ignore: cast_nullable_to_non_nullable
+              as String,
+      leaderId: null == leaderId
+          ? _value.leaderId
+          : leaderId // ignore: cast_nullable_to_non_nullable
               as int,
       studyImage: freezed == studyImage
           ? _value.studyImage
@@ -202,27 +248,19 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
       categories: null == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
-              as List<int>,
-      regularMeetingId: freezed == regularMeetingId
-          ? _value.regularMeetingId
-          : regularMeetingId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      gap: null == gap
-          ? _value.gap
-          : gap // ignore: cast_nullable_to_non_nullable
-              as int,
-      days: null == days
-          ? _value._days
-          : days // ignore: cast_nullable_to_non_nullable
-              as List<int>,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
+      meetingSchedules: null == meetingSchedules
+          ? _value._meetingSchedules
+          : meetingSchedules // ignore: cast_nullable_to_non_nullable
+              as List<MeetingInfo>,
+      private: null == private
+          ? _value.private
+          : private // ignore: cast_nullable_to_non_nullable
+              as bool,
+      finished: null == finished
+          ? _value.finished
+          : finished // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -231,63 +269,71 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
   const _$SearchedStudyInfoImpl(
-      {required this.studyId,
-      required this.studyName,
+      {required this.id,
+      required this.teamName,
       required this.max,
-      @JsonKey(name: 'headcount') required this.headCount,
+      required this.headcount,
+      required this.password,
+      required this.explanation,
+      required this.createdDate,
+      required this.deadline,
+      required this.leaderId,
       required this.studyImage,
-      required final List<int> categories,
-      required this.regularMeetingId,
-      required this.gap,
-      required final List<int> days,
-      required this.startTime,
-      required this.endTime})
+      required final List<String> categories,
+      required final List<MeetingInfo> meetingSchedules,
+      required this.private,
+      required this.finished})
       : _categories = categories,
-        _days = days;
+        _meetingSchedules = meetingSchedules;
 
   factory _$SearchedStudyInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$SearchedStudyInfoImplFromJson(json);
 
   @override
-  final int studyId;
+  final int id;
   @override
-  final String studyName;
+  final String? teamName;
   @override
   final int max;
   @override
-  @JsonKey(name: 'headcount')
-  final int headCount;
+  final int headcount;
+  @override
+  final String password;
+  @override
+  final String explanation;
+  @override
+  final String createdDate;
+  @override
+  final String deadline;
+  @override
+  final int leaderId;
   @override
   final String? studyImage;
-  final List<int> _categories;
+  final List<String> _categories;
   @override
-  List<int> get categories {
+  List<String> get categories {
     if (_categories is EqualUnmodifiableListView) return _categories;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_categories);
   }
 
+  final List<MeetingInfo> _meetingSchedules;
   @override
-  final int? regularMeetingId;
-  @override
-  final int gap;
-  final List<int> _days;
-  @override
-  List<int> get days {
-    if (_days is EqualUnmodifiableListView) return _days;
+  List<MeetingInfo> get meetingSchedules {
+    if (_meetingSchedules is EqualUnmodifiableListView)
+      return _meetingSchedules;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_days);
+    return EqualUnmodifiableListView(_meetingSchedules);
   }
 
   @override
-  final String startTime;
-// LocalTime
+  final bool private;
   @override
-  final String endTime;
+  final bool finished;
 
   @override
   String toString() {
-    return 'SearchedStudyInfo(studyId: $studyId, studyName: $studyName, max: $max, headCount: $headCount, studyImage: $studyImage, categories: $categories, regularMeetingId: $regularMeetingId, gap: $gap, days: $days, startTime: $startTime, endTime: $endTime)';
+    return 'SearchedStudyInfo(id: $id, teamName: $teamName, max: $max, headcount: $headcount, password: $password, explanation: $explanation, createdDate: $createdDate, deadline: $deadline, leaderId: $leaderId, studyImage: $studyImage, categories: $categories, meetingSchedules: $meetingSchedules, private: $private, finished: $finished)';
   }
 
   @override
@@ -295,40 +341,51 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SearchedStudyInfoImpl &&
-            (identical(other.studyId, studyId) || other.studyId == studyId) &&
-            (identical(other.studyName, studyName) ||
-                other.studyName == studyName) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.teamName, teamName) ||
+                other.teamName == teamName) &&
             (identical(other.max, max) || other.max == max) &&
-            (identical(other.headCount, headCount) ||
-                other.headCount == headCount) &&
+            (identical(other.headcount, headcount) ||
+                other.headcount == headcount) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
+            (identical(other.explanation, explanation) ||
+                other.explanation == explanation) &&
+            (identical(other.createdDate, createdDate) ||
+                other.createdDate == createdDate) &&
+            (identical(other.deadline, deadline) ||
+                other.deadline == deadline) &&
+            (identical(other.leaderId, leaderId) ||
+                other.leaderId == leaderId) &&
             (identical(other.studyImage, studyImage) ||
                 other.studyImage == studyImage) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
-            (identical(other.regularMeetingId, regularMeetingId) ||
-                other.regularMeetingId == regularMeetingId) &&
-            (identical(other.gap, gap) || other.gap == gap) &&
-            const DeepCollectionEquality().equals(other._days, _days) &&
-            (identical(other.startTime, startTime) ||
-                other.startTime == startTime) &&
-            (identical(other.endTime, endTime) || other.endTime == endTime));
+            const DeepCollectionEquality()
+                .equals(other._meetingSchedules, _meetingSchedules) &&
+            (identical(other.private, private) || other.private == private) &&
+            (identical(other.finished, finished) ||
+                other.finished == finished));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      studyId,
-      studyName,
+      id,
+      teamName,
       max,
-      headCount,
+      headcount,
+      password,
+      explanation,
+      createdDate,
+      deadline,
+      leaderId,
       studyImage,
       const DeepCollectionEquality().hash(_categories),
-      regularMeetingId,
-      gap,
-      const DeepCollectionEquality().hash(_days),
-      startTime,
-      endTime);
+      const DeepCollectionEquality().hash(_meetingSchedules),
+      private,
+      finished);
 
   @JsonKey(ignore: true)
   @override
@@ -347,46 +404,247 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
 
 abstract class _SearchedStudyInfo implements SearchedStudyInfo {
   const factory _SearchedStudyInfo(
-      {required final int studyId,
-      required final String studyName,
+      {required final int id,
+      required final String? teamName,
       required final int max,
-      @JsonKey(name: 'headcount') required final int headCount,
+      required final int headcount,
+      required final String password,
+      required final String explanation,
+      required final String createdDate,
+      required final String deadline,
+      required final int leaderId,
       required final String? studyImage,
-      required final List<int> categories,
-      required final int? regularMeetingId,
-      required final int gap,
-      required final List<int> days,
-      required final String startTime,
-      required final String endTime}) = _$SearchedStudyInfoImpl;
+      required final List<String> categories,
+      required final List<MeetingInfo> meetingSchedules,
+      required final bool private,
+      required final bool finished}) = _$SearchedStudyInfoImpl;
 
   factory _SearchedStudyInfo.fromJson(Map<String, dynamic> json) =
       _$SearchedStudyInfoImpl.fromJson;
 
   @override
-  int get studyId;
+  int get id;
   @override
-  String get studyName;
+  String? get teamName;
   @override
   int get max;
   @override
-  @JsonKey(name: 'headcount')
-  int get headCount;
+  int get headcount;
+  @override
+  String get password;
+  @override
+  String get explanation;
+  @override
+  String get createdDate;
+  @override
+  String get deadline;
+  @override
+  int get leaderId;
   @override
   String? get studyImage;
   @override
-  List<int> get categories;
+  List<String> get categories;
   @override
-  int? get regularMeetingId;
+  List<MeetingInfo> get meetingSchedules;
   @override
-  int get gap;
+  bool get private;
   @override
-  List<int> get days;
-  @override
-  String get startTime;
-  @override // LocalTime
-  String get endTime;
+  bool get finished;
   @override
   @JsonKey(ignore: true)
   _$$SearchedStudyInfoImplCopyWith<_$SearchedStudyInfoImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+MeetingInfo _$MeetingInfoFromJson(Map<String, dynamic> json) {
+  return _MeetingInfo.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MeetingInfo {
+  int get id => throw _privateConstructorUsedError;
+  int get day => throw _privateConstructorUsedError;
+  String get startTime => throw _privateConstructorUsedError;
+  String get endTime => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $MeetingInfoCopyWith<MeetingInfo> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MeetingInfoCopyWith<$Res> {
+  factory $MeetingInfoCopyWith(
+          MeetingInfo value, $Res Function(MeetingInfo) then) =
+      _$MeetingInfoCopyWithImpl<$Res, MeetingInfo>;
+  @useResult
+  $Res call({int id, int day, String startTime, String endTime});
+}
+
+/// @nodoc
+class _$MeetingInfoCopyWithImpl<$Res, $Val extends MeetingInfo>
+    implements $MeetingInfoCopyWith<$Res> {
+  _$MeetingInfoCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? day = null,
+    Object? startTime = null,
+    Object? endTime = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      day: null == day
+          ? _value.day
+          : day // ignore: cast_nullable_to_non_nullable
+              as int,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$MeetingInfoImplCopyWith<$Res>
+    implements $MeetingInfoCopyWith<$Res> {
+  factory _$$MeetingInfoImplCopyWith(
+          _$MeetingInfoImpl value, $Res Function(_$MeetingInfoImpl) then) =
+      __$$MeetingInfoImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int id, int day, String startTime, String endTime});
+}
+
+/// @nodoc
+class __$$MeetingInfoImplCopyWithImpl<$Res>
+    extends _$MeetingInfoCopyWithImpl<$Res, _$MeetingInfoImpl>
+    implements _$$MeetingInfoImplCopyWith<$Res> {
+  __$$MeetingInfoImplCopyWithImpl(
+      _$MeetingInfoImpl _value, $Res Function(_$MeetingInfoImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? day = null,
+    Object? startTime = null,
+    Object? endTime = null,
+  }) {
+    return _then(_$MeetingInfoImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      day: null == day
+          ? _value.day
+          : day // ignore: cast_nullable_to_non_nullable
+              as int,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$MeetingInfoImpl implements _MeetingInfo {
+  const _$MeetingInfoImpl(
+      {required this.id,
+      required this.day,
+      required this.startTime,
+      required this.endTime});
+
+  factory _$MeetingInfoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MeetingInfoImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int day;
+  @override
+  final String startTime;
+  @override
+  final String endTime;
+
+  @override
+  String toString() {
+    return 'MeetingInfo(id: $id, day: $day, startTime: $startTime, endTime: $endTime)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MeetingInfoImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.day, day) || other.day == day) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, day, startTime, endTime);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MeetingInfoImplCopyWith<_$MeetingInfoImpl> get copyWith =>
+      __$$MeetingInfoImplCopyWithImpl<_$MeetingInfoImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$MeetingInfoImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MeetingInfo implements MeetingInfo {
+  const factory _MeetingInfo(
+      {required final int id,
+      required final int day,
+      required final String startTime,
+      required final String endTime}) = _$MeetingInfoImpl;
+
+  factory _MeetingInfo.fromJson(Map<String, dynamic> json) =
+      _$MeetingInfoImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  int get day;
+  @override
+  String get startTime;
+  @override
+  String get endTime;
+  @override
+  @JsonKey(ignore: true)
+  _$$MeetingInfoImplCopyWith<_$MeetingInfoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
