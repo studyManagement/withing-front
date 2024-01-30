@@ -1,35 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/search/search_study_viewmodel.dart';
+import '../../../view_models/search/category_search_viewmodel.dart';
 
 class SearchCategorySelector extends StatelessWidget {
-  final List<String> categories = [
-    '전체',
-    '어학',
-    '자격증',
-    '취업',
-    '시험',
-    '취미',
-    '프로그래밍',
-    '기타'
-  ];
-  final List<String> categoryImages = [
-    'asset/search_category/0_entire.png',
-    'asset/search_category/1_language.png',
-    'asset/search_category/2_certification.png',
-    'asset/search_category/3_employment.png',
-    'asset/search_category/4_exam.png',
-    'asset/search_category/5_hobby.png',
-    'asset/search_category/6_programming.png',
-    'asset/search_category/7_etc.png',
-  ];
-
   SearchCategorySelector({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = Provider.of<SearchStudyViewModel>(context);
+    var viewModel = Provider.of<CategorySearchViewModel>(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -46,12 +25,12 @@ class SearchCategorySelector extends StatelessWidget {
             onTap: () {
               viewModel.searchCategory = index;
               debugPrint(categories[index]);
-              viewModel.categorySearch();
+              viewModel.search();
             },
             child: _CategoryItem(
               title: categories[index],
               imgUrl: categoryImages[index],
-              isSelected: viewModel.selectedCategoryValue == index,
+              isSelected: viewModel.selectedValue == index,
             ),
           );
         },

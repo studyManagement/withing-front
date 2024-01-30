@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../view_models/search/search_study_viewmodel.dart';
+import '../../../view_models/search/keyword_search_viewmodel.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SearchAppBar({
@@ -12,7 +12,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SearchStudyViewModel>(context);
+    final viewModel = Provider.of<KeywordSearchViewModel>(context);
 
     return AppBar(
       surfaceTintColor: Colors.transparent,
@@ -27,7 +27,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
             autofocus: true,
             onSubmitted: (String value) {
               if (value != '') viewModel.searchKeyword = value;
-              viewModel.keywordSearch();
+              viewModel.search();
             },
             cursorHeight: 20,
             maxLength: 20,

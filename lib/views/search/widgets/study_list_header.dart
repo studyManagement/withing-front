@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
+import 'package:withing/view_models/search/searched_studies_viewmodel.dart';
 import '../../../common/theme/app/app_fonts.dart';
-import '../../../view_models/search/search_study_viewmodel.dart';
 
 class StudyListHeader extends StatelessWidget {
-  final SearchType type;
+  final SearchedStudiesViewModel viewModel;
 
   const StudyListHeader({
     super.key,
-    required this.type,
+    required this.viewModel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SearchStudyViewModel>(context);
-    int studyCount = (type == SearchType.category)
-        ? viewModel.studyCountWithCategory
-        : viewModel.studyCountWithKeyword;
+    int studyCount = viewModel.studiesCount;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -43,7 +39,9 @@ class StudyListHeader extends StatelessWidget {
               )
             ],
           ),
-          _StudyFilterDropDownBox(type: type)
+          _StudyFilterDropDownBox(
+            viewModel: viewModel,
+          )
         ],
       ),
     );
@@ -51,13 +49,12 @@ class StudyListHeader extends StatelessWidget {
 }
 
 class _StudyFilterDropDownBox extends StatelessWidget {
-  final SearchType type;
+  final SearchedStudiesViewModel viewModel;
 
-  const _StudyFilterDropDownBox({required this.type});
+  const _StudyFilterDropDownBox({required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SearchStudyViewModel>(context);
     List<String> filters = getStudyFilters();
 
     return Padding(
@@ -67,23 +64,21 @@ class _StudyFilterDropDownBox extends StatelessWidget {
           DropdownButton(
               icon: Container(),
               underline: Container(),
-              value: (type == SearchType.category)
-                  ? viewModel.categoryFilterValue
-                  : viewModel.keywordFilterValue,
+              value: viewModel.filterValue,
               items: filters.map((value) {
                 return DropdownMenuItem(
                   value: value,
                   child: buildDropdownItem(
                     context,
                     value,
-                    (type == SearchType.category)
-                        ? viewModel.categoryFilterValue
-                        : viewModel.keywordFilterValue,
+                    viewModel.filterValue,
                   ),
                 );
               }).toList(),
-              onChanged: (value) =>
-                  viewModel.updateSearchFilterValue(type, value!)),
+              onChanged: (value) {
+                viewModel.updateSearchFilterValue(value.toString());
+                viewModel.search();
+              }),
         ],
       ),
     );

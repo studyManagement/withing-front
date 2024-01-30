@@ -45,32 +45,46 @@ class CategorySearchService {
     //   rethrow;
     // }
 
-    List<SearchedStudyInfo> mockResponse = [
-      SearchedStudyInfo(
-          studyId: 1,
-          studyName: "Study 1",
-          max: 10,
-          headCount: 5,
-          studyImage: null,
-          categories: [1, 2],
-          regularMeetingId: 101,
-          gap: 1,
-          days: [1, 3, 5], // 월, 수, 금
-          startTime: "18:00",
-          endTime: "20:00"),
-      SearchedStudyInfo(
-          studyId: 2,
-          studyName: "Study 2",
-          max: 15,
-          headCount: 8,
-          studyImage: null,
-          categories: [3, 4],
-          regularMeetingId: 102,
-          gap: 0,
-          days: [],
-          startTime: "10:00",
-          endTime: "12:00"),
-    ];
+    List<SearchedStudyInfo> mockResponse = List.generate(
+      10,
+      (index) => const SearchedStudyInfo(
+        id: 3,
+        teamName: '헬로우',
+        max: 15,
+        headcount: 3,
+        password: "1111",
+        explanation: "안녕하세요",
+        createdDate: "2024-01-18T17:56:26.000+00:00",
+        deadline: "2024-02-09T15:00:00.000+00:00",
+        leaderId: 1,
+        studyImage:
+            "https://withing-bucket.s3.ap-northeast-2.amazonaws.com/중국.png",
+        categories: ["어학", "자격증", "취미"],
+        meetingSchedules: [
+          // 월, 수, 토
+          MeetingInfo(
+            id: 1,
+            day: 1,
+            startTime: "11:00",
+            endTime: "17:32",
+          ),
+          MeetingInfo(
+            id: 1,
+            day: 3,
+            startTime: "11:00",
+            endTime: "17:32",
+          ),
+          MeetingInfo(
+            id: 1,
+            day: 6,
+            startTime: "11:00",
+            endTime: "17:32",
+          ),
+        ],
+        private: true,
+        finished: false,
+      ),
+    );
 
     return mockResponse;
   }
@@ -78,14 +92,18 @@ class CategorySearchService {
   Future<int> callCountApi(
     String categoryId,
   ) async {
-    try {
-      debugPrint('[API]');
-      final studyCnt = await _api.count(categoryId);
-      debugPrint('검색된 스터디 수 :  $studyCnt');
-      return studyCnt;
-    } on NetworkException catch (e) {
-      print(e);
-      rethrow;
-    }
+    // try {
+    //   debugPrint('[API]');
+    //   final studyCnt = await _api.count(categoryId);
+    //   debugPrint('검색된 스터디 수 :  $studyCnt');
+    //   return studyCnt;
+    // } on NetworkException catch (e) {
+    //   print(e);
+    //   rethrow;
+    // }
+
+    int mockResponse = 100;
+
+    return mockResponse;
   }
 }

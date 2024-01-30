@@ -5,7 +5,7 @@ class Gray50Divider extends StatelessWidget {
 
   const Gray50Divider({
     super.key,
-    required this.dividerHeight,
+    this.dividerHeight = 1.0,
   });
 
   @override
