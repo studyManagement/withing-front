@@ -19,19 +19,15 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
   List<SearchedStudyInfo>? _searchedStudies;
 
   @override
-  // TODO: implement filterValue
   String get filterValue => _selectedFilterValue;
 
   @override
-  // TODO: implement selectedValue
   dynamic get selectedValue => _selectedKeywordValue;
 
   @override
-  // TODO: implement searchesCount
   int get studiesCount => _studyCount;
 
   @override
-  // TODO: implement studyList
   List<SearchedStudyInfo>? get studyList => _searchedStudies;
 
   @override
@@ -86,14 +82,14 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
 
   /// fetch keyword search - 스크롤시 추가
   Future<void> fetchStudiesWithKeyword() async {
-    debugPrint('API 추가 요청 - 카테고리');
+    debugPrint('API 추가 요청 - 키워드');
     String id = _selectedKeywordValue.toString();
     int currentLength = _searchedStudies != null ? _searchedStudies!.length : 0;
 
     if (currentLength < _studyCount) {
       List<SearchedStudyInfo>? newStudies =
           await _keywordSearchService.callSearchApi(
-        id,
+        selectedValue,
         getFilter(_selectedFilterValue),
         currentLength,
       );

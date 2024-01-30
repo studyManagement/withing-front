@@ -14,25 +14,25 @@ class AutomatedStudyListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
-    int searchesCount = viewModel.studiesCount;
+    int searchesCount = viewModel.studyList?.length ?? 0;
     List<SearchedStudyInfo>? studyList = viewModel.studyList;
 
     return Expanded(
       child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
-              viewModel.scrollListener();
-            }
-            return true;
-          },
-          child: ListView.separated(
-            controller: scrollController,
-            itemCount: searchesCount,
-            itemBuilder: (context, index) =>
-                (index < searchesCount) ? _StudyCard(studyList![index]) : null,
-            separatorBuilder: (context, index) => const Gray100Divider(),
-          )),
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+            viewModel.scrollListener();
+          }
+          return true;
+        },
+        child: ListView.separated(
+          controller: scrollController,
+          itemCount: searchesCount,
+          itemBuilder: (context, index) =>
+              (index < searchesCount) ? _StudyCard(studyList![index]) : null,
+          separatorBuilder: (context, index) => const Gray100Divider(),
+        ),
+      ),
     );
   }
 }
@@ -131,6 +131,7 @@ class _StudyDetails extends StatelessWidget {
     for (var (title, content) in studyDetails) {
       widgets.add(
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,

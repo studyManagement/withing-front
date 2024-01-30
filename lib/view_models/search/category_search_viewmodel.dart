@@ -19,19 +19,15 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
   List<SearchedStudyInfo>? _searchedStudies;
 
   @override
-  // TODO: implement filterValue
   String get filterValue => _selectedFilterValue;
 
   @override
-  // TODO: implement selectedValue
   dynamic get selectedValue => _selectedCategoryValue;
 
   @override
-  // TODO: implement searchesCount
   int get studiesCount => _studyCount;
 
   @override
-  // TODO: implement studyList
   List<SearchedStudyInfo>? get studyList => _searchedStudies;
 
   @override
