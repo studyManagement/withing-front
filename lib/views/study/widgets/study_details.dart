@@ -40,7 +40,7 @@ class StudyDetails extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudyMemberScreen(users: vm.users),
+                    builder: (context) => StudyMemberScreen(users: vm.users,leaderId: vm.leaderId,),
                   ),
                 )
               },

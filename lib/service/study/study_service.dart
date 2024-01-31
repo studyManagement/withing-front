@@ -47,6 +47,7 @@ abstract class StudyApi {
 
   @DELETE('/studies/{id}')
   Future<StudyModel> deleteStudy(@Path('id') int id);
+
 }
 
 class StudyService {
@@ -173,4 +174,5 @@ class StudyService {
       rethrow;
     }
   }
+
 }

@@ -75,28 +75,16 @@ class StudyManageBottomSheet extends StatelessWidget {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
-                      if (isOut == true) {
-                        // 강제 퇴장 , 여러 명 가능(아직 구현 X)
-                      } else {
-                        // 스터디장 변경
-                        isSelected = (isSelected) ? false : true;
+                    onTap: (){
+                      if(isOut==true){ // 강제 퇴장 , 여러 명 가능
+                      }
+                      else{ // 스터디장 변경
+                        isSelected = (isSelected) ? false: true;
                       }
                     },
-
-                    child: StudyMemberList(users: [],
-                      // nickname: "nickname",
-                      // image: Container(
-                      //   decoration:BoxDecoration(
-                      //     shape: BoxShape.circle,
-                      //     color: AppColors.gray150,
-                      //     border: Border.all(
-                      //       color: isSelected ? AppColors.blue600 : Colors.transparent,
-                      //       width: 2
-                      //     ),
-                      //   ),
-                      // ),
-
+                    child: StudyMemberList(
+                      users: [],
+                      leaderId: 1,// 추후 작업
                     ),
                   );
                 },

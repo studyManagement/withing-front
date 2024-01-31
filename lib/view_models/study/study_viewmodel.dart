@@ -17,10 +17,14 @@ class StudyViewModel extends ChangeNotifier {
   List<int> days = [];
   String regularMeeting = '';
   String startTime = '';
-  int newLeaderId = 0;
-
+  int _studyId = -1;
+  int _leaderId = 0;
+  int _newLeaderId = 0;
   List<UserModel> _users = [];
   List<UserModel> get users => _users;
+  int get leaderId => _leaderId;
+  int get studyId => _studyId;
+  int get newLeaderId => _newLeaderId;
 
   bool hasPost = false;
   int numOfPosts = 0;
@@ -33,6 +37,8 @@ class StudyViewModel extends ChangeNotifier {
       try {
         study = await _service.fetchStudyInfo(studyId);
         _users = study.users;
+        _studyId = study.id;
+        _leaderId = study.leaderId;
         getRegularMeetingString(study.meetingSchedules);
         await fetchBoards(studyId, true);
         notifyListeners();
@@ -78,7 +84,7 @@ class StudyViewModel extends ChangeNotifier {
 
   Future<void> switchLeader(int studyId, int userId) async {
     final studyModel = await _service.switchLeader(studyId, userId);
-    newLeaderId = studyModel.leaderId;
+    _newLeaderId = studyModel.leaderId;
     notifyListeners();
   }
 
