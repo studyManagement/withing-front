@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter/material.dart';
 import 'package:retrofit/http.dart';
+
+import '../../common/requester/network_exception.dart';
 import '../../model/create/created_study_info_model.dart';
 import '../../model/create/new_study_info_model.dart';
-import '../../common/requester/network_exception.dart';
 
 part 'study_create_service.g.dart';
 
@@ -14,7 +13,7 @@ part 'study_create_service.g.dart';
 abstract class StudyCreateApi {
   factory StudyCreateApi(Dio dio, {String baseUrl}) = _StudyCreateApi;
 
-  @POST("/studies/create")
+  @POST("/studies")
   @Headers({'Content-Type': 'multipart/form-data'})
   Future<CreatedStudyInfo> create(
     @Part(name: "studyCreateDTO") String studyCreateDto,

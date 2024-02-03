@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/view_models/study/model/study_list_view.dart';
 import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
 import 'package:withing/view_models/study/study_list_viewmodel.dart';
@@ -159,10 +160,10 @@ class MyStudyList extends StatelessWidget {
                   Stack(
                     children: [
                       Container(
-                        width: 50,
-                        height: 50,
+                        width: 38,
+                        height: 38,
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
+                          color: AppColors.gray150,
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
@@ -186,6 +187,7 @@ class MyStudyList extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
+                      color: AppColors.gray800,
                     ),
                   ),
                 ],
@@ -196,8 +198,9 @@ class MyStudyList extends StatelessWidget {
                   const Text(
                     '정기 모임',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: AppColors.gray400,
                       fontWeight: FontWeight.w500,
+                      fontSize: 13,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -205,17 +208,21 @@ class MyStudyList extends StatelessWidget {
                     '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: AppColors.gray800,
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 4),
               Row(
                 children: [
                   const Text(
                     '다음 만남',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: AppColors.gray400,
                       fontWeight: FontWeight.w500,
+                      fontSize: 13,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -223,6 +230,8 @@ class MyStudyList extends StatelessWidget {
                     '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: AppColors.gray800,
                     ),
                   ),
                 ],
@@ -231,9 +240,9 @@ class MyStudyList extends StatelessWidget {
           ),
         );
       },
-      separatorBuilder: (_, index) => Divider(
+      separatorBuilder: (_, index) => const Divider(
         height: 10,
-        color: Colors.grey[100],
+        color: AppColors.gray100,
         thickness: 2,
         indent: 20,
         endIndent: 20,
