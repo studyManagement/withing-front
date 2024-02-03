@@ -220,7 +220,7 @@ class MyStudyList extends StatelessWidget {
       separatorBuilder: (_, index) => const Divider(
         height: 10,
         color: AppColors.gray100,
-        thickness: 2,
+        thickness: 1,
         indent: 20,
         endIndent: 20,
       ),
