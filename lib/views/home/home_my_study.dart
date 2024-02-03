@@ -157,31 +157,8 @@ class MyStudyList extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: 38,
-                        height: 38,
-                        decoration: BoxDecoration(
-                          color: AppColors.gray150,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      Positioned(
-                        top: 5,
-                        right: 0,
-                        child: Container(
-                          width: 10,
-                          height: 10,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 16),
+                  StudyImage(),
+                  const SizedBox(width: 8),
                   Text(
                     item.studyName,
                     style: const TextStyle(
@@ -249,5 +226,47 @@ class MyStudyList extends StatelessWidget {
       ),
       itemCount: studies.length,
     ));
+  }
+}
+
+class StudyImage extends StatelessWidget {
+  const StudyImage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 46,
+      height: 42,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: Image.network(
+              'https://picsum.photos/42',
+              width: 42,
+              height: 42,
+            ),
+          ),
+          Positioned(
+            top: -3,
+            right: 0,
+            child: Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.white,
+                  width: 3,
+                ),
+                color: AppColors.red400,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
