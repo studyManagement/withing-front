@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/view_models/search/searched_studies_viewmodel.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
+
 import '../../../common/theme/app/app_fonts.dart';
 
 class StudyListHeader extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:withing/model/study/study_meeting_schedules_model.dart';
+import 'package:modi/model/study/study_meeting_schedules_model.dart';
 
 final List<String> WeekString = ['월', '화', '수', '목', '금', '토', '일'];
 

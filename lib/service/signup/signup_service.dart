@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/common/requester/network_exception.dart';
+import 'package:modi/model/signup/signup_model.dart';
 import 'package:retrofit/http.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/common/requester/network_exception.dart';
-import 'package:withing/model/signup/signup_model.dart';
 
 part 'signup_service.g.dart';
 

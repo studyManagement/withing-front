@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:modi/di/injection.dart';
+import 'package:modi/service/signup/signup_service.dart';
+import 'package:modi/view_models/signup/signup_viewmodel.dart';
+import 'package:modi/views/signup/signup_form.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/di/injection.dart';
-import 'package:withing/service/signup/signup_service.dart';
-import 'package:withing/view_models/signup/signup_viewmodel.dart';
-import 'package:withing/views/signup/signup_form.dart';
 
 class SignupScreen extends StatelessWidget {
   String provider;

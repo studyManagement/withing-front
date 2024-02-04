@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'package:withing/view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
-import 'board_item.dart';
 import 'board_item.dart';
 
 class BoardList extends StatelessWidget {
@@ -24,7 +23,7 @@ class BoardList extends StatelessWidget {
           notice: list[index].notice,
           boardId: list[index].id,
           title: list[index].title,
-          content:list[index].content,
+          content: list[index].content,
           createdAt: list[index].createdAt.toString(),
         );
       },

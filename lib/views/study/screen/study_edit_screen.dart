@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/layout/default_layout.dart';
-import 'package:withing/view_models/study/study_viewmodel.dart';
+
 import '../../../common/theme/app/app_colors.dart';
-import '../../../common/utils/pick_image_file.dart';
 import '../../../di/injection.dart';
 import '../../../service/study/study_service.dart';
 
@@ -30,18 +30,18 @@ class StudyEditScreen extends StatelessWidget {
                       child: Container(
                         width: 105,
                         height: 105,
-                          decoration: (data.study.studyImage != null) ?
-                          ShapeDecoration(
-                            shape: const OvalBorder(),
-                            image: DecorationImage(
-                              image: FileImage(data.study.studyImage!),
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                              : const ShapeDecoration(
-                            shape: OvalBorder(),
-                            color: AppColors.gray150,
-                          ),
+                        decoration: (data.study.studyImage != null)
+                            ? ShapeDecoration(
+                                shape: const OvalBorder(),
+                                image: DecorationImage(
+                                  image: FileImage(data.study.studyImage!),
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : const ShapeDecoration(
+                                shape: OvalBorder(),
+                                color: AppColors.gray150,
+                              ),
                         alignment: Alignment.bottomRight,
                         child: GestureDetector(
                           onTap: () async {

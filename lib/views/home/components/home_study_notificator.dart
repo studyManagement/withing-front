@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/common/theme/app/app_fonts.dart';
+import 'package:modi/view_models/study/model/study_list_view.dart';
+import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/common/theme/app/app_fonts.dart';
-import 'package:withing/view_models/study/model/study_list_view.dart';
-import 'package:withing/view_models/study/study_list_viewmodel.dart';
 
 class HomeStudyNotificationPageView extends StatefulWidget {
   const HomeStudyNotificationPageView({super.key});

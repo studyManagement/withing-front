@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/bottom_toast.dart';
+import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:modi/views/study/widgets/study_manage_bottomsheet.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/components/bottom_toast.dart';
-import 'package:withing/common/layout/default_layout.dart';
-import 'package:withing/common/modal/withing_modal.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/study/study_viewmodel.dart';
-import 'package:withing/views/study/widgets/study_manage_bottomsheet.dart';
 
 import '../../../di/injection.dart';
 
@@ -55,7 +55,7 @@ class StudyManageScreen extends StatelessWidget {
                           context.pop();
                           BottomToast(context: context, text: "스터디가 삭제되었어요.")
                               .show();
-                         // context.go('/home');
+                          // context.go('/home');
                         }, null);
                       },
                       child: Text('스터디 삭제하기',
@@ -128,7 +128,7 @@ class StudyManageListItem extends StatelessWidget {
               vm.finishStudy(studyId);
               context.pop();
               BottomToast(context: context, text: "스터디가 종료되었어요.").show();
-             // context.go('/home');
+              // context.go('/home');
             }, null);
           }
         },

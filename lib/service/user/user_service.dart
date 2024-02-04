@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/model/user/token_model.dart';
+import 'package:modi/model/user/user_model.dart';
 import 'package:retrofit/http.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/model/user/token_model.dart';
-import 'package:withing/model/user/user_model.dart';
 
 part 'user_service.g.dart';
 

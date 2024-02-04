@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:withing/model/study/study_list_model.dart';
-import 'package:withing/service/study/StudyType.dart';
-import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/study/model/study_list_view.dart';
-import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
+import 'package:modi/model/study/study_list_model.dart';
+import 'package:modi/service/study/StudyType.dart';
+import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/model/study_list_view.dart';
+import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
 class StudyListViewModel extends ChangeNotifier {
   final StudyService _service;
   List<StudyListView> studyListView = [];
   List<StudyListView> selectStudyListView = [];
-  late DateTime selectedDate;
+  late DateTime selectedDate = DateTime.now();
   String weekString = '';
 
   StudyListViewModel(this._service);
@@ -34,8 +34,6 @@ class StudyListViewModel extends ChangeNotifier {
   }
 
   StudyMeetingSchedule getNextPromise(StudyListView currentStudy) {
-    int weekday = currentStudy.meetingSchedules.first.day;
-
     StudyMeetingSchedule currentMeetingSchedule =
         currentStudy.meetingSchedules.first;
 
