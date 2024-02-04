@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:withing/common/theme/app/app_colors.dart';
@@ -151,69 +152,74 @@ class MyStudyList extends StatelessWidget {
         final String nextScheduleDate = getNextScheduleDate(
             selectedDate, item.meetingSchedules.first, nextMeetingSchedule);
 
-        return Padding(
-          padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  StudyImage(),
-                  const SizedBox(width: 8),
-                  Text(
-                    item.studyName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.gray800,
+        return InkWell(
+          onTap: () {
+            context.push("/studies/${item.id}");
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    StudyImage(),
+                    const SizedBox(width: 8),
+                    Text(
+                      item.studyName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.gray800,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Text(
-                    '정기 모임',
-                    style: TextStyle(
-                      color: AppColors.gray400,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Text(
+                      '정기 모임',
+                      style: TextStyle(
+                        color: AppColors.gray400,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: AppColors.gray800,
+                    const SizedBox(width: 8),
+                    Text(
+                      '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: AppColors.gray800,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  const Text(
-                    '다음 만남',
-                    style: TextStyle(
-                      color: AppColors.gray400,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Text(
+                      '다음 만남',
+                      style: TextStyle(
+                        color: AppColors.gray400,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: AppColors.gray800,
+                    const SizedBox(width: 8),
+                    Text(
+                      '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: AppColors.gray800,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
