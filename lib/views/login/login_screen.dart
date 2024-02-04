@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/circle_button.dart';
@@ -90,6 +92,25 @@ class _Bottom extends StatelessWidget {
   Widget build(BuildContext context) {
     final SigninViewModel vm = SigninViewModel(context, getIt<SigninService>());
 
+    List<Widget> loginComponents = [
+      CircleButton(
+          image: 'asset/kakao.png',
+          onTap: () async {
+            await vm.signin('kakao');
+          }),
+    ];
+
+    if (Platform.isIOS) {
+      loginComponents.addAll([
+        const SizedBox(width: 16),
+        CircleButton(
+            image: 'asset/apple.png',
+            onTap: () async {
+              await vm.signin('apple');
+            }),
+      ]);
+    }
+
     return Expanded(
       flex: 0,
       child: Column(
@@ -105,19 +126,7 @@ class _Bottom extends StatelessWidget {
           const SizedBox(height: 19),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleButton(
-                  image: 'asset/kakao.png',
-                  onTap: () async {
-                    await vm.signin('kakao');
-                  }),
-              const SizedBox(width: 16),
-              CircleButton(
-                  image: 'asset/apple.png',
-                  onTap: () async {
-                    await vm.signin('apple');
-                  }),
-            ],
+            children: loginComponents,
           ),
           const Padding(padding: EdgeInsets.only(bottom: 60)),
           const Text(
