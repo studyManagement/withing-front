@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:withing/common/authenticator/authentication.dart';
 
 import '../../service/create/study_create_service.dart';
 import '../../service/image/study_image_create_service.dart';
@@ -169,7 +170,7 @@ class CreateStudyViewModel with ChangeNotifier {
       (isStudyDiscloseToggled) ? 1 : 0,
       _studyDisclosePassword,
       _studyDescription,
-      0, // leaderId?
+      Authentication.instance.userId,
       _selectedCategoryIndicies..sort(),
       _studyImageId,
     );

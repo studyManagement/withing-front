@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:withing/common/requester/api_exception.dart';
 import 'package:withing/model/study/study_exception.dart';
 import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
 import 'package:withing/views/study/study_exception_screen.dart';
 
 import '../../common/requester/network_exception.dart';
-import '../../model/study/notice_model.dart';
+import '../../model/board/board_model.dart';
+import '../../model/study/study_meeting_schedules_model.dart';
 
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
+  List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
   var study;
   List<int> days = [];
@@ -18,9 +19,10 @@ class StudyViewModel extends ChangeNotifier {
   String startTime = '';
   int newLeaderId = 0;
 
-  bool hasNotice = false;
-  int numOfNotices = 0;
-  List<NoticeModel> notices = [];
+  bool hasPost = false;
+  int numOfPosts = 0;
+  List<BoardModel> posts = [];
+
 
   StudyViewModel(this._service);
 
@@ -28,9 +30,8 @@ class StudyViewModel extends ChangeNotifier {
     if (study == null) {
       try {
         study = await _service.fetchStudyInfo(studyId);
-        if (study.days != null) days = study.days;
-        if (study.startTime != null) startTime = study.startTime;
-        await fetchNotices(studyId);
+        getRegularMeetingString(study.meetingSchedules);
+        await fetchBoards(studyId, true);
         notifyListeners();
       } on StudyException catch (e) {
         // 스터디가 없는 경우
@@ -58,25 +59,28 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getRegularMeetingString() {
-    String regularMeeting = '';
-    if (study.gap == 0 && startTime.length >= 5) {
-      regularMeeting = '매일 ${startTime.substring(0, 5)}';
-    } else if (study.gap == 1) {
-      regularMeeting = '매주 ';
-      int cnt = 0;
-      for (int i = 0; i < days.length; i++) {
-        if (cnt < days.length) {
-          regularMeeting = '$regularMeeting${WeekString[days[i]]}, ';
-          cnt++;
-        } else {
-          regularMeeting = '$regularMeeting${WeekString[days[i]]} ';
-        }
-      }
-    } else {
+  void getRegularMeetingString(
+      List<StudyMeetingSchedulesModel> meetingSchedules) {
+    int cnt = 0;
+    if(meetingSchedules.isEmpty || meetingSchedules==null){
       regularMeeting = '미등록';
     }
-    return regularMeeting;
+    else if (meetingSchedules.length == 7) {
+      regularMeeting = '매일 ${meetingSchedules[0].startTime}';
+    }
+    else{
+      regularMeeting = '매주 ';
+      for (int i = 0; i < meetingSchedules.length; i++) {
+        if (cnt < meetingSchedules.length) {
+          regularMeeting =
+          '$regularMeeting${_weekString[meetingSchedules[i].day]}, ';
+          cnt++;
+        } else {
+          regularMeeting =
+          '$regularMeeting${_weekString[meetingSchedules[i].day]}';
+        }
+    }
+    }
   }
 
   void navigateToStudyExceptionScreen(BuildContext context) {
@@ -86,19 +90,19 @@ class StudyViewModel extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchNotices(int studyId) async {
-    if (notices.isEmpty) {
+  Future<void> fetchBoards(int studyId, bool isNotice) async {
+    if (posts.isEmpty) {
       try {
-        notices = await _service.fetchNotices(studyId);
-        if (notices.isNotEmpty) {
-          hasNotice = true;
-          numOfNotices = notices.length;
+        posts = await _service.fetchBoards(studyId, isNotice);
+        if (posts.isNotEmpty) {
+          hasPost = true;
+          numOfPosts = posts.length;
         }
       } on ApiException catch (e) {
         if (e.code == 404) {
           // 공지사항이 없는 경우 처리
-          hasNotice = false;
-          numOfNotices = 0;
+          hasPost = false;
+          numOfPosts = 0;
         }
       }
       notifyListeners();
@@ -117,15 +121,4 @@ class StudyViewModel extends ChangeNotifier {
       super.notifyListeners();
     }
   }
-
-// Future<void> fetchCategories(int studyId) async {
-//   var categoryModel = await _service.fetchStudyCategory(studyId);
-//   if (categoryModel.category1 != null)
-//     categories.add(categoryModel.category1!);
-//   if (categoryModel.category2 != null)
-//     categories.add(categoryModel.category2!);
-//   if (categoryModel.category3 != null)
-//     categories.add(categoryModel.category3!);
-//
-// }
 }

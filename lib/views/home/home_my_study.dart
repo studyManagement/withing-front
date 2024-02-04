@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:withing/common/theme/app/app_colors.dart';
 import 'package:withing/view_models/study/model/study_list_view.dart';
 import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
 import 'package:withing/view_models/study/study_list_viewmodel.dart';
@@ -30,6 +32,7 @@ class HomeMyStudy extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
+                    color: AppColors.gray800,
                   ),
                 ),
                 // DropdownMenuItem,
@@ -150,95 +153,127 @@ class MyStudyList extends StatelessWidget {
         final String nextScheduleDate = getNextScheduleDate(
             selectedDate, item.meetingSchedules.first, nextMeetingSchedule);
 
-        return Padding(
-          padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(25),
-                        ),
+        return InkWell(
+          onTap: () {
+            context.push("/studies/${item.id}");
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    StudyImage(),
+                    const SizedBox(width: 8),
+                    Text(
+                      item.studyName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.gray800,
                       ),
-                      Positioned(
-                        top: 5,
-                        right: 0,
-                        child: Container(
-                          width: 10,
-                          height: 10,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Text(
+                      '정기 모임',
+                      style: TextStyle(
+                        color: AppColors.gray400,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
                       ),
-                    ],
-                  ),
-                  const SizedBox(width: 16),
-                  Text(
-                    item.studyName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Text(
-                    '정기 모임',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(width: 8),
+                    Text(
+                      '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: AppColors.gray800,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Text(
+                      '다음 만남',
+                      style: TextStyle(
+                        color: AppColors.gray400,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  const Text(
-                    '다음 만남',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500,
+                    const SizedBox(width: 8),
+                    Text(
+                      '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: AppColors.gray800,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
-      separatorBuilder: (_, index) => Divider(
+      separatorBuilder: (_, index) => const Divider(
         height: 10,
-        color: Colors.grey[100],
-        thickness: 2,
+        color: AppColors.gray100,
+        thickness: 1,
         indent: 20,
         endIndent: 20,
       ),
       itemCount: studies.length,
     ));
+  }
+}
+
+class StudyImage extends StatelessWidget {
+  const StudyImage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 46,
+      height: 42,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(32),
+            child: Image.network(
+              'https://picsum.photos/42',
+              width: 42,
+              height: 42,
+            ),
+          ),
+          Positioned(
+            top: -3,
+            right: 0,
+            child: Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.white,
+                  width: 3,
+                ),
+                color: AppColors.red400,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

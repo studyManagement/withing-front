@@ -29,7 +29,7 @@ mixin _$StudyModel {
   String get explanation => throw _privateConstructorUsedError;
   int get leaderId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get deadline => throw _privateConstructorUsedError;
+  DateTime? get deadline => throw _privateConstructorUsedError;
   String get studyImage => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   List<StudyMeetingSchedulesModel> get meetingSchedules =>
@@ -58,7 +58,7 @@ abstract class $StudyModelCopyWith<$Res> {
       String explanation,
       int leaderId,
       DateTime createdAt,
-      DateTime deadline,
+      DateTime? deadline,
       String studyImage,
       List<String> categories,
       List<StudyMeetingSchedulesModel> meetingSchedules,
@@ -87,7 +87,7 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
     Object? explanation = null,
     Object? leaderId = null,
     Object? createdAt = null,
-    Object? deadline = null,
+    Object? deadline = freezed,
     Object? studyImage = null,
     Object? categories = null,
     Object? meetingSchedules = null,
@@ -130,10 +130,10 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      deadline: null == deadline
+      deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       studyImage: null == studyImage
           ? _value.studyImage
           : studyImage // ignore: cast_nullable_to_non_nullable
@@ -172,7 +172,7 @@ abstract class _$$StudyModelImplCopyWith<$Res>
       String explanation,
       int leaderId,
       DateTime createdAt,
-      DateTime deadline,
+      DateTime? deadline,
       String studyImage,
       List<String> categories,
       List<StudyMeetingSchedulesModel> meetingSchedules,
@@ -199,7 +199,7 @@ class __$$StudyModelImplCopyWithImpl<$Res>
     Object? explanation = null,
     Object? leaderId = null,
     Object? createdAt = null,
-    Object? deadline = null,
+    Object? deadline = freezed,
     Object? studyImage = null,
     Object? categories = null,
     Object? meetingSchedules = null,
@@ -242,10 +242,10 @@ class __$$StudyModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      deadline: null == deadline
+      deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       studyImage: null == studyImage
           ? _value.studyImage
           : studyImage // ignore: cast_nullable_to_non_nullable
@@ -310,7 +310,7 @@ class _$StudyModelImpl implements _StudyModel {
   @override
   final DateTime createdAt;
   @override
-  final DateTime deadline;
+  final DateTime? deadline;
   @override
   final String studyImage;
   final List<String> _categories;
@@ -418,7 +418,7 @@ abstract class _StudyModel implements StudyModel {
       required final String explanation,
       required final int leaderId,
       required final DateTime createdAt,
-      required final DateTime deadline,
+      required final DateTime? deadline,
       required final String studyImage,
       required final List<String> categories,
       required final List<StudyMeetingSchedulesModel> meetingSchedules,
@@ -446,7 +446,7 @@ abstract class _StudyModel implements StudyModel {
   @override
   DateTime get createdAt;
   @override
-  DateTime get deadline;
+  DateTime? get deadline;
   @override
   String get studyImage;
   @override

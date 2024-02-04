@@ -63,7 +63,7 @@ class StudyScreen extends StatelessWidget {
                       const SizedBox(width: 9),
                       StudyMainButtons(
                           onTap: () {
-                            context.push('/studies/$studyId/board');
+                            context.push('/studies/$studyId/boards');
                           },
                           title: "Community",
                           subtitle: "게시판",
@@ -82,7 +82,7 @@ class StudyScreen extends StatelessWidget {
                     color: AppColors.gray100,
                   ),
                   const SizedBox(height: 10),
-                  Notice(hasNotice: data.hasNotice, notices: data.notices,),
+                  Notice(),
                 ],
               ),
             ),

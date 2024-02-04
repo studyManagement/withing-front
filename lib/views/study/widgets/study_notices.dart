@@ -6,19 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:withing/view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
 
-import '../../../model/study/notice_model.dart';
-import 'notice_item.dart';
+import '../../../model/board/board_model.dart';
+import '../../board/widgets/board_item.dart';
 
 class Notice extends StatelessWidget {
-  final bool hasNotice;
-  final List<NoticeModel> notices;
-
-  const Notice({super.key, required this.hasNotice, required this.notices});
+  const Notice({super.key});
 
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
-    // List<NoticeModel> notices = vm.notices;
+     List<BoardModel> notices = vm.posts;
+     bool hasNotice = vm.hasPost;
     return Expanded(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +32,7 @@ class Notice extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  context.push('/studies/${vm.study.studyId}/board/notice');
+                  context.push('/studies/${vm.study.id}/boards/notice');
                 },
                 child: Offstage(
                   offstage: (hasNotice) ? false : true,
@@ -52,7 +50,7 @@ class Notice extends StatelessWidget {
           ),
         ),
         (hasNotice)
-            ? _NoticeCarousel(notices)
+            ? _NoticeCarousel(notices: notices, studyId: vm.study.id,)
             : Center(
                 child: Column(children: [
                   const SizedBox(height: 70),
@@ -77,9 +75,10 @@ class Notice extends StatelessWidget {
 }
 
 class _NoticeCarousel extends StatefulWidget {
-  const _NoticeCarousel(this.notices);
+  final int studyId;
+  final List<BoardModel> notices;
+  const _NoticeCarousel({required this.studyId,required this.notices});
 
-  final List<NoticeModel> notices;
 
   @override
   State<_NoticeCarousel> createState() => _NoticeCarouselState();
@@ -111,11 +110,11 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           itemBuilder: (context, index, realIndex) {
             final int startIndex = index * 3;
             final int endIndex = (index + 1) * 3;
-            final List<NoticeModel> sublist = widget.notices.sublist(
+            final List<BoardModel> sublist = widget.notices.sublist(
               startIndex,
               endIndex > numOfNotice ? numOfNotice : endIndex,
             );
-            return _buildCarouselItem(sublist);
+            return _buildCarouselItem(widget.studyId,sublist);
           },
           // 한 슬라이드에 공지글 최대 3개까지 표시.
         ),
@@ -125,14 +124,16 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
   }
 }
 
-Widget _buildCarouselItem(List<NoticeModel> sublist) {
+Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
   return ListView.separated(
     itemBuilder: (context, index) {
-      return NoticeItem(
-        boardId: sublist[index].boardId,
+      return BoardItem(
+        studyId: studyId,
+        isOnlyNotice: true,
+        boardId: sublist[index].id,
         title: sublist[index].title,
-        content: sublist[index].contents,
-        createdAt: sublist[index].createdAt,
+        notice: sublist[index].notice,
+        createdAt: sublist[index].createdAt.toString(),
       );
     },
     separatorBuilder: (context, index) {

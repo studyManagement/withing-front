@@ -6,7 +6,7 @@ import '../../service/create/study_create_service.dart';
 import '../../common/layout/default_layout.dart';
 import '../../di/injection.dart';
 import '../../view_models/create/create_study_viewmodel.dart';
-import '../search/widgets/gray50_divider.dart';
+import '../../common/components/gray50_divider.dart';
 
 class CreateStudyScreen extends StatelessWidget {
   const CreateStudyScreen({super.key});

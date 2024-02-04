@@ -3,27 +3,31 @@ import 'package:go_router/go_router.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class BoardItem extends StatelessWidget {
-  final int boardId; // 해당 게시글 상세 페이지로 이동
-  final int notice; // 공지 여부 (1일시 공지)
+  final int studyId;
+  final bool isOnlyNotice;
+  final int boardId;
+  final bool notice;
   final String title;
   final String? content;
-  final String nickname;
+  final String? nickname;
   final String createdAt;
 
-  BoardItem(
+  const BoardItem(
       {super.key,
+      required this.studyId,
+      required this.isOnlyNotice,
       required this.boardId,
+      required this.notice,
       required this.title,
       this.content,
-      required this.createdAt,
-      required this.notice,
-      required this.nickname});
+      this.nickname,
+      required this.createdAt});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/studies/1/board/1');
+        context.go('/studies/$studyId/boards/$boardId');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -31,13 +35,30 @@ class BoardItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              (isOnlyNotice) ?
               Offstage(
-                offstage: (notice == 1) ? false : true, // 공지 여부 체크
-                child:
-                    Padding(
-                      padding: const EdgeInsets.only(right:4.0),
-                      child: Image.asset('asset/notice_pin.png', width: 32, height: 32),
-                    ),
+                offstage: (isNew(createdAt)) ? false : true,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                      color: AppColors.red100,
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Text(
+                    '신규',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: AppColors.red400),
+                  ),
+                ),
+              ) :   Offstage(
+                offstage: (notice) ? false : true,
+                child: Padding(
+                  padding: const EdgeInsets.only(right:4.0),
+                  child: Image.asset('asset/notice_pin.png', width: 32, height: 32),
+                ),
               ),
               Text(
                 title,
@@ -50,51 +71,18 @@ class BoardItem extends StatelessWidget {
             offstage: (content == null) ? true : false,
             child: Text(
               content!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
                   ?.copyWith(color: AppColors.gray800, fontSize: 13.0),
             ),
           ),
-          const SizedBox(height: 6),
-          Row(
-            children: [
-              Text(
-                'nickname',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                '|',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.gray150, fontSize: 13.0),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                getCreatedAt(createdAt),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
-              ),
-              const Spacer(),
-              Image.asset('asset/comment.png', width: 16, height: 16),
-              const SizedBox(width: 4),
-              Text(
-                '3',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
-              ),
-            ],
+          Text(
+            getCreatedAt(createdAt),
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
           ),
         ]),
       ),
