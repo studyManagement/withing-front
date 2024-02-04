@@ -4,7 +4,7 @@ import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
-import 'package:modi/views/study/study_screen.dart';
+import 'package:modi/views/study/my_study_screen.dart';
 
 final router = GoRouter(
   routes: [

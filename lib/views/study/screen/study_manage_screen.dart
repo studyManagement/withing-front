@@ -6,6 +6,7 @@ import 'package:modi/common/modal/withing_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:modi/views/study/screen/set_regular_meeting_screen.dart';
 import 'package:modi/views/study/widgets/study_manage_bottomsheet.dart';
 import 'package:provider/provider.dart';
 
@@ -33,44 +34,43 @@ class StudyManageScreen extends StatelessWidget {
       '멤버 강제 퇴장',
       '스터디 종료'
     ];
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<StudyViewModel>(
       create: (_) => StudyViewModel(getIt<StudyService>()),
-      child: Consumer<StudyViewModel>(builder: (context, vm, child) {
-        vm.fetchStudyInfo(context, studyId);
+      child:
+          Consumer<StudyViewModel>(builder: (context, studyViewModel, child) {
+        studyViewModel.fetchStudyInfo(context, studyId);
         return DefaultLayout(
             title: '스터디 관리',
-            child: ListView(
-              children: [
-                for (int i = 0; i < 5; i++)
-                  StudyManageListItem(
-                      title: title[i],
-                      iconUrl: iconUrl[i],
-                      index: i,
-                      studyId: studyId),
-                const SizedBox(height: 369),
-                Center(
-                  child: GestureDetector(
-                      onTap: () {
-                        WithingModal.openDialog(context, "스터디를 삭제하시겠어요?",
-                            "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
-                          vm.deleteStudy(studyId);
-                          context.pop();
-                          BottomToast(context: context, text: "스터디가 삭제되었어요.")
-                              .show();
-                          // context.go('/home');
-                        }, null);
-                      },
-                      child: Text('스터디 삭제하기',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(
-                                  color: AppColors.gray300,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: AppColors.gray300))),
-                )
-              ],
-            ));
+            child: ListView(children: [
+              for (int i = 0; i < 5; i++)
+                StudyManageListItem(
+                    title: title[i],
+                    iconUrl: iconUrl[i],
+                    index: i,
+                    studyId: studyId),
+              const SizedBox(height: 369),
+              Center(
+                child: GestureDetector(
+                    onTap: () {
+                      WithingModal.openDialog(context, "스터디를 삭제하시겠어요?",
+                          "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
+                        studyViewModel.deleteStudy(studyId);
+                        context.pop();
+                        BottomToast(context: context, text: "스터디가 삭제되었어요.")
+                            .show();
+                        // context.go('/home');
+                      }, null);
+                    },
+                    child: Text('스터디 삭제하기',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium!
+                            .copyWith(
+                                color: AppColors.gray300,
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.gray300))),
+              )
+            ]));
       }),
     );
   }
@@ -100,7 +100,14 @@ class StudyManageListItem extends StatelessWidget {
           if (index == 0) {
             context.push('/studies/$studyId/manage/edit');
           } else if (index == 1) {
-            context.push('/studies/$studyId/manage/regular_meeting');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SetRegularMeetingScreen(
+                  viewModel: vm,
+                ),
+              ),
+            );
           } else if (index == 2) {
             showModalBottomSheet(
                 isScrollControlled: true,

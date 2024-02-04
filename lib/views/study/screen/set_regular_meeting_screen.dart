@@ -1,14 +1,19 @@
-import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
-import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
-import 'package:modi/views/study/widgets/regular_meeting_selector.dart';
+import 'package:modi/views/study/screen/study_manage_screen.dart';
+import 'package:modi/views/study/widgets/meeting_days_selector.dart';
+
+import '../../../service/study/MeetingType.dart';
+
+import '../../../view_models/study/study_viewmodel.dart';
+import '../widgets/meeting_time_picker.dart';
 
 class SetRegularMeetingScreen extends StatefulWidget {
-  // 정기모임 설정 여부 확인 필요
-  const SetRegularMeetingScreen({super.key});
+  final StudyViewModel viewModel;
+
+  const SetRegularMeetingScreen({super.key, required this.viewModel});
 
   @override
   State<SetRegularMeetingScreen> createState() =>
@@ -16,239 +21,163 @@ class SetRegularMeetingScreen extends StatefulWidget {
 }
 
 class _SetRegularMeetingScreenState extends State<SetRegularMeetingScreen> {
-  int? gap, selectedIdx;
-  List<String> days = [];
-  String start = '미등록', end = '미등록';
+  List<int> days = [];
+  String start = '', end = '';
   DateTime? selected;
   List<String> weekDays = ["월", "화", "수", "목", "금", "토", "일"];
+  MeetingType type = MeetingType.NONE;
+  MeetingTimePicker? timePicker;
+  bool isInit = false;
+
+  void updateTime(String startTime, String endTime) {
+    setState(() {
+      isInit = false;
+      start = startTime;
+      end = endTime;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    gap = -1;
-    selectedIdx = -1;
+    //  type = widget.viewModel.meeting_type;
+    //  days = widget.viewModel.days;
+    //  start = widget.viewModel.meetingModel[0].startTime;
+    //  end = widget.viewModel.meetingModel[0].endTime;
+    type = MeetingType.NONE;
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-        title: '정기 모임',
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              Text('간격',
+    return Scaffold(
+      appBar: initAppBar(),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text('모임 간격',
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
                       ?.copyWith(color: AppColors.gray500)),
-              const SizedBox(height: 12),
-              Row(
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (selectedIdx != 0) {
-                          selectedIdx = 0;
-                          gap = 1;
-                        } else {
-                          selectedIdx = -1;
-                          gap = -1;
-                        }
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: ShapeDecoration(
-                        color: (selectedIdx == 0)
-                            ? AppColors.blue600
-                            : AppColors.gray100,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                      ),
-                      child: Text(
-                        '매일',
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: (selectedIdx == 0)
-                                  ? AppColors.white
-                                  : AppColors.gray500,
-                            ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (selectedIdx != 1) {
-                          selectedIdx = 1;
-                          gap = 0;
-                        } else {
-                          selectedIdx = -1;
-                          gap = -1;
-                        }
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: ShapeDecoration(
-                        color: (selectedIdx == 1)
-                            ? AppColors.blue600
-                            : AppColors.gray100,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                      ),
-                      child: Text(
-                        '매주',
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: (selectedIdx == 1)
-                                ? AppColors.white
-                                : AppColors.gray500),
-                      ),
-                    ),
-                  ),
+                  radioButton(MeetingType.DAILY, '매일'),
+                  const SizedBox(width: 20),
+                  radioButton(MeetingType.WEEKLY, '매주'),
+                  const SizedBox(width: 20),
+                  radioButton(MeetingType.NONE, '설정안함'),
+                  const SizedBox(width: 20),
                 ],
               ),
-              Offstage(
-                offstage: (selectedIdx == 0) ? true : false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 40),
-                    Text('요일',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: AppColors.gray500)),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        for (int i = 0; i < weekDays.length; i++)
-                          RegularMeetingSelector(
-                              itemIdx: i, // 조회한 요일
-                              isSelected:
-                                  (days.contains(weekDays[i])) ? true : false
-                              // 최대 카운트 수
-                              ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              Text('스터디 시간',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: AppColors.gray500)),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Text('시작',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: AppColors.gray500)),
-                  const SizedBox(width: 12),
-                  const Spacer(),
-                  InkWell(
+            ),
+            meetingType(type),
+            const Spacer(),
+            Center(
+                child: StudyBottomButton(
                     onTap: () {
-                      showBottomPicker(context, 0);
+                      print("정기모임 설정 완료");
+                      print(type);
+                      for (int i in days) {
+                        print("${weekDays[i]} ");
+                      }
+                      print("시작 시간: $start");
+                      print("종료 시간: $end");
                     },
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 8),
-                        width: 324,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6.0),
-                          border: Border.all(color: AppColors.gray150),
-                        ),
-                        child: Text(start,
-                            style: Theme.of(context).textTheme.bodySmall)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Text('종료',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(color: AppColors.gray500)),
-                  const SizedBox(width: 12),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      showBottomPicker(context, 1);
-                    },
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 8),
-                        width: 324,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6.0),
-                          border: Border.all(
-                            color: AppColors.gray150,
-                          ),
-                        ),
-                        child: Text(end,
-                            style: Theme.of(context).textTheme.bodySmall)),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              Center(child: StudyBottomButton(onTap: () {}, text: '설정 완료'))
-            ],
-          ),
-        ));
+                    text: '설정 완료'))
+          ],
+        ),
+      ),
+    );
   }
 
-  void showBottomPicker(BuildContext context, int flag) {
-    String selectedString = '';
-    BottomPicker.time(
-      onSubmit: (time) {
-        if (time.hour < 12) {
-          selectedString = '오전';
-        } else {
-          selectedString = '오후';
-        }
-        time = DateFormat(" hh:mm").format(time);
-        if (flag == 0) {
-          start = selectedString + time.toString();
-        } else {
-          end = selectedString + time.toString();
-        }
-        setState(() {});
-      },
-      dismissable: true,
-      height: 496,
-      title: (flag == 0) ? '시작 시간' : '종료 시간',
-      titleStyle: Theme.of(context).textTheme.titleMedium!,
-      titlePadding: const EdgeInsets.only(top: 40, bottom: 8),
-      displayCloseIcon: false,
-      titleAlignment: CrossAxisAlignment.center,
-      description: '정기 모임 시간을 설정해주세요.',
-      descriptionStyle: Theme.of(context)
-          .textTheme
-          .bodySmall!
-          .copyWith(color: AppColors.gray400),
-      use24hFormat: false,
-      initialTime: Time(minutes: 23, hours: 12),
-      buttonWidth: 330,
-      buttonText: '설정 완료',
-      buttonTextStyle: Theme.of(context)
-          .textTheme
-          .titleMedium!
-          .copyWith(color: AppColors.white),
-      displayButtonIcon: false,
-      buttonSingleColor: AppColors.blue600,
-    ).show(context);
+  AppBar initAppBar() {
+    return AppBar(
+      title: Text('정기모임', style: Theme.of(context).textTheme.titleMedium),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios),
+        onPressed: () => {context.pop()},
+      ),
+      centerTitle: true,
+      foregroundColor: AppColors.black,
+      backgroundColor: AppColors.white,
+      elevation: 0,
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            if (type != MeetingType.NONE) {
+              setState(() {
+                days = [];
+                isInit = true;
+              });
+            }
+          },
+          child: Text("초기화",
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: (type != MeetingType.NONE)
+                      ? AppColors.blue400
+                      : AppColors.gray300,
+                  fontSize: 16)),
+        )
+      ],
+    );
+  }
+
+  Widget radioButton(MeetingType valueType, String title) {
+    return Row(
+      children: [
+        Radio(
+            fillColor: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return AppColors.blue400;
+              }
+              return null;
+            }),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity:
+                const VisualDensity(horizontal: VisualDensity.minimumDensity),
+            value: valueType,
+            groupValue: type,
+            onChanged: (value) {
+              setState(() {
+                type = value!;
+              });
+            }),
+        const SizedBox(width: 10),
+        Text(title, style: Theme.of(context).textTheme.titleSmall),
+      ],
+    );
+  }
+
+  Widget meetingType(MeetingType type) {
+    if(isInit){
+      start = '';
+      end = '';
+    }
+    switch (type) {
+      case MeetingType.DAILY:
+        return MeetingTimePicker(
+            start: start, end: end, notifyParent: updateTime, isInit: isInit);
+      case MeetingType.WEEKLY:
+        return Column(
+          children: [
+            MeetingDaysSelector(days: days),
+            MeetingTimePicker(
+                start: start,
+                end: end,
+                notifyParent: updateTime,
+                isInit: isInit)
+          ],
+        );
+      default:
+        return const SizedBox();
+    }
   }
 }

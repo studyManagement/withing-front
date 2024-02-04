@@ -93,10 +93,10 @@ class WithingApp extends StatelessWidget {
             builder: (context, state) => StudyUpdateScreen(
                 studyId: int.parse(state.pathParameters['studyId']!)),
           ),
-          GoRoute(
-            path: '/studies/:studyId/manage/regular_meeting',
-            builder: (context, state) => const SetRegularMeetingScreen(),
-          ),
+          // GoRoute(
+          //   path: '/studies/:studyId/manage/regular_meeting',
+          //   builder: (context, state) => const SetRegularMeetingScreen(),
+          // ),
           GoRoute(
               path: '/studies/:studyId/boards', // 게시판
               builder: (context, state) => BoardMainScreen(
