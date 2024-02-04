@@ -6,4 +6,8 @@ enum StudyType {
   const StudyType({required this.key});
 
   final String key;
+
+  static StudyType from(String studyType) {
+    return StudyType.values.byName(studyType.toUpperCase());
+  }
 }

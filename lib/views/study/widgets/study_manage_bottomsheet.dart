@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/common/components/study_bottom_button.dart';
-import 'package:withing/views/study/widgets/study_member_list_item.dart';
+import 'package:modi/common/components/study_bottom_button.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/views/study/widgets/study_member_list_item.dart';
 
 class StudyManageBottomSheet extends StatelessWidget {
   final String title;
@@ -18,8 +18,8 @@ class StudyManageBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> selected=[];
-    bool isSelected=false, isLeader;
+    List<int> selected = [];
+    bool isSelected = false, isLeader;
 
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -32,7 +32,7 @@ class StudyManageBottomSheet extends StatelessWidget {
               bottomLeft: Radius.zero,
               bottomRight: Radius.zero)),
       child: Column(children: [
-        const SizedBox(height:10),
+        const SizedBox(height: 10),
         Container(
           width: 70,
           height: 4,
@@ -73,23 +73,25 @@ class StudyManageBottomSheet extends StatelessWidget {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
-                      if(isOut==true){ // 강제 퇴장 , 여러 명 가능(아직 구현 X)
-                      }
-                      else{ // 스터디장 변경
-                        isSelected = (isSelected) ? false: true;
+                    onTap: () {
+                      if (isOut == true) {
+                        // 강제 퇴장 , 여러 명 가능(아직 구현 X)
+                      } else {
+                        // 스터디장 변경
+                        isSelected = (isSelected) ? false : true;
                       }
                     },
                     child: StudyMemberListItem(
                       nickname: "nickname",
                       image: Container(
-                        decoration:BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.gray150,
                           border: Border.all(
-                            color: isSelected ? AppColors.blue600 : Colors.transparent,
-                            width: 2
-                          ),
+                              color: isSelected
+                                  ? AppColors.blue600
+                                  : Colors.transparent,
+                              width: 2),
                         ),
                       ),
                     ),

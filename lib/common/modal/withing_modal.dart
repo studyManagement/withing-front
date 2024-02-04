@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:withing/common/components/study_modal.dart';
+import 'package:modi/common/components/study_modal.dart';
 
 class WithingModal {
   static void openDialog(BuildContext context, String title, String content,

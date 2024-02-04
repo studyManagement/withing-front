@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:withing/model/study/study_meeting_schedules_model.dart';
-import 'package:withing/model/user/user_model.dart';
+import 'package:modi/model/study/study_meeting_schedules_model.dart';
+import 'package:modi/model/user/user_model.dart';
 
 part 'study_model.freezed.dart';
 part 'study_model.g.dart';

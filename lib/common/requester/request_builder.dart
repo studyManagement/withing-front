@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:withing/common/requester/interceptor/auth_interceptor.dart';
-import 'package:withing/common/requester/interceptor/custom_log_interceptor.dart';
-import 'package:withing/common/requester/interceptor/response_interceptor.dart';
+import 'package:modi/common/requester/interceptor/auth_interceptor.dart';
+import 'package:modi/common/requester/interceptor/custom_log_interceptor.dart';
+import 'package:modi/common/requester/interceptor/response_interceptor.dart';
 
 import '../const/environment.dart';
 import '../environment/environment.dart';

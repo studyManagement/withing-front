@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:withing/model/user/user_model.dart';
+import 'package:modi/model/user/user_model.dart';
 
 part 'board_model.freezed.dart';
 part 'board_model.g.dart';

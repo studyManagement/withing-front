@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/automated_study_list_view.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/components/automated_study_list_view.dart';
+
+import '../../../common/components/gray50_divider.dart';
 import '../../../di/injection.dart';
 import '../../../service/search/category_search_service.dart';
 import '../../../view_models/search/category_search_viewmodel.dart';
-import '../../../common/components/gray50_divider.dart';
 import '../widgets/_search_widget_resources.dart';
 
 class CategorySearchScreen extends StatelessWidget {

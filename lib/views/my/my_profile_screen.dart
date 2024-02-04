@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:withing/common/layout/default_layout.dart';
+import 'package:modi/common/layout/default_layout.dart';
 
 class MyProfileScreen extends StatelessWidget {
   @override

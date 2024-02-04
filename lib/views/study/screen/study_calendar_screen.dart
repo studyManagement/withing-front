@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:withing/views/board/widgets/board_list.dart';
-import 'package:withing/views/board/widgets/no_post.dart';
+import 'package:modi/views/board/widgets/board_list.dart';
+import 'package:modi/views/board/widgets/no_post.dart';
 
 import '../../board/widgets/board_appbar.dart';
 

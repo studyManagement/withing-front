@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:withing/common/authenticator/authentication_exception.dart';
-import 'package:withing/common/authenticator/authentication_factory.dart';
-import 'package:withing/common/authenticator/authenticator.dart';
-import 'package:withing/common/modal/withing_modal.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/exception/signin/user_not_found_exception.dart';
-import 'package:withing/service/signin/signin_service.dart';
+import 'package:modi/common/authenticator/authentication_exception.dart';
+import 'package:modi/common/authenticator/authentication_factory.dart';
+import 'package:modi/common/authenticator/authenticator.dart';
+import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/exception/signin/user_not_found_exception.dart';
+import 'package:modi/service/signin/signin_service.dart';
 
 class SigninViewModel {
   final BuildContext _context;

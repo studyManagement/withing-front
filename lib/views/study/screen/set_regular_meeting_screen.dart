@@ -1,11 +1,10 @@
+import 'package:bottom_picker/bottom_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:withing/common/components/study_bottom_button.dart';
-
-import 'package:withing/common/layout/default_layout.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/views/study/widgets/regular_meeting_selector.dart';
-import 'package:bottom_picker/bottom_picker.dart';
+import 'package:modi/common/components/study_bottom_button.dart';
+import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/views/study/widgets/regular_meeting_selector.dart';
 
 class SetRegularMeetingScreen extends StatefulWidget {
   // 정기모임 설정 여부 확인 필요

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:withing/common/modal/withing_modal.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/model/signup/signup_exception.dart';
-import 'package:withing/service/signup/signup_service.dart';
+import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/model/signup/signup_exception.dart';
+import 'package:modi/service/signup/signup_service.dart';
 
 class SignupViewModel extends ChangeNotifier {
   final SignupService _service;

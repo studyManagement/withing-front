@@ -38,7 +38,7 @@ class _StudyCreateApi implements StudyCreateApi {
     )
             .compose(
               _dio.options,
-              '/studies/create',
+              '/studies',
               queryParameters: queryParameters,
               data: _data,
             )

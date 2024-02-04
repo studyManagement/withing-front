@@ -1,4 +1,4 @@
-import 'package:withing/common/authenticator/authenticator.dart';
+import 'package:modi/common/authenticator/authenticator.dart';
 
 class EmptyAuthentication implements Authenticator {
   @override

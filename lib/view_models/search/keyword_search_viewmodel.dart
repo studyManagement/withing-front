@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:withing/view_models/search/searched_studies_viewmodel.dart';
+import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
 
 import '../../model/search/searched_study_info_model.dart';
 import '../../service/search/keyword_search_service.dart';

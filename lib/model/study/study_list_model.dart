@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:withing/model/study/study_meeting_schedules_model.dart';
+import 'package:modi/model/study/study_meeting_schedules_model.dart';
 
 part 'study_list_model.freezed.dart';
 part 'study_list_model.g.dart';
@@ -14,7 +14,6 @@ class StudyListModel with _$StudyListModel {
     required bool private,
     required String explanation,
     required DateTime createdAt,
-    required DateTime deadline,
     required List<String> categories,
     required List<StudyMeetingSchedulesModel> meetingSchedules,
   }) = _StudyListModel;

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:modi/views/study/widgets/study_main_appbar.dart';
+import 'package:modi/views/study/widgets/study_main_buttons.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/study/study_viewmodel.dart';
-import 'package:withing/views/study/widgets/study_main_appbar.dart';
-import 'package:withing/views/study/widgets/study_main_buttons.dart';
-import 'widgets/study_details.dart';
-import 'widgets/study_notices.dart';
-import '../../di/injection.dart';
-import 'widgets/study_header.dart';
 
-import 'package:withing/common/authenticator/authenticator.dart';
+import '../../di/injection.dart';
+import 'widgets/study_details.dart';
+import 'widgets/study_header.dart';
+import 'widgets/study_notices.dart';
 
 class StudyScreen extends StatelessWidget {
   final int studyId;
@@ -29,7 +28,7 @@ class StudyScreen extends StatelessWidget {
           data.fetchStudyInfo(context, studyId);
           if (data.study == null) return Container();
           return Scaffold(
-            appBar:studyMainAppBar(context, data.study.leaderId == 2, studyId),
+            appBar: studyMainAppBar(context, data.study.leaderId == 2, studyId),
             body: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

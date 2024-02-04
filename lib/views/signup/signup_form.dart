@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:modi/view_models/signup/signup_viewmodel.dart';
+import 'package:modi/views/signup/signup_profile.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/view_models/signup/signup_viewmodel.dart';
-import 'package:withing/views/signup/signup_profile.dart';
 
 class SignupForm extends StatelessWidget {
   const SignupForm({super.key});

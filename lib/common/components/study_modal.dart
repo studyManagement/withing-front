@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/common/theme/app/app_fonts.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/common/theme/app/app_fonts.dart';
 
 import 'modal_button.dart';
 

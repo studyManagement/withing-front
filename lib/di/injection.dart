@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:withing/common/requester/request_builder.dart';
-import 'package:withing/service/signin/signin_service.dart';
-import 'package:withing/service/signup/signup_service.dart';
+import 'package:modi/common/requester/request_builder.dart';
+import 'package:modi/service/signin/signin_service.dart';
+import 'package:modi/service/signup/signup_service.dart';
+
 import '../service/create/study_create_service.dart';
 import '../service/image/study_image_create_service.dart';
 import '../service/search/category_search_service.dart';

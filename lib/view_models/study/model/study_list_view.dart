@@ -1,5 +1,5 @@
-import 'package:withing/model/study/study_list_model.dart';
-import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
+import 'package:modi/model/study/study_list_model.dart';
+import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
 class StudyListView {
   int id;
@@ -9,21 +9,11 @@ class StudyListView {
   bool private;
   String explanation;
   DateTime createdAt;
-  DateTime deadline;
   List<String> categories;
   List<StudyMeetingSchedule> meetingSchedules;
 
-  StudyListView(
-      this.id,
-      this.studyName,
-      this.max,
-      this.headcount,
-      this.private,
-      this.explanation,
-      this.createdAt,
-      this.deadline,
-      this.categories,
-      this.meetingSchedules);
+  StudyListView(this.id, this.studyName, this.max, this.headcount, this.private,
+      this.explanation, this.createdAt, this.categories, this.meetingSchedules);
 
   factory StudyListView.from(StudyListModel model) {
     return StudyListView(
@@ -34,7 +24,6 @@ class StudyListView {
       model.private,
       model.explanation,
       model.createdAt,
-      model.deadline,
       model.categories,
       model.meetingSchedules.map((e) => StudyMeetingSchedule.from(e)).toList(),
     );
@@ -49,7 +38,6 @@ class StudyListView {
       private,
       explanation,
       createdAt,
-      deadline,
       categories,
       meetingSchedules,
     );

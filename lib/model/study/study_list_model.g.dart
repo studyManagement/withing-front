@@ -15,7 +15,6 @@ _$StudyListModelImpl _$$StudyListModelImplFromJson(Map<String, dynamic> json) =>
       private: json['private'] as bool,
       explanation: json['explanation'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      deadline: DateTime.parse(json['deadline'] as String),
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -35,7 +34,6 @@ Map<String, dynamic> _$$StudyListModelImplToJson(
       'private': instance.private,
       'explanation': instance.explanation,
       'createdAt': instance.createdAt.toIso8601String(),
-      'deadline': instance.deadline.toIso8601String(),
       'categories': instance.categories,
       'meetingSchedules': instance.meetingSchedules,
     };

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/exception/signin/user_not_found_exception.dart';
+import 'package:modi/model/signin/signin_model.dart';
 import 'package:retrofit/http.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/exception/signin/user_not_found_exception.dart';
-import 'package:withing/model/signin/signin_model.dart';
 
 part 'signin_service.g.dart';
 

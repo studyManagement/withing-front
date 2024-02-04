@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/components/circle_button.dart';
-import 'package:withing/common/modal/withing_modal.dart';
-import 'package:withing/di/injection.dart';
-import 'package:withing/service/signin/signin_service.dart';
-import 'package:withing/view_models/signin/signin_viewmodel.dart';
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/components/circle_button.dart';
+import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/di/injection.dart';
+import 'package:modi/service/signin/signin_service.dart';
+import 'package:modi/view_models/signin/signin_viewmodel.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

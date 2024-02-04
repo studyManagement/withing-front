@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:withing/common/authenticator/authentication.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 
 import '../../service/create/study_create_service.dart';
 import '../../service/image/study_image_create_service.dart';

@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/const/environment.dart';
-import 'package:withing/common/environment/environment.dart';
-import 'package:withing/common/requester/request_builder.dart';
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/const/environment.dart';
+import 'package:modi/common/environment/environment.dart';
+import 'package:modi/common/requester/request_builder.dart';
 
 class AuthInterceptor extends Interceptor {
   AuthInterceptor();

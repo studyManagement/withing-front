@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/model/study/study_exception.dart';
-import 'package:withing/service/study/study_service.dart';
-import 'package:withing/views/study/study_exception_screen.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/model/study/study_exception.dart';
+import 'package:modi/service/study/study_service.dart';
+import 'package:modi/views/study/study_exception_screen.dart';
 
 import '../../common/requester/network_exception.dart';
 import '../../model/board/board_model.dart';
@@ -22,7 +22,6 @@ class StudyViewModel extends ChangeNotifier {
   bool hasPost = false;
   int numOfPosts = 0;
   List<BoardModel> posts = [];
-
 
   StudyViewModel(this._service);
 
@@ -62,24 +61,22 @@ class StudyViewModel extends ChangeNotifier {
   void getRegularMeetingString(
       List<StudyMeetingSchedulesModel> meetingSchedules) {
     int cnt = 0;
-    if(meetingSchedules.isEmpty || meetingSchedules==null){
+    if (meetingSchedules.isEmpty || meetingSchedules == null) {
       regularMeeting = '미등록';
-    }
-    else if (meetingSchedules.length == 7) {
+    } else if (meetingSchedules.length == 7) {
       regularMeeting = '매일 ${meetingSchedules[0].startTime}';
-    }
-    else{
+    } else {
       regularMeeting = '매주 ';
       for (int i = 0; i < meetingSchedules.length; i++) {
         if (cnt < meetingSchedules.length) {
           regularMeeting =
-          '$regularMeeting${_weekString[meetingSchedules[i].day]}, ';
+              '$regularMeeting${_weekString[meetingSchedules[i].day]}, ';
           cnt++;
         } else {
           regularMeeting =
-          '$regularMeeting${_weekString[meetingSchedules[i].day]}';
+              '$regularMeeting${_weekString[meetingSchedules[i].day]}';
         }
-    }
+      }
     }
   }
 

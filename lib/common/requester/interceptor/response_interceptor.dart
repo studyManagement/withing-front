@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:withing/common/requester/api_exception.dart';
-import 'package:withing/common/requester/api_response.dart';
-import 'package:withing/common/requester/network_exception.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/common/requester/api_response.dart';
+import 'package:modi/common/requester/network_exception.dart';
 
 class ResponseInterceptor extends Interceptor {
   ResponseInterceptor();
