@@ -28,7 +28,7 @@ class SigninViewModel {
     } on UserNotFoundException catch (e) {
       int socialUUID = await auth.fetchUUID();
       if (!_context.mounted) return;
-      _context.go('/signup/$provider/$socialUUID');
+      _context.push('/signup/$provider/$socialUUID');
     } on ApiException catch (e) {
       WithingModal.openDialog(
           _context, '문제가 발생했어요', e.cause, false, null, null);
