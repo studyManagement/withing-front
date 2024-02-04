@@ -2,7 +2,7 @@ import 'package:modi/common/authenticator/authenticator.dart';
 
 class EmptyAuthentication implements Authenticator {
   @override
-  Future<int> fetchUUID() {
+  Future<String> fetchUUID() {
     // TODO: implement fetchUUID
     throw UnimplementedError();
   }
