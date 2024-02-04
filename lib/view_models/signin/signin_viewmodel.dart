@@ -18,7 +18,7 @@ class SigninViewModel {
     Authenticator auth = AuthenticationFactory.getProvider(provider);
     try {
       String token = await auth.login();
-      await _signinService.signin(token);
+      await _signinService.signin(token, provider);
 
       if (!_context.mounted) return;
       _context.go('/home');
@@ -26,7 +26,7 @@ class SigninViewModel {
       WithingModal.openDialog(
           _context, '문제가 발생했어요', e.cause, false, null, null);
     } on UserNotFoundException catch (e) {
-      int socialUUID = await auth.fetchUUID();
+      String socialUUID = await auth.fetchUUID();
       if (!_context.mounted) return;
       _context.push('/signup/$provider/$socialUUID');
     } on ApiException catch (e) {

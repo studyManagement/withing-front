@@ -115,7 +115,7 @@ class _Bottom extends StatelessWidget {
               CircleButton(
                   image: 'asset/apple.png',
                   onTap: () async {
-                    await vm.signin('kakao');
+                    await vm.signin('apple');
                   }),
             ],
           ),

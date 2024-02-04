@@ -8,7 +8,7 @@ class Authenticator {
     return '';
   }
 
-  Future<int> fetchUUID() async {
-    return -1;
+  Future<String> fetchUUID() async {
+    return '';
   }
 }

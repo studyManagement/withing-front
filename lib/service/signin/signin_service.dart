@@ -11,18 +11,19 @@ part 'signin_service.g.dart';
 abstract class SigninApi {
   factory SigninApi(Dio dio, {String baseUrl}) = _SigninApi;
 
-  @POST("/login/kakao")
+  @POST("/login/{provider}")
   @Headers({'X-Exclude-Access-Token': 'true'})
-  Future<SigninModel> signin(@Header("Authorization") String accessToken);
+  Future<SigninModel> signin(@Header("Authorization") String accessToken,
+      @Path('provider') String provider);
 }
 
 class SigninService {
   final SigninApi _signinApi;
   SigninService(this._signinApi);
 
-  Future<void> signin(String accessToken) async {
+  Future<void> signin(String accessToken, String provider) async {
     try {
-      final SigninModel token = await _signinApi.signin(accessToken);
+      final SigninModel token = await _signinApi.signin(accessToken, provider);
 
       Authentication.from(token.accessToken, token.refreshToken);
       Authentication.instance.save();

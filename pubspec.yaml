@@ -43,6 +43,7 @@ dependencies:
   bottom_picker: ^2.3.3
   fluttertoast: ^8.0.8
   change_app_package_name: ^1.1.0
+  sign_in_with_apple: ^5.0.0
 
 
 dev_dependencies:
