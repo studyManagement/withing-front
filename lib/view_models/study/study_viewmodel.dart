@@ -7,6 +7,7 @@ import '../../common/requester/network_exception.dart';
 import '../../model/board/board_model.dart';
 import '../../model/study/study_meeting_schedules_model.dart';
 import '../../model/user/user_model.dart';
+import '../../service/study/MeetingType.dart';
 
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
@@ -16,21 +17,32 @@ class StudyViewModel extends ChangeNotifier {
   var study;
   List<int> days = [];
   String regularMeeting = '';
+
+  MeetingType _meeting_type = MeetingType.NONE;
   String startTime = '';
+  List<StudyMeetingSchedulesModel> _meetingModel = [];
   int _studyId = -1;
   int _leaderId = 0;
   int _newLeaderId = 0;
   bool _isOut = false;
   bool _isSwitched = false;
   List<UserModel> _users = [];
+
   List<UserModel> get users => _users;
+
+  List<StudyMeetingSchedulesModel> get meetingModel => _meetingModel;
+
   int get leaderId => _leaderId;
+
   int get studyId => _studyId;
+
   int get newLeaderId => _newLeaderId;
+
   bool get isOut => _isOut;
+
   bool get isSwitched => _isSwitched;
 
-
+  MeetingType get meeting_type => _meeting_type;
 
   bool hasPost = false;
   int numOfPosts = 0;
@@ -45,6 +57,7 @@ class StudyViewModel extends ChangeNotifier {
         _users = study.users;
         _studyId = study.id;
         _leaderId = study.leaderId;
+        _meetingModel = study.meetingSchedules;
         getRegularMeetingString(study.meetingSchedules);
         await fetchBoards(studyId, true);
         notifyListeners();
@@ -57,7 +70,6 @@ class StudyViewModel extends ChangeNotifier {
       }
     }
   }
-
 
   Future<void> fetchBoards(int studyId, bool isNotice) async {
     if (posts.isEmpty) {
@@ -73,8 +85,9 @@ class StudyViewModel extends ChangeNotifier {
           hasPost = false;
           numOfPosts = 0;
         }
-        if(e.code == 400){ // 접근 권한 x
 
+        if (e.code == 400) {
+          // 접근 권한 x
         }
       }
       notifyListeners();
@@ -96,58 +109,50 @@ class StudyViewModel extends ChangeNotifier {
       final studyModel = await _service.switchLeader(studyId, userId);
       _newLeaderId = studyModel.leaderId;
       _isSwitched = true;
-    } on ApiException catch(e){ // 변경 실패
+    } on ApiException catch (e) {
+      // 변경 실패
+
       _isSwitched = false;
     }
     notifyListeners();
   }
 
-  Future<void> forceToExitMember(int studyId,List<int> users) async{
-    try{
+  Future<void> forceToExitMember(int studyId, List<int> users) async {
+    try {
       var response = await _service.forceToExitMember(studyId, users);
       print(response.data);
       _isOut = true;
-    }on ApiException catch(e){
+    } on ApiException catch (e) {
       rethrow;
-    }on NetworkException catch (e){
-    }
+    } on NetworkException catch (e) {}
     notifyListeners();
   }
-
-
-
-
 
   void getRegularMeetingString(
       List<StudyMeetingSchedulesModel> meetingSchedules) {
     int cnt = 0;
     List<int> days = [];
-    for(int i = 0;i<meetingSchedules.length;i++) {
+    for (int i = 0; i < meetingSchedules.length; i++) {
       if (!days.contains(meetingSchedules[i].day)) {
         days.add(meetingSchedules[i].day);
       }
     }
-    if(days.isEmpty){
+    if (days.isEmpty) {
       regularMeeting = '미등록';
-    }
-    else if(days.length==7){
+    } else if (days.length == 7) {
       regularMeeting = '매일 ${meetingSchedules[0].startTime}';
     } else {
       regularMeeting = '매주 ';
-        for (int i = 0; i < days.length; i++) {
-          if (cnt < days.length-1) {
-            regularMeeting =
-            '$regularMeeting${_weekString[days[i]]}, ';
-            cnt++;
-          } else {
-            regularMeeting =
-            '$regularMeeting${_weekString[days[i]]}';
-          }
+      for (int i = 0; i < days.length; i++) {
+        if (cnt < days.length - 1) {
+          regularMeeting = '$regularMeeting${_weekString[days[i]]}, ';
+          cnt++;
+        } else {
+          regularMeeting = '$regularMeeting${_weekString[days[i]]}';
+        }
       }
     }
   }
-
-
 
   void navigateToStudyExceptionScreen(BuildContext context) {
     Navigator.push(
@@ -155,7 +160,6 @@ class StudyViewModel extends ChangeNotifier {
       MaterialPageRoute(builder: (context) => const StudyExceptionScreen()),
     );
   }
-
 
   @override
   void dispose() {

@@ -23,7 +23,10 @@ AppBar studyMainAppBar(BuildContext context, bool isLeader, int studyId) {
             width: 32,
             height: 32,
           ),
-          onPressed: () => {context.push('/studies/$studyId/manage')},
+          onPressed: () => {
+            context.push('/studies/$studyId/manage')
+
+          },
         ),
       ),
     ],
