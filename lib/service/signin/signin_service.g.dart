@@ -19,7 +19,10 @@ class _SigninApi implements SigninApi {
   String? baseUrl;
 
   @override
-  Future<SigninModel> signin(String accessToken) async {
+  Future<SigninModel> signin(
+    String accessToken,
+    String provider,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
@@ -36,7 +39,7 @@ class _SigninApi implements SigninApi {
     )
             .compose(
               _dio.options,
-              '/login/kakao',
+              '/login/${provider}',
               queryParameters: queryParameters,
               data: _data,
             )

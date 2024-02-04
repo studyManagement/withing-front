@@ -26,9 +26,9 @@ class KakaoAuthentication implements Authenticator {
   }
 
   @override
-  Future<int> fetchUUID() async {
+  Future<String> fetchUUID() async {
     User user = await UserApi.instance.me();
-    return user.id;
+    return user.id.toString();
   }
 
   @override
