@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
+import '../screen/study_member_screen.dart';
 
 class StudyDetails extends StatelessWidget {
   const StudyDetails({super.key});
@@ -35,7 +36,14 @@ class StudyDetails extends StatelessWidget {
                 width: 16,
                 height: 16,
               ),
-              onTap: () => {context.push('/studies/${vm.study.id}/member')},
+              onTap: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StudyMemberScreen(users: vm.users,leaderId: vm.leaderId,),
+                  ),
+                )
+              },
             ),
           ],
         ),
@@ -62,5 +70,4 @@ class StudyDetails extends StatelessWidget {
       ],
     );
   }
-
 }

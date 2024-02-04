@@ -10,6 +10,7 @@ import 'package:modi/views/study/widgets/study_manage_bottomsheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../../di/injection.dart';
+import '../../../model/user/user_model.dart';
 
 class StudyManageScreen extends StatelessWidget {
   final int studyId;
@@ -34,7 +35,8 @@ class StudyManageScreen extends StatelessWidget {
     ];
     return ChangeNotifierProvider(
       create: (_) => StudyViewModel(getIt<StudyService>()),
-      child: Consumer<StudyViewModel>(builder: (context, data, child) {
+      child: Consumer<StudyViewModel>(builder: (context, vm, child) {
+        vm.fetchStudyInfo(context, studyId);
         return DefaultLayout(
             title: '스터디 관리',
             child: ListView(
@@ -51,7 +53,7 @@ class StudyManageScreen extends StatelessWidget {
                       onTap: () {
                         WithingModal.openDialog(context, "스터디를 삭제하시겠어요?",
                             "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
-                          data.deleteStudy(studyId);
+                          vm.deleteStudy(studyId);
                           context.pop();
                           BottomToast(context: context, text: "스터디가 삭제되었어요.")
                               .show();
@@ -90,6 +92,8 @@ class StudyManageListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.read<StudyViewModel>();
+    List<UserModel> _users = List.from(vm.users);
+    _users.removeWhere((user) => user.id == vm.leaderId);
 
     return GestureDetector(
         onTap: () {
@@ -102,12 +106,19 @@ class StudyManageListItem extends StatelessWidget {
                 isScrollControlled: true,
                 context: context,
                 builder: (context) {
-                  print("!");
-                  return const StudyManageBottomSheet(
-                    title: "스터디장 변경",
-                    content: "스터디장을 위임받을 멤버를 선택해주세요.",
-                    buttontext: "스터디장 위임하기",
-                    isOut: false,
+                  return ChangeNotifierProvider(
+                    create: (_) => StudyViewModel(getIt<StudyService>()),
+                    child: Consumer<StudyViewModel>(
+                        builder: (context, provider, child) {
+                      return StudyManageBottomSheet(
+                        studyId: vm.studyId,
+                        title: "스터디장 변경",
+                        content: "스터디장을 위임받을 멤버를 선택해주세요.",
+                        buttontext: "스터디장 위임하기",
+                        isOut: false,
+                        users: _users,
+                      );
+                    }),
                   );
                 });
           } else if (index == 3) {
@@ -115,12 +126,19 @@ class StudyManageListItem extends StatelessWidget {
                 isScrollControlled: true,
                 context: context,
                 builder: (context) {
-                  return const StudyManageBottomSheet(
-                    title: "멤버 강제 퇴장",
-                    content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
-                    buttontext: "강제 퇴장",
-                    isOut: true,
-                  );
+                  return ChangeNotifierProvider(
+                      create: (_) => StudyViewModel(getIt<StudyService>()),
+                      child: Consumer<StudyViewModel>(
+                          builder: (context, provider, child) {
+                        return StudyManageBottomSheet(
+                          studyId: vm.studyId,
+                          title: "멤버 강제 퇴장",
+                          content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
+                          buttontext: "강제 퇴장",
+                          isOut: true,
+                          users: _users,
+                        );
+                      }));
                 });
           } else if (index == 4) {
             WithingModal.openDialog(context, "스터디를 종료하시겠어요?",
