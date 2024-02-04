@@ -6,11 +6,10 @@ import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/study/widgets/study_main_appbar.dart';
 import 'package:modi/views/study/widgets/study_main_buttons.dart';
 import 'package:provider/provider.dart';
-
-import '../../di/injection.dart';
 import 'widgets/study_details.dart';
-import 'widgets/study_header.dart';
 import 'widgets/study_notices.dart';
+import '../../di/injection.dart';
+import 'widgets/study_header.dart';
 
 class StudyScreen extends StatelessWidget {
   final int studyId;
@@ -28,9 +27,8 @@ class StudyScreen extends StatelessWidget {
           data.fetchStudyInfo(context, studyId);
           if (data.study == null) return Container();
           return Scaffold(
-
-            appBar:studyMainAppBar(context, data.study.leaderId == 1, studyId),
-
+            appBar:
+                studyMainAppBar(context, data.study.leaderId == 24, studyId),
             body: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

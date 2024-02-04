@@ -1,28 +1,41 @@
 import 'package:flutter/material.dart';
-
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
-import 'package:modi/views/study/widgets/study_member_list.dart';
+import 'package:modi/views/study/widgets/study_member_list_item.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../../../common/components/bottom_toast.dart';
+import '../../../model/user/user_model.dart';
+import '../../../view_models/study/study_viewmodel.dart';
 
-
-class StudyManageBottomSheet extends StatelessWidget {
+class StudyManageBottomSheet extends StatefulWidget {
+  final int studyId;
   final String title;
   final String content;
   final String buttontext;
   final bool isOut;
+  final List<UserModel> users;
 
   const StudyManageBottomSheet(
       {super.key,
+      required this.studyId,
       required this.title,
       required this.content,
       required this.buttontext,
-      required this.isOut});
+      required this.isOut,
+      required this.users});
+
+  @override
+  State<StudyManageBottomSheet> createState() => _StudyManageBottomSheetState();
+}
+
+class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
+  List<int> selectedUsers = [];
 
   @override
   Widget build(BuildContext context) {
-    List<int> selected = [];
-    bool isSelected = false, isLeader;
-
+    int maxCount = (widget.isOut) ? 14 : 1;
+    final StudyViewModel vm = context.read<StudyViewModel>();
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.87,
@@ -51,11 +64,11 @@ class StudyManageBottomSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                title,
+                widget.title,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 8),
-              Text(content,
+              Text(widget.content,
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
@@ -75,16 +88,26 @@ class StudyManageBottomSheet extends StatelessWidget {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
-                      if(isOut==true){ // 강제 퇴장 , 여러 명 가능
-                      }
-                      else{ // 스터디장 변경
-                        isSelected = (isSelected) ? false: true;
-                      }
+                    onTap: () {
+                      final selectedId = widget.users[index].id;
+                      setState(() {
+                        if (selectedUsers.contains(selectedId)) {
+                          selectedUsers.remove(selectedId);
+                        } else {
+                          if (selectedUsers.length >= maxCount) {
+                            selectedUsers.clear();
+                          }
+                          selectedUsers.add(selectedId);
+                        }
+                      });
                     },
-                    child: StudyMemberList(
-                      users: [],
-                      leaderId: 1,// 추후 작업
+                    child: StudyMemberListItem(
+                      nickname: widget.users[index].nickname,
+                      imageUrl: widget.users[index].profileImage,
+                      id: widget.users[index].id,
+                      isLeader: false,
+                      isSelected:
+                          selectedUsers.contains(widget.users[index].id),
                     ),
                   );
                 },
@@ -96,11 +119,32 @@ class StudyManageBottomSheet extends StatelessWidget {
                     color: AppColors.gray100,
                   );
                 },
-                itemCount: 10),
+                itemCount: widget.users.length),
           ),
         ),
         const SizedBox(height: 12),
-        StudyBottomButton(onTap: () {}, text: buttontext)
+        StudyBottomButton(
+            onTap: () {
+              if (selectedUsers.isNotEmpty &&
+                  selectedUsers.length <= maxCount) {
+                if (widget.isOut) {
+                  // 강제 퇴장
+                  vm.forceToExitMember(widget.studyId, selectedUsers);
+                  if (vm.isOut) {
+                    context.pop();
+                    BottomToast(context: context, text: "선택한 멤버를 퇴장시켰어요.")
+                        .show();
+                  }
+                } else {
+                  vm.switchLeader(widget.studyId, selectedUsers[0]);
+                  if (vm.isSwitched) {
+                    context.pop();
+                    BottomToast(context: context, text: "스터디장이 변경되었어요.").show();
+                  }
+                }
+              }
+            },
+            text: widget.buttontext)
       ]),
     );
   }

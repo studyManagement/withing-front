@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/views/study/widgets/study_member_list_item.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/user/user_model.dart';
 
@@ -12,9 +13,11 @@ class StudyMemberList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
         itemBuilder: (context, index) {
-          return _StudyMemberListItem(
+          return StudyMemberListItem(
             nickname: users[index].nickname,
             imageUrl: users[index].profileImage,
+            id: users[index].id,
+            isSelected: false,
             isLeader: users[index].id == leaderId,
           );
         },
@@ -30,54 +33,3 @@ class StudyMemberList extends StatelessWidget {
   }
 }
 
-class _StudyMemberListItem extends StatelessWidget {
-  final String nickname;
-  final String? imageUrl;
-  final bool isLeader;
-
-  const _StudyMemberListItem({
-    required this.nickname,
-    required this.imageUrl,
-    required this.isLeader,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    Container grayContainer =
-    Container(width: 38, height: 38, color: AppColors.gray150);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Row(
-        children: [
-          ClipOval(
-            child:  (imageUrl != null)
-                ? Image.network(
-              imageUrl!,
-              width: 38,
-              height: 38,
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return grayContainer;
-              },
-            )
-                : grayContainer,
-          ),
-          const SizedBox(width: 12),
-          Text(
-            nickname,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          const SizedBox(width: 12),
-          Offstage(
-              offstage: (isLeader == true) ? false : true,
-              child: Image.asset(
-                'asset/leader_20.png',
-                width: 20,
-                height: 20,
-              ))
-        ],
-      ),
-    );
-  }
-}

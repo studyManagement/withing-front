@@ -20,11 +20,17 @@ class StudyViewModel extends ChangeNotifier {
   int _studyId = -1;
   int _leaderId = 0;
   int _newLeaderId = 0;
+  bool _isOut = false;
+  bool _isSwitched = false;
   List<UserModel> _users = [];
   List<UserModel> get users => _users;
   int get leaderId => _leaderId;
   int get studyId => _studyId;
   int get newLeaderId => _newLeaderId;
+  bool get isOut => _isOut;
+  bool get isSwitched => _isSwitched;
+
+
 
   bool hasPost = false;
   int numOfPosts = 0;
@@ -67,6 +73,9 @@ class StudyViewModel extends ChangeNotifier {
           hasPost = false;
           numOfPosts = 0;
         }
+        if(e.code == 400){ // 접근 권한 x
+
+        }
       }
       notifyListeners();
     }
@@ -83,10 +92,31 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   Future<void> switchLeader(int studyId, int userId) async {
-    final studyModel = await _service.switchLeader(studyId, userId);
-    _newLeaderId = studyModel.leaderId;
+    try {
+      final studyModel = await _service.switchLeader(studyId, userId);
+      _newLeaderId = studyModel.leaderId;
+      _isSwitched = true;
+    } on ApiException catch(e){ // 변경 실패
+      _isSwitched = false;
+    }
     notifyListeners();
   }
+
+  Future<void> forceToExitMember(int studyId,List<int> users) async{
+    try{
+      var response = await _service.forceToExitMember(studyId, users);
+      print(response.data);
+      _isOut = true;
+    }on ApiException catch(e){
+      rethrow;
+    }on NetworkException catch (e){
+    }
+    notifyListeners();
+  }
+
+
+
+
 
   void getRegularMeetingString(
       List<StudyMeetingSchedulesModel> meetingSchedules) {

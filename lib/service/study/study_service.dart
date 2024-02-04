@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart' hide Headers;
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
@@ -10,8 +9,8 @@ import 'package:modi/model/study/study_exception.dart';
 import 'package:modi/model/study/study_list_model.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/study/StudyType.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:retrofit/http.dart';
-
 import '../../model/board/board_model.dart';
 
 part 'study_service.g.dart';
@@ -41,13 +40,16 @@ abstract class StudyApi {
   @PATCH('/studies/{id}/finish')
   Future<StudyModel> finishStudy(@Path('id') int id);
 
-  @PATCH('/studies/{id}/members/{user_id}')
-  Future<StudyModel> switchLeader(
-      @Path('id') int id, @Path('user_id') int userId);
-
   @DELETE('/studies/{id}')
   Future<StudyModel> deleteStudy(@Path('id') int id);
 
+  @PATCH('/studies/{id}/members/{userId}')
+  Future<StudyModel> switchLeader(
+      @Path('id') int id, @Path('userId') int userId);
+
+  @DELETE('/studies/{id}/admin/members')
+  Future<dynamic> forceToExitMember(
+      @Path('id') int id, @Body() Map<String, dynamic> data);
 }
 
 class StudyService {
@@ -105,9 +107,13 @@ class StudyService {
           await _studyApi.fetchBoards(studyId, isNotice);
       return notices;
     } on ApiException catch (e) {
-      // if (e.code == 404) {
-      //   //throw List.empty();
-      // }
+      if (e.code == 404) {
+        // 공지 없음
+        throw List.empty();
+      }
+      if (e.code == 400) {
+        // 참여 중인 스터디가 아님
+      }
       rethrow;
     } on NetworkException catch (e) {
       rethrow;
@@ -160,19 +166,34 @@ class StudyService {
   Future<StudyModel> switchLeader(int studyId, int userId) async {
     try {
       final StudyModel study = await _studyApi.switchLeader(studyId, userId);
-      print('Switched leaderId: ${study.leaderId}');
+      print('[API]:Switched leaderId ${study.leaderId}');
       return study;
     } on ApiException catch (e) {
-      if (e.code == 401) {
+      if (e.code == 401 || e.code == 400 || e.code == 404) {
         // accessToken error
-        print(e);
-        rethrow;
+        debugPrint('[API]:${e.cause}');
       }
       rethrow;
     } on NetworkException catch (e) {
-      print(e.message);
+      debugPrint('[API]:${e.cause}');
       rethrow;
     }
   }
 
+  Future<dynamic> forceToExitMember(int studyId, List<int> users) async {
+    try {
+      var response =
+          await _studyApi.forceToExitMember(studyId, {"users": users});
+      return response;
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        throw StudyException(e.cause);
+      } else if (e.code == 401) {
+        debugPrint('[API]: ${e.cause}');
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
 }
