@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common/theme/app/app_colors.dart';
 import '../../../di/injection.dart';
 import '../../../service/study/study_service.dart';
 
-class StudyEditScreen extends StatelessWidget {
+class StudyUpdateScreen extends StatelessWidget {
   final int studyId;
 
-  const StudyEditScreen({super.key, required this.studyId});
+  const StudyUpdateScreen({super.key, required this.studyId});
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +29,19 @@ class StudyEditScreen extends StatelessWidget {
                       child: Container(
                         width: 105,
                         height: 105,
-                        decoration: (data.study.studyImage != null)
-                            ? ShapeDecoration(
-                                shape: const OvalBorder(),
-                                image: DecorationImage(
-                                  image: FileImage(data.study.studyImage!),
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : const ShapeDecoration(
-                                shape: OvalBorder(),
-                                color: AppColors.gray150,
-                              ),
+                          // decoration: (data.study.studyImage != null) ?
+                          // ShapeDecoration(
+                          //   shape: const OvalBorder(),
+                          //   image: DecorationImage(
+                          //     image: FileImage(data.study.studyImage!),
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // )
+                          //     :
+                         decoration: const ShapeDecoration(
+                            shape: OvalBorder(),
+                            color: AppColors.gray150,
+                          ),
                         alignment: Alignment.bottomRight,
                         child: GestureDetector(
                           onTap: () async {
@@ -56,6 +56,7 @@ class StudyEditScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
                 ],
               ),
             );

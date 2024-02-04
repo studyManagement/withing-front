@@ -188,6 +188,33 @@ class _StudyApi implements StudyApi {
   }
 
   @override
+  Future<StudyModel> deleteStudy(int id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = StudyModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<StudyModel> switchLeader(
     int id,
     int userId,
@@ -218,29 +245,32 @@ class _StudyApi implements StudyApi {
   }
 
   @override
-  Future<StudyModel> deleteStudy(int id) async {
+  Future<dynamic> forceToExitMember(
+    int id,
+    Map<String, dynamic> data,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/studies/${id}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = StudyModel.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          '/studies/${id}/admin/members',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
     return value;
   }
 
