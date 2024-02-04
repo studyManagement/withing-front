@@ -58,6 +58,7 @@ flutter:
   uses-material-design: true
   assets:
     - asset/
+    - asset/login/
     - asset/search_category/
     - asset/study_manage/
     - asset/fonts/
