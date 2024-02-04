@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/service/study/StudyType.dart';
+import 'package:modi/view_models/study/model/study_list_view.dart';
+import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/service/study/StudyType.dart';
-import 'package:withing/view_models/study/model/study_list_view.dart';
-import 'package:withing/view_models/study/study_list_viewmodel.dart';
 
 class MyStudyScreen extends StatelessWidget {
   String studyType;

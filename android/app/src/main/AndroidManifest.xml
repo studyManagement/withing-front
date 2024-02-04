@@ -4,7 +4,7 @@
         android:requestLegacyExternalStorage="true"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
-        android:label="withing">
+        android:label="modi">
         <activity
             android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
             android:exported="true">
@@ -16,7 +16,7 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="kakao41993d02bf31511ab32e2f8a0ac29d25" />
+                    android:scheme="kakaoecb175d3effa9f088359fca3acb0fead" />
             </intent-filter>
         </activity>
         <activity

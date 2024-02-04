@@ -1,6 +1,6 @@
-import 'package:withing/model/study/study_model.dart';
-import 'package:withing/model/user/user_model.dart';
-import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
+import 'package:modi/model/study/study_model.dart';
+import 'package:modi/model/user/user_model.dart';
+import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
 class StudyView {
   int id;

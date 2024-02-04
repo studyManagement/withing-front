@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:modi/service/study/StudyType.dart';
+import 'package:modi/view_models/study/study_list_viewmodel.dart';
+import 'package:modi/views/home/components/home_study_notificator.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/service/study/StudyType.dart';
-import 'package:withing/view_models/study/study_list_viewmodel.dart';
-import 'package:withing/views/home/components/home_study_notificator.dart';
 
 import '../../common/layout/default_layout.dart';
 import './main_calendar.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/view_models/study/model/study_list_view.dart';
+import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/view_models/study/model/study_list_view.dart';
-import 'package:withing/view_models/study/study_list_viewmodel.dart';
 
 class MainCalendar extends StatelessWidget {
   final OnDaySelected onDaySelected;

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-
+import 'package:modi/common/theme/app/app_colors.dart';
 
 class StudyCategoriesWidget extends StatelessWidget {
   final List<String> categories;
@@ -13,7 +11,6 @@ class StudyCategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     List<Widget> widgets = [];
 
     for (var category in categories) {
@@ -27,7 +24,10 @@ class StudyCategoriesWidget extends StatelessWidget {
           ),
           child: Text(
             category,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.blue500),
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(color: AppColors.blue500),
           ),
         ),
       );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:modi/di/injection.dart';
+import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/study_list_viewmodel.dart';
+import 'package:modi/views/my/my_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/di/injection.dart';
-import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/study/study_list_viewmodel.dart';
-import 'package:withing/views/my/my_screen.dart';
 
 import '../views/home/home_screen.dart';
 import '../views/search/screen/category_search_screen.dart';

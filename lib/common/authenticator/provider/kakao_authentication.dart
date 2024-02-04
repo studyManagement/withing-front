@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:withing/common/authenticator/authentication_exception.dart';
-import 'package:withing/common/authenticator/authenticator.dart';
+import 'package:modi/common/authenticator/authentication_exception.dart';
+import 'package:modi/common/authenticator/authenticator.dart';
 
 class KakaoAuthentication implements Authenticator {
   @override

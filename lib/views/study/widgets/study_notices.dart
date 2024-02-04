@@ -1,11 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-import 'package:withing/view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
-
 import '../../../model/board/board_model.dart';
 import '../../board/widgets/board_item.dart';
 
@@ -15,8 +14,8 @@ class Notice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
-     List<BoardModel> notices = vm.posts;
-     bool hasNotice = vm.hasPost;
+    List<BoardModel> notices = vm.posts;
+    bool hasNotice = vm.hasPost;
     return Expanded(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +49,10 @@ class Notice extends StatelessWidget {
           ),
         ),
         (hasNotice)
-            ? _NoticeCarousel(notices: notices, studyId: vm.study.id,)
+            ? _NoticeCarousel(
+                notices: notices,
+                studyId: vm.study.id,
+              )
             : Center(
                 child: Column(children: [
                   const SizedBox(height: 70),
@@ -77,8 +79,7 @@ class Notice extends StatelessWidget {
 class _NoticeCarousel extends StatefulWidget {
   final int studyId;
   final List<BoardModel> notices;
-  const _NoticeCarousel({required this.studyId,required this.notices});
-
+  const _NoticeCarousel({required this.studyId, required this.notices});
 
   @override
   State<_NoticeCarousel> createState() => _NoticeCarouselState();
@@ -114,7 +115,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
               startIndex,
               endIndex > numOfNotice ? numOfNotice : endIndex,
             );
-            return _buildCarouselItem(widget.studyId,sublist);
+            return _buildCarouselItem(widget.studyId, sublist);
           },
           // 한 슬라이드에 공지글 최대 3개까지 표시.
         ),

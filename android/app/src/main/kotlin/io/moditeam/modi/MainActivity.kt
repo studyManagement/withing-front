@@ -1,4 +1,4 @@
-package kr.withing
+package io.moditeam.modi
 
 import io.flutter.embedding.android.FlutterActivity
 

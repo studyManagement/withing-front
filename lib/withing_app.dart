@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/root_tab.dart';
+import 'package:modi/common/theme/withing_theme.dart';
+import 'package:modi/di/injection.dart';
+import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/study_list_viewmodel.dart';
+import 'package:modi/views/board/screen/board_info_screen.dart';
+import 'package:modi/views/board/screen/board_main_screen.dart';
+import 'package:modi/views/board/screen/create_post_screen.dart';
+import 'package:modi/views/create/create_study_screen.dart';
+import 'package:modi/views/login/login_screen.dart';
+import 'package:modi/views/my/my_profile_screen.dart';
+import 'package:modi/views/my/my_study_screen.dart';
+import 'package:modi/views/search/screen/keyword_search_screen.dart';
+import 'package:modi/views/study/study_screen_resources.dart';
 import 'package:provider/provider.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/root_tab.dart';
-import 'package:withing/common/theme/withing_theme.dart';
-import 'package:withing/di/injection.dart';
-import 'package:withing/service/study/study_service.dart';
-import 'package:withing/view_models/study/study_list_viewmodel.dart';
-import 'package:withing/views/board/screen/board_info_screen.dart';
-import 'package:withing/views/board/screen/board_main_screen.dart';
-import 'package:withing/views/board/screen/create_post_screen.dart';
-import 'package:withing/views/create/create_study_screen.dart';
-import 'package:withing/views/login/login_screen.dart';
-import 'package:withing/views/my/my_profile_screen.dart';
-import 'package:withing/views/my/my_study_screen.dart';
-import 'package:withing/views/search/screen/keyword_search_screen.dart';
-import 'package:withing/views/study/study_screen_resources.dart';
 
 import '../views/signup/signup_screen.dart';
 

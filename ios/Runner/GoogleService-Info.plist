@@ -3,28 +3,28 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDDU1uRGD_iiw59MuteW2AfmTWsAILUt9U</string>
+	<string>AIzaSyCdtdwZZ32FX5Ck91ZfFQDUI2hApI-5mkA</string>
 	<key>GCM_SENDER_ID</key>
-	<string>903596645777</string>
+	<string>845886768372</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>kr.withing</string>
+	<string>io.moditeam.modi</string>
 	<key>PROJECT_ID</key>
-	<string>withing-fc90c</string>
+	<string>modi-caa49</string>
 	<key>STORAGE_BUCKET</key>
-	<string>withing-fc90c.appspot.com</string>
+	<string>modi-caa49.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:903596645777:ios:4f895c90c6a32eb2138e30</string>
+	<string>1:845886768372:ios:8e7d0aaaf226a8a6604aa1</string>
 </dict>
 </plist>

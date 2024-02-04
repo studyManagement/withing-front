@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/layout/default_layout.dart';
-import 'package:withing/common/theme/app/app_colors.dart';
-import 'package:withing/common/theme/app/app_fonts.dart';
-import 'package:withing/views/signup/signup_profile.dart';
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/common/theme/app/app_fonts.dart';
+import 'package:modi/views/signup/signup_profile.dart';
 
 class MyScreen extends StatelessWidget {
   const MyScreen({super.key});

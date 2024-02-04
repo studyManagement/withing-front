@@ -1,5 +1,5 @@
-import 'package:withing/model/study/study_list_model.dart';
-import 'package:withing/view_models/study/model/study_meeting_schedule.dart';
+import 'package:modi/model/study/study_list_model.dart';
+import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
 class StudyListView {
   int id;

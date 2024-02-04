@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:withing/common/authenticator/authentication.dart';
-import 'package:withing/common/environment/environment.dart';
-import 'package:withing/constants/auth.dart';
-import 'package:withing/withing_app.dart';
+import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/environment/environment.dart';
+import 'package:modi/constants/auth.dart';
+import 'package:modi/withing_app.dart';
 
 import 'di/injection.dart';
 

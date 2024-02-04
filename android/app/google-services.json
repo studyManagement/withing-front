@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "903596645777",
-    "project_id": "withing-fc90c",
-    "storage_bucket": "withing-fc90c.appspot.com"
+    "project_number": "845886768372",
+    "project_id": "modi-caa49",
+    "storage_bucket": "modi-caa49.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:903596645777:android:20065d61fdc2a147138e30",
+        "mobilesdk_app_id": "1:845886768372:android:6e1b6daf8ef85fa2604aa1",
         "android_client_info": {
-          "package_name": "kr.withing"
+          "package_name": "io.moditeam.modi"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDxwNLehkX56glqmwYWUssbFmwMBeA-tmk"
+          "current_key": "AIzaSyAR94mSpBPH-Fpr4mcYMy77e0MuM7luj7o"
         }
       ],
       "services": {

@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/material.dart';
+import 'package:modi/model/search/searched_study_info_model.dart';
 import 'package:retrofit/http.dart';
-import 'package:withing/model/search/searched_study_info_model.dart';
-import '../../common/requester/network_exception.dart';
 
 part 'category_search_service.g.dart';
 
