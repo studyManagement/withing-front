@@ -1,3 +1,4 @@
+import 'package:bottom_picker/resources/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,7 +30,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     '글 작성을 취소하시겠어요?',
                     '페이지를 벗어나면\n입력된 내용이 모두 사라져요.',
                     true,
-                    () => context.go('/studies/${widget.studyId}/board'),
+                    ()  {
+                      context.pop();
+                      context.pop();
+                    },
                     null)
               },
           TextButton(
