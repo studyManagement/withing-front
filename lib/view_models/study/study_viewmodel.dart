@@ -2,47 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/study/study_exception.dart';
 import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/views/study/study_exception_screen.dart';
 import '../../common/requester/network_exception.dart';
 import '../../model/board/board_model.dart';
-import '../../model/study/study_meeting_schedules_model.dart';
 import '../../model/user/user_model.dart';
 import '../../service/study/MeetingType.dart';
+import 'model/study_view.dart';
 
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
+
   final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
   var study;
-  List<int> days = [];
-  String regularMeeting = '';
+  List<UserModel> _users = [];
+  List<UserModel> get users => _users;
 
-  MeetingType _meeting_type = MeetingType.NONE;
+  String regularMeeting = '';
   String startTime = '';
-  List<StudyMeetingSchedulesModel> _meetingModel = [];
-  int _studyId = -1;
-  int _leaderId = 0;
+
   int _newLeaderId = 0;
   bool _isOut = false;
   bool _isSwitched = false;
-  List<UserModel> _users = [];
-
-  List<UserModel> get users => _users;
-
-  List<StudyMeetingSchedulesModel> get meetingModel => _meetingModel;
-
-  int get leaderId => _leaderId;
-
-  int get studyId => _studyId;
 
   int get newLeaderId => _newLeaderId;
 
   bool get isOut => _isOut;
 
   bool get isSwitched => _isSwitched;
-
-  MeetingType get meeting_type => _meeting_type;
 
   bool hasPost = false;
   int numOfPosts = 0;
@@ -53,13 +42,9 @@ class StudyViewModel extends ChangeNotifier {
   Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
     if (study == null) {
       try {
-        study = await _service.fetchStudyInfo(studyId);
+        study = StudyView.from(await _service.fetchStudyInfo(studyId));
         _users = study.users;
-        _studyId = study.id;
-        _leaderId = study.leaderId;
-        _meetingModel = study.meetingSchedules;
         getRegularMeetingString(study.meetingSchedules);
-        await fetchBoards(studyId, true);
         notifyListeners();
       } on StudyException catch (e) {
         // 스터디가 없는 경우
@@ -78,6 +63,7 @@ class StudyViewModel extends ChangeNotifier {
         if (posts.isNotEmpty) {
           hasPost = true;
           numOfPosts = posts.length;
+          notifyListeners();
         }
       } on ApiException catch (e) {
         if (e.code == 404) {
@@ -90,7 +76,6 @@ class StudyViewModel extends ChangeNotifier {
           // 접근 권한 x
         }
       }
-      notifyListeners();
     }
   }
 
@@ -124,12 +109,13 @@ class StudyViewModel extends ChangeNotifier {
       _isOut = true;
     } on ApiException catch (e) {
       rethrow;
-    } on NetworkException catch (e) {}
+    } on NetworkException catch (e) {
+      rethrow;
+    }
     notifyListeners();
   }
 
-  void getRegularMeetingString(
-      List<StudyMeetingSchedulesModel> meetingSchedules) {
+  void getRegularMeetingString(List<StudyMeetingSchedule> meetingSchedules) {
     int cnt = 0;
     List<int> days = [];
     for (int i = 0; i < meetingSchedules.length; i++) {
