@@ -27,7 +27,7 @@ class MyStudyInfoScreen extends StatelessWidget {
         data.fetchStudyInfo(context, studyId);
         if (data.study == null) return SizedBox();
         return Scaffold(
-          appBar: studyMainAppBar(context, data.study.leaderId == 24, studyId),
+          appBar: StudyMainAppBar(studyId: studyId,leaderId: data.study.leaderId),
           body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
