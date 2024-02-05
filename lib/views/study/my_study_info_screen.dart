@@ -25,7 +25,7 @@ class MyStudyInfoScreen extends StatelessWidget {
       create: (_) => StudyViewModel(getIt<StudyService>()),
       child: Consumer<StudyViewModel>(builder: (context, data, child) {
         data.fetchStudyInfo(context, studyId);
-
+        if (data.study == null) return SizedBox();
         return Scaffold(
           appBar: studyMainAppBar(context, data.study.leaderId == 24, studyId),
           body: SafeArea(
