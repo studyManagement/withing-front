@@ -76,7 +76,7 @@ class WithingApp extends StatelessWidget {
           ),
           GoRoute(
               path: '/studies/:studyId',
-              builder: (context, state) => StudyScreen(
+              builder: (context, state) => MyStudyInfoScreen(
                   studyId: int.parse(state.pathParameters['studyId']!))),
           // GoRoute(
           //   path: '/studies/:studyId/member',

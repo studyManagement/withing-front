@@ -36,9 +36,9 @@ class StudyManageScreen extends StatelessWidget {
     ];
     return ChangeNotifierProvider<StudyViewModel>(
       create: (_) => StudyViewModel(getIt<StudyService>()),
-      child:
-          Consumer<StudyViewModel>(builder: (context, studyViewModel, child) {
+      child: Consumer<StudyViewModel>(builder: (context, studyViewModel, child) {
         studyViewModel.fetchStudyInfo(context, studyId);
+       // if(studyViewModel.study == null) return const SizedBox();
         return DefaultLayout(
             title: '스터디 관리',
             child: ListView(children: [
@@ -93,7 +93,7 @@ class StudyManageListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.read<StudyViewModel>();
     List<UserModel> _users = List.from(vm.users);
-    _users.removeWhere((user) => user.id == vm.leaderId);
+    _users.removeWhere((user) => user.id == vm.study.leaderId);
 
     return GestureDetector(
         onTap: () {
@@ -118,7 +118,7 @@ class StudyManageListItem extends StatelessWidget {
                     child: Consumer<StudyViewModel>(
                         builder: (context, provider, child) {
                       return StudyManageBottomSheet(
-                        studyId: vm.studyId,
+                        studyId: vm.study.id,
                         title: "스터디장 변경",
                         content: "스터디장을 위임받을 멤버를 선택해주세요.",
                         buttontext: "스터디장 위임하기",
@@ -138,7 +138,7 @@ class StudyManageListItem extends StatelessWidget {
                       child: Consumer<StudyViewModel>(
                           builder: (context, provider, child) {
                         return StudyManageBottomSheet(
-                          studyId: vm.studyId,
+                          studyId: vm.study.id,
                           title: "멤버 강제 퇴장",
                           content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
                           buttontext: "강제 퇴장",

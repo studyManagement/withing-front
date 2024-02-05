@@ -4,7 +4,7 @@ import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
-import 'package:modi/views/study/my_study_screen.dart';
+import 'package:modi/views/study/my_study_info_screen.dart';
 
 final router = GoRouter(
   routes: [
@@ -23,11 +23,6 @@ final router = GoRouter(
     GoRoute(
       path: '/studies/new',
       builder: (context, state) => const CreateStudyScreen(),
-    ),
-    GoRoute(
-      path: '/studies/:studyId',
-      builder: (context, state) =>
-          StudyScreen(studyId: int.parse(state.pathParameters['studyId']!)),
     ),
   ],
 );

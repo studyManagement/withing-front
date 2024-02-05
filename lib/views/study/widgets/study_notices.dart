@@ -9,11 +9,13 @@ import '../../../model/board/board_model.dart';
 import '../../board/widgets/board_item.dart';
 
 class Notice extends StatelessWidget {
-  const Notice({super.key});
+  final int studyId;
+  const Notice({super.key,required this.studyId});
 
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
+    vm.fetchBoards(studyId, true);
     List<BoardModel> notices = vm.posts;
     bool hasNotice = vm.hasPost;
     return Expanded(
