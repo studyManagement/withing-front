@@ -30,6 +30,9 @@ class StudyViewModel extends ChangeNotifier {
   bool _isOut = false;
   bool _isSwitched = false;
   bool _isMember = false;
+  bool _checkPwd = true;
+
+  bool get checkPwd => _checkPwd;
 
   int get newLeaderId => _newLeaderId;
 
@@ -149,6 +152,13 @@ class StudyViewModel extends ChangeNotifier {
   void checkRegistered(List<UserModel> users, int userId) { // 스터디 가입 여부 확인
     _isMember = users.any((user) => user.id == userId);
   }
+
+  void checkPassword(String password){
+    _checkPwd = password == '1234';
+    notifyListeners();
+  }
+
+
 
   void navigateToStudyExceptionScreen(BuildContext context) {
     Navigator.push(
