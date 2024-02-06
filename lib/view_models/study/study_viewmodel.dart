@@ -7,7 +7,6 @@ import 'package:modi/views/study/study_exception_screen.dart';
 import '../../common/requester/network_exception.dart';
 import '../../model/board/board_model.dart';
 import '../../model/user/user_model.dart';
-import '../../service/study/MeetingType.dart';
 import 'model/study_view.dart';
 
 class StudyViewModel extends ChangeNotifier {
@@ -16,8 +15,12 @@ class StudyViewModel extends ChangeNotifier {
 
   final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
-  var study;
+  StudyView? _study;
+
+  StudyView? get study => _study;
+
   List<UserModel> _users = [];
+
   List<UserModel> get users => _users;
 
   String regularMeeting = '';
@@ -40,19 +43,19 @@ class StudyViewModel extends ChangeNotifier {
   StudyViewModel(this._service);
 
   Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
-    if (study == null) {
-      try {
-        study = StudyView.from(await _service.fetchStudyInfo(studyId));
-        _users = study.users;
-        getRegularMeetingString(study.meetingSchedules);
-        notifyListeners();
-      } on StudyException catch (e) {
-        // 스터디가 없는 경우
-        if (!context.mounted) return;
-        navigateToStudyExceptionScreen(context);
-      } on NetworkException catch (e) {
-        print(e);
-      }
+    if(_study == null){
+    try {
+      _study = StudyView.from(await _service.fetchStudyInfo(studyId));
+      _users = _study!.users;
+      getRegularMeetingString(_study!.meetingSchedules);
+      notifyListeners();
+    } on StudyException catch (e) {
+      // 스터디가 없는 경우
+      if (!context.mounted) return;
+      navigateToStudyExceptionScreen(context);
+    } on NetworkException catch (e) {
+      print(e);
+    }
     }
   }
 
