@@ -1,86 +1,74 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/authenticator/authenticator.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/authenticator/authentication.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
 import '../../board/widgets/board_item.dart';
 
 class Notice extends StatelessWidget {
   final int studyId;
-  const Notice({super.key,required this.studyId});
+  final bool isMember;
+
+  const Notice({super.key, required this.studyId,required this.isMember});
 
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.read<StudyViewModel>();
     vm.fetchBoards(studyId, true);
     List<BoardModel> notices = vm.posts;
-    bool hasNotice = vm.hasPost;
-    return Expanded(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          child: Row(
-            children: [
-              Text(
-                '공지',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () {
-                  context.push('/studies/${vm.study!.id}/boards/notice');
-                },
-                child: Offstage(
-                  offstage: (hasNotice) ? false : true,
-                  child: Text(
-                    '전체보기',
-                    textAlign: TextAlign.right,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.gray400,
-                          fontSize: 13.0,
-                        ),
-                  ),
-                ),
-              ),
-            ],
+    return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+    Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        children: [
+          Text(
+            '공지',
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-        ),
-        (hasNotice)
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              context.push('/studies/${vm.study!.id}/boards/notice');
+            },
+            child: Offstage(
+              offstage: (vm.hasPost && !isMember) ? false : true,
+              child: Text(
+                '전체보기',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.gray400,
+                      fontSize: 13.0,
+                    ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+    (!isMember)
+        ? const StudyNoticeException(isPrivate: true)
+        : (vm.hasPost)
             ? _NoticeCarousel(
                 notices: notices,
                 studyId: vm.study!.id,
               )
-            : Center(
-                child: Column(children: [
-                  const SizedBox(height: 70),
-                  Image.asset(
-                    'asset/exclamation.png',
-                    width: 40,
-                    height: 40,
-                  ),
-                  const SizedBox(height: 12.0),
-                  Text(
-                    "등록된 공지가 없어요.",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: AppColors.gray400),
-                  ),
-                ]),
-              ),
-      ],
-    ));
+            : const StudyNoticeException(isPrivate: false)
+          ],
+        );
   }
 }
 
 class _NoticeCarousel extends StatefulWidget {
   final int studyId;
   final List<BoardModel> notices;
+
   const _NoticeCarousel({required this.studyId, required this.notices});
 
   @override
@@ -173,4 +161,47 @@ Widget slideIndicator(int currentIndex, int numOfItem) {
       ],
     ),
   );
+}
+
+class StudyNoticeException extends StatelessWidget {
+  final bool isPrivate;
+
+  const StudyNoticeException({super.key, required this.isPrivate});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(children: [
+        const SizedBox(height: 70),
+        (isPrivate)
+            ? Image.asset(
+                'asset/lock_40.png',
+                width: 40,
+                height: 40,
+              )
+            : Image.asset(
+                'asset/exclamation.png',
+                width: 40,
+                height: 40,
+              ),
+        const SizedBox(height: 12.0),
+        (isPrivate)
+            ? Text(
+                "비공개 스터디는\n멤버만 열람이 가능해요.",
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.gray400),
+              )
+            : Text(
+                "등록된 공지가 없어요.",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.gray400),
+              ),
+      ]),
+    );
+  }
 }
