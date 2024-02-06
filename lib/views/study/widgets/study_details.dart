@@ -24,7 +24,7 @@ class StudyDetails extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              '${vm.study.headcount}/${vm.study.max}',
+              '${vm.study!.headcount}/${vm.study!.max}',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.gray800,
                     fontSize: 13.0,
@@ -40,7 +40,7 @@ class StudyDetails extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => StudyMemberScreen(users: vm.study.users,leaderId: vm.study.leaderId,),
+                    builder: (context) => StudyMemberScreen(users: vm.study!.users,leaderId: vm.study!.leaderId,),
                   ),
                 )
               },

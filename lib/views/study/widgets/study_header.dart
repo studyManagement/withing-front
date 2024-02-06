@@ -22,9 +22,9 @@ class Header extends StatelessWidget {
       child: Row(
         children: [
           ClipOval(
-            child:  (vm.study.studyImage != null)
+            child:  (vm.study!.studyImage != null)
                 ? Image.network(
-              vm.study.studyImage!,
+              vm.study!.studyImage!,
               width: 64,
               height: 64,
               fit: BoxFit.cover,
@@ -41,11 +41,11 @@ class Header extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                vm.study.studyName,
+                vm.study!.studyName,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
-              StudyCategoriesWidget(categories: vm.study.categories),
+              StudyCategoriesWidget(categories: vm.study!.categories),
             ],
           ),
         ],

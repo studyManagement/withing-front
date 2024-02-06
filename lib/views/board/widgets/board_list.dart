@@ -17,7 +17,7 @@ class BoardList extends StatelessWidget {
     return ListView.separated(
       itemBuilder: (context, index) {
         return BoardItem(
-          studyId: vm.study.id,
+          studyId: vm.study!.id,
           isOnlyNotice: false,
           nickname: list[index].user.nickname,
           notice: list[index].notice,

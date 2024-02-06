@@ -33,7 +33,7 @@ class Notice extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  context.push('/studies/${vm.study.id}/boards/notice');
+                  context.push('/studies/${vm.study!.id}/boards/notice');
                 },
                 child: Offstage(
                   offstage: (hasNotice) ? false : true,
@@ -53,7 +53,7 @@ class Notice extends StatelessWidget {
         (hasNotice)
             ? _NoticeCarousel(
                 notices: notices,
-                studyId: vm.study.id,
+                studyId: vm.study!.id,
               )
             : Center(
                 child: Column(children: [
