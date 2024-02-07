@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 AppBar boardAppBar(
-    BuildContext context, String title,Function()? onBack, Widget action) {
+    BuildContext context, String title,Function()? onBack, Widget? action) {
+  action ??= const SizedBox();
   List<Widget> actions = [action];
   return AppBar(
       title: Text(

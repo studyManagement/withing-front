@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/views/board/widgets/board_item.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
+import '../../../common/utils/get_created_string.dart';
 
 class BoardCommentList extends StatelessWidget {
   const BoardCommentList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final BoardViewModel vm = context.read<BoardViewModel>();
     return SizedBox(
       height: 452,
       child: ListView.separated(
@@ -15,11 +19,10 @@ class BoardCommentList extends StatelessWidget {
         itemBuilder: (context, index) {
           return _CommentItem(
             image: Container(),
-            nickname: 'nickname',
-            commentId: 1,
-            content: '게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다.'
-                ' 게시글 내용입니다.게시글 내용입니다. 게시글 내용입니다 .게시글 내용입니다. 게시글 내용입니다  ',
-            createdAt: getCreatedAt('2024-01-20T00:00:00'),
+            nickname: vm.comments[index].nickname,
+            commentId: vm.comments[index].commentId,
+            content: vm.comments[index].contents,
+            createdAt:getCreatedAt(vm.comments[index].createdAt.toString()),
           );
         },
         separatorBuilder: (context, index) {
@@ -30,7 +33,7 @@ class BoardCommentList extends StatelessWidget {
             color: AppColors.gray100,
           );
         },
-        itemCount: 10,
+        itemCount: vm.comments.length,
       ),
     );
   }

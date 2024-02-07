@@ -7,6 +7,7 @@ import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/authenticator/authentication.dart';
+import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
 import '../../board/widgets/board_item.dart';
@@ -19,9 +20,10 @@ class Notice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BoardViewModel boardViewModel = context.read<BoardViewModel>();
-    boardViewModel.fetchBoards(studyId, true);
+    BoardViewModel boardViewModel = context.watch<BoardViewModel>();
+    boardViewModel.fetchNotices(studyId);
     List<BoardModel> notices = boardViewModel.posts;
+
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -36,10 +38,10 @@ class Notice extends StatelessWidget {
           const Spacer(),
           GestureDetector(
             onTap: () {
-              context.push('/studies/${studyId}/boards/notice');
+              context.push('/studies/$studyId/boards/notice');
             },
             child: Offstage(
-              offstage: (boardViewModel.hasPost && !isMember) ? false : true,
+              offstage: (boardViewModel.hasPost && isMember) ? false : true,
               child: Text(
                 '전체보기',
                 textAlign: TextAlign.right,
@@ -84,7 +86,6 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
   @override
   Widget build(BuildContext context) {
     int numOfNotice = widget.notices.length;
-
     return Column(
       children: [
         CarouselSlider.builder(
@@ -125,16 +126,12 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
         boardId: sublist[index].id,
         title: sublist[index].title,
         notice: sublist[index].notice,
+        content: sublist[index].content,
         createdAt: sublist[index].createdAt.toString(),
       );
     },
     separatorBuilder: (context, index) {
-      return const Divider(
-        thickness: 1,
-        indent: 16,
-        endIndent: 16,
-        color: AppColors.gray100,
-      );
+      return const Gray100Divider();
     },
     itemCount: sublist.length,
   );

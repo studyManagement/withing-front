@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
 import '../widgets/board_appbar.dart';
@@ -20,6 +22,9 @@ class BoardInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BoardViewModel vm = context.watch<BoardViewModel>();
+    vm.fetchBoardInfo(studyId, boardId);
+    vm.fetchComments(studyId, boardId);
     return Scaffold(
         appBar: boardAppBar(
             context,
@@ -34,24 +39,31 @@ class BoardInfoScreen extends StatelessWidget {
                       });
                 },
                 icon: const Icon(Icons.more_horiz))),
-        body: const SafeArea(
-          child: SingleChildScrollView(
-            child: Column(children: [
-              BoardHeader(),
-              Divider(
-                endIndent: 0,
-                thickness: 6,
-                color: AppColors.gray50,
-              ),
-              SizedBox(height: 12),
-              BoardCommentList(),
-              Divider(
-                endIndent: 0,
-                color: AppColors.gray50,
-              ),
-              CommentInputBox(),
-            ]),
-          ),
-        ));
+        body: (vm.post == null)
+            ? Container()
+            : const SafeArea(
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(children: [
+                        BoardHeader(),
+                        Divider(
+                          endIndent: 0,
+                          thickness: 6,
+                          color: AppColors.gray50,
+                        ),
+                        SizedBox(height: 12),
+                        BoardCommentList(),
+                      ]),
+                    ),
+                    Spacer(),
+                    Divider(
+                      endIndent: 0,
+                      color: AppColors.gray50,
+                    ),
+                    CommentInputBox(),
+                  ],
+                ),
+              ));
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
+import '../../../common/utils/get_created_string.dart';
 
 class BoardItem extends StatelessWidget {
   final int studyId;
@@ -8,7 +10,7 @@ class BoardItem extends StatelessWidget {
   final int boardId;
   final bool notice;
   final String title;
-  final String? content;
+  final String content;
   final String? nickname;
   final String createdAt;
 
@@ -19,7 +21,7 @@ class BoardItem extends StatelessWidget {
       required this.boardId,
       required this.notice,
       required this.title,
-      this.content,
+      required this.content,
       this.nickname,
       required this.createdAt});
 
@@ -27,7 +29,7 @@ class BoardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.go('/studies/$studyId/boards/$boardId');
+        context.push('/studies/$studyId/boards/$boardId');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -57,7 +59,7 @@ class BoardItem extends StatelessWidget {
                 offstage: (notice) ? false : true,
                 child: Padding(
                   padding: const EdgeInsets.only(right:4.0),
-                  child: Image.asset('asset/notice_pin.png', width: 32, height: 32),
+                  child: Image.asset('asset/notice_pin.png', width: 16, height: 16),
                 ),
               ),
               Text(
@@ -68,9 +70,9 @@ class BoardItem extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Offstage(
-            offstage: (content == null) ? true : false,
+            offstage: (isOnlyNotice == true) ? true:false,
             child: Text(
-              content!,
+              content,
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
@@ -90,12 +92,7 @@ class BoardItem extends StatelessWidget {
   }
 }
 
-String getCreatedAt(String createdAt) {
-  createdAt = createdAt.substring(0, 16);
-  createdAt = createdAt.replaceAll('-', '. ');
-  createdAt = createdAt.replaceAll('T', '. ');
-  return createdAt;
-}
+
 
 bool isNew(String createdAt) {
   // true: 신규 태그

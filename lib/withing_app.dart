@@ -5,7 +5,9 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/root_tab.dart';
 import 'package:modi/common/theme/withing_theme.dart';
 import 'package:modi/di/injection.dart';
+import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/board/screen/board_info_screen.dart';
@@ -120,10 +122,13 @@ class WithingApp extends StatelessWidget {
                   isNotice: true)),
           GoRoute(
               path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
-              builder: (context, state) => BoardInfoScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!),
-                  isNotice: false,
-                  boardId: int.parse(state.pathParameters['boardId']!)))
+              builder: (context, state) => ChangeNotifierProvider(
+                create: (_) => BoardViewModel(getIt<BoardService>()),
+                child: BoardInfoScreen(
+                    studyId: int.parse(state.pathParameters['studyId']!),
+                    isNotice: false,
+                    boardId: int.parse(state.pathParameters['boardId']!)),
+              ))
         ]);
   }
 

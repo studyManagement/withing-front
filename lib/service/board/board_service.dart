@@ -1,9 +1,14 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:flutter/cupertino.dart';
+import 'package:modi/views/board/widgets/no_post.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
 import 'package:retrofit/http.dart';
 import '../../model/board/board_model.dart';
+import '../../model/board/comment_model.dart';
+import '../../model/board/post_exception.dart';
+import '../../view_models/board/model/post.dart';
 
 part 'board_service.g.dart';
 
@@ -12,19 +17,42 @@ abstract class BoardApi {
   factory BoardApi(Dio dio, {String baseUrl}) = _BoardApi;
 
   @GET('/studies/{id}/boards')
-  Future<List<BoardModel>> fetchBoards(@Path("id") int id,
-      @Query("isNotice") bool isNotice);
+  Future<List<BoardModel>> fetchBoardList(
+      @Path("id") int id, @Query("isNotice") bool isNotice);
 
+  @GET('/studies/{id}/boards/{boardId}')
+  Future<BoardModel> fetchBoardInfo(
+      @Path("id") int id, @Path("boardId") int boardId);
+
+  @DELETE('/studies/{id}/boards/{boardId}')
+  Future<BoardModel> deletePost(
+      @Path("id") int id, @Path("boardId") int boardId);
+
+  @POST('/studies/{id}/boards')
+  Future<BoardModel> createPost(@Path("id") int id);
+
+  @PATCH('/studies/{id}/boards/{boardId}')
+  Future<BoardModel> updatePost(@Path("id") int id,
+      @Path("boardId") int boardId, @Body() Map<String, dynamic> data);
+
+  @GET('/studies/{id}/boards/{boardId}/comments')
+  Future<List<CommentModel>> fetchComments(
+      @Path("id") int id, @Path("boardId") int boardId);
+
+  // @POST('/studies/{id}/boards/{boardId}/comments')
+  // Future<CommentModel> createComments(
+  //     @Path("id") int id, @Path("boardId") int boardId);
 }
 
 class BoardService {
   final BoardApi _boardApi;
+
   BoardService(this._boardApi);
 
-  Future<List<BoardModel>> fetchBoards(int studyId, bool isNotice) async {
+  Future<List<BoardModel>> fetchBoardList(int studyId, bool isNotice) async {
     try {
       final List<BoardModel> notices =
-      await _boardApi.fetchBoards(studyId, isNotice);
+          await _boardApi.fetchBoardList(studyId, isNotice);
       return notices;
     } on ApiException catch (e) {
       if (e.code == 404) {
@@ -39,4 +67,100 @@ class BoardService {
       rethrow;
     }
   }
+
+  Future<BoardModel> fetchBoardInfo(int studyId, int boardId) async {
+    try {
+      final BoardModel boardModel =
+          await _boardApi.fetchBoardInfo(studyId, boardId);
+      return boardModel;
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        // 게시글 없음
+        throw NoPostException(e.cause);
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<BoardModel> deletePost(int studyId, int boardId) async {
+    try {
+      final BoardModel boardModel =
+          await _boardApi.deletePost(studyId, boardId);
+      return boardModel;
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        // 게시글 없음
+        debugPrint('[API]: ${e.cause}');
+        rethrow;
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<BoardModel> createPost(int studyId) async {
+    try {
+      final BoardModel boardModel = await _boardApi.createPost(studyId);
+      return boardModel;
+    } on ApiException catch (e) {
+      debugPrint('[API]: ${e.cause}');
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<BoardModel> updatePost(
+      int studyId, int boardId, Post updatedPost) async {
+    try {
+      final BoardModel boardModel = await _boardApi.updatePost(studyId, boardId,
+          {"title": updatedPost.title, "contents": updatedPost.contents});
+      return boardModel;
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        // 게시글 없음
+        debugPrint('[API]: ${e.cause}');
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<CommentModel>> fetchComments(int studyId, int boardId) async {
+    try {
+      final List<CommentModel> commentList =
+      await _boardApi.fetchComments(studyId, boardId);
+      return commentList;
+    } on ApiException catch (e) {
+      if (e.code == 404) {
+        // 게시글 없음
+        throw const NoPost();
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  // Future<CommentModel> createComments(int studyId, int boardId) async {
+  //   try {
+  //     final CommentModel comment =
+  //     await _boardApi.createPost(id);
+  //     return comment;
+  //   } on ApiException catch (e) {
+  //     if (e.code == 404) {
+  //       // 게시글 없음
+  //       throw NoPost();
+  //     }
+  //     rethrow;
+  //   } on NetworkException catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
+
 }

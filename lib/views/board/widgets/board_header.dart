@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/utils/get_created_string.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
 class BoardHeader extends StatelessWidget{
@@ -6,9 +9,12 @@ class BoardHeader extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final BoardViewModel vm = context.read<BoardViewModel>();
+
    return Container(
      padding: const EdgeInsets.symmetric(horizontal:16.0,vertical: 12.0),
      child: Column(
+       crossAxisAlignment: CrossAxisAlignment.start,
        children: [
          Row(
            children: [
@@ -29,13 +35,13 @@ class BoardHeader extends StatelessWidget{
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  Text(
-                   '게시글 제목',
+                   vm.post!.title,
                    style: Theme.of(context).textTheme.bodyMedium,
                  ),
                  Row(
                    children: [
                      Text(
-                       'nickname',
+                       vm.post!.user.nickname,
                        style: Theme.of(context)
                            .textTheme
                            .bodySmall
@@ -51,7 +57,7 @@ class BoardHeader extends StatelessWidget{
                      ),
                      const SizedBox(width: 8),
                      Text(
-                       '2023. 08. 20. 22:20',
+                       getCreatedAt(vm.post!.createdAt.toString()),
                        style: Theme.of(context)
                            .textTheme
                            .bodySmall
@@ -64,9 +70,7 @@ class BoardHeader extends StatelessWidget{
            ],
          ),
          const SizedBox(height:12),
-         Text("게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다. 게시글 내용입니다."
-             " 게시글 내용입니다.게시글 내용입니다. 게시글 내용입니다 .게시글 내용입니다. 게시글 내용입니다 "
-    ,
+         Text(vm.post!.content,
          style: Theme.of(context).textTheme.bodySmall)
        ],
      ),
