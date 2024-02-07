@@ -4,20 +4,22 @@ import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
+import '../../../view_models/board/board_viewmodel.dart';
 import 'board_item.dart';
 
 class BoardList extends StatelessWidget {
-  const BoardList({super.key});
+  final int studyId;
+  const BoardList({super.key, required this.studyId});
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.read<StudyViewModel>();
+    final vm = context.read<BoardViewModel>();
     List<BoardModel> list = vm.posts;
 
     return ListView.separated(
       itemBuilder: (context, index) {
         return BoardItem(
-          studyId: vm.study!.id,
+          studyId: studyId,
           isOnlyNotice: false,
           nickname: list[index].user.nickname,
           notice: list[index].notice,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/board/widgets/board_list.dart';
@@ -7,6 +8,7 @@ import 'package:modi/views/board/widgets/no_post.dart';
 import 'package:provider/provider.dart';
 
 import '../../../di/injection.dart';
+import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/board_appbar.dart';
 
 class BoardMainScreen extends StatelessWidget {
@@ -29,11 +31,11 @@ class BoardMainScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.add))),
       body: ChangeNotifierProvider(
-        create: (_) => StudyViewModel(getIt<StudyService>()),
-        child: Consumer<StudyViewModel>(builder: (context, data, child) {
-          data.fetchBoards(studyId, false);
+        create: (_) => BoardViewModel(getIt<BoardService>()),
+        child: Consumer<BoardViewModel>(builder: (context, vm, child) {
+          vm.fetchBoards(studyId, false);
           return SafeArea(
-              child: (data.hasPost) ? const BoardList() : const NoPost());
+              child: (vm.hasPost) ? BoardList(studyId: studyId) : const NoPost());
         }),
       ),
     );

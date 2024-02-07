@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authenticator.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,9 @@ class Notice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StudyViewModel vm = context.read<StudyViewModel>();
-    vm.fetchBoards(studyId, true);
-    List<BoardModel> notices = vm.posts;
+    BoardViewModel boardViewModel = context.read<BoardViewModel>();
+    boardViewModel.fetchBoards(studyId, true);
+    List<BoardModel> notices = boardViewModel.posts;
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -35,10 +36,10 @@ class Notice extends StatelessWidget {
           const Spacer(),
           GestureDetector(
             onTap: () {
-              context.push('/studies/${vm.study!.id}/boards/notice');
+              context.push('/studies/${studyId}/boards/notice');
             },
             child: Offstage(
-              offstage: (vm.hasPost && !isMember) ? false : true,
+              offstage: (boardViewModel.hasPost && !isMember) ? false : true,
               child: Text(
                 '전체보기',
                 textAlign: TextAlign.right,
@@ -54,10 +55,10 @@ class Notice extends StatelessWidget {
     ),
     (!isMember)
         ? const StudyNoticeException(isPrivate: true)
-        : (vm.hasPost)
+        : (boardViewModel.hasPost)
             ? _NoticeCarousel(
                 notices: notices,
-                studyId: vm.study!.id,
+                studyId: studyId,
               )
             : const StudyNoticeException(isPrivate: false)
           ],

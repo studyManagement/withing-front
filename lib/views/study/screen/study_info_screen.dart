@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/modal/withing_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/model/study_view.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/study/widgets/input_password_modal.dart';
@@ -96,7 +98,9 @@ class StudyInfoScreen extends StatelessWidget {
                       color: AppColors.gray100,
                     ),
                     const SizedBox(height: 10),
-                    Notice(studyId: studyId, isMember: vm.isMember),
+                    ChangeNotifierProvider(
+                        create: (_) => BoardViewModel(getIt<BoardService>()),
+                        child: Notice(studyId: studyId, isMember: vm.isMember)),
                     if (!offstage) const SizedBox(height: 190),
                     if (!offstage)
                       Center(

@@ -33,10 +33,6 @@ abstract class StudyApi {
   @GET('/studies/{id}/categories')
   Future<StudyCategory> fetchStudyCategory(@Path('id') int id);
 
-  @GET('/studies/{id}/boards')
-  Future<List<BoardModel>> fetchBoards(@Path("id") int id,
-      @Query("isNotice") bool isNotice);
-
   @PATCH('/studies/{id}/finish')
   Future<StudyModel> finishStudy(@Path('id') int id);
 
@@ -105,24 +101,6 @@ class StudyService {
     return categoryData;
   }
 
-  Future<List<BoardModel>> fetchBoards(int studyId, bool isNotice) async {
-    try {
-      final List<BoardModel> notices =
-      await _studyApi.fetchBoards(studyId, isNotice);
-      return notices;
-    } on ApiException catch (e) {
-      if (e.code == 404) {
-        // 공지 없음
-        throw List.empty();
-      }
-      if (e.code == 400) {
-        // 참여 중인 스터디가 아님
-      }
-      rethrow;
-    } on NetworkException catch (e) {
-      rethrow;
-    }
-  }
 
   Future<StudyModel> finishStudy(int studyId) async {
     try {
