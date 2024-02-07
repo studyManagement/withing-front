@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
-import 'package:modi/views/study/screen/study_manage_screen.dart';
 import 'package:modi/views/study/widgets/meeting_days_selector.dart';
-
 import '../../../service/study/MeetingType.dart';
-
+import '../../../view_models/study/model/study_meeting_schedule.dart';
 import '../../../view_models/study/study_viewmodel.dart';
 import '../widgets/meeting_time_picker.dart';
 
@@ -23,28 +21,21 @@ class SetRegularMeetingScreen extends StatefulWidget {
 class _SetRegularMeetingScreenState extends State<SetRegularMeetingScreen> {
   List<int> days = [];
   String start = '', end = '';
+  List<StudyMeetingSchedule> meetingSchedule = [];
   DateTime? selected;
   List<String> weekDays = ["월", "화", "수", "목", "금", "토", "일"];
   MeetingType type = MeetingType.NONE;
   MeetingTimePicker? timePicker;
   bool isInit = false;
 
-  void updateTime(String startTime, String endTime) {
-    setState(() {
-      isInit = false;
-      start = startTime;
-      end = endTime;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    //  type = widget.viewModel.meeting_type;
-    //  days = widget.viewModel.days;
-    //  start = widget.viewModel.meetingModel[0].startTime;
-    //  end = widget.viewModel.meetingModel[0].endTime;
-    type = MeetingType.NONE;
+    type = widget.viewModel.meetingType;
+    meetingSchedule = widget.viewModel.meetingSchedule;
+    //days = widget.viewModel.meetingSchedule.d;
+    start = widget.viewModel.study!.meetingSchedules[0].startTime;
+    end = widget.viewModel.study!.meetingSchedules[0].endTime;
   }
 
   @override
@@ -157,7 +148,7 @@ class _SetRegularMeetingScreenState extends State<SetRegularMeetingScreen> {
   }
 
   Widget meetingType(MeetingType type) {
-    if(isInit){
+    if (isInit) {
       start = '';
       end = '';
     }
@@ -180,4 +171,15 @@ class _SetRegularMeetingScreenState extends State<SetRegularMeetingScreen> {
         return const SizedBox();
     }
   }
+  void updateTime(String startTime, String endTime) {
+    setState(() {
+      isInit = false;
+      start = startTime;
+      end = endTime;
+    });
+  }
+  void setMeetingSchedule(StudyViewModel viewModel, List<StudyMeetingSchedule> meetingSchedule ){
+
+  }
+
 }
