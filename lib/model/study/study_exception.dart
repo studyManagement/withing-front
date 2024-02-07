@@ -1,4 +1,5 @@
 class StudyException implements Exception {
   String cause;
-  StudyException(this.cause);
+  int code;
+  StudyException(this.cause, this.code);
 }

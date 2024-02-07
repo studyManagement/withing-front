@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int studyId;
   final int leaderId;
+  final bool? hasLike;
 
   const StudyMainAppBar(
-      {super.key, required this.studyId, required this.leaderId});
+      {super.key, required this.studyId, required this.leaderId,this.hasLike});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -26,8 +28,8 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: AppColors.black,
       elevation: 0,
       actions: <Widget>[
-        Offstage(
-          offstage: (leaderId == 24) ? false : true,
+        (hasLike == null) ? Offstage(
+          offstage: (leaderId == Authentication.instance.userId) ? false : true,
           child: IconButton(
             icon: Image.asset(
               'asset/setting.png',
@@ -36,7 +38,20 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             onPressed: () => {context.push('/studies/$studyId/manage')},
           ),
-        ),
+        ): IconButton(
+      icon:(hasLike == true) ? Image.asset(
+        'asset/heart_filled_32.png',
+        width: 32,
+        height: 32,
+      ):Image.asset(
+        'asset/heart_lined_32.png',
+        width: 32,
+        height: 32,
+      ),
+      onPressed: () => {
+        // 찜
+      },
+    )
       ],
     );
   }

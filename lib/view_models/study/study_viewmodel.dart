@@ -29,8 +29,17 @@ class StudyViewModel extends ChangeNotifier {
   int _newLeaderId = 0;
   bool _isOut = false;
   bool _isSwitched = false;
+  bool _isMember = false;
+  bool _checkPwd = true;
+  bool _successToJoin = false;
+
+  bool get checkPwd => _checkPwd;
+
+  bool get successToJoin => _successToJoin;
 
   int get newLeaderId => _newLeaderId;
+
+  bool get isMember => _isMember;
 
   bool get isOut => _isOut;
 
@@ -43,19 +52,19 @@ class StudyViewModel extends ChangeNotifier {
   StudyViewModel(this._service);
 
   Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
-    if(_study == null){
-    try {
-      _study = StudyView.from(await _service.fetchStudyInfo(studyId));
-      _users = _study!.users;
-      getRegularMeetingString(_study!.meetingSchedules);
-      notifyListeners();
-    } on StudyException catch (e) {
-      // 스터디가 없는 경우
-      if (!context.mounted) return;
-      navigateToStudyExceptionScreen(context);
-    } on NetworkException catch (e) {
-      print(e);
-    }
+    if (_study == null) {
+      try {
+        _study = StudyView.from(await _service.fetchStudyInfo(studyId));
+        _users = _study!.users;
+        getRegularMeetingString(_study!.meetingSchedules);
+        notifyListeners();
+      } on StudyException catch (e) {
+        // 스터디가 없는 경우
+        if (!context.mounted) return;
+        navigateToStudyExceptionScreen(context);
+      } on NetworkException catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -118,6 +127,18 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> joinStudy(int studyId, String? password) async {
+    try {
+      await _service.joinStudy(studyId, password);
+      _successToJoin = true;
+    } on StudyException catch (e) {
+      if (e.code == 400) { // 비밀번호 오류
+        _checkPwd = false;
+      }
+    }
+    notifyListeners();
+  }
+
   void getRegularMeetingString(List<StudyMeetingSchedule> meetingSchedules) {
     int cnt = 0;
     List<int> days = [];
@@ -141,6 +162,11 @@ class StudyViewModel extends ChangeNotifier {
         }
       }
     }
+  }
+
+  void checkRegistered(List<UserModel> users, int userId) {
+    // 스터디 가입 여부 확인
+    _isMember = users.any((user) => user.id == userId);
   }
 
   void navigateToStudyExceptionScreen(BuildContext context) {

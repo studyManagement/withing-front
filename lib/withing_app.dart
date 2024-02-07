@@ -80,7 +80,7 @@ class WithingApp extends StatelessWidget {
               builder: (context, state) {
                 return ChangeNotifierProvider(
                     create: (_) => StudyViewModel(getIt<StudyService>()),
-                    child: MyStudyInfoScreen(
+                    child: StudyInfoScreen(
                       studyId: int.parse(state.pathParameters['studyId']!),
                     ));
               }),
