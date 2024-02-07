@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/study/study_exception.dart';
+import 'package:modi/service/study/MeetingType.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/views/study/study_exception_screen.dart';
@@ -17,21 +18,29 @@ class StudyViewModel extends ChangeNotifier {
 
   StudyView? _study;
 
-  StudyView? get study => _study;
-
   List<UserModel> _users = [];
-
-  List<UserModel> get users => _users;
+  List<StudyMeetingSchedule> _meetingSchedule = [];
 
   String regularMeeting = '';
   String startTime = '';
-
   int _newLeaderId = 0;
   bool _isOut = false;
   bool _isSwitched = false;
   bool _isMember = false;
   bool _checkPwd = true;
   bool _successToJoin = false;
+  MeetingType _meetingType = MeetingType.NONE;
+  bool hasPost = false;
+  int numOfPosts = 0;
+  List<BoardModel> posts = [];
+
+  StudyView? get study => _study;
+
+  List<StudyMeetingSchedule> get meetingSchedule => _meetingSchedule;
+
+  List<UserModel> get users => _users;
+
+  MeetingType get meetingType => _meetingType;
 
   bool get checkPwd => _checkPwd;
 
@@ -45,9 +54,6 @@ class StudyViewModel extends ChangeNotifier {
 
   bool get isSwitched => _isSwitched;
 
-  bool hasPost = false;
-  int numOfPosts = 0;
-  List<BoardModel> posts = [];
 
   StudyViewModel(this._service);
 
@@ -132,7 +138,8 @@ class StudyViewModel extends ChangeNotifier {
       await _service.joinStudy(studyId, password);
       _successToJoin = true;
     } on StudyException catch (e) {
-      if (e.code == 400) { // 비밀번호 오류
+      if (e.code == 400) {
+        // 비밀번호 오류
         _checkPwd = false;
       }
     }
@@ -141,26 +148,30 @@ class StudyViewModel extends ChangeNotifier {
 
   void getRegularMeetingString(List<StudyMeetingSchedule> meetingSchedules) {
     int cnt = 0;
-    List<int> days = [];
+    List<int> _days = [];
     for (int i = 0; i < meetingSchedules.length; i++) {
-      if (!days.contains(meetingSchedules[i].day)) {
-        days.add(meetingSchedules[i].day);
+      if (!_days.contains(meetingSchedules[i].day)) {
+        _days.add(meetingSchedules[i].day);
       }
     }
-    if (days.isEmpty) {
+    if (_days.isEmpty) {
       regularMeeting = '미등록';
-    } else if (days.length == 7) {
+      _meetingType = MeetingType.NONE;
+    } else if ( _days.length == 7) {
       regularMeeting = '매일 ${meetingSchedules[0].startTime}';
+      _meetingType = MeetingType.DAILY;
     } else {
       regularMeeting = '매주 ';
-      for (int i = 0; i < days.length; i++) {
-        if (cnt < days.length - 1) {
-          regularMeeting = '$regularMeeting${_weekString[days[i]]}, ';
+      _meetingType = MeetingType.WEEKLY;
+      for (int i = 0; i <  _days.length; i++) {
+        if (cnt <  _days.length - 1) {
+          regularMeeting = '$regularMeeting${_weekString[_days[i]]}, ';
           cnt++;
         } else {
-          regularMeeting = '$regularMeeting${_weekString[days[i]]}';
+          regularMeeting = '$regularMeeting${_weekString[_days[i]]}';
         }
       }
+      regularMeeting = '$regularMeeting ${meetingSchedules[0].startTime}';
     }
   }
 
