@@ -34,8 +34,8 @@ abstract class StudyApi {
   Future<StudyCategory> fetchStudyCategory(@Path('id') int id);
 
   @GET('/studies/{id}/boards')
-  Future<List<BoardModel>> fetchBoards(
-      @Path("id") int id, @Query("isNotice") bool isNotice);
+  Future<List<BoardModel>> fetchBoards(@Path("id") int id,
+      @Query("isNotice") bool isNotice);
 
   @PATCH('/studies/{id}/finish')
   Future<StudyModel> finishStudy(@Path('id') int id);
@@ -44,12 +44,16 @@ abstract class StudyApi {
   Future<StudyModel> deleteStudy(@Path('id') int id);
 
   @PATCH('/studies/{id}/members/{userId}')
-  Future<StudyModel> switchLeader(
-      @Path('id') int id, @Path('userId') int userId);
+  Future<StudyModel> switchLeader(@Path('id') int id,
+      @Path('userId') int userId);
 
   @DELETE('/studies/{id}/admin/members')
-  Future<dynamic> forceToExitMember(
-      @Path('id') int id, @Body() Map<String, dynamic> data);
+  Future<dynamic> forceToExitMember(@Path('id') int id,
+      @Body() Map<String, dynamic> data);
+
+  @PATCH('/studies/{id}/members')
+  Future<dynamic> joinStudy(@Path('id') int id,
+      @Body() Map<String, dynamic> data);
 }
 
 class StudyService {
@@ -60,7 +64,7 @@ class StudyService {
   Future<List<StudyListModel>> fetchMyStudies(StudyType studyType) async {
     try {
       final List<StudyListModel> myStudies =
-          await _studyApi.fetchMyStudies(studyType.key);
+      await _studyApi.fetchMyStudies(studyType.key);
       return myStudies;
     } on NetworkException catch (e) {
       rethrow;
@@ -85,7 +89,7 @@ class StudyService {
       return study;
     } on ApiException catch (e) {
       if (e.code == 404) {
-        throw StudyException(e.cause);
+        throw StudyException(e.cause, e.code);
       }
       rethrow;
     } on NetworkException catch (e) {
@@ -95,7 +99,7 @@ class StudyService {
 
   Future<StudyCategory> fetchStudyCategory(int studyId) async {
     final StudyCategory categoryData =
-        await _studyApi.fetchStudyCategory(studyId);
+    await _studyApi.fetchStudyCategory(studyId);
 
     log('[DEBUG] ${categoryData.toString()}');
     return categoryData;
@@ -104,7 +108,7 @@ class StudyService {
   Future<List<BoardModel>> fetchBoards(int studyId, bool isNotice) async {
     try {
       final List<BoardModel> notices =
-          await _studyApi.fetchBoards(studyId, isNotice);
+      await _studyApi.fetchBoards(studyId, isNotice);
       return notices;
     } on ApiException catch (e) {
       if (e.code == 404) {
@@ -183,11 +187,11 @@ class StudyService {
   Future<dynamic> forceToExitMember(int studyId, List<int> users) async {
     try {
       var response =
-          await _studyApi.forceToExitMember(studyId, {"users": users});
+      await _studyApi.forceToExitMember(studyId, {"users": users});
       return response;
     } on ApiException catch (e) {
       if (e.code == 404) {
-        throw StudyException(e.cause);
+        throw StudyException(e.cause,e.code);
       } else if (e.code == 401) {
         debugPrint('[API]: ${e.cause}');
       }
@@ -196,4 +200,20 @@ class StudyService {
       rethrow;
     }
   }
+
+  Future<dynamic> joinStudy(int studyId, String? password) async {
+    try {
+      var response = await _studyApi.joinStudy(studyId, {"password": password});
+      return response;
+    } on ApiException catch (e){
+      if(e.code == 400 || e.code == 404){
+        debugPrint('[API]: ${e.cause}');
+        throw StudyException(e.cause, e.code);
+      }
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
 }
+

@@ -3,10 +3,13 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/modal_button.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
+import '../../../common/modal/withing_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class InputPasswordModal extends StatefulWidget {
-  const InputPasswordModal({super.key});
+  final int studyId;
+
+  const InputPasswordModal({super.key, required this.studyId});
 
   @override
   State<InputPasswordModal> createState() => _State();
@@ -65,10 +68,7 @@ class _State extends State<InputPasswordModal> {
                     if (password.isEmpty || password.length < 4) {
                       print('비밀번호를 입력해주세요.');
                     } else {
-                      vm.checkPassword(password);
-                      if (vm.checkPwd) {
-                        print('가입 성공');
-                      }
+                      joinToPrivateStudy(vm, context, password);
                     }
                   },
                 ),
@@ -116,10 +116,7 @@ class _State extends State<InputPasswordModal> {
                   if (password.isEmpty || password.length < 4) {
                     print('비밀번호를 입력해주세요.');
                   } else {
-                    vm.checkPassword(password);
-                    if (vm.checkPwd) {
-                      print('가입 성공');
-                    }
+                    joinToPrivateStudy(vm, context, password);
                   }
                 },
                 text: '확인',
@@ -128,6 +125,18 @@ class _State extends State<InputPasswordModal> {
         ),
       ],
     );
+  }
+
+  void joinToPrivateStudy(
+      StudyViewModel vm, BuildContext context, String password) {
+    vm.joinStudy(widget.studyId, password);
+    if (vm.successToJoin) {
+      print('가입 성공');
+      context.go('/studies/${widget.studyId}');
+    } else {
+      WithingModal.openDialog(
+          context, '스터디 가입 실패', '', false, () => null, () => null);
+    }
   }
 
   void renderObscuringChar(String password) {

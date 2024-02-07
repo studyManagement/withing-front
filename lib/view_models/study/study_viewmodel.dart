@@ -31,8 +31,11 @@ class StudyViewModel extends ChangeNotifier {
   bool _isSwitched = false;
   bool _isMember = false;
   bool _checkPwd = true;
+  bool _successToJoin = false;
 
   bool get checkPwd => _checkPwd;
+
+  bool get successToJoin => _successToJoin;
 
   int get newLeaderId => _newLeaderId;
 
@@ -124,6 +127,18 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> joinStudy(int studyId, String? password) async {
+    try {
+      await _service.joinStudy(studyId, password);
+      _successToJoin = true;
+    } on StudyException catch (e) {
+      if (e.code == 400) { // 비밀번호 오류
+        _checkPwd = false;
+      }
+    }
+    notifyListeners();
+  }
+
   void getRegularMeetingString(List<StudyMeetingSchedule> meetingSchedules) {
     int cnt = 0;
     List<int> days = [];
@@ -149,16 +164,10 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
-  void checkRegistered(List<UserModel> users, int userId) { // 스터디 가입 여부 확인
+  void checkRegistered(List<UserModel> users, int userId) {
+    // 스터디 가입 여부 확인
     _isMember = users.any((user) => user.id == userId);
   }
-
-  void checkPassword(String password){
-    _checkPwd = password == '1234';
-    notifyListeners();
-  }
-
-
 
   void navigateToStudyExceptionScreen(BuildContext context) {
     Navigator.push(

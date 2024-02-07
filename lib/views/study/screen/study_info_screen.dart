@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
+import 'package:modi/common/modal/withing_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/study/model/study_view.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/study/widgets/input_password_modal.dart';
 import 'package:modi/views/study/widgets/study_main_appbar.dart';
@@ -100,12 +102,15 @@ class StudyInfoScreen extends StatelessWidget {
                       Center(
                           child: StudyBottomButton(
                               onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => ChangeNotifierProvider(
-                                        create: (_) => StudyViewModel(
-                                            getIt<StudyService>()),
-                                        child: const InputPasswordModal()));
+                                (vm.study!.private)
+                                    ? showDialog(
+                                        context: context,
+                                        builder: (_) => ChangeNotifierProvider(
+                                            create: (_) => StudyViewModel(
+                                                getIt<StudyService>()),
+                                            child: InputPasswordModal(
+                                                studyId: studyId)))
+                                    : joinToPublicStudy(vm, context);
                               },
                               text: '가입하기')),
                   ],
@@ -113,5 +118,16 @@ class StudyInfoScreen extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  void joinToPublicStudy(StudyViewModel vm, BuildContext context) {
+    vm.joinStudy(studyId, null);
+    if (vm.successToJoin) {
+      print('가입 성공');
+      context.go('/studies/$studyId');
+    } else {
+      WithingModal.openDialog(
+          context, '스터디 가입 실패', '', false, () => null, () => null);
+    }
   }
 }

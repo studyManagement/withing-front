@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -28,7 +29,7 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       actions: <Widget>[
         (hasLike == null) ? Offstage(
-          offstage: (leaderId == 24) ? false : true,
+          offstage: (leaderId == Authentication.instance.userId) ? false : true,
           child: IconButton(
             icon: Image.asset(
               'asset/setting.png',
