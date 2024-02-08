@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -23,22 +24,25 @@ class BoardInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BoardViewModel vm = context.watch<BoardViewModel>();
-    vm.fetchBoardInfo(studyId, boardId);
-    vm.fetchComments(studyId, boardId);
+    vm.setStudyId = studyId;
+    vm.fetchBoardInfo(boardId);
+    if(!vm.isDeleted) vm.fetchComments(boardId);
+    bool isWriter = vm.post?.user.id == Authentication.instance.userId;
     return Scaffold(
         appBar: boardAppBar(
             context,
             '',
             null,
+            (isWriter) ?
             IconButton(
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
-                      builder: (context) {
-                        return const BoardBottomSheet();
+                      builder: (context){
+                        return BoardBottomSheet(viewModel: vm,boardId: boardId);
                       });
                 },
-                icon: const Icon(Icons.more_horiz))),
+                icon: const Icon(Icons.more_horiz)):null),
         body: (vm.post == null)
             ? Container()
             : const SafeArea(

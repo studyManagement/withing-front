@@ -13,6 +13,7 @@ import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/board/screen/board_info_screen.dart';
 import 'package:modi/views/board/screen/board_main_screen.dart';
 import 'package:modi/views/board/screen/create_post_screen.dart';
+import 'package:modi/views/board/screen/update_post_screen.dart';
 import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
@@ -115,6 +116,12 @@ class WithingApp extends StatelessWidget {
               builder: (context, state) => CreatePostScreen(
                     studyId: int.parse(state.pathParameters['studyId']!),
                   )),
+          GoRoute(
+              path: '/studies/:studyId/boards/update/:boardId', // 게시판 글 수정
+              builder: (context, state) => UpdatePostScreen(
+                studyId: int.parse(state.pathParameters['studyId']!),
+                boardId: int.parse(state.pathParameters['boardId']!),
+              )),
           GoRoute(
               path: '/studies/:studyId/boards/notice', // 공지 전체보기
               builder: (context, state) => BoardMainScreen(

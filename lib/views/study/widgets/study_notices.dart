@@ -21,7 +21,8 @@ class Notice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
-    boardViewModel.fetchNotices(studyId);
+    boardViewModel.setStudyId = studyId;
+    boardViewModel.fetchNotices();
     List<BoardModel> notices = boardViewModel.posts;
 
     return Column(

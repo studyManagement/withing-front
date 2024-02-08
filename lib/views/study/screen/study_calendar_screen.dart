@@ -5,10 +5,10 @@ import 'package:modi/views/board/widgets/no_post.dart';
 import '../../board/widgets/board_appbar.dart';
 
 class StudyCalendarScreen extends StatelessWidget {
-   final int studyId;
+  // final int studyId;
 
-   const StudyCalendarScreen({super.key, required this.studyId});
-
+  // const StudyCalendarScreen({super.key, required this.studyId});
+  const StudyCalendarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,6 @@ class StudyCalendarScreen extends StatelessWidget {
                   // context.push('/studies/$studyId/calendar/create');
                 },
                 icon: const Icon(Icons.add))),
-        body: SafeArea(child: (isExist) ? BoardList(studyId: studyId) : const NoPost()));
+        body: SafeArea(child: (isExist) ? BoardList() : const NoPost()));
   }
 }

@@ -25,11 +25,11 @@ abstract class BoardApi {
       @Path("id") int id, @Path("boardId") int boardId);
 
   @DELETE('/studies/{id}/boards/{boardId}')
-  Future<BoardModel> deletePost(
-      @Path("id") int id, @Path("boardId") int boardId);
+  Future<dynamic> deletePost(@Path("id") int id, @Path("boardId") int boardId);
 
   @POST('/studies/{id}/boards')
-  Future<BoardModel> createPost(@Path("id") int id);
+  Future<BoardModel> createPost(
+      @Path("id") int id, @Body() Map<String, dynamic> data);
 
   @PATCH('/studies/{id}/boards/{boardId}')
   Future<BoardModel> updatePost(@Path("id") int id,
@@ -39,9 +39,9 @@ abstract class BoardApi {
   Future<List<CommentModel>> fetchComments(
       @Path("id") int id, @Path("boardId") int boardId);
 
-  // @POST('/studies/{id}/boards/{boardId}/comments')
-  // Future<CommentModel> createComments(
-  //     @Path("id") int id, @Path("boardId") int boardId);
+// @POST('/studies/{id}/boards/{boardId}/comments')
+// Future<CommentModel> createComments(
+//     @Path("id") int id, @Path("boardId") int boardId);
 }
 
 class BoardService {
@@ -84,11 +84,11 @@ class BoardService {
     }
   }
 
-  Future<BoardModel> deletePost(int studyId, int boardId) async {
+  Future<dynamic> deletePost(int studyId, int boardId) async {
     try {
-      final BoardModel boardModel =
-          await _boardApi.deletePost(studyId, boardId);
-      return boardModel;
+      var response = await _boardApi.deletePost(studyId, boardId);
+      debugPrint('[API]: 게시글 삭제됨');
+      return response;
     } on ApiException catch (e) {
       if (e.code == 404) {
         // 게시글 없음
@@ -101,9 +101,10 @@ class BoardService {
     }
   }
 
-  Future<BoardModel> createPost(int studyId) async {
+  Future<BoardModel> createPost(int studyId, Post newPost) async {
     try {
-      final BoardModel boardModel = await _boardApi.createPost(studyId);
+      final BoardModel boardModel = await _boardApi.createPost(
+          studyId, {"title": newPost.title, "content": newPost.contents});
       return boardModel;
     } on ApiException catch (e) {
       debugPrint('[API]: ${e.cause}');
@@ -117,7 +118,7 @@ class BoardService {
       int studyId, int boardId, Post updatedPost) async {
     try {
       final BoardModel boardModel = await _boardApi.updatePost(studyId, boardId,
-          {"title": updatedPost.title, "contents": updatedPost.contents});
+          {"title": updatedPost.title, "content": updatedPost.contents});
       return boardModel;
     } on ApiException catch (e) {
       if (e.code == 404) {
@@ -133,12 +134,12 @@ class BoardService {
   Future<List<CommentModel>> fetchComments(int studyId, int boardId) async {
     try {
       final List<CommentModel> commentList =
-      await _boardApi.fetchComments(studyId, boardId);
+          await _boardApi.fetchComments(studyId, boardId);
       return commentList;
     } on ApiException catch (e) {
       if (e.code == 404) {
         // 게시글 없음
-        throw const NoPost();
+        throw NoPostException(e.cause);
       }
       rethrow;
     } on NetworkException catch (e) {
@@ -146,21 +147,19 @@ class BoardService {
     }
   }
 
-  // Future<CommentModel> createComments(int studyId, int boardId) async {
-  //   try {
-  //     final CommentModel comment =
-  //     await _boardApi.createPost(id);
-  //     return comment;
-  //   } on ApiException catch (e) {
-  //     if (e.code == 404) {
-  //       // 게시글 없음
-  //       throw NoPost();
-  //     }
-  //     rethrow;
-  //   } on NetworkException catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
-
+// Future<CommentModel> createComments(int studyId, int boardId) async {
+//   try {
+//     final CommentModel comment =
+//     await _boardApi.createPost(id);
+//     return comment;
+//   } on ApiException catch (e) {
+//     if (e.code == 404) {
+//       // 게시글 없음
+//       throw NoPost();
+//     }
+//     rethrow;
+//   } on NetworkException catch (e) {
+//     rethrow;
+//   }
+// }
 }

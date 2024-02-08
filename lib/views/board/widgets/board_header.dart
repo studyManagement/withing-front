@@ -9,7 +9,7 @@ class BoardHeader extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final BoardViewModel vm = context.read<BoardViewModel>();
+    final BoardViewModel vm = context.watch<BoardViewModel>();
 
    return Container(
      padding: const EdgeInsets.symmetric(horizontal:16.0,vertical: 12.0),
@@ -35,7 +35,7 @@ class BoardHeader extends StatelessWidget{
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  Text(
-                   vm.post!.title,
+                   vm.title,
                    style: Theme.of(context).textTheme.bodyMedium,
                  ),
                  Row(
@@ -70,7 +70,7 @@ class BoardHeader extends StatelessWidget{
            ],
          ),
          const SizedBox(height:12),
-         Text(vm.post!.content,
+         Text(vm.contents,
          style: Theme.of(context).textTheme.bodySmall)
        ],
      ),

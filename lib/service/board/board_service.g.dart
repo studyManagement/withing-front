@@ -81,7 +81,7 @@ class _BoardApi implements BoardApi {
   }
 
   @override
-  Future<BoardModel> deletePost(
+  Future<dynamic> deletePost(
     int id,
     int boardId,
   ) async {
@@ -89,33 +89,36 @@ class _BoardApi implements BoardApi {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<BoardModel>(Options(
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/studies/${id}/boards/${boardId}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = BoardModel.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          '/studies/${id}/boards/${boardId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
     return value;
   }
 
   @override
-  Future<BoardModel> createPost(int id) async {
+  Future<BoardModel> createPost(
+    int id,
+    Map<String, dynamic> data,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<BoardModel>(Options(
       method: 'POST',

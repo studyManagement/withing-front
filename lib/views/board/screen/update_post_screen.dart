@@ -10,10 +10,12 @@ import '../../../di/injection.dart';
 import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/board_appbar.dart';
 
-class CreatePostScreen extends StatelessWidget {
+class UpdatePostScreen extends StatelessWidget {
   final int studyId;
+  final int boardId;
 
-  const CreatePostScreen({super.key, required this.studyId});
+  const UpdatePostScreen(
+      {super.key, required this.studyId, required this.boardId});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class CreatePostScreen extends StatelessWidget {
         create: (_) => BoardViewModel(getIt<BoardService>()),
         child: Consumer<BoardViewModel>(builder: (context, vm, child) {
           vm.setStudyId = studyId;
+          vm.fetchBoardInfo(boardId);
           return Scaffold(
             appBar: boardAppBar(
                 context,
@@ -28,23 +31,31 @@ class CreatePostScreen extends StatelessWidget {
                 () => {
                       WithingModal.openDialog(context, '글 작성을 취소하시겠어요?',
                           '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
-                        context..pop()..pop();
+                        context
+                          ..pop()
+                          ..pop();
                       }, null)
                     },
-                const BoardSubmitButton(isNew: true)),
-            body: SafeArea(
-                child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  BoardTextField(type: BoardInputType.boardTitle),
-                  const Divider(
-                    color: AppColors.gray100,
-                  ),
-                  BoardTextField(type: BoardInputType.boardContents)
-                ],
-              ),
-            )),
+                BoardSubmitButton(isNew: false, boardId: boardId)),
+            body: (vm.post == null)
+                ? Container()
+                : SafeArea(
+                    child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        BoardTextField(
+                            type: BoardInputType.boardTitle,
+                            initValue: vm.post!.title),
+                        const Divider(
+                          color: AppColors.gray100,
+                        ),
+                        BoardTextField(
+                            type: BoardInputType.boardContents,
+                            initValue: vm.post!.content)
+                      ],
+                    ),
+                  )),
           );
         }));
   }
