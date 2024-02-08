@@ -39,7 +39,7 @@ class BoardMainScreen extends StatelessWidget {
            vm.fetchBoardList(studyId);
           }
           return SafeArea(
-              child:
+              child: (vm.posts.isEmpty) ? Container():
                   (vm.hasPost) ? BoardList(studyId: studyId) : const NoPost());
         }),
       ),

@@ -16,7 +16,7 @@ class Notice extends StatelessWidget {
   final int studyId;
   final bool isMember;
 
-  const Notice({super.key, required this.studyId,required this.isMember});
+  const Notice({super.key, required this.studyId, required this.isMember});
 
   @override
   Widget build(BuildContext context) {
@@ -25,46 +25,48 @@ class Notice extends StatelessWidget {
     List<BoardModel> notices = boardViewModel.posts;
 
     return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
-        children: [
-          Text(
-            '공지',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              context.push('/studies/$studyId/boards/notice');
-            },
-            child: Offstage(
-              offstage: (boardViewModel.hasPost && isMember) ? false : true,
-              child: Text(
-                '전체보기',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.gray400,
-                      fontSize: 13.0,
-                    ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: [
+              Text(
+                '공지',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-            ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  context.push('/studies/$studyId/boards/notice');
+                },
+                child: Offstage(
+                  offstage: (boardViewModel.hasPost && isMember) ? false : true,
+                  child: Text(
+                    '전체보기',
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.gray400,
+                          fontSize: 13.0,
+                        ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-    (!isMember)
-        ? const StudyNoticeException(isPrivate: true)
-        : (boardViewModel.hasPost)
-            ? _NoticeCarousel(
-                notices: notices,
-                studyId: studyId,
-              )
-            : const StudyNoticeException(isPrivate: false)
-          ],
-        );
+        ),
+        (!isMember)
+            ? const StudyNoticeException(isPrivate: true)
+            : (boardViewModel.posts.isEmpty)
+                ? Container()
+                : (boardViewModel.hasPost)
+                    ? _NoticeCarousel(
+                        notices: notices,
+                        studyId: studyId,
+                      )
+                    : const StudyNoticeException(isPrivate: false)
+      ],
+    );
   }
 }
 
