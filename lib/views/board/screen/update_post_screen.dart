@@ -36,7 +36,10 @@ class UpdatePostScreen extends StatelessWidget {
                           ..pop();
                       }, null)
                     },
-                BoardSubmitButton(isNew: false, boardId: boardId)),
+                BoardSubmitButton(
+                  isNew: false,
+                  boardId: boardId,
+                )),
             body: (vm.post == null)
                 ? Container()
                 : SafeArea(

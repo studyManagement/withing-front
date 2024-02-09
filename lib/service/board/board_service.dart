@@ -39,9 +39,19 @@ abstract class BoardApi {
   Future<List<CommentModel>> fetchComments(
       @Path("id") int id, @Path("boardId") int boardId);
 
-// @POST('/studies/{id}/boards/{boardId}/comments')
-// Future<CommentModel> createComments(
-//     @Path("id") int id, @Path("boardId") int boardId);
+  @POST('/studies/{id}/boards/{boardId}/comments')
+  Future<CommentModel> createComments(@Path("id") int id,
+      @Path("boardId") int boardId, @Body() Map<String, dynamic> data);
+
+  @POST('/studies/{id}/boards/{boardId}/notice')
+  Future<dynamic> setNotice(@Path("id") int id,
+      @Path("boardId") int boardId);
+
+  @DELETE('/studies/{id}/boards/{boardId}/notice')
+  Future<dynamic> unsetNotice(@Path("id") int id,
+      @Path("boardId") int boardId);
+
+
 }
 
 class BoardService {
@@ -147,19 +157,49 @@ class BoardService {
     }
   }
 
-// Future<CommentModel> createComments(int studyId, int boardId) async {
-//   try {
-//     final CommentModel comment =
-//     await _boardApi.createPost(id);
-//     return comment;
-//   } on ApiException catch (e) {
-//     if (e.code == 404) {
-//       // 게시글 없음
-//       throw NoPost();
-//     }
-//     rethrow;
-//   } on NetworkException catch (e) {
-//     rethrow;
-//   }
-// }
+  Future<CommentModel> createComments(
+      int studyId, int boardId, String contents) async {
+    try {
+      final CommentModel comment = await _boardApi
+          .createComments(studyId, boardId, {'contents': contents});
+      return comment;
+    } on ApiException catch (e) {
+      debugPrint('[API]: ${e.cause}');
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+  Future<dynamic> setNotice(int studyId, int boardId) async {
+    try {
+      var response = await _boardApi.setNotice(studyId, boardId);
+      debugPrint('[API]: 공지로 등록됨');
+      return response;
+    } on ApiException catch (e) {
+      if (e.code == 404 || e.code == 400) {
+        debugPrint('[API]: ${e.cause}');
+        rethrow;
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+  Future<dynamic> unsetNotice(int studyId, int boardId) async {
+    try {
+      var response = await _boardApi.unsetNotice(studyId, boardId);
+      debugPrint('[API]: 공지 등록이 취소됨');
+      return response;
+    } on ApiException catch (e) {
+      if (e.code == 404 || e.code == 400) {
+        debugPrint('[API]: ${e.cause}');
+        rethrow;
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+
 }

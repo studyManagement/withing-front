@@ -29,17 +29,12 @@ class BoardBottomSheet extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const SizedBox(height: 26),
         GestureDetector(
-          child: Text(
-              (viewModel.post!.notice == false) ? '공지로 등록하기' : '공지 등록 취소하기',
+          child: Text(viewModel.getToSetNoticeText(),
               style: Theme.of(context).textTheme.bodySmall),
           onTap: () {
+            viewModel.setOrUnsetNotice();
             context.pop();
-            BottomToast(
-                    context: context,
-                    text: (viewModel.post!.notice == false)
-                        ? '공지로 등록되었어요.'
-                        : "공지 등록이 취소되었어요.")
-                .show();
+            BottomToast(context: context, text: viewModel.toastText()).show();
           },
         ),
         const SizedBox(height: 12),
@@ -47,7 +42,8 @@ class BoardBottomSheet extends StatelessWidget {
           child: Text('수정하기', style: Theme.of(context).textTheme.bodySmall),
           onTap: () {
             context.pop();
-            context.push('/studies/${viewModel.studyId}/boards/update/$boardId');
+            context
+                .push('/studies/${viewModel.studyId}/boards/update/$boardId');
           },
         ),
         const SizedBox(height: 12),

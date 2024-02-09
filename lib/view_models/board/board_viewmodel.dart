@@ -25,7 +25,6 @@ class BoardViewModel extends ChangeNotifier {
   BoardModel? get post => _post;
 
   bool get isValid => _isValid;
-
   bool get isDeleted => _isDeleted;
   String _title = '';
   String _contents = '';
@@ -92,9 +91,9 @@ class BoardViewModel extends ChangeNotifier {
         _post = await _service.fetchBoardInfo(_studyId!, boardId);
         boardTitle=_post!.title;
         boardContents=post!.content;
-        isValidInput(BoardInputType.boardTitle);
-        isValidInput(BoardInputType.boardContents);
         notifyListeners();
+        isValidInput(BoardInputType.boardTitle,_post!.title );
+        isValidInput(BoardInputType.boardContents,post!.content);
       } on NoPostException catch (e) {
         throw const NoPost();
       }
@@ -125,6 +124,19 @@ class BoardViewModel extends ChangeNotifier {
       return;
     }
   }
+  Future<void> createComment(int boardId) async {
+    await _service.createComments(_studyId!,boardId, _comment);
+    notifyListeners();
+  }
+
+  Future<void> setNotice(int boardId) async {
+    await _service.setNotice(_studyId!,boardId);
+    notifyListeners();
+  }
+  Future<void> unsetNotice(int boardId) async {
+    await _service.unsetNotice(_studyId!,boardId);
+    notifyListeners();
+  }
 
   set setStudyId(int studyId) {
     _studyId = studyId;
@@ -145,17 +157,40 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void isValidInput(BoardInputType type) {
+
+  void isValidInput(BoardInputType type, String value) {
     switch (type) {
       case BoardInputType.boardTitle:
-        _isValid = (_title.isNotEmpty && _contents.isNotEmpty) ? true : false;
+        _isValid = (value.isNotEmpty && _contents.isNotEmpty) ? true : false;
+        boardTitle = value;
       case BoardInputType.boardContents:
-        _isValid = (_contents.isNotEmpty && _title.isNotEmpty) ? true : false;
+        _isValid = (value.isNotEmpty && _title.isNotEmpty) ? true : false;
+        boardContents = value;
       case BoardInputType.comment:
-        _isValid = (_comment.isNotEmpty) ? true : false;
+        _isValid = (value.isNotEmpty) ? true : false;
+        comment = value;
     }
     notifyListeners();
   }
+
+  void resetPosts() {
+    posts = [];
+    _post = null;
+    hasPost = false;
+    numOfPosts = 0;
+    notifyListeners();
+  }
+
+  void setOrUnsetNotice(){
+    if(post?.notice == true){
+      unsetNotice(post!.id);
+    }
+    else{
+      setNotice(post!.id);
+    }
+    notifyListeners();
+  }
+
 
   String getHintText(BoardInputType type) {
     switch (type) {
@@ -183,11 +218,25 @@ class BoardViewModel extends ChangeNotifier {
       return '게시글 수정이 완료되었습니다.';
     }
   }
+  String getToSetNoticeText(){
+    if(post?.notice == true){
+      return '공지 등록 취소하기';
+    }
+    else{
+      return '공지로 등록하기';
+    }
 
-  void resetPosts() {
-    posts = [];
-    hasPost = false;
-    numOfPosts = 0;
-    notifyListeners();
   }
+  String toastText(){
+    if(post?.notice == true){
+      return '공지 등록이 취소되었어요.';
+    }
+    else{
+      return '공지로 등록되었어요.';
+    }
+
+  }
+
+
+
 }

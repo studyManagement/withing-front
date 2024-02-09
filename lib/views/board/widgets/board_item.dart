@@ -29,7 +29,7 @@ class BoardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        context.push('/studies/$studyId/boards/$boardId').then((value) => print('a'));
+        context.push('/studies/$studyId/boards/$boardId');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

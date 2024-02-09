@@ -129,13 +129,10 @@ class WithingApp extends StatelessWidget {
                   isNotice: true)),
           GoRoute(
               path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
-              builder: (context, state) => ChangeNotifierProvider(
-                create: (_) => BoardViewModel(getIt<BoardService>()),
-                child: BoardInfoScreen(
-                    studyId: int.parse(state.pathParameters['studyId']!),
-                    isNotice: false,
-                    boardId: int.parse(state.pathParameters['boardId']!)),
-              ))
+              builder: (context, state) => BoardInfoScreen(
+                  studyId: int.parse(state.pathParameters['studyId']!),
+                  isNotice: false,
+                  boardId: int.parse(state.pathParameters['boardId']!)))
         ]);
   }
 

@@ -35,7 +35,7 @@ class BoardHeader extends StatelessWidget{
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  Text(
-                   vm.title,
+                   vm.post!.title,
                    style: Theme.of(context).textTheme.bodyMedium,
                  ),
                  Row(
@@ -70,12 +70,11 @@ class BoardHeader extends StatelessWidget{
            ],
          ),
          const SizedBox(height:12),
-         Text(vm.contents,
+         Text(vm.post!.content,
          style: Theme.of(context).textTheme.bodySmall)
        ],
      ),
    );
 
   }
-
 }

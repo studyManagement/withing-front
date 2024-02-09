@@ -18,25 +18,30 @@ class BoardTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final BoardViewModel vm = Provider.of<BoardViewModel>(context);
     bool isTitle = (type == BoardInputType.boardTitle) ? true : false;
-    bool isNew = (initValue == null);
+    bool isNew = (initValue == null && type != BoardInputType.comment);
     TextStyle? textStyle = (isTitle)
         ? Theme.of(context).textTheme.titleSmall
         : Theme.of(context).textTheme.bodySmall;
 
     return TextFormField(
       onChanged: (value) {
-        (isTitle) ? vm.boardTitle = value : vm.boardContents = value;
-        vm.isValidInput(type);
+        vm.isValidInput(type, value);
       },
       initialValue: initValue,
       onEditingComplete: () {
-        (isNew) ? vm.createPost() : vm.updatePost(vm.post!.id);
-        WithingModal.openDialog(context, vm.getNoticeTitle(isNew),
-            vm.getNoticeContents(isNew), false, () {
-          context
-            ..pop()
-            ..pop();
-        }, () => null);
+        (type == BoardInputType.comment)
+            ? vm.createComment(vm.post!.id)
+            : (isNew)
+                ? vm.createPost()
+                : vm.updatePost(vm.post!.id);
+        if (type != BoardInputType.comment) {
+          WithingModal.openDialog(context, vm.getNoticeTitle(isNew),
+              vm.getNoticeContents(isNew), false, () {
+            context
+              ..pop()
+              ..pop();
+          }, () => null);
+        }
       },
       autofocus: false,
       cursorHeight: 20,
@@ -44,6 +49,8 @@ class BoardTextField extends StatelessWidget {
       style: textStyle,
       maxLines: null,
       decoration: InputDecoration(
+        filled: (type == BoardInputType.comment) ? true : false,
+        fillColor: AppColors.gray50,
         hintText: vm.getHintText(type),
         hintStyle: textStyle!
             .copyWith(color: AppColors.gray200, fontWeight: FontWeight.w500),

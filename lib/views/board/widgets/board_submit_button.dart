@@ -25,6 +25,9 @@ class BoardSubmitButton extends StatelessWidget {
                       context
                         ..pop()
                         ..pop();
+                      vm.resetPosts();
+                      print('resetPost');
+
                     }, null)
                   }
                 : null;
