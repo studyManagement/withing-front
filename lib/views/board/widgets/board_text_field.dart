@@ -8,33 +8,49 @@ import '../../../common/theme/app/app_colors.dart';
 
 enum BoardInputType { boardTitle, boardContents, comment }
 
-class BoardTextField extends StatelessWidget {
+class BoardTextField extends StatefulWidget {
   final BoardInputType type;
   String? initValue;
 
   BoardTextField({super.key, required this.type, this.initValue});
 
   @override
+  State<BoardTextField> createState() => _BoardTextFieldState();
+}
+
+class _BoardTextFieldState extends State<BoardTextField> {
+  TextEditingController controller = TextEditingController();
+
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final BoardViewModel vm = Provider.of<BoardViewModel>(context);
-    bool isTitle = (type == BoardInputType.boardTitle) ? true : false;
-    bool isNew = (initValue == null && type != BoardInputType.comment);
+
+    bool isTitle = (widget.type == BoardInputType.boardTitle) ? true : false;
+    bool isNew = (widget.initValue == null && widget.type != BoardInputType.comment);
     TextStyle? textStyle = (isTitle)
         ? Theme.of(context).textTheme.titleSmall
         : Theme.of(context).textTheme.bodySmall;
 
     return TextFormField(
+      controller: controller,
       onChanged: (value) {
-        vm.isValidInput(type, value);
+        vm.isValidInput(widget.type, value);
       },
-      initialValue: initValue,
+      initialValue: widget.initValue,
       onEditingComplete: () {
-        (type == BoardInputType.comment)
-            ? vm.createComment(vm.post!.id)
+        (widget.type == BoardInputType.comment)
+            ? {vm.createComment(vm.post!.id)}
             : (isNew)
                 ? vm.createPost()
                 : vm.updatePost(vm.post!.id);
-        if (type != BoardInputType.comment) {
+        if (widget.type != BoardInputType.comment) {
           WithingModal.openDialog(context, vm.getNoticeTitle(isNew),
               vm.getNoticeContents(isNew), false, () {
             context
@@ -42,6 +58,9 @@ class BoardTextField extends StatelessWidget {
               ..pop();
           }, () => null);
         }
+        setState(() {
+          controller.clear();
+        });
       },
       autofocus: false,
       cursorHeight: 20,
@@ -49,9 +68,9 @@ class BoardTextField extends StatelessWidget {
       style: textStyle,
       maxLines: null,
       decoration: InputDecoration(
-        filled: (type == BoardInputType.comment) ? true : false,
+        filled: (widget.type == BoardInputType.comment) ? true : false,
         fillColor: AppColors.gray50,
-        hintText: vm.getHintText(type),
+        hintText: vm.getHintText(widget.type),
         hintStyle: textStyle!
             .copyWith(color: AppColors.gray200, fontWeight: FontWeight.w500),
         contentPadding: const EdgeInsets.only(left: 20.0),

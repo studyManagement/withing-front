@@ -3,6 +3,7 @@ import 'package:modi/common/utils/get_created_string.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/components/gray_container.dart';
 import '../../../common/theme/app/app_colors.dart';
 class BoardHeader extends StatelessWidget{
   const BoardHeader({super.key});
@@ -18,16 +19,19 @@ class BoardHeader extends StatelessWidget{
        children: [
          Row(
            children: [
-             SizedBox(
-               width: 38,
-               height: 38,
-               child: Container(
-                 decoration: const BoxDecoration(
-                   // image 추가 필요
-                   shape: BoxShape.circle,
-                   color: AppColors.gray150,
-                 ),
-               ),
+             ClipOval(
+               child:  (vm.post!.user.profileImage != null)
+                   ? Image.network(
+                 vm.post!.user.profileImage!,
+                 width: 22,
+                 height: 22,
+                 fit: BoxFit.cover,
+                 errorBuilder: (BuildContext context, Object exception,
+                     StackTrace? stackTrace) {
+                   return const GrayContainer(size: 38);
+                 },
+               )
+                   : const GrayContainer(size: 38),
              ),
              const SizedBox(width: 12),
              Column(

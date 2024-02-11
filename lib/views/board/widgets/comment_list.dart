@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
-import 'package:modi/views/board/widgets/board_item.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/components/gray_container.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../common/utils/get_created_string.dart';
 
@@ -11,30 +11,28 @@ class BoardCommentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BoardViewModel vm = context.read<BoardViewModel>();
-    return SizedBox(
-      height: 452,
-      child: ListView.separated(
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return _CommentItem(
-            image: Container(),
-            nickname: vm.comments[index].nickname,
-            commentId: vm.comments[index].commentId,
-            content: vm.comments[index].contents,
-            createdAt:getCreatedAt(vm.comments[index].createdAt.toString()),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const Divider(
-            thickness: 1,
-            indent: 16,
-            endIndent: 16,
-            color: AppColors.gray100,
-          );
-        },
-        itemCount: vm.comments.length,
-      ),
+    final BoardViewModel vm = context.watch<BoardViewModel>();
+    return ListView.separated(
+      shrinkWrap: true,
+      primary: false,
+      itemBuilder: (context, index) {
+        return _CommentItem(
+          image: vm.comments[index].user.profileImage,
+          nickname: vm.comments[index].user.nickname,
+          commentId: vm.comments[index].id,
+          content: vm.comments[index].contents,
+          createdAt:getCreatedAt(vm.comments[index].createdAt.toString()),
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const Divider(
+          thickness: 1,
+          indent: 16,
+          endIndent: 16,
+          color: AppColors.gray100,
+        );
+      },
+      itemCount: vm.comments.length,
     );
   }
 }
@@ -44,9 +42,9 @@ class _CommentItem extends StatelessWidget {
   final String nickname;
   final String content;
   final String createdAt;
-  final Widget image;
+  final String? image;
 
-  _CommentItem(
+  const _CommentItem(
       {required this.commentId,
       required this.nickname,
       required this.content,
@@ -61,16 +59,19 @@ class _CommentItem extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 22,
-              height: 22,
-              child: Container(
-                decoration: const BoxDecoration(
-                  // image 추가 필요
-                  shape: BoxShape.circle,
-                  color: AppColors.gray150,
-                ),
-              ),
+            ClipOval(
+              child:  (image != null)
+                  ? Image.network(
+                image!,
+                width: 22,
+                height: 22,
+                fit: BoxFit.cover,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return const GrayContainer(size:22);
+                },
+              )
+                  : const GrayContainer(size: 22,),
             ),
             const SizedBox(width: 8),
             Text(

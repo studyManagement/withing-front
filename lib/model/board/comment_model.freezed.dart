@@ -20,13 +20,10 @@ CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CommentModel {
-  int get commentId => throw _privateConstructorUsedError;
-  int get userId => throw _privateConstructorUsedError;
-  int get boardId => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  UserModel get user => throw _privateConstructorUsedError;
   String get contents => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  String get nickname => throw _privateConstructorUsedError;
-  String get studyImage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,14 +37,9 @@ abstract class $CommentModelCopyWith<$Res> {
           CommentModel value, $Res Function(CommentModel) then) =
       _$CommentModelCopyWithImpl<$Res, CommentModel>;
   @useResult
-  $Res call(
-      {int commentId,
-      int userId,
-      int boardId,
-      String contents,
-      DateTime createdAt,
-      String nickname,
-      String studyImage});
+  $Res call({int id, UserModel user, String contents, DateTime createdAt});
+
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -63,27 +55,20 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? commentId = null,
-    Object? userId = null,
-    Object? boardId = null,
+    Object? id = null,
+    Object? user = null,
     Object? contents = null,
     Object? createdAt = null,
-    Object? nickname = null,
-    Object? studyImage = null,
   }) {
     return _then(_value.copyWith(
-      commentId: null == commentId
-          ? _value.commentId
-          : commentId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int,
-      boardId: null == boardId
-          ? _value.boardId
-          : boardId // ignore: cast_nullable_to_non_nullable
-              as int,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
       contents: null == contents
           ? _value.contents
           : contents // ignore: cast_nullable_to_non_nullable
@@ -92,15 +77,15 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      nickname: null == nickname
-          ? _value.nickname
-          : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
-      studyImage: null == studyImage
-          ? _value.studyImage
-          : studyImage // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res> get user {
+    return $UserModelCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -112,14 +97,10 @@ abstract class _$$CommentModelImplCopyWith<$Res>
       __$$CommentModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int commentId,
-      int userId,
-      int boardId,
-      String contents,
-      DateTime createdAt,
-      String nickname,
-      String studyImage});
+  $Res call({int id, UserModel user, String contents, DateTime createdAt});
+
+  @override
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -133,27 +114,20 @@ class __$$CommentModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? commentId = null,
-    Object? userId = null,
-    Object? boardId = null,
+    Object? id = null,
+    Object? user = null,
     Object? contents = null,
     Object? createdAt = null,
-    Object? nickname = null,
-    Object? studyImage = null,
   }) {
     return _then(_$CommentModelImpl(
-      commentId: null == commentId
-          ? _value.commentId
-          : commentId // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: null == userId
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
-              as int,
-      boardId: null == boardId
-          ? _value.boardId
-          : boardId // ignore: cast_nullable_to_non_nullable
-              as int,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
       contents: null == contents
           ? _value.contents
           : contents // ignore: cast_nullable_to_non_nullable
@@ -162,14 +136,6 @@ class __$$CommentModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      nickname: null == nickname
-          ? _value.nickname
-          : nickname // ignore: cast_nullable_to_non_nullable
-              as String,
-      studyImage: null == studyImage
-          ? _value.studyImage
-          : studyImage // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -178,35 +144,26 @@ class __$$CommentModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CommentModelImpl implements _CommentModel {
   const _$CommentModelImpl(
-      {required this.commentId,
-      required this.userId,
-      required this.boardId,
+      {required this.id,
+      required this.user,
       required this.contents,
-      required this.createdAt,
-      required this.nickname,
-      required this.studyImage});
+      required this.createdAt});
 
   factory _$CommentModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommentModelImplFromJson(json);
 
   @override
-  final int commentId;
+  final int id;
   @override
-  final int userId;
-  @override
-  final int boardId;
+  final UserModel user;
   @override
   final String contents;
   @override
   final DateTime createdAt;
-  @override
-  final String nickname;
-  @override
-  final String studyImage;
 
   @override
   String toString() {
-    return 'CommentModel(commentId: $commentId, userId: $userId, boardId: $boardId, contents: $contents, createdAt: $createdAt, nickname: $nickname, studyImage: $studyImage)';
+    return 'CommentModel(id: $id, user: $user, contents: $contents, createdAt: $createdAt)';
   }
 
   @override
@@ -214,24 +171,17 @@ class _$CommentModelImpl implements _CommentModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CommentModelImpl &&
-            (identical(other.commentId, commentId) ||
-                other.commentId == commentId) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.boardId, boardId) || other.boardId == boardId) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.contents, contents) ||
                 other.contents == contents) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.nickname, nickname) ||
-                other.nickname == nickname) &&
-            (identical(other.studyImage, studyImage) ||
-                other.studyImage == studyImage));
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, commentId, userId, boardId,
-      contents, createdAt, nickname, studyImage);
+  int get hashCode => Object.hash(runtimeType, id, user, contents, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -249,31 +199,22 @@ class _$CommentModelImpl implements _CommentModel {
 
 abstract class _CommentModel implements CommentModel {
   const factory _CommentModel(
-      {required final int commentId,
-      required final int userId,
-      required final int boardId,
+      {required final int id,
+      required final UserModel user,
       required final String contents,
-      required final DateTime createdAt,
-      required final String nickname,
-      required final String studyImage}) = _$CommentModelImpl;
+      required final DateTime createdAt}) = _$CommentModelImpl;
 
   factory _CommentModel.fromJson(Map<String, dynamic> json) =
       _$CommentModelImpl.fromJson;
 
   @override
-  int get commentId;
+  int get id;
   @override
-  int get userId;
-  @override
-  int get boardId;
+  UserModel get user;
   @override
   String get contents;
   @override
   DateTime get createdAt;
-  @override
-  String get nickname;
-  @override
-  String get studyImage;
   @override
   @JsonKey(ignore: true)
   _$$CommentModelImplCopyWith<_$CommentModelImpl> get copyWith =>

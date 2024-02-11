@@ -74,7 +74,6 @@ class _BoardInfoScreenState extends State<BoardInfoScreen> {
                         ]),
                       ),
                     ),
-                    Spacer(),
                     Divider(
                       endIndent: 0,
                       color: AppColors.gray50,

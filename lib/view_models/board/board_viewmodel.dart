@@ -25,6 +25,7 @@ class BoardViewModel extends ChangeNotifier {
   BoardModel? get post => _post;
 
   bool get isValid => _isValid;
+
   bool get isDeleted => _isDeleted;
   String _title = '';
   String _contents = '';
@@ -89,11 +90,11 @@ class BoardViewModel extends ChangeNotifier {
     if (_post == null) {
       try {
         _post = await _service.fetchBoardInfo(_studyId!, boardId);
-        boardTitle=_post!.title;
-        boardContents=post!.content;
+        boardTitle = _post!.title;
+        boardContents = post!.content;
         notifyListeners();
-        isValidInput(BoardInputType.boardTitle,_post!.title );
-        isValidInput(BoardInputType.boardContents,post!.content);
+        isValidInput(BoardInputType.boardTitle, _post!.title);
+        isValidInput(BoardInputType.boardContents, post!.content);
       } on NoPostException catch (e) {
         throw const NoPost();
       }
@@ -117,24 +118,30 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchComments(int boardId) async {
-    try {
-      comments = await _service.fetchComments(_studyId!, boardId);
-      if (comments.isNotEmpty) notifyListeners();
-    } on NoPostException catch (e) {
-      return;
+    if (comments.isEmpty) {
+      try {
+        comments = await _service.fetchComments(_studyId!, boardId);
+        if (comments.isNotEmpty) notifyListeners();
+      } on NoPostException catch (e) {
+        return;
+      }
     }
   }
+
   Future<void> createComment(int boardId) async {
-    await _service.createComments(_studyId!,boardId, _comment);
+    CommentModel response =
+        await _service.createComments(_studyId!, boardId, _comment);
+    updateComments = response;
     notifyListeners();
   }
 
   Future<void> setNotice(int boardId) async {
-    await _service.setNotice(_studyId!,boardId);
+    await _service.setNotice(_studyId!, boardId);
     notifyListeners();
   }
+
   Future<void> unsetNotice(int boardId) async {
-    await _service.unsetNotice(_studyId!,boardId);
+    await _service.unsetNotice(_studyId!, boardId);
     notifyListeners();
   }
 
@@ -157,6 +164,11 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  set updateComments(CommentModel newCommnet) {
+    comments.add(newCommnet);
+    comment = '';
+    notifyListeners();
+  }
 
   void isValidInput(BoardInputType type, String value) {
     switch (type) {
@@ -181,16 +193,14 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setOrUnsetNotice(){
-    if(post?.notice == true){
+  void setOrUnsetNotice() {
+    if (post?.notice == true) {
       unsetNotice(post!.id);
-    }
-    else{
+    } else {
       setNotice(post!.id);
     }
     notifyListeners();
   }
-
 
   String getHintText(BoardInputType type) {
     switch (type) {
@@ -218,25 +228,20 @@ class BoardViewModel extends ChangeNotifier {
       return '게시글 수정이 완료되었습니다.';
     }
   }
-  String getToSetNoticeText(){
-    if(post?.notice == true){
+
+  String getToSetNoticeText() {
+    if (post?.notice == true) {
       return '공지 등록 취소하기';
-    }
-    else{
+    } else {
       return '공지로 등록하기';
     }
-
   }
-  String toastText(){
-    if(post?.notice == true){
+
+  String toastText() {
+    if (post?.notice == true) {
       return '공지 등록이 취소되었어요.';
-    }
-    else{
+    } else {
       return '공지로 등록되었어요.';
     }
-
   }
-
-
-
 }
