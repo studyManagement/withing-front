@@ -10,16 +10,16 @@ enum BoardInputType { boardTitle, boardContents, comment }
 
 class BoardTextField extends StatefulWidget {
   final BoardInputType type;
-  String? initValue;
+  final String? initValue;
 
-  BoardTextField({super.key, required this.type, this.initValue});
+  const BoardTextField({super.key, required this.type, this.initValue});
 
   @override
   State<BoardTextField> createState() => _BoardTextFieldState();
 }
 
 class _BoardTextFieldState extends State<BoardTextField> {
-  TextEditingController controller = TextEditingController();
+  late TextEditingController controller;
 
 
   @override
@@ -29,9 +29,14 @@ class _BoardTextFieldState extends State<BoardTextField> {
   }
 
   @override
+  void initState(){
+    super.initState();
+    controller = TextEditingController(text: widget.initValue);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final BoardViewModel vm = Provider.of<BoardViewModel>(context);
-
     bool isTitle = (widget.type == BoardInputType.boardTitle) ? true : false;
     bool isNew = (widget.initValue == null && widget.type != BoardInputType.comment);
     TextStyle? textStyle = (isTitle)
@@ -43,7 +48,6 @@ class _BoardTextFieldState extends State<BoardTextField> {
       onChanged: (value) {
         vm.isValidInput(widget.type, value);
       },
-      initialValue: widget.initValue,
       onEditingComplete: () {
         (widget.type == BoardInputType.comment)
             ? {vm.createComment(vm.post!.id)}
