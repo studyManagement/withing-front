@@ -18,7 +18,11 @@ abstract class BoardApi {
 
   @GET('/studies/{id}/boards')
   Future<List<BoardModel>> fetchBoardList(
-      @Path("id") int id, @Query("isNotice") bool isNotice);
+      @Path("id") int id,
+      @Query("isNotice") bool isNotice,
+      @Query("size") int size,
+      @Query("page") int page,
+      );
 
   @GET('/studies/{id}/boards/{boardId}')
   Future<BoardModel> fetchBoardInfo(
@@ -59,10 +63,10 @@ class BoardService {
 
   BoardService(this._boardApi);
 
-  Future<List<BoardModel>> fetchBoardList(int studyId, bool isNotice) async {
+  Future<List<BoardModel>> fetchBoardList(int studyId, bool isNotice, int size, int page) async {
     try {
       final List<BoardModel> notices =
-          await _boardApi.fetchBoardList(studyId, isNotice);
+          await _boardApi.fetchBoardList(studyId, isNotice, size, page);
       return notices;
     } on ApiException catch (e) {
       if (e.code == 404) {

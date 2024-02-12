@@ -3,7 +3,6 @@ import 'package:modi/model/board/comment_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
 import 'package:modi/views/board/widgets/no_post.dart';
-import '../../common/requester/api_exception.dart';
 import '../../model/board/board_model.dart';
 import '../../model/board/post_exception.dart';
 import 'model/post.dart';
@@ -14,11 +13,16 @@ class BoardViewModel extends ChangeNotifier {
   BoardViewModel(this._service);
 
   int? _studyId;
+  bool _isLoading = false;
   bool _isValid = false;
   bool _isDeleted = false;
+  bool hasNext = true;
   bool hasPost = false;
-  int numOfPosts = 0;
+
   List<BoardModel> posts = [];
+  List<BoardModel> notices = [];
+  List<BoardModel> allPost = [];
+
   List<CommentModel> comments = [];
   BoardModel? _post;
 
@@ -39,52 +43,45 @@ class BoardViewModel extends ChangeNotifier {
 
   int? get studyId => _studyId;
 
+  Future<void> scrollListener(bool isNotice) async {
+    if (_isLoading) return;
+    _isLoading = true;
+    if (isNotice == true) {
+      await fetchNotices();
+    } else {
+      await fetchBoardList();
+    }
+    _isLoading = false;
+  }
+
   Future<void> fetchNotices() async {
-    if (posts.isEmpty) {
-      try {
-        posts = await _service.fetchBoardList(_studyId!, true);
-        if (posts.isNotEmpty) {
-          hasPost = true;
-          numOfPosts = posts.length;
-          notifyListeners();
-        }
-      } on ApiException catch (e) {
-        if (e.code == 404) {
-          // 공지사항이 없는 경우 처리
-          hasPost = false;
-          numOfPosts = 0;
-        }
-        if (e.code == 400) {
-          // 접근 권한 x
-        }
-      }
+    List<BoardModel> newNotices = [];
+    int page = notices.isEmpty ? 1 : (notices.length ~/ 100) + 1;
+    if (hasNext == true) {
+      newNotices = await _service.fetchBoardList(_studyId!, true, 100, page);
+      if (newNotices.length < 100) hasNext = false;
+    }
+    if (newNotices.isNotEmpty) {
+      notices.addAll(newNotices);
+      hasPost = true;
+      notifyListeners();
     }
   }
 
   Future<void> fetchBoardList() async {
-    if (posts.isEmpty) {
-      try {
-        posts = await _service.fetchBoardList(_studyId!, true);
-        List<BoardModel> _posts =
-            await _service.fetchBoardList(_studyId!, false);
-        posts.addAll(_posts);
-        if (posts.isNotEmpty) {
-          hasPost = true;
-          numOfPosts = posts.length;
-          notifyListeners();
-        }
-      } on ApiException catch (e) {
-        if (e.code == 404) {
-          // 공지사항이 없는 경우 처리
-          hasPost = false;
-          numOfPosts = 0;
-        }
-        if (e.code == 400) {
-          // 접근 권한 x
-        }
-      }
+    List<BoardModel> newPosts = [];
+    int page = posts.isEmpty ? 1 : (posts.length ~/ 100) + 1;
+    if (hasNext == true) {
+      newPosts = await _service.fetchBoardList(_studyId!, false, 100, page);
+      if(newPosts.length < 100) hasNext = false;
+    }
+    if (newPosts.isNotEmpty) {
+      posts.addAll(newPosts);
+      hasPost = true;
+      notifyListeners();
     }
   }
+
 
   Future<void> fetchBoardInfo(int boardId) async {
     if (_post == null) {
@@ -108,7 +105,8 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> createPost() async {
-    await _service.createPost(_studyId!, Post(_title, _contents));
+    BoardModel boardModel = await _service.createPost(_studyId!, Post(_title, _contents));
+    updateBoardList(boardModel);
     notifyListeners();
   }
 
@@ -131,7 +129,7 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> createComment(int boardId) async {
     CommentModel response =
         await _service.createComments(_studyId!, boardId, _comment);
-    updateComments = response;
+    updateComments(response);
     notifyListeners();
   }
 
@@ -164,9 +162,23 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set updateComments(CommentModel newCommnet) {
+  void updateComments(CommentModel newCommnet) {
+    // 댓글 입력 시
     comments.add(newCommnet);
     comment = '';
+    notifyListeners();
+  }
+
+  void updateBoardList(BoardModel newPost) {
+    // 게시글 작성
+    posts.add(newPost);
+    notifyListeners();
+  }
+
+  void updateBoardInfo(int boardId) {
+    // 게시판 상세 화면
+    _post = null;
+    fetchBoardInfo(boardId);
     notifyListeners();
   }
 
@@ -182,14 +194,6 @@ class BoardViewModel extends ChangeNotifier {
         _isValid = (value.isNotEmpty) ? true : false;
         comment = value;
     }
-    notifyListeners();
-  }
-
-  void resetPosts() {
-    posts = [];
-    _post = null;
-    hasPost = false;
-    numOfPosts = 0;
     notifyListeners();
   }
 

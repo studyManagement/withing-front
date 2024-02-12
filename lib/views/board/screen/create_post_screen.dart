@@ -31,7 +31,17 @@ class CreatePostScreen extends StatelessWidget {
                         context..pop()..pop();
                       }, null)
                     },
-                const BoardSubmitButton(isNew: true)),
+                BoardSubmitButton(
+                  isNew: true,
+                  onSubmitted: (){
+                    (vm.isValid)
+                        ? {
+                       vm.createPost(),
+                      context.pop(),
+                    }
+                        : null;
+                  },
+                )),
             body: SafeArea(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),

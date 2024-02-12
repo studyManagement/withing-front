@@ -23,8 +23,6 @@ class Notice extends StatelessWidget {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
     boardViewModel.setStudyId = studyId;
     boardViewModel.fetchNotices();
-    List<BoardModel> notices = boardViewModel.posts;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -58,11 +56,11 @@ class Notice extends StatelessWidget {
         ),
         (!isMember)
             ? const StudyNoticeException(isPrivate: true)
-            : (boardViewModel.posts.isEmpty)
+            : (boardViewModel.notices.isEmpty)
                 ? Container()
                 : (boardViewModel.hasPost)
                     ? _NoticeCarousel(
-                        notices: notices,
+                       viewModel: boardViewModel,
                         studyId: studyId,
                       )
                     : const StudyNoticeException(isPrivate: false)
@@ -73,9 +71,9 @@ class Notice extends StatelessWidget {
 
 class _NoticeCarousel extends StatefulWidget {
   final int studyId;
-  final List<BoardModel> notices;
+  final BoardViewModel viewModel;
 
-  const _NoticeCarousel({required this.studyId, required this.notices});
+  const _NoticeCarousel({required this.studyId,required this.viewModel});
 
   @override
   State<_NoticeCarousel> createState() => _NoticeCarouselState();
@@ -88,13 +86,15 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    int numOfNotice = widget.notices.length;
+    int numOfNotice = widget.viewModel.notices.length;
     return Column(
       children: [
         CarouselSlider.builder(
+          carouselController: carouselController,
           options: CarouselOptions(
             enableInfiniteScroll: false,
             onPageChanged: ((index, reason) {
+              widget.viewModel.fetchNotices();
               setState(() {
                 currentIndex = index;
               });
@@ -106,7 +106,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           itemBuilder: (context, index, realIndex) {
             final int startIndex = index * 3;
             final int endIndex = (index + 1) * 3;
-            final List<BoardModel> sublist = widget.notices.sublist(
+            final List<BoardModel> sublist = widget.viewModel.notices.sublist(
               startIndex,
               endIndex > numOfNotice ? numOfNotice : endIndex,
             );
@@ -126,11 +126,7 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
       return BoardItem(
         studyId: studyId,
         isOnlyNotice: true,
-        boardId: sublist[index].id,
-        title: sublist[index].title,
-        notice: sublist[index].notice,
-        content: sublist[index].content,
-        createdAt: sublist[index].createdAt.toString(),
+        boardItem: sublist[index],
       );
     },
     separatorBuilder: (context, index) {

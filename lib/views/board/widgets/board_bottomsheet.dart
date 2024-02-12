@@ -64,7 +64,7 @@ class BoardBottomSheet extends StatelessWidget {
                         ..pop()
                         ..pop()
                         ..pop(),
-                      viewModel.deletePost(boardId)
+                      viewModel.deletePost(boardId),
                     },
                 null);
           },

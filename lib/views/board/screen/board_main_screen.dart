@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/model/board/board_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_list.dart';
 import 'package:modi/views/board/widgets/no_post.dart';
@@ -20,16 +21,16 @@ class BoardMainScreen extends StatefulWidget {
 }
 
 class _BoardMainScreenState extends State<BoardMainScreen> {
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => BoardViewModel(getIt<BoardService>()),
       child: Consumer<BoardViewModel>(builder: (context, vm, child) {
         vm.setStudyId = widget.studyId;
-        if (widget.isNotice == true) {
-          vm.fetchNotices();
-        } else {
-          vm.fetchBoardList();
+        vm.fetchNotices();
+        if (widget.isNotice == false) {
+         vm.fetchBoardList();
         }
         return Scaffold(
             appBar: (widget.isNotice == true)
@@ -39,26 +40,15 @@ class _BoardMainScreenState extends State<BoardMainScreen> {
                     '게시판',
                     null,
                     IconButton(
-                        onPressed: () async {
-                          await context
-                              .push('/studies/${vm.studyId}/boards/create');
-                          setState(() {
-                            updateScreen(vm);
-                          });
+                        onPressed: () {
+                          context.push('/studies/${vm.studyId}/boards/create');
                         },
                         icon: const Icon(Icons.add))),
             body: SafeArea(
-                child: (vm.posts.isEmpty)
-                    ? Container()
-                    : (vm.hasPost)
-                        ? const BoardList()
+                child: (vm.hasPost)
+                        ? BoardList(list: (widget.isNotice) ? vm.notices : vm.notices+vm.posts)
                         : const NoPost()));
       }),
     );
-  }
-  void updateScreen(BoardViewModel vm){
-    setState(() {
-      vm.resetPosts();
-    });
   }
 }

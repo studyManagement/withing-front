@@ -13,6 +13,7 @@ _$BoardModelImpl _$$BoardModelImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       content: json['content'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      numOfComments: json['numOfComments'] as int,
       notice: json['notice'] as bool,
     );
 
@@ -23,5 +24,6 @@ Map<String, dynamic> _$$BoardModelImplToJson(_$BoardModelImpl instance) =>
       'title': instance.title,
       'content': instance.content,
       'createdAt': instance.createdAt.toIso8601String(),
+      'numOfComments': instance.numOfComments,
       'notice': instance.notice,
     };

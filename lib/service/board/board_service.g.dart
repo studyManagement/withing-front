@@ -22,9 +22,15 @@ class _BoardApi implements BoardApi {
   Future<List<BoardModel>> fetchBoardList(
     int id,
     bool isNotice,
+    int size,
+    int page,
   ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'isNotice': isNotice};
+    final queryParameters = <String, dynamic>{
+      r'isNotice': isNotice,
+      r'size': size,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio

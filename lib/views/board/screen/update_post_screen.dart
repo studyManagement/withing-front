@@ -39,6 +39,15 @@ class UpdatePostScreen extends StatelessWidget {
                 BoardSubmitButton(
                   isNew: false,
                   boardId: boardId,
+                  onSubmitted: (){
+                    (vm.isValid)
+                        ? {
+                      vm.updatePost(boardId!),
+                      context.pop(),
+                      vm.updateBoardInfo(boardId!)
+                    }
+                        : null;
+                  },
                 )),
             body: (vm.post == null)
                 ? Container()

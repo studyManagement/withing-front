@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
@@ -42,7 +43,9 @@ class _BoardInfoScreenState extends State<BoardInfoScreen> {
               appBar: boardAppBar(
                   context,
                   '',
-                  null,
+                  (){
+                    context.pop();
+                    },
                   (isWriter) ?
                   IconButton(
                       onPressed: (){
