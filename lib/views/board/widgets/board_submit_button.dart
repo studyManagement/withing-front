@@ -7,15 +7,13 @@ import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class BoardSubmitButton extends StatelessWidget {
-  final bool isNew;
-  final int? boardId;
   final Function()? onSubmitted;
 
-  const BoardSubmitButton({super.key, required this.isNew, this.boardId, required this.onSubmitted});
+  const BoardSubmitButton({super.key, required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
-    final BoardViewModel vm = Provider.of<BoardViewModel>(context);
+    final BoardViewModel vm = context.watch<BoardViewModel>();
     return TextButton(
       onPressed: onSubmitted,
       child: Text("등록",

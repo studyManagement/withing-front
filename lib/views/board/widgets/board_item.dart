@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/model/board/board_model.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../common/utils/get_created_string.dart';
 
@@ -21,7 +22,7 @@ class BoardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/studies/$studyId/boards/${boardItem.id}');
+       context.push('/studies/$studyId/boards/${boardItem.id}');
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

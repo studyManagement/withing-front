@@ -10,9 +10,14 @@ enum BoardInputType { boardTitle, boardContents, comment }
 
 class BoardTextField extends StatefulWidget {
   final BoardInputType type;
-  final String? initValue;
+  final bool isNew;
+  final BoardViewModel viewModel;
 
-  const BoardTextField({super.key, required this.type, this.initValue});
+  const BoardTextField(
+      {super.key,
+      required this.type,
+      required this.isNew,
+      required this.viewModel});
 
   @override
   State<BoardTextField> createState() => _BoardTextFieldState();
@@ -20,7 +25,8 @@ class BoardTextField extends StatefulWidget {
 
 class _BoardTextFieldState extends State<BoardTextField> {
   late TextEditingController controller;
-
+  late String? initValue;
+  late bool isTitle;
 
   @override
   void dispose() {
@@ -29,16 +35,19 @@ class _BoardTextFieldState extends State<BoardTextField> {
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    controller = TextEditingController(text: widget.initValue);
+    isTitle = (widget.type == BoardInputType.boardTitle) ? true : false;
+    initValue = widget.isNew
+        ? null
+        : isTitle
+            ? widget.viewModel.post!.title
+            : widget.viewModel.post!.content;
+    controller = TextEditingController(text: initValue);
   }
 
   @override
   Widget build(BuildContext context) {
-    final BoardViewModel vm = Provider.of<BoardViewModel>(context);
-    bool isTitle = (widget.type == BoardInputType.boardTitle) ? true : false;
-    bool isNew = (widget.initValue == null && widget.type != BoardInputType.comment);
     TextStyle? textStyle = (isTitle)
         ? Theme.of(context).textTheme.titleSmall
         : Theme.of(context).textTheme.bodySmall;
@@ -46,25 +55,30 @@ class _BoardTextFieldState extends State<BoardTextField> {
     return TextFormField(
       controller: controller,
       onChanged: (value) {
-        vm.isValidInput(widget.type, value);
+        widget.viewModel.isValidInput(widget.type, value);
       },
       onEditingComplete: () {
         (widget.type == BoardInputType.comment)
-            ? {vm.createComment(vm.post!.id)}
-            : (isNew)
-                ? vm.createPost()
-                : vm.updatePost(vm.post!.id);
+            ? {widget.viewModel.createComment(widget.viewModel.post!.id)}
+            : (widget.isNew)
+                ? widget.viewModel.createPost()
+                : widget.viewModel.updatePost(widget.viewModel.post!.id);
         if (widget.type != BoardInputType.comment) {
-          WithingModal.openDialog(context, vm.getNoticeTitle(isNew),
-              vm.getNoticeContents(isNew), false, () {
+          WithingModal.openDialog(
+              context,
+              widget.viewModel.getNoticeTitle(widget.isNew),
+              widget.viewModel.getNoticeContents(widget.isNew),
+              false, () {
             context
               ..pop()
               ..pop();
           }, () => null);
         }
-        setState(() {
-          controller.clear();
-        });
+        if (widget.type == BoardInputType.comment) {
+          setState(() {
+            controller.clear();
+          });
+        }
       },
       autofocus: false,
       cursorHeight: 20,
@@ -74,7 +88,7 @@ class _BoardTextFieldState extends State<BoardTextField> {
       decoration: InputDecoration(
         filled: (widget.type == BoardInputType.comment) ? true : false,
         fillColor: AppColors.gray50,
-        hintText: vm.getHintText(widget.type),
+        hintText: widget.viewModel.getHintText(widget.type),
         hintStyle: textStyle!
             .copyWith(color: AppColors.gray200, fontWeight: FontWeight.w500),
         contentPadding: const EdgeInsets.only(left: 20.0),

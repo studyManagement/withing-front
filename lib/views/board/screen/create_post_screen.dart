@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/gray100_divider.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_submit_button.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
@@ -11,51 +12,49 @@ import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/board_appbar.dart';
 
 class CreatePostScreen extends StatelessWidget {
-  final int studyId;
+  final BoardViewModel viewModel;
 
-  const CreatePostScreen({super.key, required this.studyId});
+  const CreatePostScreen({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (_) => BoardViewModel(getIt<BoardService>()),
-        child: Consumer<BoardViewModel>(builder: (context, vm, child) {
-          vm.setStudyId = studyId;
-          return Scaffold(
+    return Scaffold(
             appBar: boardAppBar(
                 context,
                 '',
                 () => {
                       WithingModal.openDialog(context, '글 작성을 취소하시겠어요?',
                           '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
-                        context..pop()..pop();
+                        context
+                          ..pop()
+                          ..pop();
                       }, null)
                     },
-                BoardSubmitButton(
-                  isNew: true,
-                  onSubmitted: (){
-                    (vm.isValid)
-                        ? {
-                       vm.createPost(),
-                      context.pop(),
-                    }
-                        : null;
-                  },
+                ChangeNotifierProvider.value(
+                  value: viewModel,
+                  child: BoardSubmitButton(
+                    onSubmitted: () {
+                      (viewModel.isValid)
+                          ? {
+                              viewModel.createPost(),
+                              context.pop(),
+                            }
+                          : null;
+                    },
+                  ),
                 )),
             body: SafeArea(
                 child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  BoardTextField(type: BoardInputType.boardTitle),
-                  const Divider(
-                    color: AppColors.gray100,
-                  ),
-                  BoardTextField(type: BoardInputType.boardContents)
+                  BoardTextField(type: BoardInputType.boardTitle, isNew: true,viewModel: viewModel),
+                  const Gray100Divider(),
+                  BoardTextField(type: BoardInputType.boardContents, isNew: true, viewModel: viewModel)
                 ],
               ),
             )),
-          );
-        }));
+    );
+
   }
 }

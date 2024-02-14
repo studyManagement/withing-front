@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/bottom_toast.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/views/board/screen/update_post_screen.dart';
 
 import '../../../common/modal/withing_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
@@ -42,8 +43,9 @@ class BoardBottomSheet extends StatelessWidget {
           child: Text('수정하기', style: Theme.of(context).textTheme.bodySmall),
           onTap: () {
             context.pop();
-            context
-                .push('/studies/${viewModel.studyId}/boards/update/$boardId');
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdatePostScreen(viewModel: viewModel)));
+            // context
+            //     .push('/studies/${viewModel.studyId}/boards/update/$boardId');
           },
         ),
         const SizedBox(height: 12),
@@ -60,11 +62,11 @@ class BoardBottomSheet extends StatelessWidget {
                 '',
                 true,
                 () => {
-                      context
-                        ..pop()
-                        ..pop()
-                        ..pop(),
                       viewModel.deletePost(boardId),
+                  context
+                    ..pop()
+                    ..pop()
+                    ..pop()
                     },
                 null);
           },

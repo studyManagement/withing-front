@@ -15,7 +15,7 @@ class BoardViewModel extends ChangeNotifier {
   int? _studyId;
   bool _isLoading = false;
   bool _isValid = false;
-  bool _isDeleted = false;
+  bool _isFirst = true;
   bool hasNext = true;
   bool hasPost = false;
 
@@ -30,7 +30,7 @@ class BoardViewModel extends ChangeNotifier {
 
   bool get isValid => _isValid;
 
-  bool get isDeleted => _isDeleted;
+  bool get isFirst => _isFirst;
   String _title = '';
   String _contents = '';
   String _comment = '';
@@ -58,7 +58,7 @@ class BoardViewModel extends ChangeNotifier {
     List<BoardModel> newNotices = [];
     int page = notices.isEmpty ? 1 : (notices.length ~/ 100) + 1;
     if (hasNext == true) {
-      newNotices = await _service.fetchBoardList(_studyId!, true, 100, page);
+      newNotices = await _service.fetchBoardList(_studyId!, true, 200, page);
       if (newNotices.length < 100) hasNext = false;
     }
     if (newNotices.isNotEmpty) {
@@ -72,8 +72,8 @@ class BoardViewModel extends ChangeNotifier {
     List<BoardModel> newPosts = [];
     int page = posts.isEmpty ? 1 : (posts.length ~/ 100) + 1;
     if (hasNext == true) {
-      newPosts = await _service.fetchBoardList(_studyId!, false, 100, page);
-      if(newPosts.length < 100) hasNext = false;
+      newPosts = await _service.fetchBoardList(_studyId!, false, 200, page);
+      if (newPosts.length < 100) hasNext = false;
     }
     if (newPosts.isNotEmpty) {
       posts.addAll(newPosts);
@@ -81,7 +81,6 @@ class BoardViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 
   Future<void> fetchBoardInfo(int boardId) async {
     if (_post == null) {
@@ -100,24 +99,30 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> deletePost(int boardId) async {
     await _service.deletePost(_studyId!, boardId);
-    _isDeleted = true;
+   // _isDeleted = true;
+    posts.removeWhere((element) => element.id == boardId);
     notifyListeners();
   }
 
   Future<void> createPost() async {
-    BoardModel boardModel = await _service.createPost(_studyId!, Post(_title, _contents));
-    updateBoardList(boardModel);
+    BoardModel boardModel =
+        await _service.createPost(_studyId!, Post(_title, _contents));
+    posts.add(boardModel);
+    //  addToBoardList(boardModel);
     notifyListeners();
   }
 
   Future<void> updatePost(int boardId) async {
-    await _service.updatePost(_studyId!, boardId, Post(_title, contents));
+    BoardModel boardModel =
+        await _service.updatePost(_studyId!, boardId, Post(_title, _contents));
+    _post = boardModel;
     notifyListeners();
   }
 
   Future<void> fetchComments(int boardId) async {
-    if (comments.isEmpty) {
+    if (comments.isEmpty && _isFirst == true) {
       try {
+        _isFirst = false;
         comments = await _service.fetchComments(_studyId!, boardId);
         if (comments.isNotEmpty) notifyListeners();
       } on NoPostException catch (e) {
@@ -127,9 +132,10 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> createComment(int boardId) async {
-    CommentModel response =
+    CommentModel newComment =
         await _service.createComments(_studyId!, boardId, _comment);
-    updateComments(response);
+    comments.add(newComment);
+    comment = '';
     notifyListeners();
   }
 
@@ -162,27 +168,13 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateComments(CommentModel newCommnet) {
-    // 댓글 입력 시
-    comments.add(newCommnet);
-    comment = '';
-    notifyListeners();
-  }
-
-  void updateBoardList(BoardModel newPost) {
-    // 게시글 작성
+  void addToBoardList(BoardModel newPost) {
     posts.add(newPost);
     notifyListeners();
   }
 
-  void updateBoardInfo(int boardId) {
-    // 게시판 상세 화면
-    _post = null;
-    fetchBoardInfo(boardId);
-    notifyListeners();
-  }
-
   void isValidInput(BoardInputType type, String value) {
+    // print('유효성 검사');
     switch (type) {
       case BoardInputType.boardTitle:
         _isValid = (value.isNotEmpty && _contents.isNotEmpty) ? true : false;
@@ -194,7 +186,7 @@ class BoardViewModel extends ChangeNotifier {
         _isValid = (value.isNotEmpty) ? true : false;
         comment = value;
     }
-    notifyListeners();
+    if (type != BoardInputType.comment) notifyListeners();
   }
 
   void setOrUnsetNotice() {

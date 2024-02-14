@@ -110,18 +110,18 @@ class WithingApp extends StatelessWidget {
               path: '/studies/:studyId/boards', // 게시판
               builder: (context, state) => BoardMainScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
-                  isNotice: false)),
-          GoRoute(
-              path: '/studies/:studyId/boards/create', // 게시판 글 작성
-              builder: (context, state) => CreatePostScreen(
-                    studyId: int.parse(state.pathParameters['studyId']!),
-                  )),
-          GoRoute(
-              path: '/studies/:studyId/boards/update/:boardId', // 게시판 글 수정
-              builder: (context, state) => UpdatePostScreen(
-                studyId: int.parse(state.pathParameters['studyId']!),
-                boardId: int.parse(state.pathParameters['boardId']!),
-              )),
+                   isNotice: false)),
+          // GoRoute(
+          //     path: '/studies/:studyId/boards/create', // 게시판 글 작성
+          //     builder: (context, state) => CreatePostScreen(
+          //           studyId: int.parse(state.pathParameters['studyId']!),
+          //          )),
+          // GoRoute(
+          //     path: '/studies/:studyId/boards/update/:boardId', // 게시판 글 수정
+          //     builder: (context, state) => UpdatePostScreen(
+          //       studyId: int.parse(state.pathParameters['studyId']!),
+          //       boardId: int.parse(state.pathParameters['boardId']!),
+          //     )),
           GoRoute(
               path: '/studies/:studyId/boards/notice', // 공지 전체보기
               builder: (context, state) => BoardMainScreen(
