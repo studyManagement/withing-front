@@ -17,6 +17,12 @@ class BoardMainScreen extends StatelessWidget {
   const BoardMainScreen(
       {super.key, required this.studyId, required this.isNotice});
 
+  void initCreateScreenState(BoardViewModel viewModel){
+    viewModel.isValid=false;
+    viewModel.boardContents='';
+    viewModel.boardTitle = '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -36,12 +42,12 @@ class BoardMainScreen extends StatelessWidget {
                     null,
                     IconButton(
                         onPressed: () {
+                        initCreateScreenState(vm);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      CreatePostScreen(viewModel: vm)));
-                        //  vm.updateBoardList();
+                                      CreatePostScreen(viewModel: vm))).then((_) => vm.refreshBoardList());
                         },
                         icon: const Icon(Icons.add))),
             body: SafeArea(

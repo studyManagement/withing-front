@@ -43,7 +43,12 @@ class BoardBottomSheet extends StatelessWidget {
           child: Text('수정하기', style: Theme.of(context).textTheme.bodySmall),
           onTap: () {
             context.pop();
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdatePostScreen(viewModel: viewModel)));
+            viewModel.isValid = true;
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        UpdatePostScreen(viewModel: viewModel)));
             // context
             //     .push('/studies/${viewModel.studyId}/boards/update/$boardId');
           },
@@ -63,10 +68,10 @@ class BoardBottomSheet extends StatelessWidget {
                 true,
                 () => {
                       viewModel.deletePost(boardId),
-                  context
-                    ..pop()
-                    ..pop()
-                    ..pop()
+                      context
+                        ..pop()
+                        ..pop()
+                        ..pop()
                     },
                 null);
           },

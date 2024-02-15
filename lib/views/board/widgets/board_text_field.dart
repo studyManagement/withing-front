@@ -58,26 +58,21 @@ class _BoardTextFieldState extends State<BoardTextField> {
         widget.viewModel.isValidInput(widget.type, value);
       },
       onEditingComplete: () {
-        (widget.type == BoardInputType.comment)
-            ? {widget.viewModel.createComment(widget.viewModel.post!.id)}
-            : (widget.isNew)
-                ? widget.viewModel.createPost()
-                : widget.viewModel.updatePost(widget.viewModel.post!.id);
-        if (widget.type != BoardInputType.comment) {
-          WithingModal.openDialog(
-              context,
-              widget.viewModel.getNoticeTitle(widget.isNew),
-              widget.viewModel.getNoticeContents(widget.isNew),
-              false, () {
-            context
-              ..pop()
-              ..pop();
-          }, () => null);
-        }
-        if (widget.type == BoardInputType.comment) {
-          setState(() {
-            controller.clear();
-          });
+        if(widget.viewModel.isValid) {
+          (widget.type == BoardInputType.comment)
+              ? {widget.viewModel.createComment(widget.viewModel.post!.id)}
+              : (widget.isNew)
+              ? widget.viewModel.createPost()
+              : widget.viewModel.updatePost(widget.viewModel.post!.id);
+          if (widget.type != BoardInputType.comment) {
+            context.pop();
+            widget.viewModel.refreshBoardList();
+          }
+          if (widget.type == BoardInputType.comment) {
+            setState(() {
+              controller.clear();
+            });
+          }
         }
       },
       autofocus: false,

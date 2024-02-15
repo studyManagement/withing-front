@@ -33,7 +33,6 @@ class BoardInfoScreen extends StatelessWidget {
         vm.setStudyId = studyId;
         vm.fetchBoardInfo(boardId);
         vm.fetchComments(boardId);
-
         bool isWriter = vm.post?.user.id == Authentication.instance.userId;
         return Scaffold(
             appBar: boardAppBar(context, '', () {

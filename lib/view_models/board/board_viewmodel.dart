@@ -105,18 +105,20 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> createPost() async {
-    BoardModel boardModel =
-        await _service.createPost(_studyId!, Post(_title, _contents));
-    posts.add(boardModel);
-    //  addToBoardList(boardModel);
-    notifyListeners();
+    if(_isValid) {
+      BoardModel boardModel =
+      await _service.createPost(_studyId!, Post(_title, _contents));
+      notifyListeners();
+    }
   }
 
   Future<void> updatePost(int boardId) async {
-    BoardModel boardModel =
-        await _service.updatePost(_studyId!, boardId, Post(_title, _contents));
-    _post = boardModel;
-    notifyListeners();
+    if(_isValid) {
+      BoardModel boardModel =
+      await _service.updatePost(_studyId!, boardId, Post(_title, _contents));
+      _post = boardModel;
+      notifyListeners();
+    }
   }
 
   Future<void> fetchComments(int boardId) async {
@@ -132,11 +134,13 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> createComment(int boardId) async {
-    CommentModel newComment =
-        await _service.createComments(_studyId!, boardId, _comment);
-    comments.add(newComment);
-    comment = '';
-    notifyListeners();
+    if (_isValid && _comment.trim().isNotEmpty) {
+      CommentModel newComment =
+      await _service.createComments(_studyId!, boardId, _comment);
+      comments.add(newComment);
+      comment = '';
+      notifyListeners();
+    }
   }
 
   Future<void> setNotice(int boardId) async {
@@ -168,23 +172,33 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addToBoardList(BoardModel newPost) {
-    posts.add(newPost);
+  set isValid(bool value){
+    _isValid = value;
     notifyListeners();
   }
+
+void refreshBoardList(){
+    posts = [];
+    notices = [];
+    hasPost = false;
+    hasNext = true;
+}
 
   void isValidInput(BoardInputType type, String value) {
     // print('유효성 검사');
     switch (type) {
       case BoardInputType.boardTitle:
-        _isValid = (value.isNotEmpty && _contents.isNotEmpty) ? true : false;
+        _isValid = (value.trim().isNotEmpty && _contents.trim().isNotEmpty) ? true : false;
         boardTitle = value;
+
       case BoardInputType.boardContents:
-        _isValid = (value.isNotEmpty && _title.isNotEmpty) ? true : false;
+        _isValid = (value.trim().isNotEmpty && _title.trim().isNotEmpty) ? true : false;
         boardContents = value;
+
       case BoardInputType.comment:
-        _isValid = (value.isNotEmpty) ? true : false;
+        _isValid = (value.trim().isNotEmpty) ? true : false;
         comment = value;
+
     }
     if (type != BoardInputType.comment) notifyListeners();
   }
