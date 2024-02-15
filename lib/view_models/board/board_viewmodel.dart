@@ -83,60 +83,53 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchBoardInfo(int boardId) async {
-    if (_post == null) {
-      try {
-        _post = await _service.fetchBoardInfo(_studyId!, boardId);
-        boardTitle = _post!.title;
-        boardContents = post!.content;
-        notifyListeners();
-        isValidInput(BoardInputType.boardTitle, _post!.title);
-        isValidInput(BoardInputType.boardContents, post!.content);
-      } on NoPostException catch (e) {
-        throw const NoPost();
-      }
+    try {
+      _post = await _service.fetchBoardInfo(_studyId!, boardId);
+      boardTitle = _post!.title;
+      boardContents = post!.content;
+      notifyListeners();
+      isValidInput(BoardInputType.boardTitle, _post!.title);
+      isValidInput(BoardInputType.boardContents, post!.content);
+    } on NoPostException catch (e) {
+      throw const NoPost();
     }
   }
 
   Future<void> deletePost(int boardId) async {
     await _service.deletePost(_studyId!, boardId);
-   // _isDeleted = true;
-    posts.removeWhere((element) => element.id == boardId);
     notifyListeners();
   }
 
   Future<void> createPost() async {
-    if(_isValid) {
-      BoardModel boardModel =
+    if (_isValid) {
       await _service.createPost(_studyId!, Post(_title, _contents));
       notifyListeners();
     }
   }
 
   Future<void> updatePost(int boardId) async {
-    if(_isValid) {
-      BoardModel boardModel =
-      await _service.updatePost(_studyId!, boardId, Post(_title, _contents));
+    if (_isValid) {
+      BoardModel boardModel = await _service.updatePost(
+          _studyId!, boardId, Post(_title, _contents));
       _post = boardModel;
       notifyListeners();
     }
   }
 
   Future<void> fetchComments(int boardId) async {
-    if (comments.isEmpty && _isFirst == true) {
-      try {
-        _isFirst = false;
-        comments = await _service.fetchComments(_studyId!, boardId);
-        if (comments.isNotEmpty) notifyListeners();
-      } on NoPostException catch (e) {
-        return;
-      }
+    try {
+      _isFirst = false;
+      comments = await _service.fetchComments(_studyId!, boardId);
+      if (comments.isNotEmpty) notifyListeners();
+    } on NoPostException catch (e) {
+      return;
     }
   }
 
   Future<void> createComment(int boardId) async {
     if (_isValid && _comment.trim().isNotEmpty) {
       CommentModel newComment =
-      await _service.createComments(_studyId!, boardId, _comment);
+          await _service.createComments(_studyId!, boardId, _comment);
       comments.add(newComment);
       comment = '';
       notifyListeners();
@@ -145,11 +138,13 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> setNotice(int boardId) async {
     await _service.setNotice(_studyId!, boardId);
+    refreshBoardList();
     notifyListeners();
   }
 
   Future<void> unsetNotice(int boardId) async {
     await _service.unsetNotice(_studyId!, boardId);
+    refreshBoardList();
     notifyListeners();
   }
 
@@ -172,35 +167,9 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set isValid(bool value){
+  set isValid(bool value) {
     _isValid = value;
     notifyListeners();
-  }
-
-void refreshBoardList(){
-    posts = [];
-    notices = [];
-    hasPost = false;
-    hasNext = true;
-}
-
-  void isValidInput(BoardInputType type, String value) {
-    // print('유효성 검사');
-    switch (type) {
-      case BoardInputType.boardTitle:
-        _isValid = (value.trim().isNotEmpty && _contents.trim().isNotEmpty) ? true : false;
-        boardTitle = value;
-
-      case BoardInputType.boardContents:
-        _isValid = (value.trim().isNotEmpty && _title.trim().isNotEmpty) ? true : false;
-        boardContents = value;
-
-      case BoardInputType.comment:
-        _isValid = (value.trim().isNotEmpty) ? true : false;
-        comment = value;
-
-    }
-    if (type != BoardInputType.comment) notifyListeners();
   }
 
   void setOrUnsetNotice() {
@@ -209,7 +178,35 @@ void refreshBoardList(){
     } else {
       setNotice(post!.id);
     }
-    notifyListeners();
+  }
+
+  void refreshBoardList() {
+    posts = [];
+    notices = [];
+    hasPost = false;
+    hasNext = true;
+  }
+
+  void isValidInput(BoardInputType type, String value) {
+    // print('유효성 검사');
+    switch (type) {
+      case BoardInputType.boardTitle:
+        _isValid = (value.trim().isNotEmpty && _contents.trim().isNotEmpty)
+            ? true
+            : false;
+        boardTitle = value;
+
+      case BoardInputType.boardContents:
+        _isValid = (value.trim().isNotEmpty && _title.trim().isNotEmpty)
+            ? true
+            : false;
+        boardContents = value;
+
+      case BoardInputType.comment:
+        _isValid = (value.trim().isNotEmpty) ? true : false;
+        comment = value;
+    }
+    if (type != BoardInputType.comment) notifyListeners();
   }
 
   String getHintText(BoardInputType type) {

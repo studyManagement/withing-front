@@ -15,25 +15,26 @@ import '../widgets/comment_input_box.dart';
 import '../widgets/comment_list.dart';
 
 class BoardInfoScreen extends StatelessWidget {
-  final int studyId;
-  final bool isNotice;
   final int boardId;
+  final BoardViewModel viewModel;
 
   const BoardInfoScreen(
       {super.key,
       required this.boardId,
-      required this.studyId,
-      required this.isNotice});
+      required this.viewModel});
+
+  void loadBoardInfo(){
+    viewModel.fetchBoardInfo(boardId);
+    viewModel.fetchComments(boardId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BoardViewModel(getIt<BoardService>()),
-      child: Consumer<BoardViewModel>(builder: (context, vm, child) {
-        vm.setStudyId = studyId;
-        vm.fetchBoardInfo(boardId);
-        vm.fetchComments(boardId);
-        bool isWriter = vm.post?.user.id == Authentication.instance.userId;
+    loadBoardInfo();
+    return ChangeNotifierProvider.value(
+     value: viewModel,
+      child: Consumer<BoardViewModel>(builder: (context, consumer, child) {
+        bool isWriter = consumer.post?.user.id == Authentication.instance.userId;
         return Scaffold(
             appBar: boardAppBar(context, '', () {
               context.pop();
@@ -45,12 +46,12 @@ class BoardInfoScreen extends StatelessWidget {
                               context: context,
                               builder: (context) {
                                 return BoardBottomSheet(
-                                    viewModel: vm, boardId: boardId);
+                                    viewModel: consumer, boardId: boardId);
                               });
                         },
                         icon: const Icon(Icons.more_horiz))
                     : null),
-            body: (vm.post == null)
+            body: (consumer.post == null)
                 ? Container()
                 : SafeArea(
                     child: Column(
@@ -70,7 +71,7 @@ class BoardInfoScreen extends StatelessWidget {
                           ),
                         ),
                         const Gray50Divider(),
-                        CommentInputBox(viewModel: vm),
+                        CommentInputBox(viewModel:viewModel),
                       ],
                     ),
                   ));

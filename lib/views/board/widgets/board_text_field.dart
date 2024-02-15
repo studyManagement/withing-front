@@ -67,8 +67,7 @@ class _BoardTextFieldState extends State<BoardTextField> {
           if (widget.type != BoardInputType.comment) {
             context.pop();
             widget.viewModel.refreshBoardList();
-          }
-          if (widget.type == BoardInputType.comment) {
+          } else {
             setState(() {
               controller.clear();
             });

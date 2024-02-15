@@ -47,7 +47,7 @@ class BoardMainScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      CreatePostScreen(viewModel: vm))).then((_) => vm.refreshBoardList());
+                                      CreatePostScreen(viewModel: vm)));
                         },
                         icon: const Icon(Icons.add))),
             body: SafeArea(

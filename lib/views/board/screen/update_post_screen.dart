@@ -36,6 +36,7 @@ class UpdatePostScreen extends StatelessWidget {
                       ? {
                     viewModel.updatePost(viewModel.post!.id),
                     context.pop(),
+                    viewModel.refreshBoardList()
                   }
                       : null;
                 },

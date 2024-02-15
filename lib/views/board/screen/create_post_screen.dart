@@ -37,6 +37,7 @@ class CreatePostScreen extends StatelessWidget {
                           ? {
                               viewModel.createPost(),
                               context.pop(),
+                        viewModel.refreshBoardList()
                             }
                           : null;
                     },

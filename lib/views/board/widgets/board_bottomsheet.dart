@@ -35,6 +35,7 @@ class BoardBottomSheet extends StatelessWidget {
           onTap: () {
             viewModel.setOrUnsetNotice();
             context.pop();
+            // viewModel.refreshBoardList();
             BottomToast(context: context, text: viewModel.toastText()).show();
           },
         ),
@@ -49,8 +50,6 @@ class BoardBottomSheet extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) =>
                         UpdatePostScreen(viewModel: viewModel)));
-            // context
-            //     .push('/studies/${viewModel.studyId}/boards/update/$boardId');
           },
         ),
         const SizedBox(height: 12),
@@ -68,6 +67,7 @@ class BoardBottomSheet extends StatelessWidget {
                 true,
                 () => {
                       viewModel.deletePost(boardId),
+                      viewModel.refreshBoardList(),
                       context
                         ..pop()
                         ..pop()

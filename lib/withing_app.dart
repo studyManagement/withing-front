@@ -127,12 +127,12 @@ class WithingApp extends StatelessWidget {
               builder: (context, state) => BoardMainScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
                   isNotice: true)),
-          GoRoute(
-              path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
-              builder: (context, state) => BoardInfoScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!),
-                  isNotice: false,
-                  boardId: int.parse(state.pathParameters['boardId']!)))
+          // GoRoute(
+          //     path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
+          //     builder: (context, state) => BoardInfoScreen(
+          //         studyId: int.parse(state.pathParameters['studyId']!),
+          //         isNotice: false,
+          //         boardId: int.parse(state.pathParameters['boardId']!)))
         ]);
   }
 
