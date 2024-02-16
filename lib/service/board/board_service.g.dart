@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'study_service.dart';
+part of 'board_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'study_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _StudyApi implements StudyApi {
-  _StudyApi(
+class _BoardApi implements BoardApi {
+  _BoardApi(
     this._dio, {
     this.baseUrl,
   });
@@ -19,20 +19,29 @@ class _StudyApi implements StudyApi {
   String? baseUrl;
 
   @override
-  Future<List<StudyListModel>> fetchMyStudies(String key) async {
+  Future<List<BoardModel>> fetchBoardList(
+    int id,
+    bool isNotice,
+    int size,
+    int page,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'key': key};
+    final queryParameters = <String, dynamic>{
+      r'isNotice': isNotice,
+      r'size': size,
+      r'page': page,
+    };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<StudyListModel>>(Options(
+        .fetch<List<dynamic>>(_setStreamType<List<BoardModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/studies',
+              '/studies/${id}/boards',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -42,164 +51,29 @@ class _StudyApi implements StudyApi {
               baseUrl,
             ))));
     var value = _result.data!
-        .map((dynamic i) => StudyListModel.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => BoardModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
 
   @override
-  Future<RegularMeetingModel> fetchRegularMeeting(int id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<RegularMeetingModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${id}/regular_meeting',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = RegularMeetingModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StudyModel> fetchStudyInfo(int id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${id}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StudyCategory> fetchStudyCategory(int id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyCategory>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${id}/categories',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = StudyCategory.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StudyModel> finishStudy(int id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${id}/finish',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StudyModel> deleteStudy(int id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${id}',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<StudyModel> switchLeader(
+  Future<BoardModel> fetchBoardInfo(
     int id,
-    int userId,
+    int boardId,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
-      method: 'PATCH',
+        .fetch<Map<String, dynamic>>(_setStreamType<BoardModel>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/studies/${id}/members/${userId}',
+              '/studies/${id}/boards/${boardId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -208,20 +82,19 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
+    final value = BoardModel.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<dynamic> forceToExitMember(
+  Future<dynamic> deletePost(
     int id,
-    Map<String, dynamic> data,
+    int boardId,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(data);
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'DELETE',
       headers: _headers,
@@ -229,7 +102,7 @@ class _StudyApi implements StudyApi {
     )
         .compose(
           _dio.options,
-          '/studies/${id}/admin/members',
+          '/studies/${id}/boards/${boardId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -243,7 +116,7 @@ class _StudyApi implements StudyApi {
   }
 
   @override
-  Future<dynamic> joinStudy(
+  Future<BoardModel> createPost(
     int id,
     Map<String, dynamic> data,
   ) async {
@@ -252,14 +125,169 @@ class _StudyApi implements StudyApi {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data);
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BoardModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/boards',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BoardModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BoardModel> updatePost(
+    int id,
+    int boardId,
+    Map<String, dynamic> data,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<BoardModel>(Options(
       method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/boards/${boardId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BoardModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<CommentModel>> fetchComments(
+    int id,
+    int boardId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<CommentModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/boards/${boardId}/comments',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => CommentModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<CommentModel> createComments(
+    int id,
+    int boardId,
+    Map<String, dynamic> data,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<CommentModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/boards/${boardId}/comments',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = CommentModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<dynamic> setNotice(
+    int id,
+    int boardId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          '/studies/${id}/members',
+          '/studies/${id}/boards/${boardId}/notice',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
+  Future<dynamic> unsetNotice(
+    int id,
+    int boardId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/studies/${id}/boards/${boardId}/notice',
           queryParameters: queryParameters,
           data: _data,
         )

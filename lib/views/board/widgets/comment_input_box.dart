@@ -1,29 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../../common/theme/app/app_colors.dart';
+import 'package:modi/views/board/widgets/board_text_field.dart';
+import '../../../view_models/board/board_viewmodel.dart';
 
 class CommentInputBox extends StatelessWidget{
-  const CommentInputBox({super.key});
+  final BoardViewModel viewModel;
+  const CommentInputBox({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context){
     return Container(
       height:94,
       padding: const EdgeInsets.symmetric(vertical:10,horizontal:16),
-      child: TextField(
-        autofocus: false,
-        cursorHeight: 20,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: AppColors.gray50,
-          hintText: '댓글을 남겨주세요.',
-          hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.gray300),
-          contentPadding: const EdgeInsets.only(left: 20.0),
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
+      child: BoardTextField(type: BoardInputType.comment,viewModel: viewModel, isNew: true
       ),
     );
   }

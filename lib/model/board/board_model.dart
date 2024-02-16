@@ -12,6 +12,7 @@ class BoardModel with _$BoardModel {
     required String title,
     required String content,
     required DateTime createdAt,
+    required int numOfComments,
     required bool notice,
   }) = _BoardModel;
 

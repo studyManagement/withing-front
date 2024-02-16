@@ -14,6 +14,7 @@ class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
 
+
   final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
 
   StudyView? _study;
@@ -74,28 +75,28 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchBoards(int studyId, bool isNotice) async {
-    if (posts.isEmpty) {
-      try {
-        posts = await _service.fetchBoards(studyId, isNotice);
-        if (posts.isNotEmpty) {
-          hasPost = true;
-          numOfPosts = posts.length;
-          notifyListeners();
-        }
-      } on ApiException catch (e) {
-        if (e.code == 404) {
-          // 공지사항이 없는 경우 처리
-          hasPost = false;
-          numOfPosts = 0;
-        }
-
-        if (e.code == 400) {
-          // 접근 권한 x
-        }
-      }
-    }
-  }
+  // Future<void> fetchBoards(int studyId, bool isNotice) async {
+  //   if (posts.isEmpty) {
+  //     try {
+  //       posts = await _service.fetchBoards(studyId, isNotice);
+  //       if (posts.isNotEmpty) {
+  //         hasPost = true;
+  //         numOfPosts = posts.length;
+  //         notifyListeners();
+  //       }
+  //     } on ApiException catch (e) {
+  //       if (e.code == 404) {
+  //         // 공지사항이 없는 경우 처리
+  //         hasPost = false;
+  //         numOfPosts = 0;
+  //       }
+  //
+  //       if (e.code == 400) {
+  //         // 접근 권한 x
+  //       }
+  //     }
+  //   }
+  // }
 
   Future<void> finishStudy(int studyId) async {
     await _service.finishStudy(studyId);
