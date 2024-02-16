@@ -2,10 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authenticator.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/authenticator/authentication.dart';
+import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
 import '../../board/widgets/board_item.dart';
@@ -14,62 +16,64 @@ class Notice extends StatelessWidget {
   final int studyId;
   final bool isMember;
 
-  const Notice({super.key, required this.studyId,required this.isMember});
+  const Notice({super.key, required this.studyId, required this.isMember});
 
   @override
   Widget build(BuildContext context) {
-    StudyViewModel vm = context.read<StudyViewModel>();
-    vm.fetchBoards(studyId, true);
-    List<BoardModel> notices = vm.posts;
+    BoardViewModel boardViewModel = context.watch<BoardViewModel>();
+    boardViewModel.setStudyId = studyId;
+    boardViewModel.fetchNotices();
     return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(
-        children: [
-          Text(
-            '공지',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-          const Spacer(),
-          GestureDetector(
-            onTap: () {
-              context.push('/studies/${vm.study!.id}/boards/notice');
-            },
-            child: Offstage(
-              offstage: (vm.hasPost && !isMember) ? false : true,
-              child: Text(
-                '전체보기',
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.gray400,
-                      fontSize: 13.0,
-                    ),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: [
+              Text(
+                '공지',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-            ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  context.push('/studies/$studyId/boards/notice');
+                },
+                child: Offstage(
+                  offstage: (boardViewModel.hasPost && isMember) ? false : true,
+                  child: Text(
+                    '전체보기',
+                    textAlign: TextAlign.right,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.gray400,
+                          fontSize: 13.0,
+                        ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ),
-    (!isMember)
-        ? const StudyNoticeException(isPrivate: true)
-        : (vm.hasPost)
-            ? _NoticeCarousel(
-                notices: notices,
-                studyId: vm.study!.id,
-              )
-            : const StudyNoticeException(isPrivate: false)
-          ],
-        );
+        ),
+        (!isMember)
+            ? const StudyNoticeException(isPrivate: true)
+            : (boardViewModel.notices.isEmpty)
+                ? Container()
+                : (boardViewModel.hasPost)
+                    ? _NoticeCarousel(
+                       viewModel: boardViewModel,
+                        studyId: studyId,
+                      )
+                    : const StudyNoticeException(isPrivate: false)
+      ],
+    );
   }
 }
 
 class _NoticeCarousel extends StatefulWidget {
   final int studyId;
-  final List<BoardModel> notices;
+  final BoardViewModel viewModel;
 
-  const _NoticeCarousel({required this.studyId, required this.notices});
+  const _NoticeCarousel({required this.studyId,required this.viewModel});
 
   @override
   State<_NoticeCarousel> createState() => _NoticeCarouselState();
@@ -82,14 +86,15 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    int numOfNotice = widget.notices.length;
-
+    int numOfNotice = widget.viewModel.notices.length;
     return Column(
       children: [
         CarouselSlider.builder(
+          carouselController: carouselController,
           options: CarouselOptions(
             enableInfiniteScroll: false,
             onPageChanged: ((index, reason) {
+              widget.viewModel.fetchNotices();
               setState(() {
                 currentIndex = index;
               });
@@ -101,7 +106,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           itemBuilder: (context, index, realIndex) {
             final int startIndex = index * 3;
             final int endIndex = (index + 1) * 3;
-            final List<BoardModel> sublist = widget.notices.sublist(
+            final List<BoardModel> sublist = widget.viewModel.notices.sublist(
               startIndex,
               endIndex > numOfNotice ? numOfNotice : endIndex,
             );
@@ -121,19 +126,11 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
       return BoardItem(
         studyId: studyId,
         isOnlyNotice: true,
-        boardId: sublist[index].id,
-        title: sublist[index].title,
-        notice: sublist[index].notice,
-        createdAt: sublist[index].createdAt.toString(),
+        boardItem: sublist[index],
       );
     },
     separatorBuilder: (context, index) {
-      return const Divider(
-        thickness: 1,
-        indent: 16,
-        endIndent: 16,
-        color: AppColors.gray100,
-      );
+      return const Gray100Divider();
     },
     itemCount: sublist.length,
   );

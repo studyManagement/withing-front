@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modi/common/requester/request_builder.dart';
+import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/signin/signin_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 
@@ -41,6 +42,9 @@ void setupDependencyInjection() {
   getIt.registerLazySingleton<StudyImageCreateApi>(
     () => StudyImageCreateApi(getIt<Dio>(instanceName: 'client')),
   );
+  getIt.registerLazySingleton<BoardApi>(
+        () => BoardApi(getIt<Dio>(instanceName: 'client')),
+  );
 
   /// Service
   getIt.registerLazySingleton<SignupService>(
@@ -63,5 +67,8 @@ void setupDependencyInjection() {
   );
   getIt.registerLazySingleton<StudyImageCreateService>(
     () => StudyImageCreateService(getIt<StudyImageCreateApi>()),
+  );
+  getIt.registerLazySingleton<BoardService>(
+      () => BoardService(getIt<BoardApi>()),
   );
 }
