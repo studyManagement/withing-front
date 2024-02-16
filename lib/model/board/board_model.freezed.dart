@@ -25,6 +25,7 @@ mixin _$BoardModel {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  int get numOfComments => throw _privateConstructorUsedError;
   bool get notice => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $BoardModelCopyWith<$Res> {
       String title,
       String content,
       DateTime createdAt,
+      int numOfComments,
       bool notice});
 
   $UserModelCopyWith<$Res> get user;
@@ -68,6 +70,7 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
     Object? title = null,
     Object? content = null,
     Object? createdAt = null,
+    Object? numOfComments = null,
     Object? notice = null,
   }) {
     return _then(_value.copyWith(
@@ -91,6 +94,10 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      numOfComments: null == numOfComments
+          ? _value.numOfComments
+          : numOfComments // ignore: cast_nullable_to_non_nullable
+              as int,
       notice: null == notice
           ? _value.notice
           : notice // ignore: cast_nullable_to_non_nullable
@@ -121,6 +128,7 @@ abstract class _$$BoardModelImplCopyWith<$Res>
       String title,
       String content,
       DateTime createdAt,
+      int numOfComments,
       bool notice});
 
   @override
@@ -143,6 +151,7 @@ class __$$BoardModelImplCopyWithImpl<$Res>
     Object? title = null,
     Object? content = null,
     Object? createdAt = null,
+    Object? numOfComments = null,
     Object? notice = null,
   }) {
     return _then(_$BoardModelImpl(
@@ -166,6 +175,10 @@ class __$$BoardModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      numOfComments: null == numOfComments
+          ? _value.numOfComments
+          : numOfComments // ignore: cast_nullable_to_non_nullable
+              as int,
       notice: null == notice
           ? _value.notice
           : notice // ignore: cast_nullable_to_non_nullable
@@ -183,6 +196,7 @@ class _$BoardModelImpl implements _BoardModel {
       required this.title,
       required this.content,
       required this.createdAt,
+      required this.numOfComments,
       required this.notice});
 
   factory _$BoardModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -199,11 +213,13 @@ class _$BoardModelImpl implements _BoardModel {
   @override
   final DateTime createdAt;
   @override
+  final int numOfComments;
+  @override
   final bool notice;
 
   @override
   String toString() {
-    return 'BoardModel(id: $id, user: $user, title: $title, content: $content, createdAt: $createdAt, notice: $notice)';
+    return 'BoardModel(id: $id, user: $user, title: $title, content: $content, createdAt: $createdAt, numOfComments: $numOfComments, notice: $notice)';
   }
 
   @override
@@ -217,13 +233,15 @@ class _$BoardModelImpl implements _BoardModel {
             (identical(other.content, content) || other.content == content) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.numOfComments, numOfComments) ||
+                other.numOfComments == numOfComments) &&
             (identical(other.notice, notice) || other.notice == notice));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, user, title, content, createdAt, notice);
+  int get hashCode => Object.hash(
+      runtimeType, id, user, title, content, createdAt, numOfComments, notice);
 
   @JsonKey(ignore: true)
   @override
@@ -246,6 +264,7 @@ abstract class _BoardModel implements BoardModel {
       required final String title,
       required final String content,
       required final DateTime createdAt,
+      required final int numOfComments,
       required final bool notice}) = _$BoardModelImpl;
 
   factory _BoardModel.fromJson(Map<String, dynamic> json) =
@@ -261,6 +280,8 @@ abstract class _BoardModel implements BoardModel {
   String get content;
   @override
   DateTime get createdAt;
+  @override
+  int get numOfComments;
   @override
   bool get notice;
   @override

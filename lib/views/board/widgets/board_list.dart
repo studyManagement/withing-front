@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
+import '../../../view_models/board/board_viewmodel.dart';
 import 'board_item.dart';
 
 class BoardList extends StatelessWidget {
-  const BoardList({super.key});
+  List<BoardModel>? list;
+  BoardList({super.key, this.list});
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.read<StudyViewModel>();
-    List<BoardModel> list = vm.posts;
+    final scrollController = ScrollController();
+    final vm = context.watch<BoardViewModel>();
 
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        return BoardItem(
-          studyId: vm.study!.id,
-          isOnlyNotice: false,
-          nickname: list[index].user.nickname,
-          notice: list[index].notice,
-          boardId: list[index].id,
-          title: list[index].title,
-          content: list[index].content,
-          createdAt: list[index].createdAt.toString(),
-        );
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification notification) {
+        if (notification.metrics.pixels ==
+            notification.metrics.maxScrollExtent) {
+          vm.scrollListener(false);
+        }
+        return true;
       },
-      separatorBuilder: (context, index) {
-        return const Divider(
-          thickness: 1,
-          indent: 16,
-          endIndent: 16,
-          color: AppColors.gray100,
-        );
-      },
-      itemCount: list.length,
+      child: ListView.separated(
+        controller: scrollController,
+        itemBuilder: (context, index) {
+          return BoardItem(
+            studyId: vm.studyId!,
+            isOnlyNotice: false,
+            boardItem: list![index],
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider(
+            thickness: 1,
+            indent: 16,
+            endIndent: 16,
+            color: AppColors.gray100,
+          );
+        },
+        itemCount: list!.length,
+      ),
     );
   }
 }
