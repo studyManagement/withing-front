@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/model/board/board_model.dart';
+import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/views/board/screen/board_info_screen.dart';
+import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
+import '../../../common/utils/get_created_string.dart';
 
 class BoardItem extends StatelessWidget {
   final int studyId;
   final bool isOnlyNotice;
-  final int boardId;
-  final bool notice;
-  final String title;
-  final String? content;
-  final String? nickname;
-  final String createdAt;
+  final BoardModel boardItem;
 
-  const BoardItem(
-      {super.key,
-      required this.studyId,
-      required this.isOnlyNotice,
-      required this.boardId,
-      required this.notice,
-      required this.title,
-      this.content,
-      this.nickname,
-      required this.createdAt});
+  const BoardItem({
+    super.key,
+    required this.studyId,
+    required this.isOnlyNotice,
+    required this.boardItem,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<BoardViewModel>();
     return InkWell(
       onTap: () {
-        context.go('/studies/$studyId/boards/$boardId');
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            BoardInfoScreen(boardId: boardItem.id,
+                viewModel: viewModel)));
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -35,66 +34,84 @@ class BoardItem extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              (isOnlyNotice) ?
-              Offstage(
-                offstage: (isNew(createdAt)) ? false : true,
+              (isOnlyNotice)
+                  ? Offstage(
+                offstage: (isNew(boardItem.createdAt.toString()))
+                    ? false
+                    : true,
                 child: Container(
                   margin: const EdgeInsets.only(right: 10),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
                       color: AppColors.red100,
                       borderRadius: BorderRadius.circular(4)),
                   child: Text(
                     '신규',
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .labelLarge
                         ?.copyWith(color: AppColors.red400),
                   ),
                 ),
-              ) :   Offstage(
-                offstage: (notice) ? false : true,
+              )
+                  : Offstage(
+                offstage: (boardItem.notice) ? false : true,
                 child: Padding(
-                  padding: const EdgeInsets.only(right:4.0),
-                  child: Image.asset('asset/notice_pin.png', width: 32, height: 32),
+                  padding: const EdgeInsets.only(right: 4.0),
+                  child: Image.asset('asset/notice_pin.png',
+                      width: 16, height: 16),
                 ),
               ),
               Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium,
+                boardItem.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleMedium,
               ),
             ],
           ),
           const SizedBox(height: 4),
           Offstage(
-            offstage: (content == null) ? true : false,
+            offstage: (isOnlyNotice == true) ? true : false,
             child: Text(
-              content!,
-              style: Theme.of(context)
+              boardItem.content,
+              style: Theme
+                  .of(context)
                   .textTheme
                   .bodySmall
                   ?.copyWith(color: AppColors.gray800, fontSize: 13.0),
             ),
           ),
-          Text(
-            getCreatedAt(createdAt),
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
+          Row(
+            children: [
+              Text(
+                getCreatedAt(boardItem.createdAt.toString()),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
+              ),
+              const Spacer(),
+              if(isOnlyNotice == false) Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Image.asset('asset/comment.png', width: 16, height: 16),
+              ),
+              if(isOnlyNotice == false) Text(boardItem.numOfComments.toString(),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AppColors.gray400, fontSize: 13.0))
+            ],
           ),
         ]),
       ),
     );
   }
-}
-
-String getCreatedAt(String createdAt) {
-  createdAt = createdAt.substring(0, 16);
-  createdAt = createdAt.replaceAll('-', '. ');
-  createdAt = createdAt.replaceAll('T', '. ');
-  return createdAt;
 }
 
 bool isNew(String createdAt) {

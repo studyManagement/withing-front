@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/service/study/study_service.dart';
-import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:modi/model/board/board_model.dart';
+import 'package:modi/service/board/board_service.dart';
+import 'package:modi/views/board/screen/create_post_screen.dart';
 import 'package:modi/views/board/widgets/board_list.dart';
 import 'package:modi/views/board/widgets/no_post.dart';
 import 'package:provider/provider.dart';
-
 import '../../../di/injection.dart';
+import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/board_appbar.dart';
 
 class BoardMainScreen extends StatelessWidget {
@@ -16,26 +17,45 @@ class BoardMainScreen extends StatelessWidget {
   const BoardMainScreen(
       {super.key, required this.studyId, required this.isNotice});
 
+  void initCreateScreenState(BoardViewModel viewModel){
+    viewModel.isValid=false;
+    viewModel.boardContents='';
+    viewModel.boardTitle = '';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: boardAppBar(
-          context,
-          '게시판',
-          null,
-          IconButton(
-              onPressed: () {
-                context.push('/studies/$studyId/boards/create');
-              },
-              icon: const Icon(Icons.add))),
-      body: ChangeNotifierProvider(
-        create: (_) => StudyViewModel(getIt<StudyService>()),
-        child: Consumer<StudyViewModel>(builder: (context, data, child) {
-          data.fetchBoards(studyId, false);
-          return SafeArea(
-              child: (data.hasPost) ? const BoardList() : const NoPost());
-        }),
-      ),
+    return ChangeNotifierProvider(
+      create: (_) => BoardViewModel(getIt<BoardService>()),
+      child: Consumer<BoardViewModel>(builder: (context, vm, child) {
+        vm.setStudyId = studyId;
+        vm.fetchNotices();
+        if (isNotice == false) {
+          vm.fetchBoardList();
+        }
+        return Scaffold(
+            appBar: (isNotice == true)
+                ? boardAppBar(context, '공지', null, null)
+                : boardAppBar(
+                    context,
+                    '게시판',
+                    null,
+                    IconButton(
+                        onPressed: () {
+                        initCreateScreenState(vm);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CreatePostScreen(viewModel: vm)));
+                        },
+                        icon: const Icon(Icons.add))),
+            body: SafeArea(
+                child: (vm.hasPost)
+                    ? BoardList(
+                        list: (isNotice) ? vm.notices : vm.notices + vm.posts)
+                    : const NoPost()));
+      }),
     );
   }
 }
