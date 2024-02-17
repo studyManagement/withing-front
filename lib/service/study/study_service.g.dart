@@ -272,6 +272,36 @@ class _StudyApi implements StudyApi {
     return value;
   }
 
+  @override
+  Future<StudyModel> setMeetingSchedule(
+    int id,
+    List<StudyMeetingSchedule> data,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = data.map((e) => e.toJson()).toList();
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/regular_meeting',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = StudyModel.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

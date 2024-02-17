@@ -136,7 +136,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                         .show();
                   }
                 } else {
-                  vm.switchLeader(widget.studyId, selectedUsers[0]);
+                  vm.switchLeader(selectedUsers[0]);
                   if (vm.isSwitched) {
                     context.pop();
                     BottomToast(context: context, text: "스터디장이 변경되었어요.").show();

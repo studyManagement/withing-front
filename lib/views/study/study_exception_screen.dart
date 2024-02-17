@@ -11,7 +11,7 @@ class StudyExceptionScreen extends StatelessWidget {
     return const Scaffold(
       appBar: StudyMainAppBar(
         studyId: -1,
-        leaderId: -1,
+        isLeader: false,
       ),
       body: SafeArea(child: Center(child: Text("해당하는 스터디 정보가 없습니다."))),
     );

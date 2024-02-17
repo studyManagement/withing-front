@@ -1,33 +1,18 @@
 import 'package:bottom_picker/bottom_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:modi/service/study/MeetingType.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
 
-class MeetingTimePicker extends StatefulWidget {
-  final String start;
-  final String end;
-  final bool isInit;
-  final Function? notifyParent;
-
-  const MeetingTimePicker({super.key, required this.start, required this.end,required this.isInit,required this.notifyParent});
-
-  @override
-  State<MeetingTimePicker> createState() => _MeetingTimePickerState();
-}
-
-class _MeetingTimePickerState extends State<MeetingTimePicker> {
-  String start = '', end = '';
-
+class MeetingTimePicker extends StatelessWidget {
+  final MeetingType type;
+  const MeetingTimePicker({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
-    if(widget.isInit){
-      start='';
-      end='';
-    }
-
+    final viewModel = context.watch<StudyViewModel>();
     return Column(
       children: [
         const SizedBox(height: 24),
@@ -58,7 +43,7 @@ class _MeetingTimePickerState extends State<MeetingTimePicker> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      showBottomPicker(context, 0);
+                      showBottomPicker(context,true,viewModel,type);
                     },
                     child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -69,7 +54,7 @@ class _MeetingTimePickerState extends State<MeetingTimePicker> {
                           borderRadius: BorderRadius.circular(6.0),
                           border: Border.all(color: AppColors.gray150),
                         ),
-                        child: Text((start == '') ? '미등록' : start,
+                        child: Text(viewModel.startTime,
                             style: Theme.of(context).textTheme.bodySmall)),
                   ),
                 ],
@@ -86,7 +71,7 @@ class _MeetingTimePickerState extends State<MeetingTimePicker> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      showBottomPicker(context, 1);
+                      showBottomPicker(context,false,viewModel,type);
                     },
                     child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -99,7 +84,7 @@ class _MeetingTimePickerState extends State<MeetingTimePicker> {
                             color: AppColors.gray150,
                           ),
                         ),
-                        child: Text((end == '') ? '미등록' : end,
+                        child: Text(viewModel.endTime,
                             style: Theme.of(context).textTheme.bodySmall)),
                   ),
                 ],
@@ -111,30 +96,15 @@ class _MeetingTimePickerState extends State<MeetingTimePicker> {
     );
   }
 
-  void showBottomPicker(BuildContext context, int flag) {
-    String selectedString = '';
+  void showBottomPicker(BuildContext context, bool isStart, StudyViewModel viewModel,MeetingType type) {
     BottomPicker.time(
       onSubmit: (time) {
-
-        if (time.hour < 12) {
-          selectedString = '오전';
-        } else {
-          selectedString = '오후';
-        }
-        time = DateFormat(" hh:mm").format(time);
-
-        setState(() {
-          if (flag == 0) {
-            start = selectedString + time.toString();
-          } else {
-            end = selectedString + time.toString();
-          }
-          widget.notifyParent!(start,end);
-        });
+        viewModel.setMeetingTime(isStart, time,type);
+        print(viewModel.meetingType);
       },
       dismissable: true,
       height: 496,
-      title: (flag == 0) ? '시작 시간' : '종료 시간',
+      title: (isStart) ? '시작 시간' : '종료 시간',
       titleStyle: Theme.of(context).textTheme.titleMedium!,
       titlePadding: const EdgeInsets.only(top: 40, bottom: 8),
       displayCloseIcon: false,

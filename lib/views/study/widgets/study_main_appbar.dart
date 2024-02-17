@@ -5,11 +5,12 @@ import '../../../common/theme/app/app_colors.dart';
 
 class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int studyId;
-  final int leaderId;
+  final bool isLeader;
   final bool? hasLike;
+  final Function()? action;
 
   const StudyMainAppBar(
-      {super.key, required this.studyId, required this.leaderId,this.hasLike});
+      {super.key, required this.studyId, required this.isLeader,this.hasLike, this.action});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -29,14 +30,14 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       actions: <Widget>[
         (hasLike == null) ? Offstage(
-          offstage: (leaderId == Authentication.instance.userId) ? false : true,
+          offstage: (isLeader) ? false : true,
           child: IconButton(
             icon: Image.asset(
               'asset/setting.png',
               width: 32,
               height: 32,
             ),
-            onPressed: () => {context.push('/studies/$studyId/manage')},
+            onPressed: action,
           ),
         ): IconButton(
       icon:(hasLike == true) ? Image.asset(
