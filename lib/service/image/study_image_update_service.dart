@@ -16,7 +16,7 @@ abstract class StudyImageUpdateApi {
   @MultiPart()
   @Headers({'Content-Type': 'multipart/form-data'})
   Future<int> update(
-    @Path("study_id") String studyId,
+    @Path("study_id") int studyId,
     @Part(name: "study_image") File image,
   );
 }
@@ -28,7 +28,7 @@ class StudyImageUpdateService {
   StudyImageUpdateService(this._api);
 
   Future<int> callCreateApi(
-    String studyId,
+    int studyId,
     File image,
   ) async {
     try {

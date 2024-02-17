@@ -48,33 +48,6 @@ class _StudyApi implements StudyApi {
   }
 
   @override
-  Future<RegularMeetingModel> fetchRegularMeeting(int id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<RegularMeetingModel>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/studies/${id}/regular_meeting',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = RegularMeetingModel.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
   Future<StudyModel> fetchStudyInfo(int id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -102,20 +75,24 @@ class _StudyApi implements StudyApi {
   }
 
   @override
-  Future<StudyCategory> fetchStudyCategory(int id) async {
+  Future<StudyModel> updateStudyInfo(
+    int id,
+    Map<String, dynamic> data,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<StudyCategory>(Options(
-      method: 'GET',
+        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/studies/${id}/categories',
+              '/studies/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -124,7 +101,7 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyCategory.fromJson(_result.data!);
+    final value = StudyModel.fromJson(_result.data!);
     return value;
   }
 

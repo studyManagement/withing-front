@@ -7,6 +7,7 @@ import 'package:modi/service/signup/signup_service.dart';
 
 import '../service/create/study_create_service.dart';
 import '../service/image/study_image_create_service.dart';
+import '../service/image/study_image_update_service.dart';
 import '../service/search/category_search_service.dart';
 import '../service/search/keyword_search_service.dart';
 import '../service/study/study_service.dart';
@@ -42,9 +43,13 @@ void setupDependencyInjection() {
   getIt.registerLazySingleton<StudyImageCreateApi>(
     () => StudyImageCreateApi(getIt<Dio>(instanceName: 'client')),
   );
+  getIt.registerLazySingleton<StudyImageUpdateApi>(
+        () => StudyImageUpdateApi(getIt<Dio>(instanceName: 'client')),
+  );
   getIt.registerLazySingleton<BoardApi>(
         () => BoardApi(getIt<Dio>(instanceName: 'client')),
   );
+
 
   /// Service
   getIt.registerLazySingleton<SignupService>(
@@ -67,6 +72,9 @@ void setupDependencyInjection() {
   );
   getIt.registerLazySingleton<StudyImageCreateService>(
     () => StudyImageCreateService(getIt<StudyImageCreateApi>()),
+  );
+  getIt.registerLazySingleton<StudyImageUpdateService>(
+        () => StudyImageUpdateService(getIt<StudyImageUpdateApi>()),
   );
   getIt.registerLazySingleton<BoardService>(
       () => BoardService(getIt<BoardApi>()),

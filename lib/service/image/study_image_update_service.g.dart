@@ -20,7 +20,7 @@ class _StudyImageUpdateApi implements StudyImageUpdateApi {
 
   @override
   Future<int> update(
-    String studyId,
+    int studyId,
     File image,
   ) async {
     const _extra = <String, dynamic>{};

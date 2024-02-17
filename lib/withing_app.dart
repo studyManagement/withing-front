@@ -6,10 +6,15 @@ import 'package:modi/common/root_tab.dart';
 import 'package:modi/common/theme/withing_theme.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/service/board/board_service.dart';
+import 'package:modi/service/create/study_create_service.dart';
+import 'package:modi/service/image/study_image_create_service.dart';
+import 'package:modi/service/image/study_image_update_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/view_models/study/create_study_viewmodel.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:modi/view_models/study/update_study_viewmodel.dart';
 import 'package:modi/views/board/screen/board_info_screen.dart';
 import 'package:modi/views/board/screen/board_main_screen.dart';
 import 'package:modi/views/board/screen/create_post_screen.dart';
@@ -99,8 +104,11 @@ class WithingApp extends StatelessWidget {
           //         studyId: int.parse(state.pathParameters['studyId']!))),
           GoRoute(
             path: '/studies/:studyId/manage/edit',
-            builder: (context, state) => StudyUpdateScreen(
-                studyId: int.parse(state.pathParameters['studyId']!)),
+            builder: (context, state) => ChangeNotifierProvider(
+              create: (_) => UpdateStudyViewModel(getIt<StudyService>(), getIt<StudyImageUpdateService>()),
+              child: StudyUpdateScreen(
+                  studyId: int.parse(state.pathParameters['studyId']!)),
+            ),
           ),
           // GoRoute(
           //   path: '/studies/:studyId/manage/regular_meeting',
