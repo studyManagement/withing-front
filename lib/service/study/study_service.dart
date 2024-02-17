@@ -12,6 +12,7 @@ import 'package:modi/service/study/StudyType.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retrofit/http.dart';
 import '../../model/board/board_model.dart';
+import '../../view_models/study/model/study_meeting_schedule.dart';
 
 part 'study_service.g.dart';
 
@@ -40,16 +41,20 @@ abstract class StudyApi {
   Future<StudyModel> deleteStudy(@Path('id') int id);
 
   @PATCH('/studies/{id}/members/{userId}')
-  Future<StudyModel> switchLeader(@Path('id') int id,
-      @Path('userId') int userId);
+  Future<StudyModel> switchLeader(
+      @Path('id') int id, @Path('userId') int userId);
 
   @DELETE('/studies/{id}/admin/members')
-  Future<dynamic> forceToExitMember(@Path('id') int id,
-      @Body() Map<String, dynamic> data);
+  Future<dynamic> forceToExitMember(
+      @Path('id') int id, @Body() Map<String, dynamic> data);
 
   @PATCH('/studies/{id}/members')
-  Future<dynamic> joinStudy(@Path('id') int id,
-      @Body() Map<String, dynamic> data);
+  Future<dynamic> joinStudy(
+      @Path('id') int id, @Body() Map<String, dynamic> data);
+
+  @POST('/studies/{id}/regular_meeting')
+  Future<StudyModel> setMeetingSchedule(
+      @Path('id') int id, @Body() List<StudyMeetingSchedule> data);
 }
 
 class StudyService {
@@ -60,7 +65,7 @@ class StudyService {
   Future<List<StudyListModel>> fetchMyStudies(StudyType studyType) async {
     try {
       final List<StudyListModel> myStudies =
-      await _studyApi.fetchMyStudies(studyType.key);
+          await _studyApi.fetchMyStudies(studyType.key);
       return myStudies;
     } on NetworkException catch (e) {
       rethrow;
@@ -95,12 +100,11 @@ class StudyService {
 
   Future<StudyCategory> fetchStudyCategory(int studyId) async {
     final StudyCategory categoryData =
-    await _studyApi.fetchStudyCategory(studyId);
+        await _studyApi.fetchStudyCategory(studyId);
 
     log('[DEBUG] ${categoryData.toString()}');
     return categoryData;
   }
-
 
   Future<StudyModel> finishStudy(int studyId) async {
     try {
@@ -165,11 +169,11 @@ class StudyService {
   Future<dynamic> forceToExitMember(int studyId, List<int> users) async {
     try {
       var response =
-      await _studyApi.forceToExitMember(studyId, {"users": users});
+          await _studyApi.forceToExitMember(studyId, {"users": users});
       return response;
     } on ApiException catch (e) {
       if (e.code == 404) {
-        throw StudyException(e.cause,e.code);
+        throw StudyException(e.cause, e.code);
       } else if (e.code == 401) {
         debugPrint('[API]: ${e.cause}');
       }
@@ -183,8 +187,8 @@ class StudyService {
     try {
       var response = await _studyApi.joinStudy(studyId, {"password": password});
       return response;
-    } on ApiException catch (e){
-      if(e.code == 400 || e.code == 404){
+    } on ApiException catch (e) {
+      if (e.code == 400 || e.code == 404) {
         debugPrint('[API]: ${e.cause}');
         throw StudyException(e.cause, e.code);
       }
@@ -193,5 +197,22 @@ class StudyService {
     }
   }
 
+  Future<StudyModel> setMeetingSchedule(
+      int studyId, List<StudyMeetingSchedule> meetingSchedules) async {
+    meetingSchedules.map((e) => e.toJson()).toList();
+    try {
+      final StudyModel study =
+          await _studyApi.setMeetingSchedule(studyId, meetingSchedules);
+      return study;
+    } on ApiException catch (e) {
+      if (e.code == 404 || e.code == 400) {
+        print(e);
+        rethrow;
+      }
+      rethrow;
+    } on NetworkException catch (e) {
+      print(e.message);
+      rethrow;
+    }
+  }
 }
-

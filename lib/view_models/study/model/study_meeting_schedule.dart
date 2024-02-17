@@ -3,16 +3,26 @@ import 'package:modi/model/study/study_meeting_schedules_model.dart';
 final List<String> WeekString = ['월', '화', '수', '목', '금', '토', '일'];
 
 class StudyMeetingSchedule {
-  int id;
+  int? id;
   int day;
   String startTime;
   String endTime;
 
   StudyMeetingSchedule(this.id, this.day, this.startTime, this.endTime);
 
+  StudyMeetingSchedule.withoutId(this.day, this.startTime, this.endTime);
+
   factory StudyMeetingSchedule.from(StudyMeetingSchedulesModel model) {
     return StudyMeetingSchedule(
         model.id, model.day, model.startTime, model.endTime);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'day': day,
+      'startTime': startTime,
+      'endTime': endTime,
+    };
   }
 
   @override
