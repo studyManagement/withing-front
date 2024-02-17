@@ -1,28 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/create/create_study_viewmodel.dart';
+import '../../../view_models/study/study_info_viewmodels.dart';
 
 enum NewStudyType {
   studyName,
   studyDescription,
 }
 
-class StudyTextField extends StatelessWidget {
+class StudyTextField extends StatefulWidget {
   final NewStudyType type;
+  final StudyInfoViewModel viewModel;
 
   const StudyTextField({
     super.key,
     required this.type,
+    required this.viewModel,
   });
 
   @override
+  State<StudyTextField> createState() => _StudyTextFieldState();
+}
+
+class _StudyTextFieldState extends State<StudyTextField> {
+  late TextEditingController controller;
+  bool isInitiated = false;
+
+  @override
+  void didUpdateWidget(StudyTextField oldWidget) {
+    if(!isInitiated && widget.viewModel.studyName.isNotEmpty) {
+      super.didUpdateWidget(oldWidget);
+      String initValue = (widget.type == NewStudyType.studyName)
+          ? widget.viewModel.studyName
+          : widget.viewModel.studyDescription;
+      if (initValue != controller.text) {
+        controller.text = initValue;
+      }
+      isInitiated = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+  @override
+  void initState(){
+    super.initState();
+    controller = TextEditingController();
+  }
+  @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<CreateStudyViewModel>(context);
-    final bool isValidation = (type == NewStudyType.studyName)
-        ? viewModel.isStudyNameError
-        : viewModel.isStudyDescriptionError;
-    final int maxLength = (type == NewStudyType.studyName) ? 20 : 65;
+    final bool isValidation = (widget.type == NewStudyType.studyName)
+        ? widget.viewModel.isStudyNameError
+        : widget.viewModel.isStudyDescriptionError;
+    final int maxLength = (widget.type == NewStudyType.studyName) ? 20 : 65;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
@@ -30,23 +62,25 @@ class StudyTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            getStudyTitle(type),
+            getStudyTitle(widget.type),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.gray500,
                 ),
           ),
           TextField(
+            controller: controller,
+            style: Theme.of(context).textTheme.bodyMedium,
             onChanged: (value) =>
-                viewModel.checkStudyNameAndDescription(type, value),
+                widget.viewModel.checkStudyNameAndDescription(widget.type, value),
             cursorHeight: 16,
             cursorWidth: 1.5,
             cursorColor: AppColors.blue500,
             decoration: InputDecoration(
-              hintText: getHintText(type),
+              hintText: getHintText(widget.type),
               hintStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: AppColors.gray200,
                   ),
-              errorText: getErrorText(type, isValidation),
+              errorText: getErrorText(widget.type, isValidation),
               errorStyle: isValidation
                   ? Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: AppColors.blue400,
