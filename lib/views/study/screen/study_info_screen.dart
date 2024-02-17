@@ -8,10 +8,12 @@ import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/model/study_view.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:modi/views/study/screen/study_manage_screen.dart';
 import 'package:modi/views/study/widgets/input_password_modal.dart';
 import 'package:modi/views/study/widgets/study_main_appbar.dart';
 import 'package:modi/views/study/widgets/study_main_buttons.dart';
 import 'package:provider/provider.dart';
+import '../../../common/authenticator/authentication.dart';
 import '../../../di/injection.dart';
 import '../widgets/study_details.dart';
 import '../widgets/study_notices.dart';
@@ -28,20 +30,32 @@ class StudyInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.watch<StudyViewModel>();
-    vm.fetchStudyInfo(context, studyId);
+    vm.fetchStudyInfo(context, studyId)
+        .then((_) => vm.getRegularMeetingString());
+
     if (vm.study != null && vm.study!.private) {
       vm.checkRegistered(vm.users, 28); // 임시값
-      //  vm.checkRegistered(vm.users, Authentication.instance.userId);
     }
     bool offstage = vm.isMember;
+    bool isLeader = (vm.study?.leaderId == Authentication.instance.userId);
 
     return Scaffold(
       appBar: (vm.study == null)
-          ? StudyMainAppBar(studyId: studyId, leaderId: -1)
+          ? StudyMainAppBar(studyId: studyId, isLeader: false)
           : StudyMainAppBar(
               studyId: studyId,
-              leaderId: vm.study!.leaderId,
-              hasLike: (vm.isMember) ? null : false),
+              isLeader: isLeader,
+              hasLike: (vm.isMember) ? null : false,
+              action: (isLeader)
+                  ? () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  StudyManageScreen(viewModel: vm)));
+                    }
+                  : null,
+            ),
       body: (vm.study == null)
           ? Container()
           : SafeArea(

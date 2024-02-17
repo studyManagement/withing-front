@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-
+import 'package:modi/service/study/MeetingType.dart';
+import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
+import '../../../view_models/study/study_viewmodel.dart';
 
-class MeetingDaysSelector extends StatefulWidget {
-  final List<int> days;
-
-  const MeetingDaysSelector({
+class MeetingDaysSelector extends StatelessWidget {
+ final MeetingType type;
+  MeetingDaysSelector({
     super.key,
-    required this.days,
+    required this.type
   });
 
-  @override
-  State<MeetingDaysSelector> createState() => _MeetingDaysSelectorState();
-}
-
-class _MeetingDaysSelectorState extends State<MeetingDaysSelector> {
-  int selectedCnt = 0;
-  List<int> selectedDay = [];
   List<String> weekDays = ["월", "화", "수", "목", "금", "토", "일"];
 
   @override
   Widget build(BuildContext context) {
-    selectedDay = widget.days;
-    selectedCnt = widget.days.length;
+    final viewModel = context.watch<StudyViewModel>();
+   // MeetingType curType = viewModel.meetingType;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -35,21 +29,10 @@ class _MeetingDaysSelectorState extends State<MeetingDaysSelector> {
           const SizedBox(height: 16),
           Row(
             children: [
-              for (int i = 0; i < weekDays.length; i++) // 선택한 아이템 인덱스
+              for (int i = 1; i <= weekDays.length; i++) // 선택한 아이템 인덱스
                 GestureDetector(
                   onTap: () {
-                    if (!selectedDay.contains(i)  && selectedCnt < 3) {
-                      setState(() {
-                        selectedDay.add(i);
-                        selectedCnt++;
-                      });
-                    } else {
-                      setState(() {
-                        selectedDay.remove(i);
-                        selectedCnt--;
-                      });
-
-                    }
+                   viewModel.setMeetingDays(i, type);
                   },
                   child: Container(
                     width: 30,
@@ -58,7 +41,7 @@ class _MeetingDaysSelectorState extends State<MeetingDaysSelector> {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     margin: const EdgeInsets.only(right: 10),
                     decoration: ShapeDecoration(
-                      color: (selectedDay.contains(i))
+                      color: (viewModel.selectedDays.contains(i))
                           ? AppColors.blue600
                           : AppColors.gray100,
                       shape: RoundedRectangleBorder(
@@ -66,9 +49,9 @@ class _MeetingDaysSelectorState extends State<MeetingDaysSelector> {
                     ),
                     child: Center(
                       child: Text(
-                        weekDays[i],
+                        weekDays[i-1],
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            color: (selectedDay.contains(i))
+                            color: (viewModel.selectedDays.contains(i))
                                 ? AppColors.white
                                 : AppColors.gray500),
                       ),
