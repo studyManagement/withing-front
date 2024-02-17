@@ -59,7 +59,7 @@ class StudyDetails extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              vm.regularMeeting, // 추가 수정 필요
+              vm.regularMeetingStr, // 추가 수정 필요
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.gray800,
                     fontSize: 13.0,

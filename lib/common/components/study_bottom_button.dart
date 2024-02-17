@@ -5,8 +5,9 @@ import '../theme/app/app_colors.dart';
 class StudyBottomButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
+  final Color? color;
 
-  const StudyBottomButton({super.key, required this.onTap, required this.text});
+  const StudyBottomButton({super.key, required this.onTap, required this.text, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class StudyBottomButton extends StatelessWidget {
           width: 343,
           height: 50,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8), color: AppColors.blue600),
+              borderRadius: BorderRadius.circular(8), color:(color==null) ? AppColors.blue600 : color),
           child: Center(
             child: Text(
               text,

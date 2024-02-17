@@ -93,10 +93,10 @@ class WithingApp extends StatelessWidget {
           //       studyId: int.parse(state.pathParameters['studyId']!)
           //   ),
           // ),
-          GoRoute(
-              path: '/studies/:studyId/manage',
-              builder: (context, state) => StudyManageScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!))),
+          // GoRoute(
+          //     path: '/studies/:studyId/manage',
+          //     builder: (context, state) => StudyManageScreen(
+          //         studyId: int.parse(state.pathParameters['studyId']!))),
           GoRoute(
             path: '/studies/:studyId/manage/edit',
             builder: (context, state) => StudyUpdateScreen(
