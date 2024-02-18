@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:modi/common/logger/logger_service.dart';
+import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/requester/request_builder.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/signin/signin_service.dart';
@@ -14,6 +16,9 @@ import '../service/study/study_service.dart';
 final GetIt getIt = GetIt.instance;
 
 void setupDependencyInjection() {
+  // Logger
+  getIt.registerLazySingleton<LoggingInterface>(() => LoggerService.instance);
+
   /// Dio
   getIt.registerLazySingleton<Dio>(
     () => RequestBuilder.getInstance(),
@@ -43,7 +48,7 @@ void setupDependencyInjection() {
     () => StudyImageCreateApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<BoardApi>(
-        () => BoardApi(getIt<Dio>(instanceName: 'client')),
+    () => BoardApi(getIt<Dio>(instanceName: 'client')),
   );
 
   /// Service
@@ -69,6 +74,6 @@ void setupDependencyInjection() {
     () => StudyImageCreateService(getIt<StudyImageCreateApi>()),
   );
   getIt.registerLazySingleton<BoardService>(
-      () => BoardService(getIt<BoardApi>()),
+    () => BoardService(getIt<BoardApi>()),
   );
 }

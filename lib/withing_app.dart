@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -19,17 +18,16 @@ import 'package:modi/views/study/study_screen_resources.dart';
 import 'package:provider/provider.dart';
 
 import '../views/signup/signup_screen.dart';
+import 'common/logger/logging_interface.dart';
 
 class WithingApp extends StatelessWidget {
   const WithingApp({super.key});
 
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
-
   GoRouter makeRoute() {
+    LoggingInterface logger = getIt<LoggingInterface>();
+
     return GoRouter(
-        observers: [observer],
+        observers: [logger.getObserver()],
         redirect: (BuildContext context, GoRouterState state) {
           bool isAuthentication = Authentication.state.isAuthentication;
 
