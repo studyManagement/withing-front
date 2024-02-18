@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:modi/common/logger/app_event.dart';
+import 'package:modi/common/logger/logging_interface.dart';
+import 'package:modi/di/injection.dart';
+import 'package:modi/model/user/user_model.dart';
 
 class AuthState extends ChangeNotifier {
   bool _isAuthentication = false;
@@ -27,6 +31,7 @@ class AuthState extends ChangeNotifier {
 class Authentication {
   static Authentication _instance = Authentication._();
   static final AuthState _state = AuthState();
+  static final LoggingInterface _logger = getIt<LoggingInterface>();
 
   static Authentication get instance => _instance;
   static AuthState get state => _state;
@@ -96,6 +101,17 @@ class Authentication {
         .write(key: 'access_token', value: _accessToken);
     await const FlutterSecureStorage()
         .write(key: 'refresh_token', value: _refreshToken);
+
+    UserModel user = UserModel(
+        id: userId, nickname: nickname, introduce: introduce, profileImage: '');
+
+    _logger.setUser(userId, user: user);
+    _logger.appEvent(AppEvent.LOGIN,
+        method: "Authentication.save()",
+        parameters: {
+          'access_token': _accessToken ?? "",
+          'secret_token': _refreshToken ?? ""
+        });
   }
 
   static Future<bool> initialize() async {

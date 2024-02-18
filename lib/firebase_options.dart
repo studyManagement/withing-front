@@ -50,21 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD6_Fh5Z_CW7FpKd-iBeHIMNl3-xBABi5o',
-    appId: '1:681702735612:android:30b88b4d64887d40526179',
-    messagingSenderId: '681702735612',
-    projectId: 'study-cd431',
-    storageBucket: 'study-cd431.appspot.com',
+    apiKey: 'AIzaSyCrqbKr2dXJp75buRZdVLR6cJTNIiB3AKY',
+    appId: '1:941895894851:android:99d994da51ccffd4b311f6',
+    messagingSenderId: '941895894851',
+    projectId: 'modi-31349',
+    storageBucket: 'modi-31349.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAyCP9y6d0qh6ryVPzfqMrUv57jlotbApo',
-    appId: '1:681702735612:ios:1571162e7a466ceb526179',
-    messagingSenderId: '681702735612',
-    projectId: 'study-cd431',
-    storageBucket: 'study-cd431.appspot.com',
-    iosClientId:
-        '916269370069-8jkf7k3vhnqh7kurfjdrt2duslno21uq.apps.googleusercontent.com',
-    iosBundleId: 'com.example.withing',
+    apiKey: 'AIzaSyDQ2t2u1bNVqhgtg_x4Pj-WEyn-XRKSBFc',
+    appId: '1:941895894851:ios:0fa5719b16007a45b311f6',
+    messagingSenderId: '941895894851',
+    projectId: 'modi-31349',
+    storageBucket: 'modi-31349.appspot.com',
+    iosBundleId: 'io.moditeam.modi',
   );
 }
