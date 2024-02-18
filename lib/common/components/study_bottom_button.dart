@@ -11,23 +11,25 @@ class StudyBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: onTap,
-        child: Container(
-          width: 343,
-          height: 50,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8), color:(color==null) ? AppColors.blue600 : color),
-          child: Center(
-            child: Text(
-              text,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(color: AppColors.white),
-              textAlign: TextAlign.center,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: InkWell(
+          onTap: onTap,
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8), color:(color==null) ? AppColors.blue600 : color),
+            child: Center(
+              child: Text(
+                text,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: AppColors.white),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 }

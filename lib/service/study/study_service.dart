@@ -10,6 +10,7 @@ import 'package:modi/model/study/study_list_model.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:retrofit/http.dart';
 import '../../model/board/board_model.dart';
 import '../../view_models/study/model/study_meeting_schedule.dart';
@@ -23,16 +24,12 @@ abstract class StudyApi {
   @GET("/studies")
   Future<List<StudyListModel>> fetchMyStudies(@Query("key") String key);
 
-  // 삭제
-  @GET('/studies/{id}/regular_meeting')
-  Future<RegularMeetingModel> fetchRegularMeeting(@Path('id') int id);
-
   @GET('/studies/{id}')
   Future<StudyModel> fetchStudyInfo(@Path('id') int id);
 
-  // 삭제
-  @GET('/studies/{id}/categories')
-  Future<StudyCategory> fetchStudyCategory(@Path('id') int id);
+  @PATCH('/studies/{id}')
+  Future<StudyModel> updateStudyInfo(
+      @Path('id') int id, @Body() Map<String, dynamic> data);
 
   @PATCH('/studies/{id}/finish')
   Future<StudyModel> finishStudy(@Path('id') int id);
@@ -72,18 +69,6 @@ class StudyService {
     }
   }
 
-  Future<RegularMeetingModel> fetchRegularMeeting(int studyId) async {
-    try {
-      return await _studyApi.fetchRegularMeeting(studyId);
-    } on ApiException catch (e) {
-      if (e.code == 400 || e.code == 404) {
-        throw RegularMeetingException(e.cause);
-      }
-
-      rethrow;
-    }
-  }
-
   Future<StudyModel> fetchStudyInfo(int studyId) async {
     try {
       final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
@@ -96,14 +81,6 @@ class StudyService {
     } on NetworkException catch (e) {
       rethrow;
     }
-  }
-
-  Future<StudyCategory> fetchStudyCategory(int studyId) async {
-    final StudyCategory categoryData =
-        await _studyApi.fetchStudyCategory(studyId);
-
-    log('[DEBUG] ${categoryData.toString()}');
-    return categoryData;
   }
 
   Future<StudyModel> finishStudy(int studyId) async {
@@ -127,6 +104,19 @@ class StudyService {
       rethrow;
     } on NetworkException catch (e) {
       print(e.message);
+      rethrow;
+    }
+  }
+
+  Future<StudyModel> updateStudyInfo(
+      int studyId, UpdatedStudyInfo newStudy) async {
+    try {
+      final StudyModel study =
+          await _studyApi.updateStudyInfo(studyId, newStudy.toJson());
+      return study;
+    } on ApiException catch (e) {
+      rethrow;
+    } on NetworkException catch (e) {
       rethrow;
     }
   }

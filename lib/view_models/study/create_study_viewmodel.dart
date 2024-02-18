@@ -2,16 +2,31 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/view_models/study/study_info_viewmodels.dart';
 
 import '../../service/create/study_create_service.dart';
 import '../../service/image/study_image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
 
-class CreateStudyViewModel with ChangeNotifier {
+class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyCreateService _studyCreateService;
   final StudyImageCreateService _studyImageCreateService;
 
   CreateStudyViewModel(this._studyCreateService, this._studyImageCreateService);
+
+  @override
+  String get studyDescription => _studyDescription;
+  @override
+  String get studyName => _studyName;
+  @override
+  List<String> get selectedCategories => _selectedCategories;
+  @override
+  List<int> get selectedCategoryIndices => _selectedCategoryIndices;
+  @override
+  int get studyMemberCount => _studyMemberCount;
+  @override
+  File? get studyImageFile => _studyImageFile;
+
 
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
@@ -22,16 +37,23 @@ class CreateStudyViewModel with ChangeNotifier {
   int _studyMemberCount = 0;
   int? _studyImageId;
   List<String> _selectedCategories = [];
-  List<int> _selectedCategoryIndicies = [];
+  List<int> _selectedCategoryIndices = [];
   File? _studyImageFile;
 
+  @override
   bool get isStudyNameError => _isStudyNameError;
+  @override
   bool get isStudyDescriptionError => _isStudyDescriptionError;
+  @override
+  String get studyImagePath => ''; // 사용 안 함
+
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
-  List<String> get selectedCategories => _selectedCategories;
-  File? get studyImage => _studyImageFile;
+
+  // List<String> get selectedCategories => _selectedCategories;
+  // File? get studyImage => _studyImageFile;
 
   /// check everything filled
+  @override
   bool checkEverythingFilled() {
     if (_isStudyNameError &&
         _isStudyDescriptionError &&
@@ -45,21 +67,23 @@ class CreateStudyViewModel with ChangeNotifier {
   }
 
   /// text input validation : study name & description
+  @override
   void checkStudyNameAndDescription(NewStudyType type, String input) {
     switch (type) {
       case NewStudyType.studyName:
         _isStudyNameError =
-            _validateInput(NewStudyType.studyName, input, r'^.{2,20}$');
+            validateInput(NewStudyType.studyName, input, r'^.{2,20}$');
         break;
       case NewStudyType.studyDescription:
         _isStudyDescriptionError =
-            _validateInput(NewStudyType.studyDescription, input, r'^.{1,65}$');
+            validateInput(NewStudyType.studyDescription, input, r'^.{1,65}$');
         break;
     }
     notifyListeners();
   }
 
   /// update study name and description
+  @override
   void updateStudyNameAndDescription(NewStudyType type, String newValue) {
     switch (type) {
       case NewStudyType.studyName:
@@ -73,18 +97,6 @@ class CreateStudyViewModel with ChangeNotifier {
     }
   }
 
-  /// RegExp pattern-matching
-  bool _validateInput(NewStudyType type, String input, String pattern) {
-    final isValid = RegExp(pattern).hasMatch(input);
-    switch (isValid) {
-      case true:
-        updateStudyNameAndDescription(type, input);
-        return true;
-      default: // false
-        return false;
-    }
-  }
-
   /// update disclose toggle
   void toggle() {
     _isStudyDiscloseToggled = !_isStudyDiscloseToggled;
@@ -92,6 +104,7 @@ class CreateStudyViewModel with ChangeNotifier {
   }
 
   /// update selected categories
+  @override
   void updateSelectedCategories(String option, int? maxSelectedOptions) {
     if (_selectedCategories.contains(option)) {
       _selectedCategories.remove(option);
@@ -101,20 +114,22 @@ class CreateStudyViewModel with ChangeNotifier {
       _selectedCategories.add(option);
       debugPrint('$option 추가');
     }
-    updateSelectedCategoryIndicies();
+    updateSelectedCategoryIndices();
     notifyListeners();
   }
 
   /// update selected category indicies
-  void updateSelectedCategoryIndicies() {
-    _selectedCategoryIndicies = _selectedCategories
+  @override
+  void updateSelectedCategoryIndices() {
+    _selectedCategoryIndices = _selectedCategories
         .map((category) => getStudyCategories().indexOf(category))
         .toList();
     print(_selectedCategories);
-    print(_selectedCategoryIndicies);
+    print(_selectedCategoryIndices);
   }
 
   /// update study member count
+  @override
   set memberCount(int newValue) {
     if (newValue >= 0 && newValue <= 15) {
       _studyMemberCount = newValue;
@@ -137,7 +152,8 @@ class CreateStudyViewModel with ChangeNotifier {
   }
 
   /// update study image
-  set studyImage(File? file) {
+  @override
+  set studyImageFile(File? file) {
     _studyImageFile = file;
     debugPrint('스터디 이미지 업데이트');
     notifyListeners();
@@ -171,56 +187,13 @@ class CreateStudyViewModel with ChangeNotifier {
       _studyDisclosePassword,
       _studyDescription,
       Authentication.instance.userId,
-      _selectedCategoryIndicies..sort(),
+      _selectedCategoryIndices..sort(),
       _studyImageId,
     );
     notifyListeners();
   }
-}
 
-///
-/// Utils - new study
+  @override
+  bool isOldImageLoaded = true;
 
-String getNewStudyTitle() {
-  return '스터디 생성하기';
-}
-
-List<String> getStudyCategories() {
-  return const ['어학', '자격증', '취업', '시험', '취미', '프로그래밍', '기타'];
-}
-
-String getStudyTitle(NewStudyType type) {
-  switch (type) {
-    case NewStudyType.studyName:
-      return '스터디 이름';
-    case NewStudyType.studyDescription:
-      return '스터디 설명';
-    default:
-      return '유효하지 않은 타입입니다.';
-  }
-}
-
-String getHintText(NewStudyType type) {
-  switch (type) {
-    case NewStudyType.studyName:
-      return '스터디 이름을 입력해주세요.';
-    case NewStudyType.studyDescription:
-      return '스터디를 소개할 수 있는 설명을 추가해보세요.';
-    default:
-      return '유효하지 않은 타입입니다.';
-  }
-}
-
-String getErrorText(NewStudyType type, bool isValidation) {
-  if (type == NewStudyType.studyName) {
-    return isValidation ? '멋진 이름이네요!' : '2 ~ 20자 사이의 이름을 설정해주세요.';
-  } else if (type == NewStudyType.studyDescription) {
-    return isValidation ? '멋진 설명이네요!' : '';
-  } else {
-    return '유효하지 않은 입력입니다.';
-  }
-}
-
-List<String> convertIndiciesToElements(List<int> indicies) {
-  return indicies.map((index) => getStudyCategories()[index]).toList();
 }
