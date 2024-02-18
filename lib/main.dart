@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -5,13 +6,21 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/environment/environment.dart';
+import 'package:modi/common/logger/app_event.dart';
+import 'package:modi/common/logger/logger_service.dart';
 import 'package:modi/constants/auth.dart';
+import 'package:modi/di/injection.dart';
+import 'package:modi/firebase_options.dart';
 import 'package:modi/withing_app.dart';
-
-import 'di/injection.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  LoggerService.instance.appEvent(AppEvent.APP_OPEN, method: "main.main()");
+
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -19,7 +28,6 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initializeDateFormatting();
 
   // // setting 함수

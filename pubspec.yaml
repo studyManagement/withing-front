@@ -15,6 +15,7 @@ dependencies:
   intl: ^0.18.1 # 다국어 처리
   firebase_core: ^2.15.0
   firebase_messaging: ^14.6.5
+  firebase_analytics: ^10.8.5
   flutter_local_notifications: ^15.1.0+1
   font_awesome_flutter: ^10.5.0 # 아이콘
   page_view_dot_indicator: ^2.3.0
@@ -44,6 +45,7 @@ dependencies:
   fluttertoast: ^8.0.8
   change_app_package_name: ^1.1.0
   sign_in_with_apple: ^5.0.0
+  logger: ^2.0.2+1
 
 
 dev_dependencies:
