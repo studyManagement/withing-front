@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/src/widgets/navigator.dart';
 import 'package:logger/logger.dart';
@@ -64,6 +66,10 @@ class LoggerService implements LoggingInterface {
   @override
   void setUser(int id, {UserModel? user}) {
     _firebaseAnalytics.setUserId(id: id.toString());
+    _firebaseAnalytics.setUserProperty(
+        name: 'os', value: Platform.operatingSystem);
+    _firebaseAnalytics.setUserProperty(
+        name: 'os_version', value: Platform.operatingSystemVersion);
 
     if (user != null) {
       _firebaseAnalytics.setUserProperty(
