@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "845886768372",
-    "project_id": "modi-caa49",
-    "storage_bucket": "modi-caa49.appspot.com"
+    "project_number": "941895894851",
+    "project_id": "modi-31349",
+    "storage_bucket": "modi-31349.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:845886768372:android:6e1b6daf8ef85fa2604aa1",
+        "mobilesdk_app_id": "1:941895894851:android:99d994da51ccffd4b311f6",
         "android_client_info": {
           "package_name": "io.moditeam.modi"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAR94mSpBPH-Fpr4mcYMy77e0MuM7luj7o"
+          "current_key": "AIzaSyCrqbKr2dXJp75buRZdVLR6cJTNIiB3AKY"
         }
       ],
       "services": {

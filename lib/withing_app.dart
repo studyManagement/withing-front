@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -5,15 +6,10 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/root_tab.dart';
 import 'package:modi/common/theme/withing_theme.dart';
 import 'package:modi/di/injection.dart';
-import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/study/study_service.dart';
-import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
-import 'package:modi/views/board/screen/board_info_screen.dart';
 import 'package:modi/views/board/screen/board_main_screen.dart';
-import 'package:modi/views/board/screen/create_post_screen.dart';
-import 'package:modi/views/board/screen/update_post_screen.dart';
 import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
@@ -27,8 +23,13 @@ import '../views/signup/signup_screen.dart';
 class WithingApp extends StatelessWidget {
   const WithingApp({super.key});
 
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   GoRouter makeRoute() {
     return GoRouter(
+        observers: [observer],
         redirect: (BuildContext context, GoRouterState state) {
           bool isAuthentication = Authentication.state.isAuthentication;
 
@@ -110,7 +111,7 @@ class WithingApp extends StatelessWidget {
               path: '/studies/:studyId/boards', // 게시판
               builder: (context, state) => BoardMainScreen(
                   studyId: int.parse(state.pathParameters['studyId']!),
-                   isNotice: false)),
+                  isNotice: false)),
           // GoRoute(
           //     path: '/studies/:studyId/boards/create', // 게시판 글 작성
           //     builder: (context, state) => CreatePostScreen(
