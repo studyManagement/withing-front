@@ -46,6 +46,7 @@ dependencies:
   change_app_package_name: ^1.1.0
   sign_in_with_apple: ^5.0.0
   logger: ^2.0.2+1
+  device_info_plus: ^9.1.2
 
 
 dev_dependencies:
