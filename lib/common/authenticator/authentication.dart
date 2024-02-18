@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -96,6 +97,7 @@ class Authentication {
         .write(key: 'access_token', value: _accessToken);
     await const FlutterSecureStorage()
         .write(key: 'refresh_token', value: _refreshToken);
+    FirebaseAnalytics.instance.logLogin(loginMethod: "Authentication.save()");
   }
 
   static Future<bool> initialize() async {

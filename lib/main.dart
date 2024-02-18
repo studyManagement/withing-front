@@ -15,7 +15,9 @@ import 'di/injection.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await FirebaseAnalytics.instance.logAppOpen();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
