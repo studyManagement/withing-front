@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/create/create_study_viewmodel.dart';
+import '../../../view_models/study/create_study_viewmodel.dart';
 
 class StudyBasicButton extends StatelessWidget {
   const StudyBasicButton({super.key});

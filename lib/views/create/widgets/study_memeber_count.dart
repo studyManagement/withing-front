@@ -1,15 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:modi/view_models/study/study_info_viewmodels.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/create/create_study_viewmodel.dart';
+import '../../../view_models/study/create_study_viewmodel.dart';
 
-class StudyMemberCount extends StatelessWidget {
-  const StudyMemberCount({super.key});
+class StudyMemberCount extends StatefulWidget {
+  final StudyInfoViewModel viewModel;
+
+  const StudyMemberCount({super.key, required this.viewModel});
+
+  @override
+  State<StudyMemberCount> createState() => _StudyMemberCountState();
+}
+
+class _StudyMemberCountState extends State<StudyMemberCount> {
+  late TextEditingController controller;
+  bool isInitiated = false;
+
+  @override
+  void didUpdateWidget(StudyMemberCount oldWidget) {
+    if (!isInitiated) {
+      super.didUpdateWidget(oldWidget);
+      String initValue = (widget.viewModel.studyMemberCount != 0) ? widget
+          .viewModel.studyMemberCount.toString() : '';
+      if (initValue != controller.text) {
+        controller.text = initValue;
+      }
+      isInitiated = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<CreateStudyViewModel>(context);
+    // final viewModel = Provider.of<CreateStudyViewModel>(context);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 40, 16, 24),
@@ -20,7 +56,8 @@ class StudyMemberCount extends StatelessWidget {
             children: [
               Text(
                 '스터디 인원',
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .bodyMedium
                     ?.copyWith(color: AppColors.gray500),
@@ -28,10 +65,14 @@ class StudyMemberCount extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 '최대 15명',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.gray300,
-                      fontSize: 13.0,
-                    ),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(
+                  color: AppColors.gray300,
+                  fontSize: 13.0,
+                ),
               ),
             ],
           ),
@@ -44,11 +85,12 @@ class StudyMemberCount extends StatelessWidget {
                 child: TextField(
                   onChanged: (value) {
                     if (value != '') {
-                      viewModel.memberCount = int.parse(value);
+                      widget.viewModel.memberCount = int.parse(value);
                     } else {
-                      viewModel.memberCount = 0;
+                      widget.viewModel.memberCount = 0;
                     }
                   },
+                  controller: controller,
                   decoration: const InputDecoration(
                     counterText: '',
                     border: UnderlineInputBorder(
@@ -79,7 +121,8 @@ class StudyMemberCount extends StatelessWidget {
                 offset: const Offset(-16, 0),
                 child: Text(
                   '명',
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .titleSmall
                       ?.copyWith(color: AppColors.gray500),
@@ -96,8 +139,8 @@ class StudyMemberCount extends StatelessWidget {
 /// input format : 0 - 15 format
 class ZeroToFifteenInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     if (newValue.text.isEmpty) {
       return newValue;
     }
