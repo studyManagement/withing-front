@@ -32,6 +32,16 @@
 				<string>kakaoecb175d3effa9f088359fca3acb0fead</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>moditeam</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>moditeam</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
