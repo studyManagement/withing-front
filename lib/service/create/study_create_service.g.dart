@@ -19,22 +19,17 @@ class _StudyCreateApi implements StudyCreateApi {
   String? baseUrl;
 
   @override
-  Future<CreatedStudyInfo> create(String studyCreateDto) async {
+  Future<StudyModel> create(Map<String, dynamic> data) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = FormData();
-    _data.fields.add(MapEntry(
-      'studyCreateDTO',
-      studyCreateDto,
-    ));
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data);
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<CreatedStudyInfo>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
-      contentType: 'multipart/form-data',
     )
             .compose(
               _dio.options,
@@ -47,7 +42,7 @@ class _StudyCreateApi implements StudyCreateApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = CreatedStudyInfo.fromJson(_result.data!);
+    final value = StudyModel.fromJson(_result.data!);
     return value;
   }
 

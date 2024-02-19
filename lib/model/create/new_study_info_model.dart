@@ -6,9 +6,7 @@ class NewStudyInfo {
   int isPrivate;
   String password;
   String explanation;
-  int leaderId;
   List<int> categories;
-  int? studyId;
 
   NewStudyInfo({
     required this.studyName,
@@ -16,21 +14,17 @@ class NewStudyInfo {
     required this.isPrivate,
     required this.password,
     required this.explanation,
-    required this.leaderId,
     required this.categories,
-    required this.studyId,
   });
 
-  String toJsonString() {
-    return jsonEncode({
+  Map<String, dynamic> toJson() {
+    return {
       'studyName': studyName,
       'max': max,
       'isPrivate': isPrivate,
       'password': password,
       'explanation': explanation,
-      'leaderId': leaderId,
       'categories': categories,
-      'studyId': studyId,
-    });
+    };
   }
 }

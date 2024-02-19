@@ -170,7 +170,8 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   Future<void> createImage() async {
     if (_studyImageFile != null) {
       _studyImageId =
-          await _studyImageCreateService.callCreateApi(_studyImageFile!);
+          await _studyImageCreateService.
+          callCreateApi(_studyImageFile!);
       print(_studyImageId);
     }
     notifyListeners();
@@ -186,9 +187,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       (isStudyDiscloseToggled) ? 1 : 0,
       _studyDisclosePassword,
       _studyDescription,
-      Authentication.instance.userId,
       _selectedCategoryIndices..sort(),
-      _studyImageId,
     );
     notifyListeners();
   }

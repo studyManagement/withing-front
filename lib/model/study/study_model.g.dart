@@ -20,7 +20,7 @@ _$StudyModelImpl _$$StudyModelImplFromJson(Map<String, dynamic> json) =>
       deadline: json['deadline'] == null
           ? null
           : DateTime.parse(json['deadline'] as String),
-      studyImage: json['studyImage'] as String,
+      studyImage: json['studyImage'] as String?,
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
