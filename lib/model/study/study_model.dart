@@ -18,7 +18,7 @@ class StudyModel with _$StudyModel {
     required int leaderId,
     required DateTime createdAt,
     required DateTime? deadline,
-    required String studyImage,
+    required String? studyImage,
     required List<String> categories,
     required List<StudyMeetingSchedulesModel> meetingSchedules,
     required List<UserModel> users,

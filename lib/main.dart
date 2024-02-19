@@ -17,6 +17,7 @@ import 'package:modi/withing_app.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name:'modi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 

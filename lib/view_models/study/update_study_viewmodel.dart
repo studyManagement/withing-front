@@ -150,8 +150,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _studyId = study.id;
     _headCount = study.headcount;
     _studyName = study.studyName;
-    _studyImagePath = study.studyImage;
-    studyImageFile = File(study.studyImage);
+    _studyImagePath = study.studyImage!;
+    studyImageFile = File(study.studyImage!);
     _studyDescription = study.explanation;
     _selectedCategories = study.categories;
     _studyMemberCount = study.headcount;
