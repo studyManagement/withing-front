@@ -59,6 +59,6 @@ void main() async {
   await Authentication.initialize();
 
   setupDependencyInjection();
-  NotificationService().initialize();
+  await NotificationService.instance.initialize();
   runApp(const WithingApp());
 }
