@@ -8,6 +8,7 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/environment/environment.dart';
 import 'package:modi/common/logger/app_event.dart';
 import 'package:modi/common/logger/logger_service.dart';
+import 'package:modi/common/notification/notification_service.dart';
 import 'package:modi/constants/auth.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/firebase_options.dart';
@@ -58,5 +59,6 @@ void main() async {
   await Authentication.initialize();
 
   setupDependencyInjection();
+  NotificationService().initialize();
   runApp(const WithingApp());
 }
