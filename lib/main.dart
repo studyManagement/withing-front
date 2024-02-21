@@ -31,13 +31,6 @@ void main() async {
   );
   await initializeDateFormatting();
 
-  // // setting 함수
-  // await setupFlutterNotifications();
-  // // 백그라운드 메시지 수신
-  // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  // // 포그라운드 메시지 수신 : 안드로이드는 '높은 우선순위' 알림 채널을 만들어야한다.
-  // FirebaseMessaging.onMessage.listen(showForegroundNotification);
-
   // 가로, 세로 모드 허용
   await SystemChrome.setPreferredOrientations([
     // 세로 상향 고정
