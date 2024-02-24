@@ -7,8 +7,6 @@ import 'package:modi/common/router/router_service.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/firebase_options.dart';
 
-import '../const/notification.dart';
-
 @pragma('vm:entry-point')
 Future<void> _backgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -24,6 +22,9 @@ class NotificationService {
   static NotificationService get instance => _notificationService;
   static final FlutterLocalNotificationsPlugin _notification =
       FlutterLocalNotificationsPlugin();
+  static const AndroidNotificationChannel _channel = AndroidNotificationChannel(
+      'channel', 'channel name',
+      importance: Importance.high);
 
   NotificationService._privateConstructor();
 
@@ -44,9 +45,9 @@ class NotificationService {
         notification.body,
         NotificationDetails(
           android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
+            NotificationService._channel.id,
+            NotificationService._channel.name,
+            channelDescription: NotificationService._channel.description,
             icon: '@mipmap/launcher_icon',
           ),
         ),
@@ -77,13 +78,10 @@ class NotificationService {
         onDidReceiveNotificationResponse:
             instance._onForegroundMessageOpenHandler);
 
-    channel = const AndroidNotificationChannel('channel', 'channel name',
-        importance: Importance.high);
-
     await NotificationService._notification
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+        ?.createNotificationChannel(_channel);
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
