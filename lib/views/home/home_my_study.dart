@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
@@ -55,20 +56,11 @@ class HomeMyStudy extends StatelessWidget {
           ),
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 studies.isNotEmpty
                     ? const MyStudyList()
-                    : const SizedBox(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 120),
-                            MyStudyListException(),
-                          ],
-                        ),
-                      )
+                    : ModiException('진행 중인 스터디가 없어요.'),
               ],
             ),
           ),
