@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                     onDaySelected: onDaySelected,
                     selectedDate: selectedDate,
                   ),
-                  HomeStudyNotificationPageView(),
+                  const HomeStudyNotificationPageView(),
                 ],
               ),
             ),
