@@ -9,7 +9,7 @@ class TagList extends StatelessWidget {
     List<Widget> widgets = [];
 
     for (var element in tags) {
-      widgets.add(Tag(element));
+      widgets.add(Tag(element, TagColorSet.BLUE));
       widgets.add(const SizedBox(width: 6));
     }
 
