@@ -54,7 +54,7 @@ class ErrorPage extends StatelessWidget {
             style: TextButton.styleFrom(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
-              backgroundColor: AppColors.blue800,
+              backgroundColor: AppColors.blue600,
             ),
             child: const Text(
               '홈으로',
