@@ -20,7 +20,7 @@ class MainCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     List<StudyListView> studies =
         context.select<StudyListViewModel, List<StudyListView>>(
-            (provider) => provider.studyListView);
+            (provider) => provider.studyList);
     DateTime selectedStudyDate = context.select<StudyListViewModel, DateTime>(
         (provider) => provider.selectedDate);
 

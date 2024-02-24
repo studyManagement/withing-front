@@ -7,7 +7,7 @@ import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
 class StudyListViewModel extends ChangeNotifier {
   final StudyService _service;
-  List<StudyListView> studyListView = [];
+  List<StudyListView> studyList = [];
   List<StudyListView> selectStudyListView = [];
   late DateTime selectedDate = DateTime.now();
   String weekString = '';
@@ -16,13 +16,13 @@ class StudyListViewModel extends ChangeNotifier {
 
   Future<void> fetchStudies(StudyType studyType) async {
     List<StudyListModel> studyModels = await _service.fetchMyStudies(studyType);
-    List<StudyListView> studyViews =
+    List<StudyListView> _studyViews =
         studyModels.map((e) => StudyListView.from(e)).toList();
     List<StudyListView> studyViewSpread = [];
 
-    studyListView = studyViews;
+    studyList = _studyViews;
 
-    studyViews
+    _studyViews
         .where((element) => element.hasStudies(selectedDate))
         .forEach((e) => studyViewSpread.addAll(e.spread()));
 
@@ -38,7 +38,7 @@ class StudyListViewModel extends ChangeNotifier {
         currentStudy.meetingSchedules.first;
 
     StudyListView study =
-        studyListView.firstWhere((element) => element.id == currentStudy.id);
+        studyList.firstWhere((element) => element.id == currentStudy.id);
 
     study.meetingSchedules.sort((a, b) => a.day - b.day);
 
