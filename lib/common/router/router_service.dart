@@ -97,7 +97,7 @@ class RouterService {
             },
           ),
           GoRoute(
-            path: '/studies/:studyId/sche1dules',
+            path: '/studies/:studyId/schedules',
             builder: (context, state) => StudyScheduleScreen(),
           ),
           // GoRoute(
