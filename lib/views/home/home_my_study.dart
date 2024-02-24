@@ -60,7 +60,7 @@ class HomeMyStudy extends StatelessWidget {
               children: [
                 studies.isNotEmpty
                     ? const MyStudyList()
-                    : ModiException('진행 중인 스터디가 없어요.'),
+                    : ModiException(const ['진행 중인 스터디가 없어요.']),
               ],
             ),
           ),
