@@ -13,10 +13,10 @@ class WithingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
 
-    // URI Scheme DeepLink
+    // URI Scheme DeepLink Handling
     uriLinkStream.listen((Uri? uri) {
-      LoggerService.instance.info("uri: $uri");
-      RouterService.instance.router.go(uri?.path ?? '/');
+      LoggerService.instance.info("URI PATH: ${uri?.path}");
+      RouterService.instance.router.push(uri?.path ?? '/');
     }, onError: (Object err) {
       LoggerService.instance.error("err: $err");
     });

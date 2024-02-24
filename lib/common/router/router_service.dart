@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/logger/logging_interface.dart';
@@ -10,6 +12,7 @@ import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/view_models/study/update_study_viewmodel.dart';
 import 'package:modi/views/board/screen/board_main_screen.dart';
+import 'package:modi/views/common/error_page.dart';
 import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
@@ -29,6 +32,7 @@ class RouterService {
 
   RouterService._privateConstructor() {
     _goRouter = GoRouter(
+        debugLogDiagnostics: kDebugMode ? true : false,
         observers: [_logger.getObserver()],
         redirect: (BuildContext context, GoRouterState state) {
           bool isAuthentication = Authentication.state.isAuthentication;
@@ -38,25 +42,27 @@ class RouterService {
                   !state.matchedLocation.startsWith('/signup/'))) {
             return '/';
           }
-
           return null;
         },
         initialLocation:
             (Authentication.state.isAuthentication) ? '/home' : '/',
         refreshListenable: Authentication.state,
+        errorBuilder: (context, state) => const ErrorPage(),
         routes: [
           GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
           GoRoute(path: '/home', builder: (context, state) => const RootTab()),
           GoRoute(
-              path: '/signup/:provider/:uuid',
-              builder: (context, GoRouterState state) {
-                final provider = state.pathParameters['provider']!;
-                final uuid = state.pathParameters['uuid']!;
-                return SignupScreen(provider, uuid);
-              }),
+            path: '/signup/:provider/:uuid',
+            builder: (context, GoRouterState state) {
+              final provider = state.pathParameters['provider']!;
+              final uuid = state.pathParameters['uuid']!;
+              return SignupScreen(provider, uuid);
+            },
+          ),
           GoRoute(
-              path: '/my/profile',
-              builder: (context, state) => MyProfileScreen()),
+            path: '/my/profile',
+            builder: (context, state) => MyProfileScreen(),
+          ),
           GoRoute(
             path: '/my/studies/:type',
             builder: (context, state) {
@@ -112,10 +118,11 @@ class RouterService {
           //   builder: (context, state) => const SetRegularMeetingScreen(),
           // ),
           GoRoute(
-              path: '/studies/:studyId/boards', // 게시판
-              builder: (context, state) => BoardMainScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!),
-                  isNotice: false)),
+            path: '/studies/:studyId/boards', // 게시판
+            builder: (context, state) => BoardMainScreen(
+                studyId: int.parse(state.pathParameters['studyId']!),
+                isNotice: false),
+          ),
           // GoRoute(
           //     path: '/studies/:studyId/boards/create', // 게시판 글 작성
           //     builder: (context, state) => CreatePostScreen(
@@ -128,10 +135,12 @@ class RouterService {
           //       boardId: int.parse(state.pathParameters['boardId']!),
           //     )),
           GoRoute(
-              path: '/studies/:studyId/boards/notice', // 공지 전체보기
-              builder: (context, state) => BoardMainScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!),
-                  isNotice: true)),
+            path: '/studies/:studyId/boards/notice', // 공지 전체보기
+            builder: (context, state) => BoardMainScreen(
+                studyId: int.parse(state.pathParameters['studyId']!),
+                isNotice: true),
+          ),
+
           // GoRoute(
           //     path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
           //     builder: (context, state) => BoardInfoScreen(
