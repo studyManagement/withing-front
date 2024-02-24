@@ -3,6 +3,8 @@ import 'package:modi/di/injection.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/views/my/my_screen.dart';
+import 'package:modi/views/notification/notification_screen.dart';
+import 'package:modi/views/schedule/schedule_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../views/home/home_screen.dart';
@@ -102,18 +104,17 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
         children: [
-          Center(
-              child: MultiProvider(
+          MultiProvider(
             providers: [
               ChangeNotifierProvider(
                   create: (_) => StudyListViewModel(getIt<StudyService>())),
             ],
             child: HomeScreen(),
-          )),
-          const Center(child: CategorySearchScreen()),
-          const Center(child: Text('일정')),
-          const Center(child: Text('알림')),
-          const Center(child: MyScreen()),
+          ),
+          const CategorySearchScreen(),
+          const ScheduleScreen(),
+          const NotificationScreen(),
+          const MyScreen(),
         ],
       ),
     );
