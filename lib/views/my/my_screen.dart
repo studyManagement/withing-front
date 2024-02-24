@@ -85,7 +85,7 @@ class MyScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      context.go('/my/studies/finish');
+                      context.push('/my/studies/finished');
                     },
                     leading: Image.asset(
                       'asset/finished.png',
