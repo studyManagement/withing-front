@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({
@@ -21,46 +20,14 @@ class ErrorPage extends StatelessWidget {
       // ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('asset/exclamation.png', width: 40, height: 40),
-          const SizedBox(height: 10),
-          const Center(
-            child: Text(
-              '현재 버전에서는 해당 컨텐츠를 이용할 수 없어요.',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey,
-              ),
-            ),
+          Center(
+            child: ModiException(const [
+              '현재 버전에서는 컨텐츠를 이용할 수 없어요.',
+              '앱스토어에서 업데이트 후 다시 이용해 주시기 바랍니다.'
+            ]),
           ),
-          const Center(
-            child: Text(
-              '앱스토어에서 버전 업데이트 후 다시 이용해 주시기 바랍니다.',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.go('/home');
-            },
-            style: TextButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              backgroundColor: AppColors.blue600,
-            ),
-            child: const Text(
-              '홈으로',
-              style: TextStyle(color: AppColors.white),
-            ),
-          )
         ],
       ),
     );
