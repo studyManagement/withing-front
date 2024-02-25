@@ -32,6 +32,7 @@ class ModiModal {
       BuildContext context, Widget widget, double height) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) {
         return BottomModal(widget, height);
       },

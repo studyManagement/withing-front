@@ -41,7 +41,8 @@ class StudyScheduleScreen extends StatelessWidget {
                           Image.asset('asset/vote_schedule.png',
                               width: 90, height: 90),
                           '일정 투표',
-                          () {}),
+                          () => context
+                              .push('/studies/$_studyId/schedules/vote')),
                     ],
                   ),
                   200,
