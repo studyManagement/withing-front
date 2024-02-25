@@ -19,6 +19,7 @@ import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/my/my_study_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_screen.dart';
+import 'package:modi/views/schedule/study/study_schedule_vote_add_screen.dart';
 import 'package:modi/views/search/screen/keyword_search_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
@@ -105,6 +106,11 @@ class RouterService {
           GoRoute(
             path: '/studies/:studyId/schedules/register',
             builder: (context, state) => StudyScheduleAddScreen(
+                int.parse(state.pathParameters['studyId']!)),
+          ),
+          GoRoute(
+            path: '/studies/:studyId/schedules/vote',
+            builder: (context, state) => StudyScheduleVoteAddScreen(
                 int.parse(state.pathParameters['studyId']!)),
           ),
           // GoRoute(
