@@ -5,6 +5,8 @@ import 'package:modi/view_models/signup/signup_viewmodel.dart';
 import 'package:modi/views/signup/signup_profile.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/components/input/text_input.dart';
+
 class SignupForm extends StatelessWidget {
   const SignupForm({super.key});
 
@@ -24,27 +26,11 @@ class SignupForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 60),
-        const Text(
+        TextInput(
           '닉네임',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        TextFormField(
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            counterText: '',
-            hintText: '사용할 닉네임을 설정해주세요.',
-            hintStyle: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[500],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          autofocus: true,
-          maxLength: 10,
-          onChanged: (value) => viewModel.changeNickname(value),
+          '사용할 닉네임을 설정해주세요.',
+          10,
+          (value) => viewModel.changeNickname(value),
         ),
         const SizedBox(height: 8),
         Text(
@@ -55,24 +41,11 @@ class SignupForm extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 50),
-        const Text(
+        TextInput(
           '자기소개',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            hintText: '짧은 문장으로 본인을 소개해보세요.',
-            hintStyle: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[500],
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          maxLength: 30,
-          onChanged: (value) => viewModel.changeDescription(value),
+          '짧은 문장으로 본인을 소개해보세요.',
+          30,
+          (value) => viewModel.changeDescription(value),
         ),
         Expanded(
           child: Padding(

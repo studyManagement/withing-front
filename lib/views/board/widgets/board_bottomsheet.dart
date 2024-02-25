@@ -4,7 +4,7 @@ import 'package:modi/common/components/bottom_toast.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/views/board/screen/update_post_screen.dart';
 
-import '../../../common/modal/withing_modal.dart';
+import '../../../common/modal/modi_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class BoardBottomSheet extends StatelessWidget {
@@ -60,7 +60,7 @@ class BoardBottomSheet extends StatelessWidget {
                   .bodySmall
                   ?.copyWith(color: AppColors.red400)),
           onTap: () {
-            WithingModal.openDialog(
+            ModiModal.openDialog(
                 context,
                 "\n게시글을 삭제하시겠어요?",
                 '',

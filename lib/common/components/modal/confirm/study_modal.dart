@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
-
-import 'modal_button.dart';
 
 class StudyModal extends StatelessWidget {
   final String title;
@@ -22,14 +21,21 @@ class StudyModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> buttons = [
-      ModalButton(onTap: onOk, text: '확인', backgroundcolor: AppColors.blue600),
+      ConfirmButton(
+        onTap: onOk,
+        text: '확인',
+        backgroundColor: AppColors.blue600,
+      ),
     ];
 
     if (isCancel) {
       buttons.addAll([
         const SizedBox(width: 5),
-        ModalButton(
-            onTap: onCancel, text: '취소', backgroundcolor: AppColors.blue200),
+        ConfirmButton(
+          onTap: onCancel,
+          text: '취소',
+          backgroundColor: AppColors.blue200,
+        ),
       ]);
     }
 

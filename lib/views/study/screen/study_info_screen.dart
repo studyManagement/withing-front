@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
-import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/study/study_service.dart';
@@ -147,7 +147,7 @@ class StudyInfoScreen extends StatelessWidget {
       print('가입 성공');
       context.go('/studies/$studyId');
     } else {
-      WithingModal.openDialog(
+      ModiModal.openDialog(
           context, '스터디 가입 실패', '', false, () => null, () => null);
     }
   }

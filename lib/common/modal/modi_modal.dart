@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/common/components/study_modal.dart';
+import 'package:modi/common/components/modal/bottom/bottom_modal.dart';
+import 'package:modi/common/components/modal/confirm/study_modal.dart';
 
-class WithingModal {
+class ModiModal {
   static void openDialog(BuildContext context, String title, String content,
       bool isCancel, Function()? onOk, Function()? onCancel) {
     showDialog(
@@ -25,5 +26,15 @@ class WithingModal {
                     }
                   : onCancel);
         });
+  }
+
+  static void openBottomSheet(
+      BuildContext context, Widget widget, double height) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return BottomModal(widget, height);
+      },
+    );
   }
 }

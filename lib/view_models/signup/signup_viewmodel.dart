@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/signup/signup_exception.dart';
 import 'package:modi/service/signup/signup_service.dart';
@@ -60,7 +60,7 @@ class SignupViewModel extends ChangeNotifier {
       if (!context.mounted) return;
       context.go('/home');
     } on ApiException catch (e) {
-      WithingModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
+      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
   }
 }
