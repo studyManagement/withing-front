@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
-import 'package:provider/provider.dart';
 
-import '../../../common/modal/withing_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 enum BoardInputType { boardTitle, boardContents, comment }
@@ -58,12 +56,12 @@ class _BoardTextFieldState extends State<BoardTextField> {
         widget.viewModel.isValidInput(widget.type, value);
       },
       onEditingComplete: () {
-        if(widget.viewModel.isValid) {
+        if (widget.viewModel.isValid) {
           (widget.type == BoardInputType.comment)
               ? {widget.viewModel.createComment(widget.viewModel.post!.id)}
               : (widget.isNew)
-              ? widget.viewModel.createPost()
-              : widget.viewModel.updatePost(widget.viewModel.post!.id);
+                  ? widget.viewModel.createPost()
+                  : widget.viewModel.updatePost(widget.viewModel.post!.id);
           if (widget.type != BoardInputType.comment) {
             context.pop();
             widget.viewModel.refreshBoardList();

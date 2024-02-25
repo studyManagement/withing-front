@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/circle_button.dart';
-import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:modi/di/injection.dart';
@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
     await Future.delayed(const Duration(microseconds: 50));
 
     if (errorMessage != null && context.mounted) {
-      WithingModal.openDialog(
+      ModiModal.openDialog(
           context, '문제가 발생했어요', errorMessage, false, null, null);
       Authentication.state.resolveErrorStatus();
     }

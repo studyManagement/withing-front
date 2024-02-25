@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:modi/common/modal/withing_modal.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:provider/provider.dart';
 

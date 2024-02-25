@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/bottom_toast.dart';
 import 'package:modi/common/layout/default_layout.dart';
-import 'package:modi/common/modal/withing_modal.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
@@ -48,11 +48,12 @@ class StudyManageScreen extends StatelessWidget {
             Center(
               child: GestureDetector(
                   onTap: () {
-                    WithingModal.openDialog(context, "스터디를 삭제하시겠어요?",
+                    ModiModal.openDialog(context, "스터디를 삭제하시겠어요?",
                         "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
                       viewModel.deleteStudy();
                       context.pop();
-                      BottomToast(context: context, text: "스터디가 삭제되었어요.").show();
+                      BottomToast(context: context, text: "스터디가 삭제되었어요.")
+                          .show();
                       // context.go('/home');
                     }, null);
                   },
@@ -91,7 +92,7 @@ class StudyManageListItem extends StatelessWidget {
           if (index == 0) {
             context.push('/studies/$studyId/manage/edit');
           } else if (index == 1) {
-           // vm.getSelectedDaysAndTime();
+            // vm.getSelectedDaysAndTime();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -140,7 +141,7 @@ class StudyManageListItem extends StatelessWidget {
                       }));
                 });
           } else if (index == 4) {
-            WithingModal.openDialog(context, "스터디를 종료하시겠어요?",
+            ModiModal.openDialog(context, "스터디를 종료하시겠어요?",
                 "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.", true, () {
               vm.finishStudy();
               context.pop();

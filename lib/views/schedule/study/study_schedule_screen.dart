@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
+import 'package:modi/common/modal/modi_modal.dart';
+import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/views/schedule/study/components/study_schedule_screen_tab.dart';
 
-import '../../../common/theme/app/app_colors.dart';
+import '../../../common/components/button/icon_text_button.dart';
 
 class StudyScheduleScreen extends StatelessWidget {
-  const StudyScheduleScreen({super.key});
+  const StudyScheduleScreen(this._studyId, {super.key});
+
+  final int _studyId;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +20,35 @@ class StudyScheduleScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       appBar: AppBar(
         backgroundColor: AppColors.white,
+        actions: [
+          IconButton(
+              onPressed: () {
+                ModiModal.openBottomSheet(
+                  context,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconTextButton(
+                          140,
+                          Image.asset('asset/add_schedule.png',
+                              width: 90, height: 90),
+                          '일정 등록',
+                          () => context
+                              .push('/studies/$_studyId/schedules/register')),
+                      const SizedBox(width: 11),
+                      IconTextButton(
+                          140,
+                          Image.asset('asset/vote_schedule.png',
+                              width: 90, height: 90),
+                          '일정 투표',
+                          () {}),
+                    ],
+                  ),
+                  200,
+                );
+              },
+              icon: const Icon(Icons.add)),
+        ],
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),

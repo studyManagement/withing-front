@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/common/components/modal_button.dart';
+import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
-import '../../../common/modal/withing_modal.dart';
+
+import '../../../common/modal/modi_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class InputPasswordModal extends StatefulWidget {
@@ -102,16 +103,18 @@ class _State extends State<InputPasswordModal> {
       actions: <Widget>[
         Row(
           children: [
-            ModalButton(
-                onTap: () {
-                  context.pop();
-                },
-                text: '취소',
-                backgroundcolor: AppColors.blue200),
+            ConfirmButton(
+              onTap: () {
+                context.pop();
+              },
+              text: '취소',
+              backgroundColor: AppColors.blue200,
+              width: 143,
+            ),
             const SizedBox(
               width: 5,
             ),
-            ModalButton(
+            ConfirmButton(
                 onTap: () {
                   if (password.isEmpty || password.length < 4) {
                     print('비밀번호를 입력해주세요.');
@@ -120,7 +123,8 @@ class _State extends State<InputPasswordModal> {
                   }
                 },
                 text: '확인',
-                backgroundcolor: AppColors.blue600),
+                backgroundColor: AppColors.blue600,
+                width: 143),
           ],
         ),
       ],
@@ -134,7 +138,7 @@ class _State extends State<InputPasswordModal> {
       print('가입 성공');
       context.go('/studies/${widget.studyId}');
     } else {
-      WithingModal.openDialog(
+      ModiModal.openDialog(
           context, '스터디 가입 실패', '', false, () => null, () => null);
     }
   }
