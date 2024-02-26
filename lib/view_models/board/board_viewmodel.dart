@@ -12,11 +12,15 @@ class BoardViewModel extends ChangeNotifier {
 
   BoardViewModel(this._service);
 
+  static const int SIZE = 20;
+
   int? _studyId;
+  bool _isRefreshed = true;
   bool _isLoading = false;
   bool _isValid = false;
   bool _isFirst = true;
-  bool hasNext = true;
+  bool hasNextNotices = true;
+  bool hasNextPosts = true;
   bool hasPost = false;
 
   List<BoardModel> posts = [];
@@ -43,6 +47,12 @@ class BoardViewModel extends ChangeNotifier {
 
   int? get studyId => _studyId;
 
+  bool get isRefreshed => _isRefreshed;
+
+  set isRefreshed(bool value){
+    _isRefreshed = value;
+  }
+
   Future<void> scrollListener(bool isNotice) async {
     if (_isLoading) return;
     _isLoading = true;
@@ -56,28 +66,34 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> fetchNotices() async {
     List<BoardModel> newNotices = [];
-    int page = notices.isEmpty ? 1 : (notices.length ~/ 100) + 1;
-    if (hasNext == true) {
-      newNotices = await _service.fetchBoardList(_studyId!, true, 200, page);
-      if (newNotices.length < 100) hasNext = false;
+    int page = notices.isEmpty ? 0 : (notices.length ~/ SIZE);
+  if(hasNextNotices) {
+      newNotices = await _service.fetchBoardList(_studyId!, true, SIZE, page);
+      if (newNotices.length < SIZE) {
+        hasNextNotices = false;
+      }
     }
     if (newNotices.isNotEmpty) {
       notices.addAll(newNotices);
       hasPost = true;
+      // print(notices.length);
       notifyListeners();
     }
   }
 
   Future<void> fetchBoardList() async {
     List<BoardModel> newPosts = [];
-    int page = posts.isEmpty ? 1 : (posts.length ~/ 100) + 1;
-    if (hasNext == true) {
-      newPosts = await _service.fetchBoardList(_studyId!, false, 200, page);
-      if (newPosts.length < 100) hasNext = false;
+    int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
+    if (hasNextPosts == true) {
+      newPosts = await _service.fetchBoardList(_studyId!, false, SIZE, page);
+      if (newPosts.length < SIZE){
+        hasNextPosts= false;
+      }
     }
     if (newPosts.isNotEmpty) {
       posts.addAll(newPosts);
       hasPost = true;
+      // print(posts.length);
       notifyListeners();
     }
   }
@@ -184,7 +200,9 @@ class BoardViewModel extends ChangeNotifier {
     posts = [];
     notices = [];
     hasPost = false;
-    hasNext = true;
+    hasNextPosts = true;
+    hasNextNotices = true;
+    _isRefreshed = true;
   }
 
   void isValidInput(BoardInputType type, String value) {
