@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authenticator.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
-import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
-
-import '../../../common/authenticator/authentication.dart';
 import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
@@ -15,14 +12,16 @@ import '../../board/widgets/board_item.dart';
 class Notice extends StatelessWidget {
   final int studyId;
   final bool isMember;
+  final bool isPrivate;
 
-  const Notice({super.key, required this.studyId, required this.isMember});
+  const Notice({super.key, required this.studyId, required this.isMember, required this.isPrivate});
 
   @override
   Widget build(BuildContext context) {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
     boardViewModel.setStudyId = studyId;
     boardViewModel.fetchNotices();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,11 +53,9 @@ class Notice extends StatelessWidget {
             ],
           ),
         ),
-        (!isMember)
+        (!isMember && isPrivate)
             ? const StudyNoticeException(isPrivate: true)
-            : (boardViewModel.notices.isEmpty)
-                ? Container()
-                : (boardViewModel.hasPost)
+            : (boardViewModel.hasPost)
                     ? _NoticeCarousel(
                         viewModel: boardViewModel,
                         studyId: studyId,

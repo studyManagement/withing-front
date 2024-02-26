@@ -15,6 +15,10 @@ abstract class SearchedStudiesViewModel {
 
 /// utils
 ///
+///
+
+const int size = 10;
+
 List<String> getStudyFilters() {
   return const ['최신순', '인기순'];
 }
@@ -32,6 +36,9 @@ String getFilter(String value) {
 }
 
 String stringifySchedule(List<MeetingInfo> meetings) {
+  if(meetings.isEmpty){
+    return '미등록';
+  }
   Map<int, String> dayNames = {
     1: '월요일',
     2: '화요일',

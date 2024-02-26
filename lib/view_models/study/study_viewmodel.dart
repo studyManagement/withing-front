@@ -291,7 +291,7 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void checkRegistered(List<UserModel> users, int userId) {
+  void checkRegistered(int userId) {
     // 스터디 가입 여부 확인
     _isMember = users.any((user) => user.id == userId);
   }
