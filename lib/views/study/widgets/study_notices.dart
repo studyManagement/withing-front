@@ -60,7 +60,7 @@ class Notice extends StatelessWidget {
                 ? Container()
                 : (boardViewModel.hasPost)
                     ? _NoticeCarousel(
-                       viewModel: boardViewModel,
+                        viewModel: boardViewModel,
                         studyId: studyId,
                       )
                     : const StudyNoticeException(isPrivate: false)
@@ -73,7 +73,7 @@ class _NoticeCarousel extends StatefulWidget {
   final int studyId;
   final BoardViewModel viewModel;
 
-  const _NoticeCarousel({required this.studyId,required this.viewModel});
+  const _NoticeCarousel({required this.studyId, required this.viewModel});
 
   @override
   State<_NoticeCarousel> createState() => _NoticeCarouselState();
@@ -137,6 +137,7 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
 }
 
 Widget slideIndicator(int currentIndex, int numOfItem) {
+  int page = (numOfItem +2) ~/ 3;
   return SizedBox(
     width: 31,
     height: 5,
@@ -144,7 +145,7 @@ Widget slideIndicator(int currentIndex, int numOfItem) {
       spacing: 8.0,
       alignment: WrapAlignment.spaceEvenly,
       children: [
-        for (int i = 0; i < numOfItem ~/ 3 + 1; i++)
+        for (int i = 0; i < page; i++)
           Container(
             width: 5.0,
             height: 5.0,
