@@ -6,19 +6,20 @@ import '../../../view_models/board/board_viewmodel.dart';
 import 'board_item.dart';
 
 class BoardList extends StatelessWidget {
-  List<BoardModel>? list;
-  BoardList({super.key, this.list});
+  final bool? isNotice;
+  const BoardList({super.key,this.isNotice});
 
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final vm = context.watch<BoardViewModel>();
+    List<BoardModel> list = (isNotice!) ? vm.notices : vm.notices + vm.posts;
 
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification notification) {
         if (notification.metrics.pixels ==
             notification.metrics.maxScrollExtent) {
-          vm.scrollListener(false);
+          vm.scrollListener(isNotice!);
         }
         return true;
       },
@@ -28,7 +29,7 @@ class BoardList extends StatelessWidget {
           return BoardItem(
             studyId: vm.studyId!,
             isOnlyNotice: false,
-            boardItem: list![index],
+            boardItem: list[index],
           );
         },
         separatorBuilder: (context, index) {
@@ -39,7 +40,7 @@ class BoardList extends StatelessWidget {
             color: AppColors.gray100,
           );
         },
-        itemCount: list!.length,
+        itemCount: list.length,
       ),
     );
   }

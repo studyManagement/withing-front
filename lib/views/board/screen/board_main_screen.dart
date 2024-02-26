@@ -14,24 +14,32 @@ class BoardMainScreen extends StatelessWidget {
   final int studyId;
   final bool isNotice;
 
-  const BoardMainScreen(
-      {super.key, required this.studyId, required this.isNotice});
+  BoardMainScreen({super.key, required this.studyId, required this.isNotice});
 
-  void initCreateScreenState(BoardViewModel viewModel){
-    viewModel.isValid=false;
-    viewModel.boardContents='';
+  final BoardViewModel vm = BoardViewModel(getIt<BoardService>());
+
+  void initCreateScreenState(BoardViewModel viewModel) {
+    viewModel.isValid = false;
+    viewModel.boardContents = '';
     viewModel.boardTitle = '';
+  }
+
+  void loadBoardList() {
+    vm.setStudyId = studyId;
+    vm.fetchNotices();
+    if (isNotice == false) {
+      vm.fetchBoardList();
+    }
+    vm.isRefreshed = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => BoardViewModel(getIt<BoardService>()),
+    return ChangeNotifierProvider.value(
+      value: vm,
       child: Consumer<BoardViewModel>(builder: (context, vm, child) {
-        vm.setStudyId = studyId;
-        vm.fetchNotices();
-        if (isNotice == false) {
-          vm.fetchBoardList();
+        if (vm.isRefreshed) {
+          loadBoardList();
         }
         return Scaffold(
             appBar: (isNotice == true)
@@ -42,7 +50,7 @@ class BoardMainScreen extends StatelessWidget {
                     null,
                     IconButton(
                         onPressed: () {
-                        initCreateScreenState(vm);
+                          initCreateScreenState(vm);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -53,7 +61,8 @@ class BoardMainScreen extends StatelessWidget {
             body: SafeArea(
                 child: (vm.hasPost)
                     ? BoardList(
-                        list: (isNotice) ? vm.notices : vm.notices + vm.posts)
+                        isNotice: isNotice,
+                      )
                     : const NoPost()));
       }),
     );
