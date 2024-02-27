@@ -34,8 +34,8 @@ class StudyInfoScreen extends StatelessWidget {
         .fetchStudyInfo(context, studyId)
         .then((_) => vm.getRegularMeetingString());
 
-    if (vm.study != null && vm.study!.private) {
-      vm.checkRegistered(vm.users, 28); // 임시값
+    if (vm.study != null) {
+      vm.checkRegistered(Authentication.instance.userId); // 임시값
     }
     bool offstage = vm.isMember;
     bool isLeader = (vm.study?.leaderId == Authentication.instance.userId);
@@ -46,7 +46,7 @@ class StudyInfoScreen extends StatelessWidget {
           : StudyMainAppBar(
               studyId: studyId,
               isLeader: isLeader,
-              hasLike: (vm.isMember) ? null : false,
+              hasLike: (vm.isMember) ? null : false, // 수정
               action: (isLeader)
                   ? () {
                       Navigator.push(
@@ -117,7 +117,7 @@ class StudyInfoScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     ChangeNotifierProvider(
                         create: (_) => BoardViewModel(getIt<BoardService>()),
-                        child: Notice(studyId: studyId, isMember: vm.isMember)),
+                        child: Notice(studyId: studyId, isMember: vm.isMember, isPrivate: vm.study!.private)),
                     if (!offstage) const SizedBox(height: 190),
                     if (!offstage)
                       Center(

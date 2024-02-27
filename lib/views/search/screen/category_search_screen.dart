@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/components/gray50_divider.dart';
 import '../../../di/injection.dart';
-import '../../../service/search/category_search_service.dart';
+import '../../../service/search/study_search_service.dart';
 import '../../../view_models/search/category_search_viewmodel.dart';
 import '../widgets/_search_widget_resources.dart';
 
@@ -14,7 +14,7 @@ class CategorySearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CategorySearchViewModel(getIt<CategorySearchService>()),
+      create: (_) => CategorySearchViewModel(getIt<StudySearchService>()),
       child: Scaffold(
         body: SafeArea(
           child: Column(

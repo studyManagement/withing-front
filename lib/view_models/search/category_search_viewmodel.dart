@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
 
 import '../../model/search/searched_study_info_model.dart';
-import '../../service/search/category_search_service.dart';
+import '../../service/search/study_search_service.dart';
 
 class CategorySearchViewModel extends SearchedStudiesViewModel
     with ChangeNotifier {
-  final CategorySearchService _categorySearchService;
+  final StudySearchService _studySearchService;
 
-  CategorySearchViewModel(this._categorySearchService) {
+  CategorySearchViewModel(this._studySearchService) {
     search();
   }
 
@@ -16,7 +16,7 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
   String _selectedFilterValue = '최신순';
   int _selectedCategoryValue = 0;
   int _studyCount = 0;
-  List<SearchedStudyInfo>? _searchedStudies;
+  List<SearchedStudyInfo> _searchedStudies = [];
 
   @override
   String get filterValue => _selectedFilterValue;
@@ -28,7 +28,7 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
   int get studiesCount => _studyCount;
 
   @override
-  List<SearchedStudyInfo>? get studyList => _searchedStudies;
+  List<SearchedStudyInfo> get studyList => _searchedStudies;
 
   @override
   Future<void> scrollListener() async {
@@ -48,25 +48,6 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
     notifyListeners();
   }
 
-  /// category initial search api
-  @override
-  Future<void> search() async {
-    String id = _selectedCategoryValue.toString();
-    _studyCount = await _categorySearchService.callCountApi(id);
-    notifyListeners();
-
-    if (_studyCount != 0) {
-      _searchedStudies = await _categorySearchService.callSearchApi(
-        id,
-        getFilter(_selectedFilterValue),
-        0,
-      );
-    }
-
-    debugPrint('검색된 스터디(카테고리)');
-    print(_searchedStudies);
-    notifyListeners();
-  }
 
   /// update search category
   set searchCategory(int newValue) {
@@ -81,23 +62,46 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
     notifyListeners();
   }
 
+  /// category initial search api
+  @override
+  Future<void> search() async {
+    // 개수 조회
+    _studyCount = await _studySearchService.callCategoryCountApi(_selectedCategoryValue);
+    notifyListeners();
+
+   if(_searchedStudies.length < _studyCount) {
+      _searchedStudies = await _studySearchService.callSearchApi(
+          getFilter(_selectedFilterValue), // 정렬 키워드
+          categories[_selectedCategoryValue], // 카테고리 이름
+          "category",
+          size,
+          0
+      );
+    }
+    debugPrint('검색된 스터디(카테고리)');
+    print(_searchedStudies);
+    notifyListeners();
+  }
+
   /// fetch category search - 스크롤시 추가
   Future<void> fetchStudiesWithCategory() async {
     debugPrint('API 추가 요청 - 카테고리');
-    String id = _selectedCategoryValue.toString();
-    int currentLength = _searchedStudies != null ? _searchedStudies!.length : 0;
+    //String categoryId = _selectedCategoryValue.toString();
+    int page = _searchedStudies.isNotEmpty ? _searchedStudies.length ~/ size : 0;
 
-    if (currentLength < _studyCount) {
+    if (_searchedStudies.length < _studyCount) {
       List<SearchedStudyInfo>? newStudies =
-          await _categorySearchService.callSearchApi(
-        id,
-        getFilter(_selectedFilterValue),
-        currentLength,
+          await _studySearchService.callSearchApi(
+              getFilter(_selectedFilterValue), // 정렬 키워드
+              categories[_selectedCategoryValue], // 카테고리 이름
+              "category",
+              size,
+              page
       );
 
-      _searchedStudies?.addAll(newStudies);
+      _searchedStudies.addAll(newStudies);
       notifyListeners();
-      print(_searchedStudies!.length);
+      print(_searchedStudies.length);
     }
   }
 }

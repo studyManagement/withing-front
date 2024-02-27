@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'keyword_search_service.dart';
+part of 'study_search_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'keyword_search_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _KeywordSearchApi implements KeywordSearchApi {
-  _KeywordSearchApi(
+class _StudySearchApi implements StudySearchApi {
+  _StudySearchApi(
     this._dio, {
     this.baseUrl,
   });
@@ -20,15 +20,19 @@ class _KeywordSearchApi implements KeywordSearchApi {
 
   @override
   Future<List<SearchedStudyInfo>> search(
-    String keyword,
     String sort,
-    int index,
+    String keyword,
+    String type,
+    int size,
+    int page,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'keyword': keyword,
       r'sort': sort,
-      r'index': index,
+      r'keyword': keyword,
+      r'type': type,
+      r'size': size,
+      r'page': page,
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
@@ -57,7 +61,33 @@ class _KeywordSearchApi implements KeywordSearchApi {
   }
 
   @override
-  Future<int> count(String keyword) async {
+  Future<int> countByCategory(int categoryId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'category_id': categoryId};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/studies/count',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = _result.data!;
+    return value;
+  }
+
+  @override
+  Future<int> countByKeyword(String keyword) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'keyword': keyword};
     final _headers = <String, dynamic>{};
