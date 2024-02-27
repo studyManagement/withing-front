@@ -15,7 +15,7 @@ class AutomatedStudyListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
     int searchesCount = viewModel.studyList?.length ?? 0;
-    List<SearchedStudyInfo>? studyList = viewModel.studyList;
+    List<SearchedStudyInfo> studyList = viewModel.studyList ?? [];
 
     return Expanded(
       child: NotificationListener<ScrollNotification>(
@@ -29,7 +29,7 @@ class AutomatedStudyListView extends StatelessWidget {
           controller: scrollController,
           itemCount: searchesCount,
           itemBuilder: (context, index) =>
-              (index < searchesCount) ? _StudyCard(studyList![index]) : null,
+              (index < searchesCount) ? _StudyCard(studyList[index]) : null,
           separatorBuilder: (context, index) => const Gray100Divider(),
         ),
       ),
@@ -53,7 +53,7 @@ class _StudyCard extends StatelessWidget {
         child: Column(
           children: [
             _StudyHeader(
-              studyName: info.teamName ?? '',
+              studyName: info.studyName ?? '',
               studyImageUrl: info.studyImage,
             ),
             _StudyDetails(

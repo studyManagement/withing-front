@@ -7,19 +7,16 @@ part 'searched_study_info_model.g.dart';
 class SearchedStudyInfo with _$SearchedStudyInfo {
   const factory SearchedStudyInfo({
     required int id,
-    required String? teamName,
+    required String studyName,
     required int max,
     required int headcount,
-    required String password,
     required String explanation,
-    required String createdDate,
-    required String deadline,
-    required int leaderId,
+    required String createdAt,
+    required String? deadline,
     required String? studyImage,
     required List<String> categories,
     required List<MeetingInfo> meetingSchedules,
     required bool private,
-    required bool finished,
   }) = _SearchedStudyInfo;
 
   factory SearchedStudyInfo.fromJson(Map<String, dynamic> json) =>

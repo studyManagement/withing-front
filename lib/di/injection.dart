@@ -10,8 +10,7 @@ import 'package:modi/service/signup/signup_service.dart';
 import '../service/create/study_create_service.dart';
 import '../service/image/study_image_create_service.dart';
 import '../service/image/study_image_update_service.dart';
-import '../service/search/category_search_service.dart';
-import '../service/search/keyword_search_service.dart';
+import '../service/search/study_search_service.dart';
 import '../service/study/study_service.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -36,11 +35,14 @@ void setupDependencyInjection() {
   getIt.registerLazySingleton<StudyApi>(
     () => StudyApi(getIt<Dio>(instanceName: 'client')),
   );
-  getIt.registerLazySingleton<CategorySearchApi>(
-    () => CategorySearchApi(getIt<Dio>(instanceName: 'client')),
-  );
-  getIt.registerLazySingleton<KeywordSearchApi>(
-    () => KeywordSearchApi(getIt<Dio>(instanceName: 'client')),
+  // getIt.registerLazySingleton<CategorySearchApi>(
+  //   () => CategorySearchApi(getIt<Dio>(instanceName: 'client')),
+  // );
+  // getIt.registerLazySingleton<KeywordSearchApi>(
+  //   () => KeywordSearchApi(getIt<Dio>(instanceName: 'client')),
+  // );
+  getIt.registerLazySingleton<StudySearchApi>(
+        () => StudySearchApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<StudyCreateApi>(
     () => StudyCreateApi(getIt<Dio>(instanceName: 'client')),
@@ -66,12 +68,16 @@ void setupDependencyInjection() {
   getIt.registerLazySingleton<StudyService>(
     () => StudyService(getIt<StudyApi>()),
   );
-  getIt.registerLazySingleton<CategorySearchService>(
-    () => CategorySearchService(getIt<CategorySearchApi>()),
+  getIt.registerLazySingleton<StudySearchService>(
+        () => StudySearchService(getIt<StudySearchApi>()),
   );
-  getIt.registerLazySingleton<KeywordSearchService>(
-    () => KeywordSearchService(getIt<KeywordSearchApi>()),
-  );
+
+  // getIt.registerLazySingleton<CategorySearchService>(
+  //   () => CategorySearchService(getIt<CategorySearchApi>()),
+  // );
+  // getIt.registerLazySingleton<KeywordSearchService>(
+  //   () => KeywordSearchService(getIt<KeywordSearchApi>()),
+  // );
   getIt.registerLazySingleton<StudyCreateService>(
     () => StudyCreateService(getIt<StudyCreateApi>()),
   );
