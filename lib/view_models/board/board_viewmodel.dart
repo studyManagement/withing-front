@@ -15,9 +15,10 @@ class BoardViewModel extends ChangeNotifier {
   static const int SIZE = 20;
 
   int? _studyId;
-  bool _isRefreshed = true;
+  bool isRefreshed = true;
   bool _isLoading = false;
   bool _isValid = false;
+  bool _isAddedComment = false;
   bool _isFirst = true;
   bool hasNextNotices = true;
   bool hasNextPosts = true;
@@ -34,6 +35,8 @@ class BoardViewModel extends ChangeNotifier {
 
   bool get isValid => _isValid;
 
+  bool get isAddedComment => _isAddedComment;
+
   bool get isFirst => _isFirst;
   String _title = '';
   String _contents = '';
@@ -46,12 +49,6 @@ class BoardViewModel extends ChangeNotifier {
   String get comment => _comment;
 
   int? get studyId => _studyId;
-
-  bool get isRefreshed => _isRefreshed;
-
-  set isRefreshed(bool value){
-    _isRefreshed = value;
-  }
 
   Future<void> scrollListener(bool isNotice) async {
     if (_isLoading) return;
@@ -67,7 +64,7 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> fetchNotices() async {
     List<BoardModel> newNotices = [];
     int page = notices.isEmpty ? 0 : (notices.length ~/ SIZE);
-  if(hasNextNotices) {
+    if (hasNextNotices) {
       newNotices = await _service.fetchBoardList(_studyId!, true, SIZE, page);
       if (newNotices.length < SIZE) {
         hasNextNotices = false;
@@ -86,8 +83,8 @@ class BoardViewModel extends ChangeNotifier {
     int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
     if (hasNextPosts == true) {
       newPosts = await _service.fetchBoardList(_studyId!, false, SIZE, page);
-      if (newPosts.length < SIZE){
-        hasNextPosts= false;
+      if (newPosts.length < SIZE) {
+        hasNextPosts = false;
       }
     }
     if (newPosts.isNotEmpty) {
@@ -134,6 +131,7 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> fetchComments(int boardId) async {
     try {
+      _isAddedComment = false;
       _isFirst = false;
       comments = await _service.fetchComments(_studyId!, boardId);
       if (comments.isNotEmpty) notifyListeners();
@@ -148,6 +146,7 @@ class BoardViewModel extends ChangeNotifier {
           await _service.createComments(_studyId!, boardId, _comment);
       comments.add(newComment);
       comment = '';
+      _isAddedComment = true;
       notifyListeners();
     }
   }
@@ -202,7 +201,7 @@ class BoardViewModel extends ChangeNotifier {
     hasPost = false;
     hasNextPosts = true;
     hasNextNotices = true;
-    _isRefreshed = true;
+    isRefreshed = true;
   }
 
   void isValidInput(BoardInputType type, String value) {
