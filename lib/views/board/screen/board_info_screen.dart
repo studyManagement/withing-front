@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/gray50_divider.dart';
-import 'package:modi/service/board/board_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:provider/provider.dart';
-
-import '../../../common/theme/app/app_colors.dart';
-import '../../../di/injection.dart';
 import '../widgets/board_appbar.dart';
 import '../widgets/board_bottomsheet.dart';
 import '../widgets/board_header.dart';
@@ -18,12 +14,9 @@ class BoardInfoScreen extends StatelessWidget {
   final int boardId;
   final BoardViewModel viewModel;
 
-  const BoardInfoScreen(
-      {super.key,
-      required this.boardId,
-      required this.viewModel});
+  const BoardInfoScreen({super.key, required this.boardId, required this.viewModel});
 
-  void loadBoardInfo(){
+  void loadBoardInfo() {
     viewModel.fetchBoardInfo(boardId);
     viewModel.fetchComments(boardId);
   }
@@ -31,10 +24,17 @@ class BoardInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     loadBoardInfo();
+    final ScrollController scrollController = ScrollController();
     return ChangeNotifierProvider.value(
-     value: viewModel,
+      value: viewModel,
       child: Consumer<BoardViewModel>(builder: (context, consumer, child) {
-        bool isWriter = consumer.post?.user.id == Authentication.instance.userId;
+        bool isWriter =
+            consumer.post?.user.id == Authentication.instance.userId;
+        if (consumer.isAddedComment) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          });
+        }
         return Scaffold(
             appBar: boardAppBar(context, '', () {
               context.pop();
@@ -56,14 +56,13 @@ class BoardInfoScreen extends StatelessWidget {
                 : SafeArea(
                     child: Column(
                       children: [
-                        const Expanded(
+                        Expanded(
                           child: SingleChildScrollView(
-                            child: Column(children: [
+                            controller: scrollController,
+                            child: const Column(children: [
                               BoardHeader(),
-                              Divider(
-                                endIndent: 0,
-                                thickness: 6,
-                                color: AppColors.gray50,
+                              Gray50Divider(
+                                dividerHeight: 6.0,
                               ),
                               SizedBox(height: 12),
                               BoardCommentList(),
@@ -71,7 +70,7 @@ class BoardInfoScreen extends StatelessWidget {
                           ),
                         ),
                         const Gray50Divider(),
-                        CommentInputBox(viewModel:viewModel),
+                        CommentInputBox(viewModel: viewModel)
                       ],
                     ),
                   ));
