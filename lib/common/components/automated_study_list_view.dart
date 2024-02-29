@@ -55,6 +55,7 @@ class _StudyCard extends StatelessWidget {
             _StudyHeader(
               studyName: info.studyName ?? '',
               studyImageUrl: info.studyImage,
+              isPrivate: info.private,
             ),
             _StudyDetails(
               [
@@ -76,10 +77,12 @@ class _StudyCard extends StatelessWidget {
 class _StudyHeader extends StatelessWidget {
   final String studyName;
   final String? studyImageUrl;
+  final bool isPrivate;
 
   const _StudyHeader({
     required this.studyName,
     required this.studyImageUrl,
+    required this.isPrivate,
   });
 
   @override
@@ -106,10 +109,16 @@ class _StudyHeader extends StatelessWidget {
                     )
                   : grayContainer,
             ),
-            const SizedBox(width: 12),
-            Text(
-              studyName,
-              style: Theme.of(context).textTheme.titleMedium,
+            const SizedBox(width: 8),
+            Row(
+              children: [
+                if(isPrivate)Image.asset('asset/lock_20.png', width: 20, height: 20,),
+                if(isPrivate)const SizedBox(width: 6),
+                Text(
+                  studyName,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
             ),
           ],
         ),
