@@ -26,16 +26,17 @@ class _State extends State<InputPasswordModal> {
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.watch<StudyViewModel>();
     return AlertDialog(
+      insetPadding: EdgeInsets.zero,
       surfaceTintColor: Colors.white,
       titlePadding:
-          const EdgeInsets.only(left: 12, right: 12, top: 27, bottom: 8),
+          const EdgeInsets.only(top: 27, bottom: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       title: Text(
         '비밀번호 입력',
         style: Theme.of(context).textTheme.titleMedium,
         textAlign: TextAlign.center,
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+      contentPadding: const EdgeInsets.symmetric(vertical: 0),
       content: SizedBox(
         height: 70,
         child: Column(
@@ -111,9 +112,7 @@ class _State extends State<InputPasswordModal> {
               backgroundColor: AppColors.blue200,
               width: 143,
             ),
-            const SizedBox(
-              width: 5,
-            ),
+            const SizedBox(width: 5),
             ConfirmButton(
                 onTap: () {
                   if (password.isEmpty || password.length < 4) {
