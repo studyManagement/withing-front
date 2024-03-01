@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:modi/view_models/study/create_study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/study/study_info_viewmodels.dart';
+import '../../../view_models/study/study_info_viewmodel.dart';
 
 enum NewStudyType {
   studyName,
@@ -80,7 +81,7 @@ class _StudyTextFieldState extends State<StudyTextField> {
               hintStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: AppColors.gray200,
                   ),
-              errorText: getErrorText(widget.type, isValidation),
+              errorText: getErrorText(widget.type, isValidation, widget.viewModel is CreateStudyViewModel),
               errorStyle: isValidation
                   ? Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: AppColors.blue400,

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
-import 'package:modi/view_models/study/study_info_viewmodels.dart';
+import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../service/image/study_image_update_service.dart';
 import '../../service/study/study_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -13,17 +13,6 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyImageUpdateService _studyImageUpdateService;
 
   UpdateStudyViewModel(this._studyService, this._studyImageUpdateService);
-
-  int? _studyId;
-  int _headCount = 0;
-  String _studyName = '', _studyDescription = '', _studyImagePath = '';
-  List<String> _selectedCategories = [];
-  List<int> _selectedCategoryIndices = [];
-  int _studyMemberCount = 15;
-  File? _file;
-  bool _isStudyNameError = false;
-  bool _isStudyDescriptionError = false;
-  bool _isOldImageLoaded = false;
 
   @override
   bool get isOldImageLoaded => _isOldImageLoaded;
@@ -55,17 +44,25 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   bool get isStudyDescriptionError => _isStudyDescriptionError;
 
+  int? _studyId;
+  int _headCount = 0;
+  String _studyName = '', _studyDescription = '', _studyImagePath = '';
+  List<String> _selectedCategories = [];
+  List<int> _selectedCategoryIndices = [];
+  int _studyMemberCount = 0;
+  File? _file;
+  bool _isStudyNameError = false;
+  bool _isStudyDescriptionError = false;
+  bool _isOldImageLoaded = false;
+
   @override
   bool checkEverythingFilled() {
     if (_isStudyNameError &&
         _isStudyDescriptionError &&
-        // (!isStudyDiscloseToggled || studyDisclosePassword.length == 4) &&
-        _studyMemberCount >= _headCount &&
-        _selectedCategories.isNotEmpty) {
+        _studyMemberCount >= _headCount) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   @override
@@ -122,7 +119,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   set memberCount(int newValue) {
-    if (newValue >= _headCount && newValue <= 15) {
+    if (newValue <= 15) {
       _studyMemberCount = newValue;
       debugPrint('스터디 인원: $_studyMemberCount');
       notifyListeners();
@@ -143,6 +140,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  void setStudyNameAdnDescription(){
+    checkStudyNameAndDescription(NewStudyType.studyName, _studyName);
+    checkStudyNameAndDescription(NewStudyType.studyDescription, _studyDescription);
+  }
+
+
   /// call api
 
   Future<void> getStudyInfo(int studyId) async {
@@ -150,11 +153,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _studyId = study.id;
     _headCount = study.headcount;
     _studyName = study.studyName;
-    _studyImagePath = study.studyImage!;
-    studyImageFile = File(study.studyImage!);
+    _studyImagePath = study.studyImage ?? '';
+    if (_studyImagePath.isNotEmpty) studyImageFile = File(study.studyImage!);
     _studyDescription = study.explanation;
-    _selectedCategories = study.categories;
-    _studyMemberCount = study.headcount;
+    _selectedCategories = List.from(study.categories);
+    _studyMemberCount = study.max;
+    setStudyNameAdnDescription();
     notifyListeners();
   }
 
@@ -169,11 +173,10 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   Future<void> updateStudyInfo() async {
-    await updateStudyImage();
-    StudyModel study = await _studyService.updateStudyInfo(
+    // await updateStudyImage();
+    await _studyService.updateStudyInfo(
         _studyId!,
         UpdatedStudyInfo(_studyName, _studyDescription,
             _selectedCategoryIndices..sort(), _studyMemberCount));
-    print(study);
   }
 }
