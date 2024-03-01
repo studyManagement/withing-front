@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<File?> pickImageFile() async {
@@ -9,8 +8,6 @@ Future<File?> pickImageFile() async {
 
   if (xFile == null) return null;
   File imageFile = File(xFile.path);
-
-  debugPrint('imagePath: ${xFile.path}');
 
   return imageFile;
 }

@@ -4,7 +4,7 @@ import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/search/category_search_viewmodel.dart';
 
 class SearchCategorySelector extends StatelessWidget {
-  SearchCategorySelector({super.key});
+  const SearchCategorySelector({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,6 @@ class SearchCategorySelector extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               viewModel.searchCategory = index;
-              debugPrint(categories[index]);
               viewModel.search();
             },
             child: _CategoryItem(

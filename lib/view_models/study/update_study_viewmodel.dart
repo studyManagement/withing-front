@@ -85,12 +85,10 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     switch (type) {
       case NewStudyType.studyName:
         _studyName = input;
-        // debugPrint(_studyName);
         break;
       case NewStudyType.studyDescription:
         _studyDescription = input;
         break;
-      // debugPrint(_studyDescription);
     }
   }
 
@@ -98,11 +96,9 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   void updateSelectedCategories(String option, int? maxSelectedOptions) {
     if (_selectedCategories.contains(option)) {
       _selectedCategories.remove(option);
-      debugPrint('$option 제거');
     } else if (maxSelectedOptions == null ||
         _selectedCategories.length < maxSelectedOptions) {
       _selectedCategories.add(option);
-      debugPrint('$option 추가');
     }
     updateSelectedCategoryIndices();
     notifyListeners();
@@ -113,15 +109,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _selectedCategoryIndices = _selectedCategories
         .map((category) => getStudyCategories().indexOf(category))
         .toList();
-    print(_selectedCategories);
-    print(_selectedCategoryIndices);
   }
 
   @override
   set memberCount(int newValue) {
     if (newValue <= 15) {
       _studyMemberCount = newValue;
-      debugPrint('스터디 인원: $_studyMemberCount');
       notifyListeners();
     }
   }
@@ -166,7 +159,6 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     if (_file != null) {
       int studyImageId =
           await _studyImageUpdateService.callCreateApi(_studyId!, _file!);
-      print('studyImageID : $studyImageId');
     } else {
       return;
     }

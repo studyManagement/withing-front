@@ -24,7 +24,6 @@ class StudyBasicButton extends StatelessWidget {
           ),
         ),
         onPressed: () => {
-          debugPrint('스터디 생성 버튼 클릭'),
           if (isEverythingFilled) {viewModel.createStudy()}
         },
         child: Text(
