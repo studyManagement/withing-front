@@ -117,7 +117,10 @@ class StudyInfoScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     ChangeNotifierProvider(
                         create: (_) => BoardViewModel(getIt<BoardService>()),
-                        child: Notice(studyId: studyId, isMember: vm.isMember, isPrivate: vm.study!.private)),
+                        child: Notice(
+                            studyId: studyId,
+                            isMember: vm.isMember,
+                            isPrivate: vm.study!.private)),
                     if (!offstage) const SizedBox(height: 190),
                     if (!offstage)
                       Center(
