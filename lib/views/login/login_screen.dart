@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
-import 'package:modi/common/components/circle_button.dart';
+import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -94,7 +94,11 @@ class _Bottom extends StatelessWidget {
 
     List<Widget> loginComponents = [
       CircleButton(
-          image: 'asset/kakao.png',
+          image: Image.asset(
+            'asset/kakao.png',
+            width: 50,
+            height: 50,
+          ),
           onTap: () async {
             await vm.signin('kakao');
           }),
@@ -104,7 +108,11 @@ class _Bottom extends StatelessWidget {
       loginComponents.addAll([
         const SizedBox(width: 16),
         CircleButton(
-            image: 'asset/apple.png',
+            image: Image.asset(
+              'asset/apple.png',
+              width: 50,
+              height: 50,
+            ),
             onTap: () async {
               await vm.signin('apple');
             }),

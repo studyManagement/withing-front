@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CircleButton extends StatelessWidget {
   final Function()? onTap;
-  final String image;
+  final Image image;
 
   const CircleButton({
     Key? key,
@@ -12,13 +12,9 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      child: Image.asset(
-        image,
-        width: 50,
-        height: 50,
-      ),
+      child: image,
     );
   }
 }
