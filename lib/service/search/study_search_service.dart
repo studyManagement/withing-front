@@ -1,10 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/cupertino.dart';
 import 'package:modi/model/search/searched_study_info_model.dart';
 import 'package:retrofit/http.dart';
-
 import '../../common/requester/network_exception.dart';
-
 part 'study_search_service.g.dart';
 
 /// API
@@ -49,7 +46,6 @@ class StudySearchService {
       final response = await _api.search(sort, keyword, type, size, page);
       return response;
     } on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
 
@@ -60,10 +56,8 @@ class StudySearchService {
       ) async {
     try {
       final studyCnt = await _api.countByCategory(categoryId);
-      debugPrint('카테고리 [$categoryId] 검색된 스터디 수 :  $studyCnt');
       return studyCnt;
     } on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
   }
@@ -73,10 +67,8 @@ class StudySearchService {
       ) async {
     try {
       final studyCnt = await _api.countByKeyword(keyword);
-      debugPrint('키워드 [$keyword] 검색된 스터디 수 :  $studyCnt');
       return studyCnt;
     } on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
   }

@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/material.dart';
 import 'package:retrofit/http.dart';
 import '../../common/requester/network_exception.dart';
 
@@ -32,15 +30,12 @@ class StudyImageUpdateService {
     File image,
   ) async {
     try {
-      debugPrint('[API]');
       final response = await _api.update(
         studyId,
         image,
       );
-      print(response);
       return response;
     } on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
   }

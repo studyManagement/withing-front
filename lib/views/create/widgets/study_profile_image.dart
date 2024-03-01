@@ -41,7 +41,6 @@ class StudyProfileImage extends StatelessWidget {
             alignment: Alignment.bottomRight,
             child: GestureDetector(
               onTap: () async {
-                debugPrint('프로필 사진 선택');
                 viewModel.studyImageFile = await pickImageFile();
                 viewModel.isOldImageLoaded = true;
               },

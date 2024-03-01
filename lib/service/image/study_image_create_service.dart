@@ -1,11 +1,7 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/material.dart';
 import 'package:retrofit/http.dart';
-
 import '../../common/requester/network_exception.dart';
-
 part 'study_image_create_service.g.dart';
 
 /// API
@@ -31,14 +27,11 @@ class StudyImageCreateService {
     File image,
   ) async {
     try {
-      debugPrint('[API]');
       final response = await _api.create(
         image,
       );
-      print(response);
       return response;
     } on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
   }

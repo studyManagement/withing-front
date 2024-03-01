@@ -1,10 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
-
 import '../../service/create/study_create_service.dart';
 import '../../service/image/study_image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -93,12 +90,10 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     switch (type) {
       case NewStudyType.studyName:
         _studyName = newValue;
-        // debugPrint(_studyName);
         break;
       case NewStudyType.studyDescription:
         _studyDescription = newValue;
         break;
-      // debugPrint(_studyDescription);
     }
   }
 
@@ -113,11 +108,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   void updateSelectedCategories(String option, int? maxSelectedOptions) {
     if (_selectedCategories.contains(option)) {
       _selectedCategories.remove(option);
-      debugPrint('$option 제거');
     } else if (maxSelectedOptions == null ||
         _selectedCategories.length < maxSelectedOptions) {
       _selectedCategories.add(option);
-      debugPrint('$option 추가');
     }
     updateSelectedCategoryIndices();
     notifyListeners();
@@ -129,8 +122,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _selectedCategoryIndices = _selectedCategories
         .map((category) => getStudyCategories().indexOf(category))
         .toList();
-    print(_selectedCategories);
-    print(_selectedCategoryIndices);
   }
 
   /// update study member count
@@ -138,7 +129,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   set memberCount(int newValue) {
     if (newValue >= 0 && newValue <= 15) {
       _studyMemberCount = newValue;
-      debugPrint('스터디 인원: $_studyMemberCount');
       notifyListeners();
     }
   }
@@ -147,11 +137,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   set password(String newValue) {
     if (newValue.length == 4) {
       _studyDisclosePassword = newValue;
-      debugPrint('패스워드: $_studyDisclosePassword');
       notifyListeners();
     } else {
       _studyDisclosePassword = '';
-      debugPrint('패스워드 입력 중...');
       notifyListeners();
     }
   }
@@ -160,14 +148,12 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   set studyImageFile(File? file) {
     _studyImageFile = file;
-    debugPrint('스터디 이미지 업데이트');
     notifyListeners();
   }
 
   // /// update study image id
   // set studyId(int id) {
   //   _studyImageId = id;
-  //   debugPrint('스터디 이미지 id 업데이트');
   //   notifyListeners();
   // }
 
@@ -176,7 +162,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     if (_studyImageFile != null) {
       _studyImageId =
           await _studyImageCreateService.callCreateApi(_studyImageFile!);
-      print(_studyImageId);
     }
     notifyListeners();
   }

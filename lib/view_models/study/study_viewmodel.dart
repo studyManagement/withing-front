@@ -70,7 +70,6 @@ class StudyViewModel extends ChangeNotifier {
         if (!context.mounted) return;
         navigateToStudyExceptionScreen(context);
       } on NetworkException catch (e) {
-        print(e);
       }
     }
   }
@@ -100,8 +99,7 @@ class StudyViewModel extends ChangeNotifier {
 
   Future<void> forceToExitMember(int studyId, List<int> users) async {
     try {
-      var response = await _service.forceToExitMember(studyId, users);
-      print(response.data);
+       await _service.forceToExitMember(studyId, users);
       _isOut = true;
     } on ApiException catch (e) {
       rethrow;
@@ -135,10 +133,10 @@ class StudyViewModel extends ChangeNotifier {
         DateTime end = DateFormat('hh:mm')
             .parse(endTime.substring(3, 8)); // 입력된 시간 포맷을 해석합니다.
         if (startTime.contains('오후')) {
-          start = start.add(Duration(hours: 12));
+          start = start.add(const Duration(hours: 12));
         }
         if (endTime.contains('오후')) {
-          end = end.add(Duration(hours: 12));
+          end = end.add(const Duration(hours: 12));
         }
         String startTime24 = DateFormat('HH:mm').format(start);
         String endTime24 = DateFormat('HH:mm').format(end);
@@ -170,7 +168,6 @@ class StudyViewModel extends ChangeNotifier {
       if (startTime != '미등록' && endTime != '미등록') {
         return true;
       } else {
-        print('입력 조건 미충족');
         return false;
       }
 
@@ -178,7 +175,6 @@ class StudyViewModel extends ChangeNotifier {
       if (selectedDays.isNotEmpty && selectedDays.length <= 3 && startTime != '미등록' && endTime != '미등록') {
         return true;
       } else {
-        print('입력 조건 미충족');
         return false;
       }
     }
@@ -253,7 +249,6 @@ class StudyViewModel extends ChangeNotifier {
 
   void setMeetingDays(int value, MeetingType type) {
     _meetingType = type;
-    //  print(meetingType);
     if (!selectedDays.contains(value) && selectedDays.length < 3) {
       selectedDays.add(value);
     } else if (selectedDays.contains(value)) {

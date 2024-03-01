@@ -1,18 +1,12 @@
-import 'dart:developer';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
-import 'package:modi/model/study/regular_meeting_exception.dart';
-import 'package:modi/model/study/regular_meeting_model.dart';
-import 'package:modi/model/study/study_category_model.dart';
 import 'package:modi/model/study/study_exception.dart';
 import 'package:modi/model/study/study_list_model.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/study/StudyType.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:retrofit/http.dart';
-import '../../model/board/board_model.dart';
 import '../../view_models/study/model/study_meeting_schedule.dart';
 
 part 'study_service.g.dart';
@@ -86,24 +80,19 @@ class StudyService {
   Future<StudyModel> finishStudy(int studyId) async {
     try {
       final StudyModel study = await _studyApi.finishStudy(studyId);
-      print('Finished studyId: ${study.id}');
       return study;
     } on ApiException catch (e) {
       if (e.code == 400) {
         // 이미 종료
-        print(e);
         rethrow;
       } else if (e.code == 401) {
         // accessToken 만료
-        print(e);
         rethrow;
       } else if (e.code == 404) {
         // studyId 오류
-        print(e);
       }
       rethrow;
     } on NetworkException catch (e) {
-      print(e.message);
       rethrow;
     }
   }
@@ -124,17 +113,14 @@ class StudyService {
   Future<StudyModel> deleteStudy(int studyId) async {
     try {
       final StudyModel study = await _studyApi.deleteStudy(studyId);
-      print('Removed studyId: ${study.id}');
       return study;
     } on ApiException catch (e) {
       if (e.code == 404) {
         // studyId 오류
-        print(e);
         rethrow;
       }
       rethrow;
     } on NetworkException catch (e) {
-      print(e.message);
       rethrow;
     }
   }
@@ -142,16 +128,12 @@ class StudyService {
   Future<StudyModel> switchLeader(int studyId, int userId) async {
     try {
       final StudyModel study = await _studyApi.switchLeader(studyId, userId);
-      print('[API]:Switched leaderId ${study.leaderId}');
       return study;
     } on ApiException catch (e) {
       if (e.code == 401 || e.code == 400 || e.code == 404) {
-        // accessToken error
-        debugPrint('[API]:${e.cause}');
       }
       rethrow;
     } on NetworkException catch (e) {
-      debugPrint('[API]:${e.cause}');
       rethrow;
     }
   }
@@ -165,7 +147,6 @@ class StudyService {
       if (e.code == 404) {
         throw StudyException(e.cause, e.code);
       } else if (e.code == 401) {
-        debugPrint('[API]: ${e.cause}');
       }
       rethrow;
     } on NetworkException catch (e) {
@@ -179,7 +160,6 @@ class StudyService {
       return response;
     } on ApiException catch (e) {
       if (e.code == 400 || e.code == 404) {
-        debugPrint('[API]: ${e.cause}');
         throw StudyException(e.cause, e.code);
       }
     } on NetworkException catch (e) {
@@ -196,12 +176,10 @@ class StudyService {
       return study;
     } on ApiException catch (e) {
       if (e.code == 404 || e.code == 400) {
-        print(e);
         rethrow;
       }
       rethrow;
     } on NetworkException catch (e) {
-      print(e.message);
       rethrow;
     }
   }

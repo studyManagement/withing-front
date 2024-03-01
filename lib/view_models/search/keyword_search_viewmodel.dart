@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
-
 import '../../model/search/searched_study_info_model.dart';
 import '../../service/search/study_search_service.dart';
 
@@ -78,15 +77,11 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
           0
       );
     }
-
-     debugPrint('검색된 스터디(카테고리)');
-    // print(_searchedStudies);
     notifyListeners();
   }
 
   /// fetch keyword search - 스크롤시 추가
   Future<void> fetchStudiesWithKeyword() async {
-    debugPrint('API 추가 요청 - 키워드');
     String keyword = _selectedKeywordValue.toString();
     int page = _searchedStudies.isNotEmpty ? _searchedStudies.length ~/ size : 0;
 
@@ -100,9 +95,8 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
               page
       );
 
-      _searchedStudies?.addAll(newStudies);
+      _searchedStudies.addAll(newStudies);
       notifyListeners();
-      print(_searchedStudies.length);
     }
   }
 }
