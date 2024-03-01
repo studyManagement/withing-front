@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../common/components/study_bottom_button.dart';
 import '../../common/theme/app/app_colors.dart';
 import '../../service/image/study_image_create_service.dart';
-import '../../view_models/study/study_info_viewmodels.dart';
+import '../../view_models/study/study_info_viewmodel.dart';
 import 'widgets/create_widget_resources.dart';
 import '../../service/create/study_create_service.dart';
 import '../../common/layout/default_layout.dart';
@@ -47,7 +48,8 @@ class CreateStudyScreen extends StatelessWidget {
                   StudyBottomButton(
                       onTap: (viewModel.checkEverythingFilled())
                           ? () {
-                              viewModel.createStudy();
+                              viewModel.createStudy().then((_) =>  context.pushReplacement(
+                                  '/studies/${viewModel.studyId}'));
                             }
                           : null,
                       text: '생성하기',

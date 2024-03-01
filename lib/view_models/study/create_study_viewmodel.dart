@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
-import 'package:modi/view_models/study/study_info_viewmodels.dart';
+import 'package:modi/model/study/study_model.dart';
+import 'package:modi/view_models/study/study_info_viewmodel.dart';
 
 import '../../service/create/study_create_service.dart';
 import '../../service/image/study_image_create_service.dart';
@@ -16,17 +17,21 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   String get studyDescription => _studyDescription;
+
   @override
   String get studyName => _studyName;
+
   @override
   List<String> get selectedCategories => _selectedCategories;
+
   @override
   List<int> get selectedCategoryIndices => _selectedCategoryIndices;
+
   @override
   int get studyMemberCount => _studyMemberCount;
+
   @override
   File? get studyImageFile => _studyImageFile;
-
 
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
@@ -36,21 +41,22 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String _studyDisclosePassword = '';
   int _studyMemberCount = 0;
   int? _studyImageId;
-  List<String> _selectedCategories = [];
+  int? _studyId;
+  int? get studyId => _studyId;
+  final List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
   File? _studyImageFile;
 
   @override
   bool get isStudyNameError => _isStudyNameError;
+
   @override
   bool get isStudyDescriptionError => _isStudyDescriptionError;
+
   @override
   String get studyImagePath => ''; // 사용 안 함
 
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
-
-  // List<String> get selectedCategories => _selectedCategories;
-  // File? get studyImage => _studyImageFile;
 
   /// check everything filled
   @override
@@ -58,8 +64,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     if (_isStudyNameError &&
         _isStudyDescriptionError &&
         (!_isStudyDiscloseToggled || _studyDisclosePassword.length == 4) &&
-        _studyMemberCount > 0 &&
-        _selectedCategories.isNotEmpty) {
+        _studyMemberCount > 0) {
       return true;
     } else {
       return false;
@@ -159,19 +164,18 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  /// update study image id
-  set studyId(int id) {
-    _studyImageId = id;
-    debugPrint('스터디 이미지 id 업데이트');
-    notifyListeners();
-  }
+  // /// update study image id
+  // set studyId(int id) {
+  //   _studyImageId = id;
+  //   debugPrint('스터디 이미지 id 업데이트');
+  //   notifyListeners();
+  // }
 
   /// create image api
   Future<void> createImage() async {
     if (_studyImageFile != null) {
       _studyImageId =
-          await _studyImageCreateService.
-          callCreateApi(_studyImageFile!);
+          await _studyImageCreateService.callCreateApi(_studyImageFile!);
       print(_studyImageId);
     }
     notifyListeners();
@@ -179,9 +183,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   /// create study api
   Future<void> createStudy() async {
-    await createImage();
+    //await createImage();
 
-    await _studyCreateService.callCreateApi(
+    final StudyModel newStudy = await _studyCreateService.callCreateApi(
       _studyName,
       _studyMemberCount,
       (isStudyDiscloseToggled) ? 1 : 0,
@@ -189,10 +193,10 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _studyDescription,
       _selectedCategoryIndices..sort(),
     );
+    _studyId = newStudy.id;
     notifyListeners();
   }
 
   @override
   bool isOldImageLoaded = true;
-
 }

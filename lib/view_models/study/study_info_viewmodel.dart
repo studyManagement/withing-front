@@ -1,15 +1,14 @@
 import 'dart:io';
 import '../../views/create/widgets/study_text_field.dart';
 
-enum StudyPageType{
-  create,
-  update
-}
+enum StudyPageType { create, update }
 
 abstract class StudyInfoViewModel {
   // create or update study
   String get studyName;
+
   String get studyImagePath;
+
   String get studyDescription;
 
   List<String> get selectedCategories;
@@ -19,21 +18,28 @@ abstract class StudyInfoViewModel {
   int get studyMemberCount;
 
   File? get studyImageFile;
+
   bool get isStudyNameError;
+
   bool get isStudyDescriptionError;
+
   bool get isOldImageLoaded;
 
   void checkStudyNameAndDescription(NewStudyType type, String input);
+
   void updateStudyNameAndDescription(NewStudyType type, String input);
+
   void updateSelectedCategories(String option, int? maxSelectedOptions);
+
   void updateSelectedCategoryIndices();
+
   bool checkEverythingFilled();
 
   set studyImageFile(File? file);
+
   set memberCount(int value);
+
   set isOldImageLoaded(bool value);
-
-
 
   /// RegExp pattern-matching
   bool validateInput(NewStudyType type, String input, String pattern) {
@@ -84,16 +90,22 @@ String getHintText(NewStudyType type) {
   }
 }
 
-String getErrorText(NewStudyType type, bool isValidation) {
-  if (type == NewStudyType.studyName) {
-    return isValidation ? '멋진 이름이네요!' : '2 ~ 20자 사이의 이름을 설정해주세요.';
-  } else if (type == NewStudyType.studyDescription) {
-    return isValidation ? '멋진 설명이네요!' : '';
-  } else {
-    return '유효하지 않은 입력입니다.';
+String getErrorText(NewStudyType type, bool isValidation, bool isCreate) {
+  if(isCreate) {
+    if (type == NewStudyType.studyName) {
+      return isValidation ? '멋진 이름이네요!' : '2 ~ 20자 사이의 이름을 설정해주세요.';
+    } else if (type == NewStudyType.studyDescription) {
+      return isValidation ? '멋진 설명이네요!' : '';
+    } else {
+      return '유효하지 않은 입력입니다.';
+    }
+  }
+  else {
+    return '';
   }
 }
 
-List<String> convertIndiciesToElements(List<int> indicies) {
+List<String> convertIndicesToElements(List<int> indicies) {
   return indicies.map((index) => getStudyCategories()[index]).toList();
 }
+
