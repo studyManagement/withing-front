@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
 import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
 
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
@@ -32,6 +35,20 @@ class RouterService {
   static RouterService get instance => _instance;
   late final GoRouter _goRouter;
   GoRouter get router => _goRouter;
+
+  initializeRoute() async {
+    Uri? uri = await getInitialUri();
+
+    if (uri != null && Platform.isIOS) {
+      _goRouter.push(uri.path);
+    }
+
+    uriLinkStream.listen((uri) async {
+      if (uri != null && Platform.isIOS) {
+        _goRouter.push(uri.path);
+      }
+    });
+  }
 
   RouterService._privateConstructor() {
     _goRouter = GoRouter(
@@ -41,43 +58,52 @@ class RouterService {
           bool isAuthentication = Authentication.state.isAuthentication;
 
           if (!isAuthentication &&
-              (state.matchedLocation != '/' &&
+              (state.matchedLocation != '/login' &&
                   !state.matchedLocation.startsWith('/signup/'))) {
-            return '/';
+            return '/login';
           }
           return null;
         },
         initialLocation:
-            (Authentication.state.isAuthentication) ? '/home' : '/',
+            (Authentication.state.isAuthentication) ? '/' : '/login',
         refreshListenable: Authentication.state,
         errorBuilder: (context, state) => const ErrorPage(),
         routes: [
-          GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
-          GoRoute(path: '/home', builder: (context, state) => const RootTab()),
+          GoRoute(
+              path: '/login', builder: (context, state) => const LoginScreen()),
+          GoRoute(
+            path: '/',
+            builder: (context, state) {
+              return const RootTab();
+            },
+            routes: [
+              GoRoute(
+                path: 'my/profile',
+                builder: (context, state) => MyProfileScreen(),
+              ),
+              GoRoute(
+                path: 'my/studies/:type',
+                builder: (context, state) {
+                  final studyType = state.pathParameters['type']!;
+
+                  return MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider(
+                          create: (_) =>
+                              StudyListViewModel(getIt<StudyService>())),
+                    ],
+                    child: MyStudyScreen(studyType),
+                  );
+                },
+              ),
+            ],
+          ),
           GoRoute(
             path: '/signup/:provider/:uuid',
             builder: (context, GoRouterState state) {
               final provider = state.pathParameters['provider']!;
               final uuid = state.pathParameters['uuid']!;
               return SignupScreen(provider, uuid);
-            },
-          ),
-          GoRoute(
-            path: '/my/profile',
-            builder: (context, state) => MyProfileScreen(),
-          ),
-          GoRoute(
-            path: '/my/studies/:type',
-            builder: (context, state) {
-              final studyType = state.pathParameters['type']!;
-
-              return MultiProvider(
-                providers: [
-                  ChangeNotifierProvider(
-                      create: (_) => StudyListViewModel(getIt<StudyService>())),
-                ],
-                child: MyStudyScreen(studyType),
-              );
             },
           ),
           GoRoute(

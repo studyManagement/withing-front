@@ -3,9 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
-import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
-import '../../../common/components/gray50_divider.dart';
+
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/study/update_study_viewmodel.dart';
 import '../../create/widgets/create_widget_resources.dart';
@@ -19,7 +18,7 @@ class StudyUpdateScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final UpdateStudyViewModel viewModel = context.read<UpdateStudyViewModel>();
     viewModel.getStudyInfo(studyId);
-    return Consumer<UpdateStudyViewModel>(builder: (context, viewModel,_) {
+    return Consumer<UpdateStudyViewModel>(builder: (context, viewModel, _) {
       return DefaultLayout(
           title: getNewStudyTitle(isCreate: false),
           child: SingleChildScrollView(
@@ -40,13 +39,15 @@ class StudyUpdateScreen extends StatelessWidget {
                 StudyCategorySelector(
                   viewModel: viewModel,
                 ),
-                StudyMemberCount(viewModel: viewModel,),
+                StudyMemberCount(
+                  viewModel: viewModel,
+                ),
                 StudyBottomButton(
                     onTap: (viewModel.checkEverythingFilled())
                         ? () {
-                      viewModel.updateStudyInfo();
-                      context.go('/home');
-                    }
+                            viewModel.updateStudyInfo();
+                            context.go('/');
+                          }
                         : null,
                     text: '수정하기',
                     color: (viewModel.checkEverythingFilled())

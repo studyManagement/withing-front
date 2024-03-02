@@ -58,7 +58,7 @@ class SignupViewModel extends ChangeNotifier {
       await _service.signup(_provider, _nickname, _uuid, _introduce);
 
       if (!context.mounted) return;
-      context.go('/home');
+      context.go('/');
     } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }

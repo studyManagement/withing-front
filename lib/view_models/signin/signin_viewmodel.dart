@@ -21,7 +21,7 @@ class SigninViewModel {
       await _signinService.signin(token, provider);
 
       if (!_context.mounted) return;
-      _context.go('/home');
+      _context.go('/');
     } on AuthenticationException catch (e) {
       ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false, null, null);
     } on UserNotFoundException catch (e) {
