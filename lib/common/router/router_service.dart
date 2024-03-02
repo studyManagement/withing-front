@@ -40,6 +40,10 @@ class RouterService {
         redirect: (BuildContext context, GoRouterState state) {
           bool isAuthentication = Authentication.state.isAuthentication;
 
+          if (state.matchedLocation == "/my/profile") {
+            return '/test';
+          }
+
           if (!isAuthentication &&
               (state.matchedLocation != '/login' &&
                   !state.matchedLocation.startsWith('/signup/'))) {
