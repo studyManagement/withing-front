@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
 import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_links/uni_links.dart';
 
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
@@ -33,16 +36,26 @@ class RouterService {
   late final GoRouter _goRouter;
   GoRouter get router => _goRouter;
 
+  initializeRoute() async {
+    Uri? uri = await getInitialUri();
+
+    if (uri != null && Platform.isIOS) {
+      _goRouter.push(uri.path);
+    }
+
+    uriLinkStream.listen((uri) async {
+      if (uri != null && Platform.isIOS) {
+        _goRouter.push(uri.path);
+      }
+    });
+  }
+
   RouterService._privateConstructor() {
     _goRouter = GoRouter(
         debugLogDiagnostics: kDebugMode ? true : false,
         observers: [_logger.getObserver()],
         redirect: (BuildContext context, GoRouterState state) {
           bool isAuthentication = Authentication.state.isAuthentication;
-
-          if (state.matchedLocation == "/my/profile") {
-            return '/test';
-          }
 
           if (!isAuthentication &&
               (state.matchedLocation != '/login' &&
@@ -60,7 +73,9 @@ class RouterService {
               path: '/login', builder: (context, state) => const LoginScreen()),
           GoRoute(
             path: '/',
-            builder: (context, state) => const RootTab(),
+            builder: (context, state) {
+              return const RootTab();
+            },
             routes: [
               GoRoute(
                 path: 'my/profile',

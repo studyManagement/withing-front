@@ -10,6 +10,8 @@ class WithingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
 
+    RouterService.instance.initializeRoute();
+
     return MaterialApp.router(
       theme: WithingTheme.withingThemeData,
       debugShowCheckedModeBanner: false,
