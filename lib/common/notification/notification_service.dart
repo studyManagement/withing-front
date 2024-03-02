@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:modi/common/logger/logging_interface.dart';
+import 'package:modi/common/router/router_service.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/firebase_options.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 @pragma('vm:entry-point')
@@ -147,7 +151,15 @@ class NotificationService {
 
   void _onClickPush(String appLink, {Map<String, dynamic>? parameters}) async {
     Uri uri = Uri.parse(appLink);
+    Uri? initialUri = await getInitialUri();
+
     await Future.delayed(const Duration(microseconds: 300));
+
+    if (initialUri != null && Platform.isIOS) {
+      RouterService.instance.router.push(initialUri.path);
+      return;
+    }
+
     await launchUrl(uri);
   }
 }
