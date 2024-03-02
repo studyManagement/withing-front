@@ -36,7 +36,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>moditeam</string>
+			<string>io.moditeam.modi</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>moditeam</string>

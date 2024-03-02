@@ -11,8 +11,13 @@ class WithingApp extends StatelessWidget {
     FlutterNativeSplash.remove();
 
     return MaterialApp.router(
-        theme: WithingTheme.withingThemeData,
-        debugShowCheckedModeBanner: false,
-        routerConfig: RouterService.instance.router);
+      theme: WithingTheme.withingThemeData,
+      debugShowCheckedModeBanner: false,
+      routeInformationParser:
+          RouterService.instance.router.routeInformationParser,
+      routerDelegate: RouterService.instance.router.routerDelegate,
+      routeInformationProvider:
+          RouterService.instance.router.routeInformationProvider,
+    );
   }
 }
