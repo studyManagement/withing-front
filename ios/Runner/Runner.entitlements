@@ -10,7 +10,7 @@
 	</array>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>moditeam://modi.tips</string>
+		<string>applinks:modi.tips</string>
 	</array>
 </dict>
 </plist>
