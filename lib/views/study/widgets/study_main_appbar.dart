@@ -28,7 +28,7 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: const Icon(Icons.arrow_back_ios),
         onPressed: () => {
-          if (studyId == -1) {context.go('/home')} else {context.pop()}
+          if (studyId == -1) {context.go('/')} else {context.pop()}
         },
       ),
       centerTitle: true,
