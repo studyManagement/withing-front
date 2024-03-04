@@ -16,6 +16,7 @@ class StudyCategoriesWidget extends StatelessWidget {
     for (var category in categories) {
       widgets.add(
         Container(
+          height: 23,
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
           decoration: ShapeDecoration(
             color: AppColors.blue100,

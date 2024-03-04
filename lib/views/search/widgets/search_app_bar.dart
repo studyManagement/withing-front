@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../common/layout/responsive_size.dart';
 import '../../../view_models/search/keyword_search_viewmodel.dart';
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -13,7 +14,6 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<KeywordSearchViewModel>(context);
-
     return AppBar(
       surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.transparent,
@@ -22,7 +22,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Padding(
         padding: const EdgeInsets.only(right: 16.0),
         child: SizedBox(
-          height: 36.0,
+          height: 37.0,
           child: TextField(
             autofocus: true,
             onSubmitted: (String value) {
