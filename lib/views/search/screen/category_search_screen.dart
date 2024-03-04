@@ -20,9 +20,9 @@ class CategorySearchScreen extends StatelessWidget {
           child: Column(
             children: [
               const SearchBox(),
-              SearchCategorySelector(),
+              const SearchCategorySelector(),
               const Gray50Divider(dividerHeight: 6),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               Consumer<CategorySearchViewModel>(
                 builder: (context, viewModel, child) {
                   return StudyListHeader(viewModel: viewModel);
