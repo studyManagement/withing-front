@@ -47,6 +47,12 @@ abstract class StudyApi {
   @POST('/studies/{id}/regular_meeting')
   Future<StudyModel> setMeetingSchedule(
       @Path('id') int id, @Body() List<StudyMeetingSchedule> data);
+
+  @POST('/studies/{id}/favorite')
+  Future<dynamic> pickFavoriteStudy(@Path('id') int id);
+
+  @DELETE('/studies/{id}/favorite')
+  Future<dynamic> cancelFavoriteStudy(@Path('id') int id);
 }
 
 class StudyService {
@@ -177,6 +183,29 @@ class StudyService {
       if (e.code == 404 || e.code == 400) {
         rethrow;
       }
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> pickFavoriteStudy(int studyId) async {
+    try {
+      await _studyApi.pickFavoriteStudy(studyId);
+      return;
+    } on ApiException catch (e) {
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> cancelFavoriteStudy(int studyId) async {
+    try {
+      await _studyApi.cancelFavoriteStudy(studyId);
+      return;
+    } on ApiException catch (e) {
+
       rethrow;
     } on NetworkException catch (e) {
       rethrow;

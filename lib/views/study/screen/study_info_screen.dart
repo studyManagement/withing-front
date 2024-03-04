@@ -30,13 +30,12 @@ class StudyInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.watch<StudyViewModel>();
-    vm
-        .fetchStudyInfo(context, studyId)
-        .then((_) => vm.getRegularMeetingString());
+     vm.userId = Authentication.instance.userId;
+     vm.fetchStudyInfo(context, studyId).then((_) {
+       vm.getRegularMeetingString();
+       vm.checkRegistered();
+     });
 
-    if (vm.study != null) {
-      vm.checkRegistered(Authentication.instance.userId); // 임시값
-    }
     bool offstage = vm.isMember;
     bool isLeader = (vm.study?.leaderId == Authentication.instance.userId);
 
@@ -46,7 +45,6 @@ class StudyInfoScreen extends StatelessWidget {
           : StudyMainAppBar(
               studyId: studyId,
               isLeader: isLeader,
-              hasLike: (vm.isMember) ? null : false, // 수정
               action: (isLeader)
                   ? () {
                       Navigator.push(
