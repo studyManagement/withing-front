@@ -32,8 +32,10 @@ import 'package:uni_links/uni_links.dart';
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
   static final RouterService _instance = RouterService._privateConstructor();
+
   static RouterService get instance => _instance;
   late final GoRouter _goRouter;
+
   GoRouter get router => _goRouter;
 
   initializeRoute() async {
@@ -72,32 +74,94 @@ class RouterService {
           GoRoute(
               path: '/login', builder: (context, state) => const LoginScreen()),
           GoRoute(
-            path: '/',
-            builder: (context, state) {
-              return const RootTab();
-            },
-            routes: [
-              GoRoute(
-                path: 'my/profile',
-                builder: (context, state) => MyProfileScreen(),
-              ),
-              GoRoute(
-                path: 'my/studies/:type',
-                builder: (context, state) {
-                  final studyType = state.pathParameters['type']!;
+              path: '/',
+              builder: (context, state) {
+                return const RootTab();
+              },
+              routes: [
+                GoRoute(
+                  path: 'my/profile',
+                  builder: (context, state) => MyProfileScreen(),
+                ),
+                GoRoute(
+                  path: 'my/studies/:type',
+                  builder: (context, state) {
+                    final studyType = state.pathParameters['type']!;
 
-                  return MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider(
-                          create: (_) =>
-                              StudyListViewModel(getIt<StudyService>())),
-                    ],
-                    child: MyStudyScreen(studyType),
-                  );
-                },
-              ),
-            ],
-          ),
+                    return MultiProvider(
+                      providers: [
+                        ChangeNotifierProvider(
+                            create: (_) =>
+                                StudyListViewModel(getIt<StudyService>())),
+                      ],
+                      child: MyStudyScreen(studyType),
+                    );
+                  },
+                ),
+                GoRoute(
+                  path: 'search/result',
+                  builder: (context, state) => const KeywordSearchScreen(),
+                ),
+                GoRoute(
+                  path: 'studies/new',
+                  builder: (context, state) => const CreateStudyScreen(),
+                ),
+                GoRoute(
+                  path: 'studies/:studyId',
+                  builder: (context, state) {
+                    return ChangeNotifierProvider(
+                        create: (_) => StudyViewModel(getIt<StudyService>()),
+                        child: StudyInfoScreen(
+                          studyId: int.parse(state.pathParameters['studyId']!),
+                        ));
+                  },
+                  routes: [
+                    GoRoute(
+                        path: 'schedules',
+                        builder: (context, state) => StudyScheduleScreen(
+                            int.parse(state.pathParameters['studyId']!)),
+                        routes: [
+                          GoRoute(
+                            path: 'register',
+                            builder: (context, state) => StudyScheduleAddScreen(
+                                int.parse(state.pathParameters['studyId']!)),
+                          ),
+                          GoRoute(
+                            path: 'vote',
+                            builder: (context, state) =>
+                                StudyScheduleVoteAddScreen(int.parse(
+                                    state.pathParameters['studyId']!)),
+                          ),
+                        ]),
+                    GoRoute(
+                      path: 'manage/edit',
+                      builder: (context, state) => ChangeNotifierProvider(
+                        create: (_) => UpdateStudyViewModel(
+                            getIt<StudyService>(),
+                            getIt<StudyImageUpdateService>()),
+                        child: StudyUpdateScreen(
+                            studyId:
+                                int.parse(state.pathParameters['studyId']!)),
+                      ),
+                    ),
+                    GoRoute(
+                        path: 'boards', // 게시판
+                        builder: (context, state) => BoardMainScreen(
+                            studyId:
+                                int.parse(state.pathParameters['studyId']!),
+                            isNotice: false),
+                        routes: [
+                          GoRoute(
+                            path: 'notice', // 공지 전체보기
+                            builder: (context, state) => BoardMainScreen(
+                                studyId:
+                                    int.parse(state.pathParameters['studyId']!),
+                                isNotice: true),
+                          ),
+                        ]),
+                  ],
+                ),
+              ]),
           GoRoute(
             path: '/signup/:provider/:uuid',
             builder: (context, GoRouterState state) {
@@ -106,92 +170,6 @@ class RouterService {
               return SignupScreen(provider, uuid);
             },
           ),
-          GoRoute(
-            path: '/search/result',
-            builder: (context, state) => KeywordSearchScreen(),
-          ),
-          GoRoute(
-            path: '/studies/new',
-            builder: (context, state) => const CreateStudyScreen(),
-          ),
-          GoRoute(
-            path: '/studies/:studyId',
-            builder: (context, state) {
-              return ChangeNotifierProvider(
-                  create: (_) => StudyViewModel(getIt<StudyService>()),
-                  child: StudyInfoScreen(
-                    studyId: int.parse(state.pathParameters['studyId']!),
-                  ));
-            },
-          ),
-          GoRoute(
-            path: '/studies/:studyId/schedules',
-            builder: (context, state) => StudyScheduleScreen(
-                int.parse(state.pathParameters['studyId']!)),
-          ),
-          GoRoute(
-            path: '/studies/:studyId/schedules/register',
-            builder: (context, state) => StudyScheduleAddScreen(
-                int.parse(state.pathParameters['studyId']!)),
-          ),
-          GoRoute(
-            path: '/studies/:studyId/schedules/vote',
-            builder: (context, state) => StudyScheduleVoteAddScreen(
-                int.parse(state.pathParameters['studyId']!)),
-          ),
-          // GoRoute(
-          //   path: '/studies/:studyId/member',
-          //   builder: (context, state) => StudyMemberScreen(
-          //       studyId: int.parse(state.pathParameters['studyId']!)
-          //   ),
-          // ),
-          // GoRoute(
-          //     path: '/studies/:studyId/manage',
-          //     builder: (context, state) => StudyManageScreen(
-          //         studyId: int.parse(state.pathParameters['studyId']!))),
-          GoRoute(
-            path: '/studies/:studyId/manage/edit',
-            builder: (context, state) => ChangeNotifierProvider(
-              create: (_) => UpdateStudyViewModel(
-                  getIt<StudyService>(), getIt<StudyImageUpdateService>()),
-              child: StudyUpdateScreen(
-                  studyId: int.parse(state.pathParameters['studyId']!)),
-            ),
-          ),
-          // GoRoute(
-          //   path: '/studies/:studyId/manage/regular_meeting',
-          //   builder: (context, state) => const SetRegularMeetingScreen(),
-          // ),
-          GoRoute(
-            path: '/studies/:studyId/boards', // 게시판
-            builder: (context, state) => BoardMainScreen(
-                studyId: int.parse(state.pathParameters['studyId']!),
-                isNotice: false),
-          ),
-          // GoRoute(
-          //     path: '/studies/:studyId/boards/create', // 게시판 글 작성
-          //     builder: (context, state) => CreatePostScreen(
-          //           studyId: int.parse(state.pathParameters['studyId']!),
-          //          )),
-          // GoRoute(
-          //     path: '/studies/:studyId/boards/update/:boardId', // 게시판 글 수정
-          //     builder: (context, state) => UpdatePostScreen(
-          //       studyId: int.parse(state.pathParameters['studyId']!),
-          //       boardId: int.parse(state.pathParameters['boardId']!),
-          //     )),
-          GoRoute(
-            path: '/studies/:studyId/boards/notice', // 공지 전체보기
-            builder: (context, state) => BoardMainScreen(
-                studyId: int.parse(state.pathParameters['studyId']!),
-                isNotice: true),
-          ),
-
-          // GoRoute(
-          //     path: '/studies/:studyId/boards/:boardId', // 게시판(공지) 상세
-          //     builder: (context, state) => BoardInfoScreen(
-          //         studyId: int.parse(state.pathParameters['studyId']!),
-          //         isNotice: false,
-          //         boardId: int.parse(state.pathParameters['boardId']!)))
         ]);
   }
 }
