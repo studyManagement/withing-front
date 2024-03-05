@@ -150,15 +150,14 @@ class RouterService {
                             studyId:
                                 int.parse(state.pathParameters['studyId']!),
                             isNotice: false),
-                        routes: [
-                          GoRoute(
-                            path: 'notice', // 공지 전체보기
-                            builder: (context, state) => BoardMainScreen(
-                                studyId:
-                                    int.parse(state.pathParameters['studyId']!),
-                                isNotice: true),
-                          ),
-                        ]),
+                        ),
+                    GoRoute(
+                      path: 'boards/notice', // 공지 전체보기
+                      builder: (context, state) => BoardMainScreen(
+                          studyId:
+                          int.parse(state.pathParameters['studyId']!),
+                          isNotice: true),
+                    ),
                   ],
                 ),
               ]),
