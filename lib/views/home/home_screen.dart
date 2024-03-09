@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
-import 'package:modi/views/home/components/home_study_notificator.dart';
+import 'package:modi/views/home/components/home_study_notificator_v2.dart';
+import 'package:modi/views/home/home_my_study.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/layout/default_layout.dart';
 import './main_calendar.dart';
-import 'home_my_study.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -30,28 +32,31 @@ class HomeScreen extends StatelessWidget {
 
     return DefaultLayout(
       title: '이번주 일정',
-      child: SafeArea(
+      centerTitle: false,
+      titleBottom: MainCalendar(
+        onDaySelected: onDaySelected,
+        selectedDate: selectedDate,
+      ),
+      actions: [
+        IconButton(
+          onPressed: () => context.push('/notification'),
+          icon: Image.asset('asset/bell.png'),
+        ),
+      ],
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
-              height: 280,
-              child: Column(
-                children: [
-                  MainCalendar(
-                    onDaySelected: onDaySelected,
-                    selectedDate: selectedDate,
-                  ),
-                  const HomeStudyNotificationPageView(),
-                ],
-              ),
+            Container(
+              decoration: const BoxDecoration(color: Color(0x00E0E8F0)),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: HomeStudyNotificaticator(),
             ),
-            const SizedBox(height: 20),
-            Divider(
+            const Divider(
               thickness: 5,
               height: 1,
-              color: Colors.grey[200],
+              color: AppColors.gray50,
             ),
-            HomeMyStudy(),
+            HomeMyStudy()
           ],
         ),
       ),

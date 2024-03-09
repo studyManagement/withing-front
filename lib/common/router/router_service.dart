@@ -19,6 +19,7 @@ import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/my/my_study_screen.dart';
+import 'package:modi/views/notification/notification_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_vote_add_screen.dart';
@@ -79,6 +80,10 @@ class RouterService {
                 return const RootTab();
               },
               routes: [
+                GoRoute(
+                  path: 'notification',
+                  builder: (context, state) => const NotificationScreen(),
+                ),
                 GoRoute(
                   path: 'my/profile',
                   builder: (context, state) => MyProfileScreen(),
@@ -145,17 +150,15 @@ class RouterService {
                       ),
                     ),
                     GoRoute(
-                        path: 'boards', // 게시판
-                        builder: (context, state) => BoardMainScreen(
-                            studyId:
-                                int.parse(state.pathParameters['studyId']!),
-                            isNotice: false),
-                        ),
+                      path: 'boards', // 게시판
+                      builder: (context, state) => BoardMainScreen(
+                          studyId: int.parse(state.pathParameters['studyId']!),
+                          isNotice: false),
+                    ),
                     GoRoute(
                       path: 'boards/notice', // 공지 전체보기
                       builder: (context, state) => BoardMainScreen(
-                          studyId:
-                          int.parse(state.pathParameters['studyId']!),
+                          studyId: int.parse(state.pathParameters['studyId']!),
                           isNotice: true),
                     ),
                   ],

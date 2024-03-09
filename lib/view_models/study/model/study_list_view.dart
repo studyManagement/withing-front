@@ -63,6 +63,15 @@ class StudyListView {
     return meetingSchedule;
   }
 
+  String getAllWeekdays() {
+    return meetingSchedules.map((e) => WeekString[e.day - 1]).join(",");
+  }
+
+  StudyMeetingSchedule getPromiseByDefault() {
+    StudyMeetingSchedule meetingSchedule = meetingSchedules.first;
+    return meetingSchedule;
+  }
+
   @override
   String toString() {
     return "StudyListView(studyId=$id,studyName=$studyName,max=$max,headcount=$headcount,explanation=$explanation,categories=$categories,meetingSchedules=$meetingSchedules)";
