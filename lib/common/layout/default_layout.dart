@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -46,8 +44,6 @@ class DefaultLayout extends StatelessWidget {
     if (title == null && customTitleWidget == null) {
       return null;
     }
-
-    log('$title $customTitleWidget');
 
     assert(!(title != null && customTitleWidget != null),
         "title하고 customTitleWidget은 동시에 선언할 수 없습니다.");

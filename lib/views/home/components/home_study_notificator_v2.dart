@@ -5,15 +5,52 @@ import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class HomeStudyNotificaticator extends StatelessWidget {
+class HomeStudyNotificator extends StatelessWidget {
+  const HomeStudyNotificator(this.selectedDate, {super.key});
+
+  final DateTime selectedDate;
+
   @override
   Widget build(BuildContext context) {
-    DateTime selectedDate = context.select<StudyListViewModel, DateTime>(
-        (provider) => provider.selectedDate);
     List<StudyListView> studies =
         context.select<StudyListViewModel, List<StudyListView>>(
             (provider) => provider.selectStudyListView);
 
+    return studies.isNotEmpty
+        ? Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            child: HomeStudyNotificatorList(selectedDate, studies),
+          )
+        : Container(
+            decoration: const BoxDecoration(color: AppColors.gray50),
+            height: 120,
+            width: MediaQuery.of(context).size.width,
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '등록된 일정이 없어요',
+                  style: TextStyle(
+                    color: AppColors.gray300,
+                    fontWeight: AppFonts.fontWeight500,
+                    fontSize: 14,
+                  ),
+                )
+              ],
+            ),
+          );
+  }
+}
+
+class HomeStudyNotificatorList extends StatelessWidget {
+  const HomeStudyNotificatorList(this.selectedDate, this.studies, {super.key});
+
+  final DateTime selectedDate;
+  final List<StudyListView> studies;
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.separated(
       primary: false,
       physics: const NeverScrollableScrollPhysics(),
@@ -44,7 +81,7 @@ class HomeStudyNotificaticator extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               study.studyName,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.gray400,
                 fontWeight: AppFonts.fontWeight600,
                 fontSize: 14,
