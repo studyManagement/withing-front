@@ -30,11 +30,11 @@ class StudyInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.watch<StudyViewModel>();
-     vm.userId = Authentication.instance.userId;
-     vm.fetchStudyInfo(context, studyId).then((_) {
-       vm.getRegularMeetingString();
-       vm.checkRegistered();
-     });
+    vm.userId = Authentication.instance.userId;
+    vm.fetchStudyInfo(context, studyId).then((_) {
+      vm.getRegularMeetingString();
+      vm.checkRegistered();
+    });
 
     bool offstage = vm.isMember;
     bool isLeader = (vm.study?.leaderId == Authentication.instance.userId);
@@ -58,98 +58,106 @@ class StudyInfoScreen extends StatelessWidget {
       body: (vm.study == null)
           ? Container()
           : SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Header(),
-                    const SizedBox(height: 16),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          vm.study!.explanation,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        )),
-                    const SizedBox(height: 20),
-                    const Divider(
-                      thickness: 1,
-                      indent: 16,
-                      endIndent: 16,
-                      color: AppColors.gray100,
-                    ),
-                    const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: StudyDetails(),
-                    ),
-                    if (offstage) const SizedBox(height: 20),
-                    if (offstage)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 16),
-                          StudyMainButtons(
-                            onTap: () {
-                              context.push('/studies/$studyId/schedules');
-                            },
-                            title: "Schedule",
-                            subtitle: "일정",
-                            image: Image.asset('asset/schedule.png'),
+              child: Column(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Header(),
+                        const SizedBox(height: 16),
+                        Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              vm.study!.explanation,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            )),
+                        const SizedBox(height: 20),
+                        const Divider(
+                          thickness: 1,
+                          indent: 16,
+                          endIndent: 16,
+                          color: AppColors.gray100,
+                        ),
+                        const SizedBox(height: 20),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: StudyDetails(),
+                        ),
+                        if (offstage) const SizedBox(height: 20),
+                        if (offstage)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(width: 16),
+                              StudyMainButtons(
+                                onTap: () {
+                                  context.push('/studies/$studyId/schedules');
+                                },
+                                title: "Schedule",
+                                subtitle: "일정",
+                                image: Image.asset('asset/schedule.png'),
+                              ),
+                              const SizedBox(width: 9),
+                              StudyMainButtons(
+                                  onTap: () {
+                                    context.push('/studies/$studyId/boards');
+                                  },
+                                  title: "Community",
+                                  subtitle: "게시판",
+                                  image: Image.asset('asset/community.png')),
+                              const SizedBox(width: 16),
+                            ],
                           ),
-                          const SizedBox(width: 9),
-                          StudyMainButtons(
-                              onTap: () {
-                                context.push('/studies/$studyId/boards');
-                              },
-                              title: "Community",
-                              subtitle: "게시판",
-                              image: Image.asset('asset/community.png')),
-                          const SizedBox(width: 16),
-                        ],
-                      ),
-                    const SizedBox(height: 20),
-                    const Divider(
-                      thickness: 6,
-                      color: AppColors.gray100,
+                        const SizedBox(height: 20),
+                        const Divider(
+                          thickness: 6,
+                          color: AppColors.gray100,
+                        ),
+                        const SizedBox(height: 10),
+                        ChangeNotifierProvider(
+                            create: (_) =>
+                                BoardViewModel(getIt<BoardService>()),
+                            child: Notice(
+                                studyId: studyId,
+                                isMember: vm.isMember,
+                                isPrivate: vm.study!.private)),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    ChangeNotifierProvider(
-                        create: (_) => BoardViewModel(getIt<BoardService>()),
-                        child: Notice(
-                            studyId: studyId,
-                            isMember: vm.isMember,
-                            isPrivate: vm.study!.private)),
-                    if (!offstage) const SizedBox(height: 190),
-                    if (!offstage)
-                      Center(
-                          child: StudyBottomButton(
-                              onTap: () {
-                                (vm.study!.private)
-                                    ? showDialog(
-                                        context: context,
-                                        builder: (_) => ChangeNotifierProvider(
-                                            create: (_) => StudyViewModel(
-                                                getIt<StudyService>()),
+                  ),
+                  const Spacer(),
+                  if (!offstage)
+                    Center(
+                        child: StudyBottomButton(
+                            onTap: () {
+                              (vm.study!.private)
+                                  ? showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        vm.initPasswordProperties();
+                                        return ChangeNotifierProvider.value(
+                                            value: vm,
                                             child: InputPasswordModal(
-                                                studyId: studyId)))
-                                    : joinToPublicStudy(vm, context);
-                              },
-                              text: '가입하기')),
-                  ],
-                ),
+                                                studyId: studyId));
+                                      })
+                                  : joinToPublicStudy(vm, context);
+                            },
+                            text: '가입하기')),
+                ],
               ),
             ),
     );
   }
 
   void joinToPublicStudy(StudyViewModel vm, BuildContext context) {
-    vm.joinStudy(studyId, null);
-    if (vm.successToJoin) {
-      print('가입 성공');
-      context.go('/studies/$studyId');
-    } else {
-      ModiModal.openDialog(
-          context, '스터디 가입 실패', '', false, () => null, () => null);
-    }
+    vm.joinStudy(null).then((_) => {
+          if (vm.successToJoin)
+            {context.go('/studies/$studyId')}
+          else
+            {
+              ModiModal.openDialog(
+                  context, '스터디 가입 실패', '', false, () => null, () => null)
+            }
+        });
   }
 }
