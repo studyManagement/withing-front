@@ -97,10 +97,10 @@ class MyStudyList extends StatelessWidget {
       itemCount: studies.length,
       itemBuilder: (context, index) {
         final item = studies[index];
-        final StudyMeetingSchedule nextMeetingSchedule =
-            vm.getNextPromise(item);
-        final String nextScheduleDate = getNextScheduleDate(
-            selectedDate, item.meetingSchedules.first, nextMeetingSchedule);
+
+        String regularMeeting = (item.meetingSchedules.isNotEmpty)
+            ? '매주 (${item.getAllWeekdays()}) ${item.getPromiseByDefault().startTime}'
+            : "비정기 모임";
 
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -126,7 +126,7 @@ class MyStudyList extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '매주 (${item.getAllWeekdays()}) ${item.getPromiseByDefault().startTime}',
+                  regularMeeting,
                   style: const TextStyle(
                     color: AppColors.gray400,
                     fontWeight: AppFonts.fontWeight500,
@@ -154,12 +154,17 @@ class StudyImage extends StatelessWidget {
       height: 42,
       child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: Image.network(
-              'https://picsum.photos/42',
-              width: 42,
-              height: 42,
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: Image.network(
+                'https://picsum.photos/42',
+                width: 42,
+                height: 42,
+              ),
             ),
           ),
           Positioned(
