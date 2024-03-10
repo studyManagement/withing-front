@@ -150,16 +150,20 @@ class StudyImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 46,
-      height: 42,
+      width: 50,
+      height: 50,
       child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.white,
+                width: 3,
+              ),
               shape: BoxShape.circle,
             ),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(32),
+              borderRadius: BorderRadius.circular(36),
               child: Image.network(
                 'https://picsum.photos/42',
                 width: 42,
@@ -168,8 +172,8 @@ class StudyImage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: -3,
-            right: 0,
+            top: 2,
+            right: 2,
             child: Container(
               width: 16,
               height: 16,
