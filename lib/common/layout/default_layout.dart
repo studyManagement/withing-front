@@ -7,6 +7,7 @@ class DefaultLayout extends StatelessWidget {
   final Widget child;
   final String? title;
   final Widget? titleBottom;
+  final double? titleFontSize;
   final double? scrolledUnderElevation;
   final Widget? bottomNavigationBar;
   final bool? centerTitle;
@@ -17,6 +18,7 @@ class DefaultLayout extends StatelessWidget {
     required this.child,
     this.title,
     this.titleBottom,
+    this.titleFontSize,
     this.scrolledUnderElevation,
     this.bottomNavigationBar,
     this.actions,
@@ -54,10 +56,10 @@ class DefaultLayout extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Text(
           title!,
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.gray800,
             fontWeight: AppFonts.fontWeight600,
-            fontSize: 20,
+            fontSize: titleFontSize ?? 16,
           ),
         ),
       ),

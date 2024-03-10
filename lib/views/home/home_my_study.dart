@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
@@ -16,11 +17,12 @@ class HomeMyStudy extends StatelessWidget {
         context.select<StudyListViewModel, List<StudyListView>>(
             (provider) => provider.studyList);
 
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
+    List<Widget> homeWidgets = [];
+    if (studies.isEmpty) {
+      homeWidgets.add(ModiException(const ['등록된 스터디가 없습니다.']));
+    } else {
+      homeWidgets.addAll([
+        const Padding(
           padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           child: Text(
             '내 스터디',
@@ -31,11 +33,21 @@ class HomeMyStudy extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: MyStudyList(),
         ),
-      ],
+      ]);
+    }
+
+    return Column(
+      mainAxisAlignment: (studies.isEmpty)
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
+      crossAxisAlignment: (studies.isEmpty)
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
+      children: homeWidgets,
     );
   }
 }
