@@ -10,6 +10,7 @@ class DefaultLayout extends StatelessWidget {
   final double? titleFontSize;
   final double? scrolledUnderElevation;
   final Widget? bottomNavigationBar;
+  final Widget? leader;
   final bool? centerTitle;
   final List<Widget>? actions;
 
@@ -21,6 +22,7 @@ class DefaultLayout extends StatelessWidget {
     this.titleFontSize,
     this.scrolledUnderElevation,
     this.bottomNavigationBar,
+    this.leader,
     this.actions,
     this.centerTitle,
     super.key,
@@ -64,6 +66,10 @@ class DefaultLayout extends StatelessWidget {
         ),
       ),
       bottom: bottomWidget,
+      leading: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: leader,
+      ),
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
