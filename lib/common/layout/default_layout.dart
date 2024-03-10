@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -6,6 +8,7 @@ class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
   final Widget child;
   final String? title;
+  final Widget? customTitleWidget;
   final Widget? titleBottom;
   final double? titleFontSize;
   final double? scrolledUnderElevation;
@@ -18,6 +21,7 @@ class DefaultLayout extends StatelessWidget {
     this.backgroundColor,
     required this.child,
     this.title,
+    this.customTitleWidget,
     this.titleBottom,
     this.titleFontSize,
     this.scrolledUnderElevation,
@@ -39,14 +43,26 @@ class DefaultLayout extends StatelessWidget {
   }
 
   AppBar? renderAppBar(BuildContext context) {
-    if (title == null) {
+    if (title == null && customTitleWidget == null) {
       return null;
     }
+
+    log('$title $customTitleWidget');
+
+    assert(!(title != null && customTitleWidget != null),
+        "title하고 customTitleWidget은 동시에 선언할 수 없습니다.");
 
     final bottomWidget = (titleBottom != null)
         ? PreferredSize(
             preferredSize: const Size.fromHeight(100),
             child: titleBottom!,
+          )
+        : null;
+
+    final titleLeader = (leader != null)
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: leader,
           )
         : null;
 
@@ -56,23 +72,22 @@ class DefaultLayout extends StatelessWidget {
       centerTitle: centerTitle ?? true,
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          title!,
-          style: TextStyle(
-            color: AppColors.gray800,
-            fontWeight: AppFonts.fontWeight600,
-            fontSize: titleFontSize ?? 16,
-          ),
-        ),
+        child: (title != null)
+            ? Text(
+                title!,
+                style: TextStyle(
+                  color: AppColors.gray800,
+                  fontWeight: AppFonts.fontWeight600,
+                  fontSize: titleFontSize ?? 16,
+                ),
+              )
+            : customTitleWidget,
       ),
       bottom: bottomWidget,
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: leader,
-      ),
+      leading: titleLeader,
       actions: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             children: actions ?? [],
           ),
