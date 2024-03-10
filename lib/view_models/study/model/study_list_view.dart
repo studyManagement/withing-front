@@ -8,12 +8,22 @@ class StudyListView {
   int headcount;
   bool private;
   String explanation;
+  String? studyImage;
   DateTime createdAt;
   List<String> categories;
   List<StudyMeetingSchedule> meetingSchedules;
 
-  StudyListView(this.id, this.studyName, this.max, this.headcount, this.private,
-      this.explanation, this.createdAt, this.categories, this.meetingSchedules);
+  StudyListView(
+      this.id,
+      this.studyName,
+      this.max,
+      this.headcount,
+      this.private,
+      this.explanation,
+      this.studyImage,
+      this.createdAt,
+      this.categories,
+      this.meetingSchedules);
 
   factory StudyListView.from(StudyListModel model) {
     return StudyListView(
@@ -23,6 +33,7 @@ class StudyListView {
       model.headcount,
       model.private,
       model.explanation,
+      model.studyImage,
       model.createdAt,
       model.categories,
       model.meetingSchedules.map((e) => StudyMeetingSchedule.from(e)).toList(),
@@ -37,6 +48,7 @@ class StudyListView {
       headcount,
       private,
       explanation,
+      studyImage,
       createdAt,
       categories,
       meetingSchedules,
@@ -74,6 +86,6 @@ class StudyListView {
 
   @override
   String toString() {
-    return "StudyListView(studyId=$id,studyName=$studyName,max=$max,headcount=$headcount,explanation=$explanation,categories=$categories,meetingSchedules=$meetingSchedules)";
+    return "StudyListView(studyId=$id,studyName=$studyName,max=$max,headcount=$headcount,explanation=$explanation,studyImage=$studyImage,categories=$categories,meetingSchedules=$meetingSchedules)";
   }
 }

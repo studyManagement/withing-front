@@ -13,6 +13,7 @@ _$StudyListModelImpl _$$StudyListModelImplFromJson(Map<String, dynamic> json) =>
       max: json['max'] as int,
       headcount: json['headcount'] as int,
       private: json['private'] as bool,
+      studyImage: json['studyImage'] as String?,
       explanation: json['explanation'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       categories: (json['categories'] as List<dynamic>)
@@ -32,6 +33,7 @@ Map<String, dynamic> _$$StudyListModelImplToJson(
       'max': instance.max,
       'headcount': instance.headcount,
       'private': instance.private,
+      'studyImage': instance.studyImage,
       'explanation': instance.explanation,
       'createdAt': instance.createdAt.toIso8601String(),
       'categories': instance.categories,
