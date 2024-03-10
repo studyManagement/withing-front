@@ -12,6 +12,7 @@ class StudyListModel with _$StudyListModel {
     required int max,
     required int headcount,
     required bool private,
+    required String? studyImage,
     required String explanation,
     required DateTime createdAt,
     required List<String> categories,

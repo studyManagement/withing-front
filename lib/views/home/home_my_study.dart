@@ -114,7 +114,7 @@ class MyStudyList extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StudyImage(),
+                StudyImage(item.studyImage),
                 const SizedBox(height: 10),
                 Text(
                   item.studyName,
@@ -143,9 +143,12 @@ class MyStudyList extends StatelessWidget {
 }
 
 class StudyImage extends StatelessWidget {
-  const StudyImage({
+  const StudyImage(
+    this.studyImage, {
     super.key,
   });
+
+  final String? studyImage;
 
   @override
   Widget build(BuildContext context) {
@@ -164,11 +167,13 @@ class StudyImage extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(36),
-              child: Image.network(
-                'https://picsum.photos/42',
-                width: 42,
-                height: 42,
-              ),
+              child: (studyImage == null)
+                  ? const SizedBox(width: 42, height: 42)
+                  : Image.network(
+                      studyImage!,
+                      width: 42,
+                      height: 42,
+                    ),
             ),
           ),
           Positioned(

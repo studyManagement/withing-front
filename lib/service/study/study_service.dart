@@ -7,6 +7,7 @@ import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:retrofit/http.dart';
+
 import '../../view_models/study/model/study_meeting_schedule.dart';
 
 part 'study_service.g.dart';
@@ -130,8 +131,7 @@ class StudyService {
       final StudyModel study = await _studyApi.switchLeader(studyId, userId);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 401 || e.code == 400 || e.code == 404) {
-      }
+      if (e.code == 401 || e.code == 400 || e.code == 404) {}
       rethrow;
     } on NetworkException catch (e) {
       rethrow;
@@ -146,8 +146,7 @@ class StudyService {
     } on ApiException catch (e) {
       if (e.code == 404) {
         throw StudyException(e.cause, e.code);
-      } else if (e.code == 401) {
-      }
+      } else if (e.code == 401) {}
       rethrow;
     } on NetworkException catch (e) {
       rethrow;
