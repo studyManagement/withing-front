@@ -13,7 +13,7 @@ class TagList extends StatelessWidget {
       widgets.add(const SizedBox(width: 6));
     }
 
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: widgets,
