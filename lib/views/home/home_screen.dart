@@ -5,10 +5,10 @@ import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/views/home/components/home_study_notificator_v2.dart';
 import 'package:modi/views/home/home_my_study.dart';
+import 'package:modi/views/home/main_calendar.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/layout/default_layout.dart';
-import './main_calendar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,17 +18,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  late DateTime selectedDate;
+  DateTime selectedDate = DateTime.utc(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
 
   @override
   void initState() {
     super.initState();
-
-    selectedDate = DateTime.utc(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
   }
 
   @override
