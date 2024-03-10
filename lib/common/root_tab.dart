@@ -55,7 +55,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             ),
           ),
         ),
-        height: 70,
+        height: 80,
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,8 +63,8 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           children: [
             GestureDetector(
               onTap: () => tabController.animateTo(0),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
+              child: SizedBox(
+                height: 60,
                 child: Image.asset(
                   'asset/home.png',
                   width: 32,
@@ -75,8 +75,8 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             ),
             GestureDetector(
               onTap: () => tabController.animateTo(1),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
+              child: SizedBox(
+                height: 60,
                 child: Image.asset(
                   'asset/search.png',
                   width: 32,
@@ -87,8 +87,8 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             ),
             GestureDetector(
               onTap: () => tabController.animateTo(2),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
+              child: SizedBox(
+                height: 60,
                 child: Image.asset(
                   'asset/calendar.png',
                   width: 32,
@@ -99,8 +99,8 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             ),
             GestureDetector(
               onTap: () => tabController.animateTo(3),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
+              child: SizedBox(
+                height: 60,
                 child: Image.asset(
                   'asset/user.png',
                   width: 32,
