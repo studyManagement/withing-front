@@ -15,6 +15,13 @@ class InputPasswordModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.watch<StudyViewModel>();
+
+
+    final FocusNode _focusNode = FocusNode();
+
+    void _requestFocus() {
+      FocusScope.of(context).requestFocus(_focusNode);
+    }
     return AlertDialog(
       insetPadding: EdgeInsets.zero,
       surfaceTintColor: Colors.white,
@@ -43,6 +50,7 @@ class InputPasswordModal extends StatelessWidget {
                 TextField(
                   controller: _controller,
                   autofocus: true,
+                  focusNode: _focusNode,
                   showCursor: false,
                   maxLength: 4,
                   keyboardType: TextInputType.number,
@@ -52,13 +60,14 @@ class InputPasswordModal extends StatelessWidget {
                     border: InputBorder.none,
                   ),
                   onChanged: (String data) {
+                    _requestFocus();
                     vm.renderObscuringChar(data);
-                    vm.password = data;
                   },
                   onSubmitted: (String data) {
                     vm.isValidPassword().then((_) => {
                           if (vm.successToJoin)
-                            {context.go('/studies/$studyId')}
+                            {context.go('/studies/$studyId')},
+                          _controller.clear()
                         });
                   },
                 ),
@@ -104,7 +113,9 @@ class InputPasswordModal extends StatelessWidget {
             ConfirmButton(
                 onTap: () {
                   vm.isValidPassword().then((_) => {
-                        if (vm.successToJoin) {context.go('/studies/$studyId')}
+                        if (vm.successToJoin)
+                          {context.go('/studies/$studyId')},
+                    _controller.clear()
                       });
                 },
                 text: '확인',
