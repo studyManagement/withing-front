@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/button/label_circle_button.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/sns_content_share/sns_content_share_factory.dart';
 import 'package:modi/common/theme/theme_resources.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int studyId;
   final bool isLeader;
-  final bool? hasLike;
   final Function()? action;
 
   const StudyMainAppBar(
       {super.key,
       required this.studyId,
       required this.isLeader,
-      this.hasLike,
       this.action});
 
   @override
@@ -34,7 +35,7 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       foregroundColor: AppColors.black,
       elevation: 0,
-      actions: <Widget>[makeShareButton(context), makeLikeButton()],
+      actions: <Widget>[makeShareButton(context), makeLikeButton(context)],
     );
   }
 
@@ -123,8 +124,9 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget makeLikeButton() {
-    return (hasLike == null)
+  Widget makeLikeButton(BuildContext context) {
+    final viewModel = context.watch<StudyViewModel>();
+    return (viewModel.isMember)
         ? Offstage(
             offstage: (isLeader) ? false : true,
             child: IconButton(
@@ -137,7 +139,7 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           )
         : IconButton(
-            icon: (hasLike == true)
+            icon: (viewModel.hasLike)
                 ? Image.asset(
                     'asset/heart_filled_32.png',
                     width: 32,
@@ -148,9 +150,9 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
                     width: 32,
                     height: 32,
                   ),
-            onPressed: () => {
-              // 찜
-            },
+            onPressed: (){
+              (viewModel.hasLike) ? viewModel.cancelFavoriteStudy() : viewModel.pickFavoriteStudy();
+            }
           );
   }
 }
