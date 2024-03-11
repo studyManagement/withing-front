@@ -92,11 +92,14 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+
   void initPasswordProperties() {
     _isValidPwd = true;
     _isErrorText = false;
     _isChecked = false;
     _successToJoin = false;
+    _password = '';
+    _isFilled = [for (int i = 0; i < 4; i++) false];
   }
 
   Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
@@ -226,8 +229,9 @@ class StudyViewModel extends ChangeNotifier {
 
   /// utils
   void renderObscuringChar(String input) {
+    _password = input;
     for (int i = 1; i <= 4; i++) {
-      if (i <= input.length) {
+      if (i <= _password.length) {
         _isFilled[i - 1] = true;
       } else {
         _isFilled[i - 1] = false;
