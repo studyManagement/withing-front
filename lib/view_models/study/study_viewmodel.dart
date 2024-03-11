@@ -168,9 +168,9 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> switchLeader(int userId) async {
+  Future<void> switchLeader(int studyId, int userId) async {
     try {
-      final studyModel = await _service.switchLeader(_study!.id, userId);
+      final studyModel = await _service.switchLeader(studyId, userId);
       _newLeaderId = studyModel.leaderId;
       _isSwitched = true;
     } on ApiException catch (e) {
