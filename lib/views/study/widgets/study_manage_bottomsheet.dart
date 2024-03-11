@@ -128,19 +128,27 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
               if (selectedUsers.isNotEmpty &&
                   selectedUsers.length <= maxCount) {
                 if (widget.isOut) {
-                  // 강제 퇴장
-                  vm.forceToExitMember(widget.studyId, selectedUsers);
-                  if (vm.isOut) {
-                    context.pop();
-                    BottomToast(context: context, text: "선택한 멤버를 퇴장시켰어요.")
-                        .show();
-                  }
+                  vm
+                      .forceToExitMember(widget.studyId, selectedUsers)
+                      .then((_) => {
+                            if (vm.isOut)
+                              {
+                                context.pop(),
+                                BottomToast(
+                                        context: context,
+                                        text: "선택한 멤버를 퇴장시켰어요.")
+                                    .show()
+                              }
+                          });
                 } else {
-                  vm.switchLeader(selectedUsers[0]);
-                  if (vm.isSwitched) {
-                    context.pop();
-                    BottomToast(context: context, text: "스터디장이 변경되었어요.").show();
-                  }
+                  vm.switchLeader(widget.studyId, selectedUsers[0]).then((_) => {
+                        if (vm.isSwitched)
+                          {
+                            context.pop(),
+                            BottomToast(context: context, text: "스터디장이 변경되었어요.")
+                                .show(),
+                          }
+                      });
                 }
               }
             },
