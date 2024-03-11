@@ -20,7 +20,9 @@ class Notice extends StatelessWidget {
   Widget build(BuildContext context) {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
     boardViewModel.setStudyId = studyId;
-    boardViewModel.fetchNotices();
+    if(isMember || !isPrivate) {
+      boardViewModel.fetchNotices();
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
