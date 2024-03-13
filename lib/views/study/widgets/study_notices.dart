@@ -14,13 +14,17 @@ class Notice extends StatelessWidget {
   final bool isMember;
   final bool isPrivate;
 
-  const Notice({super.key, required this.studyId, required this.isMember, required this.isPrivate});
+  const Notice(
+      {super.key,
+      required this.studyId,
+      required this.isMember,
+      required this.isPrivate});
 
   @override
   Widget build(BuildContext context) {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
     boardViewModel.setStudyId = studyId;
-    if(isMember || !isPrivate) {
+    if (isMember || !isPrivate) {
       boardViewModel.fetchNotices();
     }
 
@@ -58,11 +62,11 @@ class Notice extends StatelessWidget {
         (!isMember && isPrivate)
             ? const StudyNoticeException(isPrivate: true)
             : (boardViewModel.hasPost)
-                    ? _NoticeCarousel(
-                        viewModel: boardViewModel,
-                        studyId: studyId,
-                      )
-                    : const StudyNoticeException(isPrivate: false)
+                ? _NoticeCarousel(
+                    viewModel: boardViewModel,
+                    studyId: studyId,
+                  )
+                : const StudyNoticeException(isPrivate: false)
       ],
     );
   }
@@ -113,7 +117,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           },
           // 한 슬라이드에 공지글 최대 3개까지 표시.
         ),
-        slideIndicator(currentIndex, numOfNotice),
+        if (numOfNotice > 3) slideIndicator(currentIndex, numOfNotice),
       ],
     );
   }
@@ -136,7 +140,7 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
 }
 
 Widget slideIndicator(int currentIndex, int numOfItem) {
-  int page = (numOfItem +2) ~/ 3;
+  int page = (numOfItem + 2) ~/ 3;
   return SizedBox(
     width: 31,
     height: 5,
