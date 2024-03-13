@@ -6,7 +6,7 @@ import 'package:modi/service/study/MeetingType.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
-import 'package:modi/views/study/study_exception_screen.dart';
+import 'package:modi/views/common/study_error_page.dart';
 import '../../model/board/board_model.dart';
 import '../../model/study/study_list_model.dart';
 import '../../model/user/user_model.dart';
@@ -92,7 +92,6 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void initPasswordProperties() {
     _isValidPwd = true;
     _isErrorText = false;
@@ -121,7 +120,7 @@ class StudyViewModel extends ChangeNotifier {
       } on StudyException catch (e) {
         // 스터디가 없는 경우
         if (!context.mounted) return;
-        navigateToStudyExceptionScreen(context);
+        navigateToStudyErrorPage(context);
       }
     }
   }
@@ -138,12 +137,8 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   Future<void> joinStudy(String? password) async {
-    try {
-      await _service.joinStudy(study!.id, password);
-      _successToJoin = true;
-    } on StudyException catch (e) {
-      if (e.code == 400) {}
-    }
+    var response = await _service.joinStudy(study!.id, password);
+    if (response != null) _successToJoin = true;
     _isChecked = true;
     notifyListeners();
   }
@@ -388,10 +383,10 @@ class StudyViewModel extends ChangeNotifier {
     _isMember = users.any((user) => user.id == _userId);
   }
 
-  void navigateToStudyExceptionScreen(BuildContext context) {
+  void navigateToStudyErrorPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const StudyExceptionScreen()),
+      MaterialPageRoute(builder: (context) => const StudyErrorPage()),
     );
   }
 
