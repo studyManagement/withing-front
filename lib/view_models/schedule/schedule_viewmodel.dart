@@ -11,7 +11,10 @@ class ScheduleViewModel extends ChangeNotifier {
 
   Future<void> fetchSchedules(int studyId) async {
     List<ScheduleModel> scheduleModels = await _service.fetchMyStudies(studyId);
-    schedules = scheduleModels.map((e) => Schedule.from(e)).toList();
+
+    // inDays(yesterday=-1,today=0,tomorrow=1)
+    scheduleModels.sort((a, b) => a.startAt.difference(b.startAt).inDays);
+    schedules = scheduleModels.reversed.map((e) => Schedule.from(e)).toList();
 
     notifyListeners();
   }

@@ -23,7 +23,7 @@ class StudyScheduleList extends StatelessWidget {
     String startTimeDifference = (startAt.hour >= 12) ? '오후' : '오전';
     String endTimeDifference = (endAt.hour >= 12) ? '오후' : '오전';
 
-    return "${startAt.month}. ${startAt.day} (${WeekString[startAt.weekday]}) $startTimeDifference ${startAt.hour}:${startAt.minute} - $endTimeDifference ${endAt.hour}:${endAt.minute}";
+    return "${startAt.month}. ${startAt.day} (${WeekString[startAt.weekday - 1]}) $startTimeDifference ${startAt.hour}:${startAt.minute} - $endTimeDifference ${endAt.hour}:${endAt.minute}";
   }
 
   @override
