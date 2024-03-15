@@ -21,7 +21,6 @@ ScheduleModel _$ScheduleModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ScheduleModel {
   int get id => throw _privateConstructorUsedError;
-  String get barColor => throw _privateConstructorUsedError;
   DateTime get startAt => throw _privateConstructorUsedError;
   DateTime get endAt => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
@@ -41,7 +40,6 @@ abstract class $ScheduleModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String barColor,
       DateTime startAt,
       DateTime endAt,
       String title,
@@ -62,7 +60,6 @@ class _$ScheduleModelCopyWithImpl<$Res, $Val extends ScheduleModel>
   @override
   $Res call({
     Object? id = null,
-    Object? barColor = null,
     Object? startAt = null,
     Object? endAt = null,
     Object? title = null,
@@ -73,10 +70,6 @@ class _$ScheduleModelCopyWithImpl<$Res, $Val extends ScheduleModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      barColor: null == barColor
-          ? _value.barColor
-          : barColor // ignore: cast_nullable_to_non_nullable
-              as String,
       startAt: null == startAt
           ? _value.startAt
           : startAt // ignore: cast_nullable_to_non_nullable
@@ -107,7 +100,6 @@ abstract class _$$ScheduleModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String barColor,
       DateTime startAt,
       DateTime endAt,
       String title,
@@ -126,7 +118,6 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? barColor = null,
     Object? startAt = null,
     Object? endAt = null,
     Object? title = null,
@@ -137,10 +128,6 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      barColor: null == barColor
-          ? _value.barColor
-          : barColor // ignore: cast_nullable_to_non_nullable
-              as String,
       startAt: null == startAt
           ? _value.startAt
           : startAt // ignore: cast_nullable_to_non_nullable
@@ -166,7 +153,6 @@ class __$$ScheduleModelImplCopyWithImpl<$Res>
 class _$ScheduleModelImpl implements _ScheduleModel {
   const _$ScheduleModelImpl(
       {required this.id,
-      required this.barColor,
       required this.startAt,
       required this.endAt,
       required this.title,
@@ -178,8 +164,6 @@ class _$ScheduleModelImpl implements _ScheduleModel {
   @override
   final int id;
   @override
-  final String barColor;
-  @override
   final DateTime startAt;
   @override
   final DateTime endAt;
@@ -190,7 +174,7 @@ class _$ScheduleModelImpl implements _ScheduleModel {
 
   @override
   String toString() {
-    return 'ScheduleModel(id: $id, barColor: $barColor, startAt: $startAt, endAt: $endAt, title: $title, description: $description)';
+    return 'ScheduleModel(id: $id, startAt: $startAt, endAt: $endAt, title: $title, description: $description)';
   }
 
   @override
@@ -199,8 +183,6 @@ class _$ScheduleModelImpl implements _ScheduleModel {
         (other.runtimeType == runtimeType &&
             other is _$ScheduleModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.barColor, barColor) ||
-                other.barColor == barColor) &&
             (identical(other.startAt, startAt) || other.startAt == startAt) &&
             (identical(other.endAt, endAt) || other.endAt == endAt) &&
             (identical(other.title, title) || other.title == title) &&
@@ -210,8 +192,8 @@ class _$ScheduleModelImpl implements _ScheduleModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, barColor, startAt, endAt, title, description);
+  int get hashCode =>
+      Object.hash(runtimeType, id, startAt, endAt, title, description);
 
   @JsonKey(ignore: true)
   @override
@@ -230,7 +212,6 @@ class _$ScheduleModelImpl implements _ScheduleModel {
 abstract class _ScheduleModel implements ScheduleModel {
   const factory _ScheduleModel(
       {required final int id,
-      required final String barColor,
       required final DateTime startAt,
       required final DateTime endAt,
       required final String title,
@@ -241,8 +222,6 @@ abstract class _ScheduleModel implements ScheduleModel {
 
   @override
   int get id;
-  @override
-  String get barColor;
   @override
   DateTime get startAt;
   @override
