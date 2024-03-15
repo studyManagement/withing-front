@@ -70,7 +70,7 @@ class StudyScheduleScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: (!isRender)
               ? ModiException(const ['생성된 일정이 없어요.'])
-              : const StudyScheduleScreenTab(),
+              : StudyScheduleScreenTab(studyId: _studyId),
         ),
       ),
     );

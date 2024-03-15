@@ -4,6 +4,7 @@ import 'package:modi/common/logger/logger_service.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/requester/request_builder.dart';
 import 'package:modi/service/board/board_service.dart';
+import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/signin/signin_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 
@@ -42,7 +43,7 @@ void setupDependencyInjection() {
   //   () => KeywordSearchApi(getIt<Dio>(instanceName: 'client')),
   // );
   getIt.registerLazySingleton<StudySearchApi>(
-        () => StudySearchApi(getIt<Dio>(instanceName: 'client')),
+    () => StudySearchApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<StudyCreateApi>(
     () => StudyCreateApi(getIt<Dio>(instanceName: 'client')),
@@ -51,12 +52,14 @@ void setupDependencyInjection() {
     () => StudyImageCreateApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<StudyImageUpdateApi>(
-        () => StudyImageUpdateApi(getIt<Dio>(instanceName: 'client')),
+    () => StudyImageUpdateApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<BoardApi>(
     () => BoardApi(getIt<Dio>(instanceName: 'client')),
   );
-
+  getIt.registerLazySingleton<ScheduleApi>(
+    () => ScheduleApi(getIt<Dio>(instanceName: 'client')),
+  );
 
   /// Service
   getIt.registerLazySingleton<SignupService>(
@@ -69,7 +72,10 @@ void setupDependencyInjection() {
     () => StudyService(getIt<StudyApi>()),
   );
   getIt.registerLazySingleton<StudySearchService>(
-        () => StudySearchService(getIt<StudySearchApi>()),
+    () => StudySearchService(getIt<StudySearchApi>()),
+  );
+  getIt.registerLazySingleton<ScheduleService>(
+    () => ScheduleService(getIt<ScheduleApi>()),
   );
 
   // getIt.registerLazySingleton<CategorySearchService>(
@@ -85,7 +91,7 @@ void setupDependencyInjection() {
     () => StudyImageCreateService(getIt<StudyImageCreateApi>()),
   );
   getIt.registerLazySingleton<StudyImageUpdateService>(
-        () => StudyImageUpdateService(getIt<StudyImageUpdateApi>()),
+    () => StudyImageUpdateService(getIt<StudyImageUpdateApi>()),
   );
   getIt.registerLazySingleton<BoardService>(
     () => BoardService(getIt<BoardApi>()),

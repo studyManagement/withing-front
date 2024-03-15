@@ -9,7 +9,9 @@ import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/root_tab.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/service/image/study_image_update_service.dart';
+import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/study/study_service.dart';
+import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/view_models/study/update_study_viewmodel.dart';
@@ -123,8 +125,15 @@ class RouterService {
                   routes: [
                     GoRoute(
                         path: 'schedules',
-                        builder: (context, state) => StudyScheduleScreen(
-                            int.parse(state.pathParameters['studyId']!)),
+                        builder: (context, state) {
+                          return ChangeNotifierProvider(
+                            create: (_) =>
+                                ScheduleViewModel(getIt<ScheduleService>()),
+                            child: StudyScheduleScreen(
+                              int.parse(state.pathParameters['studyId']!),
+                            ),
+                          );
+                        },
                         routes: [
                           GoRoute(
                             path: 'register',

@@ -7,7 +7,6 @@ part 'schedule_model.g.dart';
 class ScheduleModel with _$ScheduleModel {
   const factory ScheduleModel({
     required int id,
-    required String barColor,
     required DateTime startAt,
     required DateTime endAt,
     required String title,

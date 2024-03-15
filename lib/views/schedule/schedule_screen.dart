@@ -21,7 +21,6 @@ class ScheduleScreen extends StatelessWidget {
               schedules: [
                 ScheduleModel(
                   id: 1,
-                  barColor: 'test',
                   startAt: DateTime(2024, 2, 1, 9),
                   endAt: DateTime(2024, 3, 1, 13),
                   title: '5차 정기 회의',
@@ -29,7 +28,6 @@ class ScheduleScreen extends StatelessWidget {
                 ),
                 ScheduleModel(
                   id: 2,
-                  barColor: 'test',
                   startAt: DateTime(2024, 2, 1, 9),
                   endAt: DateTime(2024, 3, 1, 13),
                   title: '5차 정기 회의',
@@ -37,7 +35,6 @@ class ScheduleScreen extends StatelessWidget {
                 ),
                 ScheduleModel(
                   id: 3,
-                  barColor: 'test',
                   startAt: DateTime(2024, 3, 1, 9),
                   endAt: DateTime(2024, 4, 1, 13),
                   title: '5차 정기 회의',
@@ -51,7 +48,6 @@ class ScheduleScreen extends StatelessWidget {
               schedules: [
                 ScheduleModel(
                   id: 1,
-                  barColor: 'test',
                   startAt: DateTime(2024, 2, 1, 9),
                   endAt: DateTime(2024, 3, 1, 13),
                   title: '5차 정기 회의',
@@ -59,7 +55,6 @@ class ScheduleScreen extends StatelessWidget {
                 ),
                 ScheduleModel(
                   id: 2,
-                  barColor: 'test',
                   startAt: DateTime(2024, 2, 1, 9),
                   endAt: DateTime(2024, 3, 1, 13),
                   title: '5차 정기 회의',
@@ -67,7 +62,6 @@ class ScheduleScreen extends StatelessWidget {
                 ),
                 ScheduleModel(
                   id: 3,
-                  barColor: 'test',
                   startAt: DateTime(2024, 3, 1, 9),
                   endAt: DateTime(2024, 4, 1, 13),
                   title: '5차 정기 회의',
