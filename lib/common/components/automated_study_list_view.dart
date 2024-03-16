@@ -62,7 +62,7 @@ class _StudyCard extends StatelessWidget {
                 ('참여 인원', '${info.headcount}/${info.max}'),
                 (
                   '정기 모임',
-                  stringifySchedule(info.meetingSchedules),
+                  getRegularMeetingString(info.meetingSchedules)
                 ),
               ],
             ),

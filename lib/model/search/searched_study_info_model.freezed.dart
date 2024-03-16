@@ -29,7 +29,8 @@ mixin _$SearchedStudyInfo {
   String? get deadline => throw _privateConstructorUsedError;
   String? get studyImage => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
-  List<MeetingInfo> get meetingSchedules => throw _privateConstructorUsedError;
+  List<StudyMeetingSchedulesModel> get meetingSchedules =>
+      throw _privateConstructorUsedError;
   bool get private => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,7 +55,7 @@ abstract class $SearchedStudyInfoCopyWith<$Res> {
       String? deadline,
       String? studyImage,
       List<String> categories,
-      List<MeetingInfo> meetingSchedules,
+      List<StudyMeetingSchedulesModel> meetingSchedules,
       bool private});
 }
 
@@ -123,7 +124,7 @@ class _$SearchedStudyInfoCopyWithImpl<$Res, $Val extends SearchedStudyInfo>
       meetingSchedules: null == meetingSchedules
           ? _value.meetingSchedules
           : meetingSchedules // ignore: cast_nullable_to_non_nullable
-              as List<MeetingInfo>,
+              as List<StudyMeetingSchedulesModel>,
       private: null == private
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
@@ -150,7 +151,7 @@ abstract class _$$SearchedStudyInfoImplCopyWith<$Res>
       String? deadline,
       String? studyImage,
       List<String> categories,
-      List<MeetingInfo> meetingSchedules,
+      List<StudyMeetingSchedulesModel> meetingSchedules,
       bool private});
 }
 
@@ -217,7 +218,7 @@ class __$$SearchedStudyInfoImplCopyWithImpl<$Res>
       meetingSchedules: null == meetingSchedules
           ? _value._meetingSchedules
           : meetingSchedules // ignore: cast_nullable_to_non_nullable
-              as List<MeetingInfo>,
+              as List<StudyMeetingSchedulesModel>,
       private: null == private
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
@@ -239,7 +240,7 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
       required this.deadline,
       required this.studyImage,
       required final List<String> categories,
-      required final List<MeetingInfo> meetingSchedules,
+      required final List<StudyMeetingSchedulesModel> meetingSchedules,
       required this.private})
       : _categories = categories,
         _meetingSchedules = meetingSchedules;
@@ -271,9 +272,9 @@ class _$SearchedStudyInfoImpl implements _SearchedStudyInfo {
     return EqualUnmodifiableListView(_categories);
   }
 
-  final List<MeetingInfo> _meetingSchedules;
+  final List<StudyMeetingSchedulesModel> _meetingSchedules;
   @override
-  List<MeetingInfo> get meetingSchedules {
+  List<StudyMeetingSchedulesModel> get meetingSchedules {
     if (_meetingSchedules is EqualUnmodifiableListView)
       return _meetingSchedules;
     // ignore: implicit_dynamic_type
@@ -356,7 +357,7 @@ abstract class _SearchedStudyInfo implements SearchedStudyInfo {
       required final String? deadline,
       required final String? studyImage,
       required final List<String> categories,
-      required final List<MeetingInfo> meetingSchedules,
+      required final List<StudyMeetingSchedulesModel> meetingSchedules,
       required final bool private}) = _$SearchedStudyInfoImpl;
 
   factory _SearchedStudyInfo.fromJson(Map<String, dynamic> json) =
@@ -381,7 +382,7 @@ abstract class _SearchedStudyInfo implements SearchedStudyInfo {
   @override
   List<String> get categories;
   @override
-  List<MeetingInfo> get meetingSchedules;
+  List<StudyMeetingSchedulesModel> get meetingSchedules;
   @override
   bool get private;
   @override

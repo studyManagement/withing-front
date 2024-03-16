@@ -283,27 +283,38 @@ class StudyViewModel extends ChangeNotifier {
         days.add(_study!.meetingSchedules[i].day);
       }
     }
+    days.sort();
+
     if (days.isEmpty) {
-      regularMeetingStr = '미등록';
+      regularMeetingStr = '비정기 모임';
       _meetingType = MeetingType.NONE;
       _isInit = false;
-    } else if (days.length == 7) {
-      regularMeetingStr = '매일 ${_study!.meetingSchedules[0].startTime}';
-      _meetingType = MeetingType.DAILY;
-    } else {
-      regularMeetingStr = '매주 ';
-      _meetingType = MeetingType.WEEKLY;
-      for (int i = 0; i < days.length; i++) {
-        if (cnt < days.length - 1) {
-          regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]}, ';
-          cnt++;
-        } else {
-          regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]}';
+    } else{
+      DateTime start =
+      DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
+      String startMeridiem = (start.hour < 12) ? '오전' : '오후';
+      String time = (start.hour < 12)
+          ? _study!.meetingSchedules[0].startTime
+          : DateFormat('hh:mm').format(start);
+      if (days.length == 7) {
+        regularMeetingStr = '매일 $startMeridiem $time';
+        _meetingType = MeetingType.DAILY;
+      } else {
+        regularMeetingStr = '매주 (';
+        _meetingType = MeetingType.WEEKLY;
+        for (int i = 0; i < days.length; i++) {
+          if (cnt < days.length - 1) {
+            regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]}, ';
+            cnt++;
+          } else {
+            regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]})';
+          }
         }
+        regularMeetingStr =
+        '$regularMeetingStr $startMeridiem $time';
       }
-      regularMeetingStr =
-          '$regularMeetingStr ${_study!.meetingSchedules[0].startTime}';
     }
+
   }
 
   void getSelectedDaysAndTime() {

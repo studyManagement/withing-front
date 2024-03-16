@@ -21,7 +21,8 @@ _$SearchedStudyInfoImpl _$$SearchedStudyInfoImplFromJson(
           .map((e) => e as String)
           .toList(),
       meetingSchedules: (json['meetingSchedules'] as List<dynamic>)
-          .map((e) => MeetingInfo.fromJson(e as Map<String, dynamic>))
+          .map((e) =>
+              StudyMeetingSchedulesModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       private: json['private'] as bool,
     );
