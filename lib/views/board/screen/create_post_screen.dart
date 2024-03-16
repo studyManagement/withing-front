@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../common/modal/modi_modal.dart';
 import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/board_appbar.dart';
+import 'board_info_screen.dart';
 
 class CreatePostScreen extends StatelessWidget {
   final BoardViewModel viewModel;
@@ -34,9 +35,11 @@ class CreatePostScreen extends StatelessWidget {
               onSubmitted: () {
                 (viewModel.isValid)
                     ? {
-                        viewModel.createPost(),
-                        context.pop(),
-                        viewModel.refreshBoardList()
+                        viewModel.createPost().then((_) => {Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                            BoardInfoScreen(boardId: viewModel.boardId!,
+                                viewModel: viewModel))),
+                          viewModel.refreshBoardList()
+                        })
                       }
                     : null;
               },
