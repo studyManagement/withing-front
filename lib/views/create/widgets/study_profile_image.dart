@@ -17,7 +17,6 @@ class StudyProfileImage extends StatelessWidget {
     ShapeDecoration? shapeDecoration;
     if (viewModel.studyImagePath.isNotEmpty ||
         viewModel.studyImageFile != null) {
-
       var image = (!viewModel.isOldImageLoaded)
           ? NetworkImage(viewModel.studyImagePath)
           : FileImage(viewModel.studyImageFile!);
@@ -33,17 +32,18 @@ class StudyProfileImage extends StatelessWidget {
     }
     return Padding(
         padding: const EdgeInsets.only(top: 20, bottom: 50),
-        child: Center(
-          child: Container(
-            width: 105,
-            height: 105,
-            decoration: shapeDecoration,
-            alignment: Alignment.bottomRight,
-            child: GestureDetector(
-              onTap: () async {
-                viewModel.studyImageFile = await pickImageFile();
-                viewModel.isOldImageLoaded = true;
-              },
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () async {
+            viewModel.studyImageFile = await pickImageFile();
+            viewModel.isOldImageLoaded = true;
+          },
+          child: Center(
+            child: Container(
+              width: 105,
+              height: 105,
+              decoration: shapeDecoration,
+              alignment: Alignment.bottomRight,
               child: Image.asset(
                 'asset/camera.png',
                 scale: 2,
