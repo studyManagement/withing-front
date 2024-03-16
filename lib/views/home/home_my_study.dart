@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/theme/theme_resources.dart';
+import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
@@ -98,9 +99,10 @@ class MyStudyList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = studies[index];
 
-        String regularMeeting = (item.meetingSchedules.isNotEmpty)
-            ? '매주 (${item.getAllWeekdays()}) ${item.getPromiseByDefault().startTime}'
-            : "비정기 모임";
+        // String regularMeeting = (item.meetingSchedules.isNotEmpty)
+        //     ? '매주 (${item.getAllWeekdays()}) ${item.getPromiseByDefault().startTime}'
+        //     : "비정기 모임";
+        String regularMeeting = getRegularMeetingString(item.meetingSchedules);
 
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
