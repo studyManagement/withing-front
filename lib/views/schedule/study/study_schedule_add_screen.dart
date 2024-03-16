@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/button/value_button.dart';
 import 'package:modi/common/components/input/text_input.dart';
@@ -8,6 +7,8 @@ import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:modi/di/injection.dart';
+import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
 
@@ -20,6 +21,8 @@ class StudyScheduleAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScheduleViewModel vm = context.read<ScheduleViewModel>();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.white,
@@ -45,7 +48,16 @@ class StudyScheduleAddScreen extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 16),
         child: ConfirmButton(
           width: MediaQuery.of(context).size.width,
-          onTap: () => context.pop(),
+          onTap: () {
+            vm.postSchedule(
+              context,
+              _studyId,
+              '테스트',
+              '테스트',
+              DateTime.now(),
+              DateTime.now(),
+            );
+          },
           text: '생성하기',
           backgroundColor: AppColors.blue600,
         ),
