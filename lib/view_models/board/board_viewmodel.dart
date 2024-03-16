@@ -15,6 +15,7 @@ class BoardViewModel extends ChangeNotifier {
   static const int SIZE = 20;
 
   int? _studyId;
+  int? _boardId;
   bool isRefreshed = true;
   bool _isLoading = false;
   bool _isValid = false;
@@ -49,6 +50,7 @@ class BoardViewModel extends ChangeNotifier {
   String get comment => _comment;
 
   int? get studyId => _studyId;
+  int? get boardId => _boardId;
 
   Future<void> scrollListener(bool isNotice) async {
     if (_isLoading) return;
@@ -115,16 +117,18 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> createPost() async {
     if (_isValid) {
-      await _service.createPost(_studyId!, Post(_title, _contents));
+      BoardModel newPost = await _service.createPost(_studyId!, Post(_title, _contents));
+      _boardId = newPost.id;
+      }
       notifyListeners();
     }
-  }
 
   Future<void> updatePost(int boardId) async {
     if (_isValid) {
       BoardModel boardModel = await _service.updatePost(
           _studyId!, boardId, Post(_title, _contents));
       _post = boardModel;
+      _boardId = boardModel.id;
       notifyListeners();
     }
   }
