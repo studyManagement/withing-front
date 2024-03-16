@@ -194,7 +194,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   void setOrUnsetNotice() {
-    if (post?.notice == true) {
+    if (_isNotice == true) {
       unsetNotice(post!.id);
       _isNotice = false;
     } else {
@@ -213,7 +213,6 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   void isValidInput(BoardInputType type, String value) {
-    // print('유효성 검사');
     switch (type) {
       case BoardInputType.boardTitle:
         _isValid = (value.trim().isNotEmpty && _contents.trim().isNotEmpty)
@@ -262,7 +261,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   String getToSetNoticeText() {
-    if (post?.notice == true || _isNotice!) {
+    if (_isNotice!) {
       return '공지 등록 취소하기';
     } else {
       return '공지로 등록하기';
@@ -270,7 +269,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   String toastText() {
-    if (post?.notice == true || !_isNotice!) {
+    if (!_isNotice!) {
       return '공지 등록이 취소되었어요.';
     } else {
       return '공지로 등록되었어요.';
