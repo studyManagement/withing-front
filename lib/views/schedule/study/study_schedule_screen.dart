@@ -25,7 +25,7 @@ class StudyScheduleScreen extends StatelessWidget {
               onPressed: () {
                 ModiModal.openBottomSheet(
                   context,
-                  Row(
+                  widget: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconTextButton(
@@ -45,7 +45,7 @@ class StudyScheduleScreen extends StatelessWidget {
                               .push('/studies/$_studyId/schedules/vote')),
                     ],
                   ),
-                  200,
+                  height: 200,
                 );
               },
               icon: const Icon(Icons.add)),
