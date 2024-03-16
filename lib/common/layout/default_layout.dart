@@ -12,6 +12,7 @@ class DefaultLayout extends StatelessWidget {
   final double? scrolledUnderElevation;
   final Widget? bottomNavigationBar;
   final Widget? leader;
+  final bool? resizeToAvoidBottomInset;
   final bool? centerTitle;
   final List<Widget>? actions;
 
@@ -26,6 +27,7 @@ class DefaultLayout extends StatelessWidget {
     this.bottomNavigationBar,
     this.leader,
     this.actions,
+    this.resizeToAvoidBottomInset,
     this.centerTitle,
     super.key,
   });
@@ -37,6 +39,7 @@ class DefaultLayout extends StatelessWidget {
       appBar: renderAppBar(context),
       body: SafeArea(child: child),
       bottomNavigationBar: bottomNavigationBar,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
     );
   }
 

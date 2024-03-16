@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/components/button/circle_button.dart';
+import 'package:modi/common/components/share/share.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:modi/view_models/schedule/model/schedule_detail.dart';
@@ -47,6 +50,28 @@ class StudyScheduleDetail extends StatelessWidget {
     return today == _startAt;
   }
 
+  Widget _makeShareButton(BuildContext context) {
+    return CircleButton(
+      onTap: () {
+        ModiModal.openBottomSheet(
+          context,
+          widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+            child: Share(
+              title: '초대가 왔어요!',
+              message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+          height: 221,
+        );
+      },
+      image: Image.asset('asset/share.png'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ScheduleDetail scheduleDetail =
@@ -69,6 +94,9 @@ class StudyScheduleDetail extends StatelessWidget {
 
     return DefaultLayout(
         title: '',
+        actions: [
+          _makeShareButton(context),
+        ],
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
