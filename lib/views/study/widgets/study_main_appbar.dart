@@ -38,18 +38,19 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return IconButton(
       onPressed: () {
         ModiModal.openBottomSheet(
-            context,
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-              child: Share(
-                title: '초대가 왔어요!',
-                message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+          context,
+          widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+            child: Share(
+              title: '초대가 왔어요!',
+              message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
-            221);
+          ),
+          height: 221,
+        );
       },
       icon: Image.asset('asset/share.png'),
     );

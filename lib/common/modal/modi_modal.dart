@@ -28,8 +28,8 @@ class ModiModal {
         });
   }
 
-  static void openBottomSheet(
-      BuildContext context, Widget widget, double height) {
+  static void openBottomSheet(BuildContext context,
+      {required Widget widget, required double height}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

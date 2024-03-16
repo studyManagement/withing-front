@@ -111,7 +111,7 @@ class StudyScheduleRegisterDateTime extends StatelessWidget {
                   onTap: () {
                     ModiModal.openBottomSheet(
                       context,
-                      Stack(
+                      widget: Stack(
                         alignment: AlignmentDirectional.center,
                         children: [
                           Positioned(
@@ -168,7 +168,7 @@ class StudyScheduleRegisterDateTime extends StatelessWidget {
                           ),
                         ],
                       ),
-                      554,
+                      height: 554,
                     );
                   },
                   child: const ValueButton('2023. 09. 02 (토) 오전 9:00'),
@@ -193,86 +193,85 @@ class StudyScheduleRegisterDateTime extends StatelessWidget {
                 child: InkWell(
                   onTap: () {
                     ModiModal.openBottomSheet(
-                        context,
-                        Column(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                  top: 40, left: 16, right: 16, bottom: 20),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '기간 선택',
-                                    style: TextStyle(
-                                      color: AppColors.gray800,
-                                      fontWeight: AppFonts.fontWeight600,
-                                      fontSize: 16,
-                                    ),
+                      context,
+                      widget: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(
+                                top: 40, left: 16, right: 16, bottom: 20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '기간 선택',
+                                  style: TextStyle(
+                                    color: AppColors.gray800,
+                                    fontWeight: AppFonts.fontWeight600,
+                                    fontSize: 16,
                                   ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    '일정으로 등록할 기간을 선택해주세요.',
-                                    style: TextStyle(
-                                      color: AppColors.gray400,
-                                      fontSize: 14,
-                                      fontWeight: AppFonts.fontWeight500,
-                                    ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  '일정으로 등록할 기간을 선택해주세요.',
+                                  style: TextStyle(
+                                    color: AppColors.gray400,
+                                    fontSize: 14,
+                                    fontWeight: AppFonts.fontWeight500,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              height: 70,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: const BoxDecoration(
-                                color: AppColors.gray50,
-                              ),
-                              child: const Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ValueButton('09. 02 (토) 오전 9:00'),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '-',
-                                    style: TextStyle(color: AppColors.gray200),
-                                  ),
-                                  SizedBox(width: 4),
-                                  ValueButton('09. 02 (토) 오전 9:00'),
-                                ],
-                              ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            height: 70,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              color: AppColors.gray50,
                             ),
-                            const SizedBox(height: 20),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: 250,
-                                    child: TimeSpinner(
-                                      DateTime.now(),
-                                      (DateTime) {
-                                        logger.info(DateTime);
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 40),
-                                  ConfirmButton(
-                                    onTap: () {},
-                                    text: '선택 완료',
-                                    backgroundColor: AppColors.blue600,
-                                    height: 50,
-                                    width: MediaQuery.of(context).size.width,
-                                  ),
-                                ],
-                              ),
+                            child: const Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ValueButton('09. 02 (토) 오전 9:00'),
+                                SizedBox(width: 4),
+                                Text(
+                                  '-',
+                                  style: TextStyle(color: AppColors.gray200),
+                                ),
+                                SizedBox(width: 4),
+                                ValueButton('09. 02 (토) 오전 9:00'),
+                              ],
                             ),
-                          ],
-                        ),
-                        496);
+                          ),
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: 250,
+                                  child: TimeSpinner(
+                                    DateTime.now(),
+                                    (DateTime) {
+                                      logger.info(DateTime);
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 40),
+                                ConfirmButton(
+                                  onTap: () {},
+                                  text: '선택 완료',
+                                  backgroundColor: AppColors.blue600,
+                                  height: 50,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      height: 496,
+                    );
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
