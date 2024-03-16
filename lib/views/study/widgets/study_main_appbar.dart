@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/common/components/button/label_circle_button.dart';
+import 'package:modi/common/components/share/share.dart';
 import 'package:modi/common/modal/modi_modal.dart';
-import 'package:modi/common/sns_content_share/sns_content_share_factory.dart';
 import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +12,7 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function()? action;
 
   const StudyMainAppBar(
-      {super.key,
-      required this.studyId,
-      required this.isLeader,
-      this.action});
+      {super.key, required this.studyId, required this.isLeader, this.action});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -39,83 +34,19 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget makeShareButton(context) {
+  Widget makeShareButton(BuildContext context) {
     return IconButton(
       onPressed: () {
         ModiModal.openBottomSheet(
             context,
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-              child: Column(
-                children: [
-                  const Text(
-                    '공유하기',
-                    style: TextStyle(
-                      color: AppColors.gray800,
-                      fontSize: 16,
-                      fontWeight: AppFonts.fontWeight600,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Expanded(
-                    child: GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                      ),
-                      children: [
-                        LabelCircleButton(
-                          '복사',
-                          Image.asset(
-                            'asset/share/clipboard.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          () => SNSContentShareFactory.getProvider(
-                                  SNSContentShareProviders.Clipboard)
-                              .send('모디에서 스터디를 시작해 보세요.',
-                                  '테스트 스터디\nhttps://modi.tips/s/DiLopA'),
-                        ),
-                        LabelCircleButton(
-                          '카카오톡',
-                          Image.asset(
-                            'asset/share/kakao.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          () => SNSContentShareFactory.getProvider(
-                                  SNSContentShareProviders.KAKAO)
-                              .send('모디에서 스터디를 시작해 보세요.',
-                                  '테스트 스터디\nhttps://modi.tips/s/DiLopA'),
-                        ),
-                        LabelCircleButton(
-                          '인스타그램',
-                          Image.asset(
-                            'asset/share/instagram.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          () => SNSContentShareFactory.getProvider(
-                                  SNSContentShareProviders.INSTAGRAM)
-                              .send('모디에서 스터디를 시작해 보세요.',
-                                  '테스트 스터디\nhttps://modi.tips/s/DiLopA'),
-                        ),
-                        LabelCircleButton(
-                          '더보기',
-                          Image.asset(
-                            'asset/share/more.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          () => SNSContentShareFactory.getProvider(
-                                  SNSContentShareProviders.OS)
-                              .send('모디에서 스터디를 시작해 보세요.',
-                                  '테스트 스터디\nhttps://modi.tips/s/DiLopA'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+              child: Share(
+                title: '초대가 왔어요!',
+                message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ),
             221);
@@ -150,9 +81,11 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
                     width: 32,
                     height: 32,
                   ),
-            onPressed: (){
-              (viewModel.hasLike) ? viewModel.cancelFavoriteStudy() : viewModel.pickFavoriteStudy();
-            }
+            onPressed: () {
+              (viewModel.hasLike)
+                  ? viewModel.cancelFavoriteStudy()
+                  : viewModel.pickFavoriteStudy();
+            },
           );
   }
 }

@@ -142,8 +142,11 @@ class RouterService {
                             int studyId =
                                 int.parse(state.pathParameters['studyId']!);
 
-                            return StudyScheduleAddScreen(
-                              studyId,
+                            return ChangeNotifierProvider(
+                              create: (_) => ScheduleViewModel(getIt<ScheduleService>()),
+                              child: StudyScheduleAddScreen(
+                                studyId,
+                              ),
                             );
                           },
                         ),

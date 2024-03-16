@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/model/schedule/schedule_detail_model.dart';
 import 'package:modi/model/schedule/schedule_model.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
@@ -29,5 +30,17 @@ class ScheduleViewModel extends ChangeNotifier {
     schedule = ScheduleDetail.from(scheduleModel);
 
     notifyListeners();
+  }
+
+  Future<void> postSchedule(BuildContext context, int studyId, String title,
+      String description, DateTime startAt, DateTime endAt) async {
+    ScheduleModel schedule = await _service.postStudySchedule(
+        studyId, title, description, startAt, endAt);
+
+    if (!context.mounted) {
+      return;
+    }
+
+    context.go('/studies/$studyId/schedules/${schedule.id}');
   }
 }

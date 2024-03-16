@@ -17,6 +17,15 @@ abstract class ScheduleApi {
   @GET('/studies/{id}/schedules/{studyScheduleId}')
   Future<ScheduleDetailModel> fetchStudySchedule(
       @Path('id') int id, @Path('studyScheduleId') int studyScheduleId);
+
+  @POST('/studies/{id}/schedules')
+  Future<ScheduleModel> postStudySchedule(
+    @Path('id') int id,
+    @Field('name') String title,
+    @Field('explain') String description,
+    @Field('startDate') DateTime startAt,
+    @Field('endDate') DateTime endAt,
+  );
 }
 
 class ScheduleService {
@@ -37,6 +46,16 @@ class ScheduleService {
     try {
       return await _scheduleApi.fetchStudySchedule(studyId, studyScheduleId);
     } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ScheduleModel> postStudySchedule(int studyId, String title,
+      String description, DateTime startAt, DateTime endAt) async {
+    try {
+      return await _scheduleApi.postStudySchedule(
+          studyId, title, description, startAt, endAt);
+    } on DioException catch (e) {
       rethrow;
     }
   }
