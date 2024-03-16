@@ -45,8 +45,8 @@ class StudyUpdateScreen extends StatelessWidget {
                 StudyBottomButton(
                     onTap: (viewModel.checkEverythingFilled())
                         ? () {
-                            viewModel.updateStudyInfo();
-                            context.go('/');
+                            viewModel.updateStudyInfo().then((_) => context.go(
+                                '/studies/$studyId'));
                           }
                         : null,
                     text: '수정하기',
