@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/button/circle_button.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -28,8 +29,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _showErrorMessage(context);
-    return const Scaffold(
-        body: SafeArea(
+    return const DefaultLayout(
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Center(
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
