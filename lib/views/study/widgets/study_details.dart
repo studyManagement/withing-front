@@ -13,39 +13,40 @@ class StudyDetails extends StatelessWidget {
     final StudyViewModel vm = context.read<StudyViewModel>();
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              '참여 인원',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.gray400,
-                    fontSize: 13.0,
-                  ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              '${vm.study!.headcount}/${vm.study!.max}',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.gray800,
-                    fontSize: 13.0,
-                  ),
-            ),
-            GestureDetector(
-              child: Image.asset(
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          child: Row(
+            children: [
+              Text(
+                '참여 인원',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.gray400,
+                      fontSize: 13.0,
+                    ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '${vm.study!.headcount}/${vm.study!.max}',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.gray800,
+                      fontSize: 13.0,
+                    ),
+              ),
+              Image.asset(
                 'asset/arrowright16.png',
                 width: 16,
                 height: 16,
               ),
-              onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StudyMemberScreen(users: vm.study!.users,leaderId: vm.study!.leaderId,),
-                  ),
-                )
-              },
-            ),
-          ],
+            ],
+          ),
+          onTap: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudyMemberScreen(users: vm.study!.users,leaderId: vm.study!.leaderId,),
+              ),
+            )
+          },
         ),
         const SizedBox(height: 8),
         Row(

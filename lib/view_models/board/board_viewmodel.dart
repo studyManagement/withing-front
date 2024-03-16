@@ -24,6 +24,7 @@ class BoardViewModel extends ChangeNotifier {
   bool hasNextNotices = true;
   bool hasNextPosts = true;
   bool hasPost = false;
+  bool? _isNotice;
 
   List<BoardModel> posts = [];
   List<BoardModel> notices = [];
@@ -102,6 +103,7 @@ class BoardViewModel extends ChangeNotifier {
       _post = await _service.fetchBoardInfo(_studyId!, boardId);
       boardTitle = _post!.title;
       boardContents = post!.content;
+      _isNotice = post!.notice;
       notifyListeners();
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
@@ -194,8 +196,10 @@ class BoardViewModel extends ChangeNotifier {
   void setOrUnsetNotice() {
     if (post?.notice == true) {
       unsetNotice(post!.id);
+      _isNotice = false;
     } else {
       setNotice(post!.id);
+      _isNotice = true;
     }
   }
 
@@ -258,7 +262,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   String getToSetNoticeText() {
-    if (post?.notice == true) {
+    if (post?.notice == true || _isNotice!) {
       return '공지 등록 취소하기';
     } else {
       return '공지로 등록하기';
@@ -266,7 +270,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   String toastText() {
-    if (post?.notice == true) {
+    if (post?.notice == true || !_isNotice!) {
       return '공지 등록이 취소되었어요.';
     } else {
       return '공지로 등록되었어요.';

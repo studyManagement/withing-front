@@ -88,6 +88,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   return GestureDetector(
+                    behavior: HitTestBehavior.translucent,
                     onTap: () {
                       final selectedId = widget.users[index].id;
                       setState(() {
