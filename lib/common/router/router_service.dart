@@ -125,46 +125,53 @@ class RouterService {
                   },
                   routes: [
                     GoRoute(
-                        path: 'schedules',
-                        builder: (context, state) {
-                          return ChangeNotifierProvider(
-                            create: (_) =>
-                                ScheduleViewModel(getIt<ScheduleService>()),
-                            child: StudyScheduleScreen(
-                              int.parse(state.pathParameters['studyId']!),
-                            ),
-                          );
-                        },
-                        routes: [
-                          GoRoute(
-                            path: ':scheduleId',
-                            builder: (context, state) {
-                              int studyId =
-                                  int.parse(state.pathParameters['studyId']!);
-                              int studyScheduleId = int.parse(
-                                  state.pathParameters['scheduleId']!);
+                      path: 'schedules',
+                      builder: (context, state) {
+                        return ChangeNotifierProvider(
+                          create: (_) =>
+                              ScheduleViewModel(getIt<ScheduleService>()),
+                          child: StudyScheduleScreen(
+                            int.parse(state.pathParameters['studyId']!),
+                          ),
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          path: 'register',
+                          builder: (context, state) {
+                            int studyId =
+                                int.parse(state.pathParameters['studyId']!);
 
-                              return ChangeNotifierProvider(
-                                create: (_) =>
-                                    ScheduleViewModel(getIt<ScheduleService>()),
-                                child: StudyScheduleDetail(
-                                    studyId: studyId,
-                                    studyScheduleId: studyScheduleId),
-                              );
-                            },
-                          ),
-                          GoRoute(
-                            path: 'register',
-                            builder: (context, state) => StudyScheduleAddScreen(
-                                int.parse(state.pathParameters['studyId']!)),
-                          ),
-                          GoRoute(
-                            path: 'vote',
-                            builder: (context, state) =>
-                                StudyScheduleVoteAddScreen(int.parse(
-                                    state.pathParameters['studyId']!)),
-                          ),
-                        ]),
+                            return StudyScheduleAddScreen(
+                              studyId,
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: 'vote',
+                          builder: (context, state) =>
+                              StudyScheduleVoteAddScreen(
+                                  int.parse(state.pathParameters['studyId']!)),
+                        ),
+                        GoRoute(
+                          path: ':scheduleId',
+                          builder: (context, state) {
+                            int studyId =
+                                int.parse(state.pathParameters['studyId']!);
+                            int studyScheduleId =
+                                int.parse(state.pathParameters['scheduleId']!);
+
+                            return ChangeNotifierProvider(
+                              create: (_) =>
+                                  ScheduleViewModel(getIt<ScheduleService>()),
+                              child: StudyScheduleDetail(
+                                  studyId: studyId,
+                                  studyScheduleId: studyScheduleId),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                     GoRoute(
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
