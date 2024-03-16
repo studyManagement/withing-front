@@ -32,19 +32,26 @@ class StudyScheduleScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconTextButton(
-                      140,
-                      Image.asset('asset/add_schedule.png',
-                          width: 90, height: 90),
-                      '일정 등록',
-                      () => context
-                          .push('/studies/$_studyId/schedules/register')),
+                    140,
+                    Image.asset('asset/add_schedule.png',
+                        width: 90, height: 90),
+                    '일정 등록',
+                    () {
+                      context.pop();
+                      context.push('/studies/$_studyId/schedules/register');
+                    },
+                  ),
                   const SizedBox(width: 11),
                   IconTextButton(
-                      140,
-                      Image.asset('asset/vote_schedule.png',
-                          width: 90, height: 90),
-                      '일정 투표',
-                      () => context.push('/studies/$_studyId/schedules/vote')),
+                    140,
+                    Image.asset('asset/vote_schedule.png',
+                        width: 90, height: 90),
+                    '일정 투표',
+                    () {
+                      context.pop();
+                      context.push('/studies/$_studyId/schedules/vote');
+                    },
+                  ),
                 ],
               ),
               height: 200,

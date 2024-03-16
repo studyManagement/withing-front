@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/button/value_button.dart';
 import 'package:modi/common/components/calendar/calendar.dart';
 import 'package:modi/common/components/input/text_input.dart';
 import 'package:modi/common/components/spinner/datetime/time_spinner.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -21,26 +23,13 @@ class StudyScheduleVoteAddScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultLayout(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          "일정 투표 생성",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        foregroundColor: Colors.black,
+      leader: CircleButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+        onTap: () => context.pop(),
       ),
+      title: '일정 투표 생성',
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -51,19 +40,17 @@ class StudyScheduleVoteAddScreen extends StatelessWidget {
           backgroundColor: AppColors.blue600,
         ),
       ),
-      body: const SafeArea(
-        child: Column(
-          children: [
-            StudyScheduleRegisterInformation(),
-            SizedBox(height: 24),
-            Divider(
-              thickness: 6,
-              color: AppColors.gray50,
-            ),
-            SizedBox(height: 24),
-            StudyScheduleRegisterDateTime(),
-          ],
-        ),
+      child: const Column(
+        children: [
+          StudyScheduleRegisterInformation(),
+          SizedBox(height: 24),
+          Divider(
+            thickness: 6,
+            color: AppColors.gray50,
+          ),
+          SizedBox(height: 24),
+          StudyScheduleRegisterDateTime(),
+        ],
       ),
     );
   }
