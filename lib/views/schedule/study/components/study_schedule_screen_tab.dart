@@ -71,9 +71,9 @@ class _StudyScheduleScreenTabState extends State<StudyScheduleScreenTab>
         Expanded(
           child: TabBarView(
             controller: tabController,
-            children: const [
-              StudyScheduleList(),
-              StudyScheduleVoteList(),
+            children: [
+              StudyScheduleList(studyId: widget.studyId),
+              const StudyScheduleVoteList(),
             ],
           ),
         ),

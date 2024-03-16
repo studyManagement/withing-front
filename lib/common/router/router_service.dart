@@ -23,6 +23,7 @@ import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/my/my_study_screen.dart';
 import 'package:modi/views/notification/notification_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
+import 'package:modi/views/schedule/study/study_schedule_detail.dart';
 import 'package:modi/views/schedule/study/study_schedule_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_vote_add_screen.dart';
 import 'package:modi/views/search/screen/keyword_search_screen.dart';
@@ -135,6 +136,23 @@ class RouterService {
                           );
                         },
                         routes: [
+                          GoRoute(
+                            path: ':scheduleId',
+                            builder: (context, state) {
+                              int studyId =
+                                  int.parse(state.pathParameters['studyId']!);
+                              int studyScheduleId = int.parse(
+                                  state.pathParameters['scheduleId']!);
+
+                              return ChangeNotifierProvider(
+                                create: (_) =>
+                                    ScheduleViewModel(getIt<ScheduleService>()),
+                                child: StudyScheduleDetail(
+                                    studyId: studyId,
+                                    studyScheduleId: studyScheduleId),
+                              );
+                            },
+                          ),
                           GoRoute(
                             path: 'register',
                             builder: (context, state) => StudyScheduleAddScreen(

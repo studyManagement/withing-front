@@ -16,6 +16,6 @@ class Schedule {
 
   @override
   String toString() {
-    return "ScheduleModel(id=$id,title=$title,description=$description,startAt=$startAt,endAt=$endAt)";
+    return "Schedule(id=$id,title=$title,description=$description,startAt=$startAt,endAt=$endAt)";
   }
 }

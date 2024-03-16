@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/schedule/model/schedule.dart';
@@ -8,8 +9,11 @@ import 'package:provider/provider.dart';
 
 class StudyScheduleList extends StatelessWidget {
   const StudyScheduleList({
+    required this.studyId,
     super.key,
   });
+
+  final int studyId;
 
   bool _isToday(DateTime startAt) {
     DateTime now = DateTime.now();
@@ -65,9 +69,15 @@ class StudyScheduleList extends StatelessWidget {
             itemBuilder: (context, index) {
               Schedule schedule = schedules[index];
 
-              return _StudyScheduleItem(schedule.title,
-                  _makeScheduleDescription(schedule.startAt, schedule.endAt),
-                  tag: _isToday(schedule.startAt) ? '오늘' : null);
+              return GestureDetector(
+                onTap: () {
+                  context.push('/studies/$studyId/schedules/${schedule.id}');
+                },
+                behavior: HitTestBehavior.translucent,
+                child: _StudyScheduleItem(schedule.title,
+                    _makeScheduleDescription(schedule.startAt, schedule.endAt),
+                    tag: _isToday(schedule.startAt) ? '오늘' : null),
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return const Padding(
