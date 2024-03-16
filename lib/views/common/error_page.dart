@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
+import 'package:modi/common/layout/default_layout.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({
@@ -8,17 +11,15 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-      //     onPressed: () {
-      //       context.pop(context);
-      //     },
-      //   ),
-      //   backgroundColor: Colors.transparent,
-      // ),
-      body: Column(
+    return DefaultLayout(
+      leader: CircleButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+        onTap: () {
+          context.pop(context);
+        },
+      ),
+      title: '',
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

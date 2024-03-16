@@ -14,6 +14,8 @@ class DefaultLayout extends StatelessWidget {
   final Widget? leader;
   final bool? resizeToAvoidBottomInset;
   final bool? centerTitle;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+  final Widget? floatingActionButton;
   final List<Widget>? actions;
 
   const DefaultLayout({
@@ -28,6 +30,8 @@ class DefaultLayout extends StatelessWidget {
     this.leader,
     this.actions,
     this.resizeToAvoidBottomInset,
+    this.floatingActionButtonLocation,
+    this.floatingActionButton,
     this.centerTitle,
     super.key,
   });
@@ -40,6 +44,8 @@ class DefaultLayout extends StatelessWidget {
       body: SafeArea(child: child),
       bottomNavigationBar: bottomNavigationBar,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButton: floatingActionButton,
     );
   }
 

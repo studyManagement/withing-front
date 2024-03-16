@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/study/study_list.dart';
-import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
@@ -18,31 +19,17 @@ class MyStudyScreen extends StatelessWidget {
     StudyListViewModel vm = context.read<StudyListViewModel>();
     vm.fetchStudies(StudyType.from(studyType));
 
-    return Scaffold(
+    return DefaultLayout(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          (StudyType.from(studyType) == StudyType.LIKE) ? '찜한 스터디' : '종료된 스터디',
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        foregroundColor: Colors.black,
+      leader: CircleButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+        onTap: () => Navigator.of(context).pop(),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: MyStudyListView(StudyType.from(studyType)),
-        ),
+      title:
+          (StudyType.from(studyType) == StudyType.LIKE) ? '찜한 스터디' : '종료된 스터디',
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: MyStudyListView(StudyType.from(studyType)),
       ),
     );
   }
