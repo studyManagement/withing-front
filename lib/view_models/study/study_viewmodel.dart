@@ -36,6 +36,7 @@ class StudyViewModel extends ChangeNotifier {
   bool _isValidPwd = true;
   bool _isChecked = false;
   bool _successToJoin = false;
+  bool _isFull = false;
   bool _isErrorText = false;
 
   bool _hasLike = false;
@@ -62,6 +63,8 @@ class StudyViewModel extends ChangeNotifier {
   bool get isChecked => _isChecked;
 
   bool get successToJoin => _successToJoin;
+
+  bool get isFull => _isFull;
 
   bool get isErrorText => _isErrorText;
 
@@ -137,8 +140,15 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   Future<void> joinStudy(String? password) async {
-    var response = await _service.joinStudy(study!.id, password);
-    if (response != null) _successToJoin = true;
+    try {
+      var response = await _service.joinStudy(study!.id, password);
+      if (response != null) _successToJoin = true;
+    } on StudyException catch(e){
+      if(e.code == 400){
+        _successToJoin = false;
+        _isFull = true;
+      }
+    }
     _isChecked = true;
     notifyListeners();
   }

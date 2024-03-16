@@ -130,17 +130,23 @@ class StudyInfoScreen extends StatelessWidget {
                     Center(
                         child: StudyBottomButton(
                             onTap: () {
-                              (vm.study!.private)
-                                  ? showDialog(
-                                      context: context,
-                                      builder: (_) {
-                                        vm.initPasswordProperties();
-                                        return ChangeNotifierProvider.value(
-                                            value: vm,
-                                            child: InputPasswordModal(
-                                                studyId: studyId));
-                                      })
-                                  : joinToPublicStudy(vm, context);
+                              if (vm.study!.headcount >= vm.study!.max){
+                                ModiModal.openDialog(
+                                    context, '스터디 정원이 초과되었어요.', '', false,()=> context.pop(), () => null);
+                              }
+                              else {
+                                (vm.study!.private)
+                                    ? showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      vm.initPasswordProperties();
+                                      return ChangeNotifierProvider.value(
+                                          value: vm,
+                                          child: InputPasswordModal(
+                                              studyId: studyId));
+                                    })
+                                    : joinToPublicStudy(vm, context);
+                              }
                             },
                             text: '가입하기')),
                 ],
@@ -153,6 +159,10 @@ class StudyInfoScreen extends StatelessWidget {
     vm.joinStudy(null).then((_) => {
           if (vm.successToJoin)
             {context.go('/studies/$studyId')}
+          else if (vm.isFull){
+            ModiModal.openDialog(
+                context, '스터디 정원이 초과되었어요.', '', false,()=> context.pop(), () => null)
+          }
           else
             {
               ModiModal.openDialog(
