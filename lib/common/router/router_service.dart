@@ -48,6 +48,7 @@ class RouterService {
 
       if (uri != null && kIsWeb) {
         _goRouter.push(uri.path);
+        return;
       }
 
       if (uri != null && Platform.isIOS) {
