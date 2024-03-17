@@ -1,0 +1,11 @@
+{
+  "applinks": {
+      "apps": [],
+      "details": [
+      {
+        "appID": "MD6S7JKZA5.io.moditeam.modi",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
