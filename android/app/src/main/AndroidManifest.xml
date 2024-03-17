@@ -42,7 +42,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" android:host="modi.tips" />
-                <data android:scheme="https" />
+                <data android:scheme="http" android:host="app.moditeam.io" />
+                <data android:scheme="https" android:host="modi.tips" />
+                <data android:scheme="https" android:host="app.moditeam.io" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
