@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,6 +43,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyC8MaNy_ShEAK-6q4Rs6tr5G5v-uHPyWpQ',
+    appId: '1:941895894851:web:dfca59ffee6a06ddb311f6',
+    messagingSenderId: '941895894851',
+    projectId: 'modi-31349',
+    authDomain: 'modi-31349.firebaseapp.com',
+    storageBucket: 'modi-31349.appspot.com',
+    measurementId: 'G-D9FEK0Q63Z',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCrqbKr2dXJp75buRZdVLR6cJTNIiB3AKY',
     appId: '1:941895894851:android:99d994da51ccffd4b311f6',
@@ -64,5 +68,14 @@ class DefaultFirebaseOptions {
     projectId: 'modi-31349',
     storageBucket: 'modi-31349.appspot.com',
     iosBundleId: 'io.moditeam.modi',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDQ2t2u1bNVqhgtg_x4Pj-WEyn-XRKSBFc',
+    appId: '1:941895894851:ios:90f76fa945a23185b311f6',
+    messagingSenderId: '941895894851',
+    projectId: 'modi-31349',
+    storageBucket: 'modi-31349.appspot.com',
+    iosBundleId: 'com.example.withing.RunnerTests',
   );
 }
