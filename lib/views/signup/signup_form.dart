@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
 import 'package:modi/views/signup/signup_profile.dart';
@@ -49,7 +50,7 @@ class SignupForm extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: Platform.isAndroid
+            padding: kIsWeb || Platform.isAndroid
                 ? const EdgeInsets.symmetric(vertical: 16)
                 : const EdgeInsets.symmetric(vertical: 32),
             child: Column(
