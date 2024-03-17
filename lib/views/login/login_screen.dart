@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/button/circle_button.dart';
@@ -104,7 +105,7 @@ class _Bottom extends StatelessWidget {
           }),
     ];
 
-    if (Platform.isIOS) {
+    if (!kIsWeb && Platform.isIOS) {
       loginComponents.addAll([
         const SizedBox(width: 16),
         CircleButton(

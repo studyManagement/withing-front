@@ -50,7 +50,7 @@ class StudyScheduleDetail extends StatelessWidget {
     return today == _startAt;
   }
 
-  Widget _makeShareButton(BuildContext context) {
+  Widget _makeShareButton(BuildContext context, String title, String message) {
     return CircleButton(
       onTap: () {
         ModiModal.openBottomSheet(
@@ -58,8 +58,8 @@ class StudyScheduleDetail extends StatelessWidget {
           widget: Padding(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
             child: Share(
-              title: '초대가 왔어요!',
-              message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+              title: title,
+              message: message,
               onTap: () {
                 Navigator.of(context).pop();
               },
@@ -95,7 +95,8 @@ class StudyScheduleDetail extends StatelessWidget {
     return DefaultLayout(
         title: '',
         actions: [
-          _makeShareButton(context),
+          _makeShareButton(context, '[] ${scheduleDetail.title}',
+              '스터디 일정을 확인해 주세요\n\nhttps://modi.tips/_s/DkwQos'),
         ],
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
