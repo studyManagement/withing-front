@@ -43,12 +43,12 @@ class RouterService {
   GoRouter get router => _goRouter;
 
   initializeRoute() async {
-    if (kIsWeb) {
-      return;
-    }
-
     try {
       Uri? uri = await getInitialUri();
+
+      if (uri != null && kIsWeb) {
+        _goRouter.push(uri.path);
+      }
 
       if (uri != null && Platform.isIOS) {
         _goRouter.push(uri.path);
