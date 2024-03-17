@@ -61,54 +61,10 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: () => tabController.animateTo(0),
-              child: SizedBox(
-                height: 60,
-                child: Image.asset(
-                  'asset/home.png',
-                  width: 32,
-                  height: 32,
-                  color: index == 0 ? Colors.black : Colors.grey,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => tabController.animateTo(1),
-              child: SizedBox(
-                height: 60,
-                child: Image.asset(
-                  'asset/search.png',
-                  width: 32,
-                  height: 32,
-                  color: index == 1 ? Colors.black : Colors.grey,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => tabController.animateTo(2),
-              child: SizedBox(
-                height: 60,
-                child: Image.asset(
-                  'asset/calendar.png',
-                  width: 32,
-                  height: 32,
-                  color: index == 2 ? Colors.black : Colors.grey,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () => tabController.animateTo(3),
-              child: SizedBox(
-                height: 60,
-                child: Image.asset(
-                  'asset/user.png',
-                  width: 32,
-                  height: 32,
-                  color: index == 3 ? Colors.black : Colors.grey,
-                ),
-              ),
-            ),
+            _makeNavigatorButton(0, 'asset/home.png'),
+            _makeNavigatorButton(1, 'asset/search.png'),
+            _makeNavigatorButton(2, 'asset/calendar.png'),
+            _makeNavigatorButton(3, 'asset/user.png'),
           ],
         ),
       ),
@@ -127,6 +83,25 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           const ScheduleScreen(),
           const MyScreen(),
         ],
+      ),
+    );
+  }
+
+  Expanded _makeNavigatorButton(int tabIndex, String asset) {
+    return Expanded(
+      flex: 1,
+      child: GestureDetector(
+        onTap: () => tabController.animateTo(tabIndex),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          height: 60,
+          child: Image.asset(
+            asset,
+            width: 32,
+            height: 32,
+            color: index == tabIndex ? Colors.black : Colors.grey,
+          ),
+        ),
       ),
     );
   }
