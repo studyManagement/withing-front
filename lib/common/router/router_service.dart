@@ -43,17 +43,25 @@ class RouterService {
   GoRouter get router => _goRouter;
 
   initializeRoute() async {
-    Uri? uri = await getInitialUri();
-
-    if (uri != null && Platform.isIOS) {
-      _goRouter.push(uri.path);
+    if (kIsWeb) {
+      return;
     }
 
-    uriLinkStream.listen((uri) async {
+    try {
+      Uri? uri = await getInitialUri();
+
       if (uri != null && Platform.isIOS) {
         _goRouter.push(uri.path);
       }
-    });
+
+      uriLinkStream.listen((uri) async {
+        if (uri != null && Platform.isIOS) {
+          _goRouter.push(uri.path);
+        }
+      });
+    } catch (e) {
+      _logger.error(e);
+    }
   }
 
   RouterService._privateConstructor() {
@@ -143,7 +151,8 @@ class RouterService {
                                 int.parse(state.pathParameters['studyId']!);
 
                             return ChangeNotifierProvider(
-                              create: (_) => ScheduleViewModel(getIt<ScheduleService>()),
+                              create: (_) =>
+                                  ScheduleViewModel(getIt<ScheduleService>()),
                               child: StudyScheduleAddScreen(
                                 studyId,
                               ),

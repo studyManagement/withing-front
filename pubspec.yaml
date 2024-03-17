@@ -13,6 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.9 # 캘린더
   intl: ^0.18.1 # 다국어 처리
+  firebase_core_web: ^2.11.4
   firebase_core: ^2.15.0
   firebase_messaging: ^14.6.5
   firebase_analytics: ^10.8.5
