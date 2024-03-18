@@ -5,7 +5,7 @@ import '../../../common/components/gray100_divider.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../model/search/searched_study_info_model.dart';
 import '../../view_models/search/searched_studies_viewmodel.dart';
-import 'exception/modi_exception.dart';
+
 
 class AutomatedStudyListView extends StatelessWidget {
   final SearchedStudiesViewModel viewModel;
@@ -14,37 +14,24 @@ class AutomatedStudyListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController scrollController = ScrollController();
     int searchesCount = viewModel.studyList?.length ?? 0;
     List<SearchedStudyInfo> studyList = viewModel.studyList ?? [];
 
     return Expanded(
-      child: (studyList.isEmpty)
-          ? Center(child: ModiException(['등록된 스터디가 없어요.']))
-          : NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent) {
-                  viewModel.scrollListener();
-                }
-                return true;
-              },
-              child: ListView.separated(
-                controller: scrollController,
+      child: ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: searchesCount,
                 itemBuilder: (context, index) => (index < searchesCount)
                     ? _StudyCard(studyList[index])
                     : null,
                 separatorBuilder: (context, index) => const Gray100Divider(),
               ),
-            ),
-    );
+            );
   }
 }
 
 class _StudyCard extends StatelessWidget {
   final SearchedStudyInfo info;
-
   const _StudyCard(this.info);
 
   @override
@@ -74,6 +61,7 @@ class _StudyCard extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class _StudyHeader extends StatelessWidget {

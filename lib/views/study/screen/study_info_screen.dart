@@ -32,126 +32,117 @@ class StudyInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyViewModel vm = context.watch<StudyViewModel>();
+    bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
     vm.fetchStudyInfo(context, studyId).then((_) {
       vm.getRegularMeetingString();
       vm.checkRegistered();
     });
-
-    bool offstage = vm.isMember;
-
     return DefaultLayout(
       leader: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () => {
-            if (studyId == -1) {context.go('/')} else {context.pop()}
-          },),
-      actions: [
-        makeShareButton(context), makeLikeButton(context)
-      ],
+        icon: const Icon(Icons.arrow_back_ios),
+        onPressed: () => {
+          if (studyId == -1) {context.go('/')} else {context.pop()}
+        },
+      ),
+      actions: [makeShareButton(context), makeLikeButton(context)],
       centerTitle: true,
       title: '',
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Offstage(
+        offstage: offstage,
+            child: StudyBottomButton(
+                onTap: () {
+                  if (vm.study!.headcount >= vm.study!.max) {
+                    ModiModal.openDialog(context, '스터디 정원이 초과되었어요.', '', false,
+                        () => context.pop(), () => null);
+                  } else {
+                    (vm.study!.private)
+                        ? showDialog(
+                            context: context,
+                            builder: (_) {
+                              vm.initPasswordProperties();
+                              return ChangeNotifierProvider.value(
+                                  value: vm,
+                                  child: InputPasswordModal(studyId: studyId));
+                            })
+                        : joinToPublicStudy(vm, context);
+                  }
+                },
+                text: '가입하기'),
+          ),
       child: (vm.study == null)
           ? Container()
-          : SafeArea(
-              child: Column(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Header(),
-                        const SizedBox(height: 16),
-                        Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              vm.study!.explanation,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            )),
-                        const SizedBox(height: 20),
-                        const Divider(
-                          thickness: 1,
-                          indent: 16,
-                          endIndent: 16,
-                          color: AppColors.gray100,
-                        ),
-                        const SizedBox(height: 20),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: StudyDetails(),
-                        ),
-                        if (offstage) const SizedBox(height: 20),
-                        if (offstage)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const SizedBox(width: 16),
-                              StudyMainButtons(
-                                onTap: () {
-                                  context.push('/studies/$studyId/schedules');
-                                },
-                                title: "Schedule",
-                                subtitle: "일정",
-                                image: Image.asset('asset/schedule.png'),
-                              ),
-                              const SizedBox(width: 9),
-                              StudyMainButtons(
-                                  onTap: () {
-                                    context.push('/studies/$studyId/boards');
-                                  },
-                                  title: "Community",
-                                  subtitle: "게시판",
-                                  image: Image.asset('asset/community.png')),
-                              const SizedBox(width: 16),
-                            ],
-                          ),
-                        const SizedBox(height: 20),
-                        const Divider(
-                          thickness: 6,
-                          color: AppColors.gray100,
-                        ),
-                        const SizedBox(height: 10),
-                        ChangeNotifierProvider(
-                            create: (_) =>
-                                BoardViewModel(getIt<BoardService>()),
-                            child: Notice(
-                                studyId: studyId,
-                                isMember: vm.isMember,
-                                isPrivate: vm.study!.private)),
-                      ],
+          : SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Header(),
+                    const SizedBox(height: 16),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          vm.study!.explanation,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        )),
+                    const SizedBox(height: 20),
+                    const Divider(
+                      thickness: 1,
+                      indent: 16,
+                      endIndent: 16,
+                      color: AppColors.gray100,
                     ),
-                  ),
-                  const Spacer(),
-                  if (!offstage)
-                    Center(
-                        child: StudyBottomButton(
+                    const SizedBox(height: 20),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: StudyDetails(),
+                    ),
+                    if (offstage) const SizedBox(height: 20),
+                    if (offstage)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 16),
+                          StudyMainButtons(
                             onTap: () {
-                              if (vm.study!.headcount >= vm.study!.max){
-                                ModiModal.openDialog(
-                                    context, '스터디 정원이 초과되었어요.', '', false,()=> context.pop(), () => null);
-                              }
-                              else {
-                                (vm.study!.private)
-                                    ? showDialog(
-                                    context: context,
-                                    builder: (_) {
-                                      vm.initPasswordProperties();
-                                      return ChangeNotifierProvider.value(
-                                          value: vm,
-                                          child: InputPasswordModal(
-                                              studyId: studyId));
-                                    })
-                                    : joinToPublicStudy(vm, context);
-                              }
+                              context.push('/studies/$studyId/schedules');
                             },
-                            text: '가입하기')),
-                ],
+                            title: "Schedule",
+                            subtitle: "일정",
+                            image: Image.asset('asset/schedule.png'),
+                          ),
+                          const SizedBox(width: 9),
+                          StudyMainButtons(
+                              onTap: () {
+                                context.push('/studies/$studyId/boards');
+                              },
+                              title: "Community",
+                              subtitle: "게시판",
+                              image: Image.asset('asset/community.png')),
+                          const SizedBox(width: 16),
+                        ],
+                      ),
+                    const SizedBox(height: 20),
+                    const Divider(
+                      thickness: 6,
+                      color: AppColors.gray100,
+                    ),
+                    const SizedBox(height: 10),
+                    ChangeNotifierProvider(
+                        create: (_) => BoardViewModel(getIt<BoardService>()),
+                        child: Notice(
+                            studyId: studyId,
+                            isMember: vm.isMember,
+                            isPrivate: vm.study!.private)),
+                  ],
+                ),
               ),
             ),
     );
-
-
   }
+
   Widget makeShareButton(BuildContext context) {
     return IconButton(
       onPressed: () {
@@ -175,57 +166,58 @@ class StudyInfoScreen extends StatelessWidget {
   }
 
   Widget makeLikeButton(BuildContext context) {
-
     final viewModel = context.watch<StudyViewModel>();
-    bool isLeader = (viewModel.study?.leaderId == Authentication.instance.userId);
+    bool isLeader =
+        (viewModel.study?.leaderId == Authentication.instance.userId);
     return (viewModel.isMember)
         ? Offstage(
-      offstage: (isLeader) ? false : true,
-      child: IconButton(
-        icon: Image.asset(
-          'asset/setting.png',
-          width: 32,
-          height: 32,
-        ),
-        onPressed: (isLeader)
-                      ? () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      StudyManageScreen(viewModel: viewModel)));
-                        }
-                      : null,
-      ),
-    )
+            offstage: (isLeader) ? false : true,
+            child: IconButton(
+              icon: Image.asset(
+                'asset/setting.png',
+                width: 32,
+                height: 32,
+              ),
+              onPressed: (isLeader)
+                  ? () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  StudyManageScreen(viewModel: viewModel)));
+                    }
+                  : null,
+            ),
+          )
         : IconButton(
-      icon: (viewModel.hasLike)
-          ? Image.asset(
-        'asset/heart_filled_32.png',
-        width: 32,
-        height: 32,
-      )
-          : Image.asset(
-        'asset/heart_lined_32.png',
-        width: 32,
-        height: 32,
-      ),
-      onPressed: () {
-        (viewModel.hasLike)
-            ? viewModel.cancelFavoriteStudy()
-            : viewModel.pickFavoriteStudy();
-      },
-    );
+            icon: (viewModel.hasLike)
+                ? Image.asset(
+                    'asset/heart_filled_32.png',
+                    width: 32,
+                    height: 32,
+                  )
+                : Image.asset(
+                    'asset/heart_lined_32.png',
+                    width: 32,
+                    height: 32,
+                  ),
+            onPressed: () {
+              (viewModel.hasLike)
+                  ? viewModel.cancelFavoriteStudy()
+                  : viewModel.pickFavoriteStudy();
+            },
+          );
   }
 
   void joinToPublicStudy(StudyViewModel vm, BuildContext context) {
     vm.joinStudy(null).then((_) => {
           if (vm.successToJoin)
             {context.go('/studies/$studyId')}
-          else if (vm.isFull){
-            ModiModal.openDialog(
-                context, '스터디 정원이 초과되었어요.', '', false,()=> context.pop(), () => null)
-          }
+          else if (vm.isFull)
+            {
+              ModiModal.openDialog(context, '스터디 정원이 초과되었어요.', '', false,
+                  () => context.pop(), () => null)
+            }
           else
             {
               ModiModal.openDialog(

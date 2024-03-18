@@ -125,6 +125,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
 
 Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
   return ListView.separated(
+    physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (context, index) {
       return BoardItem(
         studyId: studyId,
