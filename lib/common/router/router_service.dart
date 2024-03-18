@@ -36,6 +36,8 @@ import 'package:uni_links/uni_links.dart';
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
   static final RouterService _instance = RouterService._privateConstructor();
+  static bool _isInitialize = false;
+  static bool get isInitialize => _isInitialize;
 
   static RouterService get instance => _instance;
   late final GoRouter _goRouter;
@@ -62,6 +64,8 @@ class RouterService {
       });
     } catch (e) {
       _logger.error(e);
+    } finally {
+      RouterService._isInitialize = true;
     }
   }
 

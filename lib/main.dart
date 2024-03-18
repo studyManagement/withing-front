@@ -10,6 +10,7 @@ import 'package:modi/common/environment/environment.dart';
 import 'package:modi/common/logger/app_event.dart';
 import 'package:modi/common/logger/logger_service.dart';
 import 'package:modi/common/notification/notification_service.dart';
+import 'package:modi/common/router/router_service.dart';
 import 'package:modi/constants/auth.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/firebase_options.dart';
@@ -22,6 +23,13 @@ void main() async {
   );
 
   LoggerService.instance.appEvent(AppEvent.APP_OPEN, method: "main.main()");
+
+  setupDependencyInjection();
+
+  await Environment.initialize(BuildType.LOCAL);
+  await Authentication.initialize();
+
+  await RouterService.instance.initializeRoute();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(
@@ -48,11 +56,6 @@ void main() async {
     nativeAppKey: KAKAO_NATIVE_KEY,
     javaScriptAppKey: KAKAO_JAVSCRIPT_KEY,
   );
-
-  await Environment.initialize(BuildType.LOCAL);
-  await Authentication.initialize();
-
-  setupDependencyInjection();
 
   if (!kIsWeb) {
     await NotificationService.instance.initialize();
