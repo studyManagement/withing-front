@@ -21,7 +21,7 @@ class CategorySearchScreen extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(
-              height: (isTabletPrt) ? MediaQuery.of(context).size.width * 0.75 : MediaQuery.of(context).size.height,
+              height: (isTabletPrt) ? MediaQuery.of(context).size.width * 0.75 : MediaQuery.of(context).size.height * 0.85,
               child: Column(
                 children: [
                   const SearchBox(),

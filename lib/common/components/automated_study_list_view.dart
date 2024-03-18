@@ -5,6 +5,7 @@ import '../../../common/components/gray100_divider.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../model/search/searched_study_info_model.dart';
 import '../../view_models/search/searched_studies_viewmodel.dart';
+import 'exception/modi_exception.dart';
 
 class AutomatedStudyListView extends StatelessWidget {
   final SearchedStudiesViewModel viewModel;
@@ -18,21 +19,25 @@ class AutomatedStudyListView extends StatelessWidget {
     List<SearchedStudyInfo> studyList = viewModel.studyList ?? [];
 
     return Expanded(
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-            viewModel.scrollListener();
-          }
-          return true;
-        },
-        child: ListView.separated(
-          controller: scrollController,
-          itemCount: searchesCount,
-          itemBuilder: (context, index) =>
-              (index < searchesCount) ? _StudyCard(studyList[index]) : null,
-          separatorBuilder: (context, index) => const Gray100Divider(),
-        ),
-      ),
+      child: (studyList.isEmpty)
+          ? Center(child: ModiException(['등록된 스터디가 없어요.']))
+          : NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent) {
+                  viewModel.scrollListener();
+                }
+                return true;
+              },
+              child: ListView.separated(
+                controller: scrollController,
+                itemCount: searchesCount,
+                itemBuilder: (context, index) => (index < searchesCount)
+                    ? _StudyCard(studyList[index])
+                    : null,
+                separatorBuilder: (context, index) => const Gray100Divider(),
+              ),
+            ),
     );
   }
 }
@@ -60,10 +65,7 @@ class _StudyCard extends StatelessWidget {
             _StudyDetails(
               [
                 ('참여 인원', '${info.headcount}/${info.max}'),
-                (
-                  '정기 모임',
-                  getRegularMeetingString(info.meetingSchedules)
-                ),
+                ('정기 모임', getRegularMeetingString(info.meetingSchedules)),
               ],
             ),
             StudyCategoriesWidget(categories: info.categories),
@@ -112,8 +114,13 @@ class _StudyHeader extends StatelessWidget {
             const SizedBox(width: 8),
             Row(
               children: [
-                if(isPrivate)Image.asset('asset/lock_20.png', width: 20, height: 20,),
-                if(isPrivate)const SizedBox(width: 6),
+                if (isPrivate)
+                  Image.asset(
+                    'asset/lock_20.png',
+                    width: 20,
+                    height: 20,
+                  ),
+                if (isPrivate) const SizedBox(width: 6),
                 Text(
                   studyName,
                   style: Theme.of(context).textTheme.titleMedium,
