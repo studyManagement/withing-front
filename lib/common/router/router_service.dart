@@ -47,17 +47,17 @@ class RouterService {
       Uri? uri = await getInitialUri();
 
       if (uri != null && kIsWeb) {
-        _goRouter.push(uri.path);
+        _goRouter.go(uri.path);
         return;
       }
 
       if (uri != null && Platform.isIOS) {
-        _goRouter.push(uri.path);
+        _goRouter.go(uri.path);
       }
 
       uriLinkStream.listen((uri) async {
         if (uri != null && Platform.isIOS) {
-          _goRouter.push(uri.path);
+          _goRouter.go(uri.path);
         }
       });
     } catch (e) {
@@ -82,7 +82,9 @@ class RouterService {
         initialLocation:
             (Authentication.state.isAuthentication) ? '/' : '/login',
         refreshListenable: Authentication.state,
-        errorBuilder: (context, state) => const ErrorPage(),
+        errorBuilder: (context, state) {
+          return const ErrorPage();
+        },
         routes: [
           GoRoute(
               path: '/login', builder: (context, state) => const LoginScreen()),

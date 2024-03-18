@@ -156,7 +156,7 @@ class NotificationService {
     await Future.delayed(const Duration(microseconds: 300));
 
     if (initialUri != null && Platform.isIOS) {
-      RouterService.instance.router.push(initialUri.path);
+      RouterService.instance.router.go(initialUri.path);
       return;
     }
 
