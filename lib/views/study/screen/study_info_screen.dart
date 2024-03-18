@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
@@ -14,6 +15,7 @@ import 'package:modi/views/study/widgets/study_main_buttons.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/authenticator/authentication.dart';
+import '../../../common/components/share/share.dart';
 import '../../../di/injection.dart';
 import '../widgets/study_details.dart';
 import '../widgets/study_header.dart';
@@ -37,25 +39,19 @@ class StudyInfoScreen extends StatelessWidget {
     });
 
     bool offstage = vm.isMember;
-    bool isLeader = (vm.study?.leaderId == Authentication.instance.userId);
 
-    return Scaffold(
-      appBar: (vm.study == null)
-          ? StudyMainAppBar(studyId: studyId, isLeader: false)
-          : StudyMainAppBar(
-              studyId: studyId,
-              isLeader: isLeader,
-              action: (isLeader)
-                  ? () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  StudyManageScreen(viewModel: vm)));
-                    }
-                  : null,
-            ),
-      body: (vm.study == null)
+    return DefaultLayout(
+      leader: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => {
+            if (studyId == -1) {context.go('/')} else {context.pop()}
+          },),
+      actions: [
+        makeShareButton(context), makeLikeButton(context)
+      ],
+      centerTitle: true,
+      title: '',
+      child: (vm.study == null)
           ? Container()
           : SafeArea(
               child: Column(
@@ -152,6 +148,73 @@ class StudyInfoScreen extends StatelessWidget {
                 ],
               ),
             ),
+    );
+
+
+  }
+  Widget makeShareButton(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        ModiModal.openBottomSheet(
+          context,
+          widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+            child: Share(
+              title: '초대가 왔어요!',
+              message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+          height: 221,
+        );
+      },
+      icon: Image.asset('asset/share.png'),
+    );
+  }
+
+  Widget makeLikeButton(BuildContext context) {
+
+    final viewModel = context.watch<StudyViewModel>();
+    bool isLeader = (viewModel.study?.leaderId == Authentication.instance.userId);
+    return (viewModel.isMember)
+        ? Offstage(
+      offstage: (isLeader) ? false : true,
+      child: IconButton(
+        icon: Image.asset(
+          'asset/setting.png',
+          width: 32,
+          height: 32,
+        ),
+        onPressed: (isLeader)
+                      ? () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      StudyManageScreen(viewModel: viewModel)));
+                        }
+                      : null,
+      ),
+    )
+        : IconButton(
+      icon: (viewModel.hasLike)
+          ? Image.asset(
+        'asset/heart_filled_32.png',
+        width: 32,
+        height: 32,
+      )
+          : Image.asset(
+        'asset/heart_lined_32.png',
+        width: 32,
+        height: 32,
+      ),
+      onPressed: () {
+        (viewModel.hasLike)
+            ? viewModel.cancelFavoriteStudy()
+            : viewModel.pickFavoriteStudy();
+      },
     );
   }
 

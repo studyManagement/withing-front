@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/components/automated_study_list_view.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/layout/responsive_size.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +18,9 @@ class CategorySearchScreen extends StatelessWidget {
     bool isTabletPrt = MediaQuery.of(context).size.width >= tabletPortrait;
     return ChangeNotifierProvider(
       create: (_) => CategorySearchViewModel(getIt<StudySearchService>()),
-      child: Scaffold(
-        body: SafeArea(
+      child: DefaultLayout(
+        floatingActionButton: const CreateStudyButton(),
+        child: SafeArea(
           child: SingleChildScrollView(
             child: Container(
               height: (isTabletPrt) ? MediaQuery.of(context).size.width * 0.75 : MediaQuery.of(context).size.height * 0.85,
@@ -43,7 +45,6 @@ class CategorySearchScreen extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: const CreateStudyButton(),
       ),
     );
   }
