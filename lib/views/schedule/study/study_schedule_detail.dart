@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/circle_button.dart';
@@ -52,7 +50,8 @@ class StudyScheduleDetail extends StatelessWidget {
     return today == _startAt;
   }
 
-  Widget _makeShareButton(BuildContext context, String title, String message) {
+  Widget _makeShareButton(
+      BuildContext context, String title, String message, String path) {
     return CircleButton(
       onTap: () {
         ModiModal.openBottomSheet(
@@ -62,6 +61,7 @@ class StudyScheduleDetail extends StatelessWidget {
             child: Share(
               title: title,
               message: message,
+              path: '',
               onTap: () {
                 Navigator.of(context).pop();
               },
@@ -97,8 +97,12 @@ class StudyScheduleDetail extends StatelessWidget {
     return DefaultLayout(
         title: '',
         actions: [
-          _makeShareButton(context, '[] ${scheduleDetail.title}',
-              '스터디 일정을 확인해 주세요\n\nhttps://modi.tips/_s/${base64.encode(utf8.encode('/studies/$studyId/schedules/$studyScheduleId'))} '),
+          _makeShareButton(
+            context,
+            '[] ${scheduleDetail.title}',
+            '스터디 일정을 확인해 주세요',
+            '/studies/$studyId/schedules/$studyScheduleId',
+          ),
         ],
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -44,6 +44,7 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Share(
               title: '초대가 왔어요!',
               message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+              path: '',
               onTap: () {
                 Navigator.of(context).pop();
               },

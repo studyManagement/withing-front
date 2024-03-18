@@ -5,12 +5,10 @@ import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
-import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/study/screen/study_manage_screen.dart';
 import 'package:modi/views/study/widgets/input_password_modal.dart';
-import 'package:modi/views/study/widgets/study_main_appbar.dart';
 import 'package:modi/views/study/widgets/study_main_buttons.dart';
 import 'package:provider/provider.dart';
 
@@ -45,32 +43,35 @@ class StudyInfoScreen extends StatelessWidget {
           if (studyId == -1) {context.go('/')} else {context.pop()}
         },
       ),
-      actions: [makeShareButton(context), makeLikeButton(context)],
+      actions: [
+        makeShareButton(context, vm.study?.studyName ?? ''),
+        makeLikeButton(context)
+      ],
       centerTitle: true,
       title: '',
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Offstage(
         offstage: offstage,
-            child: StudyBottomButton(
-                onTap: () {
-                  if (vm.study!.headcount >= vm.study!.max) {
-                    ModiModal.openDialog(context, '스터디 정원이 초과되었어요.', '', false,
-                        () => context.pop(), () => null);
-                  } else {
-                    (vm.study!.private)
-                        ? showDialog(
-                            context: context,
-                            builder: (_) {
-                              vm.initPasswordProperties();
-                              return ChangeNotifierProvider.value(
-                                  value: vm,
-                                  child: InputPasswordModal(studyId: studyId));
-                            })
-                        : joinToPublicStudy(vm, context);
-                  }
-                },
-                text: '가입하기'),
-          ),
+        child: StudyBottomButton(
+            onTap: () {
+              if (vm.study!.headcount >= vm.study!.max) {
+                ModiModal.openDialog(context, '스터디 정원이 초과되었어요.', '', false,
+                    () => context.pop(), () => null);
+              } else {
+                (vm.study!.private)
+                    ? showDialog(
+                        context: context,
+                        builder: (_) {
+                          vm.initPasswordProperties();
+                          return ChangeNotifierProvider.value(
+                              value: vm,
+                              child: InputPasswordModal(studyId: studyId));
+                        })
+                    : joinToPublicStudy(vm, context);
+              }
+            },
+            text: '가입하기'),
+      ),
       child: (vm.study == null)
           ? Container()
           : SingleChildScrollView(
@@ -143,7 +144,7 @@ class StudyInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget makeShareButton(BuildContext context) {
+  Widget makeShareButton(BuildContext context, String studyName) {
     return IconButton(
       onPressed: () {
         ModiModal.openBottomSheet(
@@ -151,8 +152,9 @@ class StudyInfoScreen extends StatelessWidget {
           widget: Padding(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
             child: Share(
-              title: '초대가 왔어요!',
-              message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+              title: '[$studyName] 초대가 왔어요!',
+              message: '가입 후 스터디를 시작해보세요',
+              path: '/studies/$studyId',
               onTap: () {
                 Navigator.of(context).pop();
               },

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:modi/common/components/button/label_circle_button.dart';
 import 'package:modi/common/sns_content_share/sns_content_share_factory.dart';
@@ -8,12 +10,14 @@ class Share extends StatelessWidget {
   const Share({
     required this.title,
     required this.message,
+    required this.path,
     required this.onTap,
     super.key,
   });
 
   final String title;
   final String message;
+  final String path;
   final Function() onTap;
 
   @override
@@ -73,7 +77,8 @@ class Share extends StatelessWidget {
       ),
       () {
         onTap();
-        SNSContentShareFactory.getProvider(provider).send(title, message);
+        SNSContentShareFactory.getProvider(provider).send(title,
+            '$message\n\nhttps://modi.tips/_s/${base64.encode(utf8.encode(path))}');
       },
     );
   }
