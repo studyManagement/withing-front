@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/components/automated_study_list_view.dart';
+import 'package:modi/common/layout/responsive_size.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/components/gray50_divider.dart';
@@ -13,27 +14,33 @@ class CategorySearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTabletPrt = MediaQuery.of(context).size.width >= tabletPortrait;
     return ChangeNotifierProvider(
       create: (_) => CategorySearchViewModel(getIt<StudySearchService>()),
       child: Scaffold(
         body: SafeArea(
-          child: Column(
-            children: [
-              const SearchBox(),
-              const SearchCategorySelector(),
-              const Gray50Divider(dividerHeight: 6),
-              const SizedBox(height: 10),
-              Consumer<CategorySearchViewModel>(
-                builder: (context, viewModel, child) {
-                  return StudyListHeader(viewModel: viewModel);
-                },
+          child: SingleChildScrollView(
+            child: Container(
+              height: (isTabletPrt) ? MediaQuery.of(context).size.width * 0.75 : MediaQuery.of(context).size.height,
+              child: Column(
+                children: [
+                  const SearchBox(),
+                  const SearchCategorySelector(),
+                  const Gray50Divider(dividerHeight: 6),
+                  const SizedBox(height: 10),
+                  Consumer<CategorySearchViewModel>(
+                    builder: (context, viewModel, child) {
+                      return StudyListHeader(viewModel: viewModel);
+                    },
+                  ),
+                  Consumer<CategorySearchViewModel>(
+                    builder: (context, viewModel, child) {
+                      return AutomatedStudyListView(viewModel: viewModel);
+                    },
+                  ),
+                ],
               ),
-              Consumer<CategorySearchViewModel>(
-                builder: (context, viewModel, child) {
-                  return AutomatedStudyListView(viewModel: viewModel);
-                },
-              ),
-            ],
+            ),
           ),
         ),
         floatingActionButton: const CreateStudyButton(),
