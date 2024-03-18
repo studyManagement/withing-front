@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/circle_button.dart';
@@ -96,7 +98,7 @@ class StudyScheduleDetail extends StatelessWidget {
         title: '',
         actions: [
           _makeShareButton(context, '[] ${scheduleDetail.title}',
-              '스터디 일정을 확인해 주세요\n\nhttps://modi.tips/_s/DkwQos'),
+              '스터디 일정을 확인해 주세요\n\nhttps://modi.tips/_s/${base64.encode(utf8.encode('/studies/$studyId/schedules/$studyScheduleId'))} '),
         ],
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:modi/common/router/router_service.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/service/study/study_service.dart';
@@ -44,8 +43,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    RouterService.instance.router.refresh();
-
     return DefaultLayout(
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
