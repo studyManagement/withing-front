@@ -19,7 +19,7 @@ import 'package:modi/firebase_options.dart';
 import 'package:modi/withing_app.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-final String sentryDsn =
+const String sentryDsn =
     'https://1f4f92d5383cd9332c6e636bdeab4674@o4506934796943360.ingest.us.sentry.io/4506934797991936';
 
 void main() async {
@@ -70,7 +70,7 @@ void main() async {
   if (!kDebugMode) {
     runZonedGuarded(() async {
       await SentryFlutter.init(
-            (options) {
+        (options) {
           options.dsn = sentryDsn;
           // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
           // We recommend adjusting this value in production.
