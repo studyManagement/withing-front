@@ -23,7 +23,7 @@ class LoggerService implements LoggingInterface {
         String? groupId,
         String? contentType,
         String? itemId,
-        Map<String, Object>? parameters},) {
+        Map<String, Object>? parameters}) {
     // @Example https://github.com/firebase/flutterfire/blob/master/packages/firebase_analytics/firebase_analytics/example/lib/main.dart
 
     _logger.i(
