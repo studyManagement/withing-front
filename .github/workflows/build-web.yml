@@ -35,7 +35,7 @@ jobs:
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
       - name: Flutter build app
-        run: flutter build web --release --base-href / --dart-define="BASE_URL=https://modi.tips"
+        run: flutter build web --release --base-href / --dart-define="BASE_URL=https://app.moditeam.io"
 
       - name: Use random for fix cache
         run: |

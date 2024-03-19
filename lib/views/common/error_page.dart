@@ -15,7 +15,12 @@ class ErrorPage extends StatelessWidget {
       leader: CircleButton(
         icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
         onTap: () {
-          context.pop(context);
+          if (context.canPop()) {
+            context.pop();
+            return;
+          }
+
+          context.go('/');
         },
       ),
       title: '',

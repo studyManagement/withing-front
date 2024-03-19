@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/views/study/widgets/meeting_days_selector.dart';
 import 'package:provider/provider.dart';
@@ -20,23 +21,29 @@ class SetRegularMeetingScreen extends StatelessWidget {
         value: viewModel,
         child: Consumer<StudyViewModel>(builder: (context, consumer, child) {
           MeetingType curType = consumer.meetingType;
-          return Scaffold(
-            appBar: initAppBar(
-                context,
-                TextButton(
-                  onPressed: (consumer.meetingType == MeetingType.NONE)
-                      ? null
-                      : () {// 매일, 매주인 경우만 활성화
-                    consumer.initDaysAndTime(curType);
-                        },
-                  child: Text("초기화",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: (consumer.meetingType != MeetingType.NONE)
-                              ? AppColors.blue400
-                              : AppColors.gray300,
-                          fontSize: 16)),
-                )),
-            body: SafeArea(
+          return DefaultLayout(
+            title: '정기모임',
+            leader: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () => {context.pop()},
+            ),
+            centerTitle: true,
+            actions: [
+              TextButton(
+                      onPressed: (consumer.meetingType == MeetingType.NONE)
+                          ? null
+                          : () {// 매일, 매주인 경우만 활성화
+                        consumer.initDaysAndTime(curType);
+                            },
+                      child: Text("초기화",
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: (consumer.meetingType != MeetingType.NONE)
+                                  ? AppColors.blue400
+                                  : AppColors.gray300,
+                              fontSize: 16)),
+                    )
+            ],
+            child: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -104,21 +111,6 @@ class SetRegularMeetingScreen extends StatelessWidget {
             ),
           );
         }));
-  }
-
-  AppBar initAppBar(BuildContext context, Widget action) {
-    return AppBar(
-      title: Text('정기모임', style: Theme.of(context).textTheme.titleMedium),
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios),
-        onPressed: () => {context.pop()},
-      ),
-      centerTitle: true,
-      foregroundColor: AppColors.black,
-      backgroundColor: AppColors.white,
-      elevation: 0,
-      actions: <Widget>[action],
-    );
   }
 }
 

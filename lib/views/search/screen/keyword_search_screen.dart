@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:provider/provider.dart';
 import '../../../common/components/automated_study_list_view.dart';
 import '../../../common/layout/responsive_size.dart';
@@ -16,8 +17,8 @@ class KeywordSearchScreen extends StatelessWidget {
     bool isTabletPrt = (screenWidth >= tabletPortrait) ? true : false;
     return ChangeNotifierProvider(
       create: (_) => KeywordSearchViewModel(getIt<StudySearchService>()),
-      child: Scaffold(
-        body: SafeArea(
+      child: DefaultLayout(
+        child: SafeArea(
           child: Column(
             children: [
               SizedBox(height: (isTabletPrt) ? screenWidth * 0.023 : 0),

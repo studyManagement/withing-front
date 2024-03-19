@@ -31,7 +31,7 @@ class StudyViewModel extends ChangeNotifier {
   int _newLeaderId = 0;
   bool _isOut = false;
   bool _isSwitched = false;
-  bool _isMember = false;
+  bool _isMember = true;
 
   bool _isValidPwd = true;
   bool _isChecked = false;

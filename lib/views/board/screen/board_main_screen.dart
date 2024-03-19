@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/model/board/board_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/screen/create_post_screen.dart';
@@ -41,24 +42,28 @@ class BoardMainScreen extends StatelessWidget {
         if (vm.isRefreshed) {
           loadBoardList();
         }
-        return Scaffold(
-            appBar: (isNotice == true)
-                ? boardAppBar(context, '공지', null, null)
-                : boardAppBar(
-                    context,
-                    '게시판',
-                    null,
-                    IconButton(
-                        onPressed: () {
-                          initCreateScreenState(vm);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CreatePostScreen(viewModel: vm)));
-                        },
-                        icon: const Icon(Icons.add))),
-            body: SafeArea(
+        return DefaultLayout(
+            title: (isNotice == true) ? '공지' : '게시판',
+            leader: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  context.pop();
+                }),
+            centerTitle: true,
+            actions: [
+              if (!isNotice)
+                IconButton(
+                    onPressed: () {
+                      initCreateScreenState(vm);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CreatePostScreen(viewModel: vm)));
+                    },
+                    icon: const Icon(Icons.add)),
+            ],
+            child: SafeArea(
                 child: (vm.hasPost)
                     ? BoardList(
                         isNotice: isNotice,
