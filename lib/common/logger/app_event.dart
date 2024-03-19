@@ -3,4 +3,5 @@ enum AppEvent {
   LOGIN,
   SIGNUP,
   SHARE,
+  JOIN_GROUP,
 }

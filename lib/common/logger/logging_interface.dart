@@ -10,6 +10,7 @@ class LoggingInterface {
   void setUser(int id, {UserModel? user}) {}
   void appEvent(AppEvent event,
       {required String method,
+      String? groupId,
       String? contentType,
       String? itemId,
       Map<String, Object>? parameters}) {}

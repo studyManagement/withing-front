@@ -18,10 +18,12 @@ class LoggerService implements LoggingInterface {
 
   @override
   void appEvent(AppEvent event,
-      {required String method,
-      String? contentType,
-      String? itemId,
-      Map<String, Object>? parameters}) {
+      {
+        required String method,
+        String? groupId,
+        String? contentType,
+        String? itemId,
+        Map<String, Object>? parameters},) {
     // @Example https://github.com/firebase/flutterfire/blob/master/packages/firebase_analytics/firebase_analytics/example/lib/main.dart
 
     _logger.i(
@@ -49,6 +51,12 @@ class LoggerService implements LoggingInterface {
           method: method,
           parameters: parameters,
         );
+        break;
+
+      case AppEvent.JOIN_GROUP:
+        assert(groupId != null, 'JOIN_GROUP 이벤트는 groupId 인자가 null이 아니여야 합니다.');
+        _firebaseAnalytics.logJoinGroup(groupId: groupId!, parameters: parameters);
+        break;
     }
   }
 
