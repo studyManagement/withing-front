@@ -15,6 +15,7 @@ class KeywordSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isTabletPrt = (screenWidth >= tabletPortrait) ? true : false;
+    final ScrollController scrollController = ScrollController();
     return ChangeNotifierProvider(
       create: (_) => KeywordSearchViewModel(getIt<StudySearchService>()),
       child: DefaultLayout(
@@ -31,7 +32,7 @@ class KeywordSearchScreen extends StatelessWidget {
               ),
               Consumer<KeywordSearchViewModel>(
                 builder: (context, viewModel, child) {
-                  return AutomatedStudyListView(viewModel: viewModel);
+                  return AutomatedStudyListView(viewModel: viewModel, scrollController: scrollController,);
                 },
               ),
             ],

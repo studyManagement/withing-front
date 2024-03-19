@@ -19,7 +19,9 @@ class CategorySearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
     bool isTabletPrt = MediaQuery.of(context).size.width >= tabletPortrait;
-    double scrollableHeight = (isTabletPrt) ? MediaQuery.of(context).size.width: MediaQuery.of(context).size.height;
+    double scrollableHeight = (isTabletPrt)
+        ? MediaQuery.of(context).size.width
+        : MediaQuery.of(context).size.height;
 
     return ChangeNotifierProvider(
         create: (_) => CategorySearchViewModel(getIt<StudySearchService>()),
@@ -27,6 +29,7 @@ class CategorySearchScreen extends StatelessWidget {
             builder: (context, viewModel, child) {
           List<SearchedStudyInfo> studyList = viewModel.studyList ?? [];
           int searchesCount = viewModel.studyList.length;
+          print(searchesCount);
           return DefaultLayout(
             floatingActionButton: const CreateStudyButton(),
             child: SafeArea(
@@ -41,7 +44,9 @@ class CategorySearchScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   controller: scrollController,
                   child: SizedBox(
-                    height: scrollableHeight + searchesCount * 150,
+                    height: (searchesCount == 0)
+                        ? scrollableHeight * 0.85
+                        : scrollableHeight + (searchesCount) * 150,
                     child: Column(
                       children: [
                         const SearchBox(),
@@ -49,11 +54,7 @@ class CategorySearchScreen extends StatelessWidget {
                         const Gray50Divider(dividerHeight: 6),
                         const SizedBox(height: 10),
                         StudyListHeader(viewModel: viewModel),
-                        (studyList.isEmpty)
-                            ? Expanded(
-                                child: Center(
-                                    child: ModiException(['등록된 스터디가 없어요.'])))
-                            : AutomatedStudyListView(viewModel: viewModel),
+                        AutomatedStudyListView(viewModel: viewModel),
                       ],
                     ),
                   ),
