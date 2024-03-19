@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/layout/responsive_size.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
@@ -29,6 +30,7 @@ class StudyInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTabletPrt = MediaQuery.of(context).size.width >= tabletPortrait;
     StudyViewModel vm = context.watch<StudyViewModel>();
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
@@ -76,7 +78,7 @@ class StudyInfoScreen extends StatelessWidget {
           ? Container()
           : SingleChildScrollView(
               child: SizedBox(
-                height: MediaQuery.of(context).size.height,
+                height: (isTabletPrt) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
