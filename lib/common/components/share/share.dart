@@ -51,7 +51,7 @@ class Share extends StatelessWidget {
               _makeButton(
                 '카카오톡',
                 'asset/share/kakao.png',
-                SNSContentShareProviders.OS,
+                SNSContentShareProviders.KAKAO,
               ),
               _makeButton(
                 '인스타그램',

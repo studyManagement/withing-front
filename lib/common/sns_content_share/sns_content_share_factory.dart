@@ -29,7 +29,8 @@ class SNSContentShareFactory {
 
     switch (provider) {
       case SNSContentShareProviders.KAKAO:
-        return KakaoShare();
+        return OSShare();
+        //return KakaoShare();
       case SNSContentShareProviders.OS:
         return OSShare();
       case SNSContentShareProviders.TWITTER:

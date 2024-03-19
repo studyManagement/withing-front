@@ -24,6 +24,9 @@ class LoggerService implements LoggingInterface {
       Map<String, Object>? parameters}) {
     // @Example https://github.com/firebase/flutterfire/blob/master/packages/firebase_analytics/firebase_analytics/example/lib/main.dart
 
+    _logger.i(
+        'AppEvent(appEvent=${event.name},method=$method,contentType=$contentType,itemId=$itemId,parameters=$parameters)');
+
     switch (event) {
       case AppEvent.APP_OPEN:
         _firebaseAnalytics.logAppOpen();
