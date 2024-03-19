@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/logger/app_event.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/study/study_exception.dart';
 import 'package:modi/service/study/MeetingType.dart';
@@ -7,6 +8,8 @@ import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/views/common/study_error_page.dart';
+import '../../common/logger/logging_interface.dart';
+import '../../di/injection.dart';
 import '../../model/board/board_model.dart';
 import '../../model/study/study_list_model.dart';
 import '../../model/user/user_model.dart';
@@ -15,6 +18,8 @@ import 'model/study_view.dart';
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
+
+  static final LoggingInterface _logger = getIt<LoggingInterface>();
 
   StudyView? _study;
   List<UserModel> _users = [];
@@ -142,9 +147,14 @@ class StudyViewModel extends ChangeNotifier {
   Future<void> joinStudy(String? password) async {
     try {
       var response = await _service.joinStudy(study!.id, password);
+      _logger.appEvent(
+        AppEvent.JOIN_GROUP,
+        method: 'Join study',
+        groupId: study!.id.toString(),
+      );
       if (response != null) _successToJoin = true;
-    } on StudyException catch(e){
-      if(e.code == 400){
+    } on StudyException catch (e) {
+      if (e.code == 400) {
         _successToJoin = false;
         _isFull = true;
       }
@@ -299,9 +309,9 @@ class StudyViewModel extends ChangeNotifier {
       regularMeetingStr = '비정기 모임';
       _meetingType = MeetingType.NONE;
       _isInit = false;
-    } else{
+    } else {
       DateTime start =
-      DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
+          DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
       String time = (start.hour < 12)
           ? _study!.meetingSchedules[0].startTime
@@ -314,17 +324,17 @@ class StudyViewModel extends ChangeNotifier {
         _meetingType = MeetingType.WEEKLY;
         for (int i = 0; i < days.length; i++) {
           if (cnt < days.length - 1) {
-            regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]}, ';
+            regularMeetingStr =
+                '$regularMeetingStr${_weekString[days[i] - 1]}, ';
             cnt++;
           } else {
-            regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]})';
+            regularMeetingStr =
+                '$regularMeetingStr${_weekString[days[i] - 1]})';
           }
         }
-        regularMeetingStr =
-        '$regularMeetingStr $startMeridiem $time';
+        regularMeetingStr = '$regularMeetingStr $startMeridiem $time';
       }
     }
-
   }
 
   void getSelectedDaysAndTime() {
