@@ -11,6 +11,8 @@ class Share extends StatelessWidget {
     required this.title,
     required this.message,
     required this.path,
+    required this.contentType,
+    required this.itemId,
     required this.onTap,
     super.key,
   });
@@ -18,6 +20,8 @@ class Share extends StatelessWidget {
   final String title;
   final String message;
   final String path;
+  final String contentType;
+  final String itemId;
   final Function() onTap;
 
   @override
@@ -77,8 +81,10 @@ class Share extends StatelessWidget {
       ),
       () {
         onTap();
-        SNSContentShareFactory.getProvider(provider).send(title,
-            '$message\n\nhttps://modi.tips/_s/${base64.encode(utf8.encode(path))}');
+        SNSContentShareFactory.getProvider(provider, contentType, itemId).send(
+          title,
+          '$message\n\nhttps://modi.tips/_s/${base64.encode(utf8.encode(path))}',
+        );
       },
     );
   }

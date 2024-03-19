@@ -18,7 +18,10 @@ class LoggerService implements LoggingInterface {
 
   @override
   void appEvent(AppEvent event,
-      {required String method, Map<String, Object>? parameters}) {
+      {required String method,
+      String? contentType,
+      String? itemId,
+      Map<String, Object>? parameters}) {
     // @Example https://github.com/firebase/flutterfire/blob/master/packages/firebase_analytics/firebase_analytics/example/lib/main.dart
 
     switch (event) {
@@ -33,6 +36,16 @@ class LoggerService implements LoggingInterface {
         _firebaseAnalytics.logSignUp(
             signUpMethod: method, parameters: parameters);
         break;
+      case AppEvent.SHARE:
+        assert(contentType != null && itemId != null,
+            "SHARE 이벤트는 ContentType하고 ItemId 인자가 null이 아니여야 합니다.");
+
+        _firebaseAnalytics.logShare(
+          contentType: contentType!,
+          itemId: itemId!,
+          method: method,
+          parameters: parameters,
+        );
     }
   }
 

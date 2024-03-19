@@ -61,7 +61,9 @@ class StudyScheduleDetail extends StatelessWidget {
             child: Share(
               title: title,
               message: message,
-              path: '',
+              path: path,
+              contentType: 'study_schedule',
+              itemId: '$studyScheduleId',
               onTap: () {
                 Navigator.of(context).pop();
               },

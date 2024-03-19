@@ -9,7 +9,10 @@ class LoggingInterface {
   void error(dynamic message) {}
   void setUser(int id, {UserModel? user}) {}
   void appEvent(AppEvent event,
-      {required String method, Map<String, Object>? parameters}) {}
+      {required String method,
+      String? contentType,
+      String? itemId,
+      Map<String, Object>? parameters}) {}
   NavigatorObserver getObserver() {
     throw Exception("interface is not implemented");
   }
