@@ -39,6 +39,7 @@ class Share extends StatelessWidget {
         const SizedBox(height: 24),
         Expanded(
           child: GridView(
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
             ),
