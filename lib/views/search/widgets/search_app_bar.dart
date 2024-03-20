@@ -48,11 +48,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
               viewModel.searchKeyword = value;
               if (debounce?.isActive ?? false){
                 debounce?.cancel();
-              } else {
-                debounce = Timer(const Duration(milliseconds: 300), () {
+              }
+              debounce = Timer(const Duration(milliseconds: 300), () {
                   viewModel.search();
                 });
-              }
             },
             cursorHeight: 20,
             maxLength: 20,
