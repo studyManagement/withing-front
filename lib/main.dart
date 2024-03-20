@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:modi/common/authenticator/authentication.dart';
@@ -56,6 +58,11 @@ void main() async {
 
   await Environment.initialize(BuildType.LOCAL);
   await Authentication.initialize();
+
+  if (kIsWeb) {
+    usePathUrlStrategy();
+    GoRouter.optionURLReflectsImperativeAPIs = true;
+  }
 
   await RouterService.instance.initializeRoute();
 
