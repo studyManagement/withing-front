@@ -27,7 +27,6 @@ class AutomatedStudyListView extends StatelessWidget {
                   if (scrollInfo.metrics.pixels >=
                       scrollInfo.metrics.maxScrollExtent) {
                     viewModel.scrollListener();
-                    print('추가');
                   }
                   return true;
                 },
