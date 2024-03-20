@@ -36,6 +36,7 @@ class StudyProfileImage extends StatelessWidget {
           behavior: HitTestBehavior.translucent,
           onTap: () async {
             viewModel.studyImageFile = await pickImageFile();
+            viewModel.callImageApi();
             viewModel.isOldImageLoaded = true;
           },
           child: Center(

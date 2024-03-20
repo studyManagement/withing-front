@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'study_image_create_service.dart';
+part of 'image_update_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'study_image_create_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _StudyImageCreateApi implements StudyImageCreateApi {
-  _StudyImageCreateApi(
+class _ImageUpdateApi implements ImageUpdateApi {
+  _ImageUpdateApi(
     this._dio, {
     this.baseUrl,
   });
@@ -19,7 +19,10 @@ class _StudyImageCreateApi implements StudyImageCreateApi {
   String? baseUrl;
 
   @override
-  Future<int> create(File image) async {
+  Future<int> update(
+    int studyId,
+    File image,
+  ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
@@ -33,14 +36,14 @@ class _StudyImageCreateApi implements StudyImageCreateApi {
       ),
     ));
     final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
       contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,
-          '/studies/images',
+          '/studies/${studyId}/images',
           queryParameters: queryParameters,
           data: _data,
         )

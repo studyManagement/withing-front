@@ -4,15 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
-import '../../service/image/study_image_update_service.dart';
+import '../../service/image/image_update_service.dart';
 import '../../service/study/study_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
 
 class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyService _studyService;
-  final StudyImageUpdateService _studyImageUpdateService;
+  final ImageUpdateService _imageUpdateService;
 
-  UpdateStudyViewModel(this._studyService, this._studyImageUpdateService);
+  UpdateStudyViewModel(this._studyService, this._imageUpdateService);
 
   @override
   bool get isOldImageLoaded => _isOldImageLoaded;
@@ -46,6 +46,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   int? _studyId;
   int _headCount = 0;
+  int? _studyImageId;
   String _studyName = '', _studyDescription = '', _studyImagePath = '';
   List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
@@ -140,7 +141,6 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
 
   /// call api
-
   Future<void> getStudyInfo(int studyId) async {
     StudyModel study = await _studyService.fetchStudyInfo(studyId);
     _studyId = study.id;
@@ -155,10 +155,11 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateStudyImage() async {
+  @override
+  Future<void> callImageApi() async {
     if (_file != null) {
-      int studyImageId =
-          await _studyImageUpdateService.callCreateApi(_studyId!, _file!);
+      _studyImageId =
+          await _imageUpdateService.callImageUpdateApi(_studyId!, _file!);
     } else {
       return;
     }

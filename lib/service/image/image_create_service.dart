@@ -2,28 +2,28 @@ import 'dart:io';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/http.dart';
 import '../../common/requester/network_exception.dart';
-part 'study_image_create_service.g.dart';
+part 'image_create_service.g.dart';
 
 /// API
 @RestApi()
-abstract class StudyImageCreateApi {
-  factory StudyImageCreateApi(Dio dio, {String baseUrl}) = _StudyImageCreateApi;
+abstract class ImageCreateApi {
+  factory ImageCreateApi(Dio dio, {String baseUrl}) = _ImageCreateApi;
 
-  @POST("/studies/images")
+  @POST("/images")
   @MultiPart()
   @Headers({'Content-Type': 'multipart/form-data'})
   Future<int> create(
-    @Part(name: "study_image") File image,
+    @Part(name: "image") File image,
   );
 }
 
 /// Service
-class StudyImageCreateService {
-  final StudyImageCreateApi _api;
+class ImageCreateService {
+  final ImageCreateApi _api;
 
-  StudyImageCreateService(this._api);
+  ImageCreateService(this._api);
 
-  Future<int> callCreateApi(
+  Future<int> callImageCreateApi(
     File image,
   ) async {
     try {

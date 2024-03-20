@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../service/create/study_create_service.dart';
-import '../../service/image/study_image_create_service.dart';
+import '../../service/image/image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
 
 class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyCreateService _studyCreateService;
-  final StudyImageCreateService _studyImageCreateService;
+  final ImageCreateService _imageCreateService;
 
-  CreateStudyViewModel(this._studyCreateService, this._studyImageCreateService);
+  CreateStudyViewModel(this._studyCreateService, this._imageCreateService);
 
   @override
   String get studyDescription => _studyDescription;
@@ -52,6 +52,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   String get studyImagePath => ''; // 사용 안 함
+
+  @override
+  bool isOldImageLoaded = true;
 
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
 
@@ -133,6 +136,23 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     }
   }
 
+  /// update study image
+  @override
+  set studyImageFile(File? file) {
+    _studyImageFile = file;
+    notifyListeners();
+  }
+
+  /// call create image api
+  @override
+  Future<void> callImageApi() async {
+    if (_studyImageFile != null) {
+      _studyImageId =
+      await _imageCreateService.callImageCreateApi(_studyImageFile!);
+    }
+    notifyListeners();
+  }
+
   /// update study password
   set password(String newValue) {
     if (newValue.length == 4) {
@@ -144,44 +164,18 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     }
   }
 
-  /// update study image
-  @override
-  set studyImageFile(File? file) {
-    _studyImageFile = file;
-    notifyListeners();
-  }
-
-  // /// update study image id
-  // set studyId(int id) {
-  //   _studyImageId = id;
-  //   notifyListeners();
-  // }
-
-  /// create image api
-  Future<void> createImage() async {
-    if (_studyImageFile != null) {
-      _studyImageId =
-          await _studyImageCreateService.callCreateApi(_studyImageFile!);
-    }
-    notifyListeners();
-  }
-
   /// create study api
   Future<void> createStudy() async {
-    //await createImage();
-
-    final StudyModel newStudy = await _studyCreateService.callCreateApi(
-      _studyName,
-      _studyMemberCount,
-      (isStudyDiscloseToggled) ? 1 : 0,
-      _studyDisclosePassword,
-      _studyDescription,
-      _selectedCategoryIndices..sort(),
-    );
-    _studyId = newStudy.id;
-    notifyListeners();
+      final StudyModel newStudy = await _studyCreateService.callCreateApi(
+        _studyName,
+        _studyMemberCount,
+        (isStudyDiscloseToggled) ? 1 : 0,
+        _studyDisclosePassword,
+        _studyDescription,
+        _selectedCategoryIndices..sort(),
+        _studyImageId!,
+      );
+      _studyId = newStudy.id;
+      notifyListeners();
   }
-
-  @override
-  bool isOldImageLoaded = true;
 }

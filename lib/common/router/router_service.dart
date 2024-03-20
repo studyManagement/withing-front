@@ -8,7 +8,7 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/root_tab.dart';
 import 'package:modi/di/injection.dart';
-import 'package:modi/service/image/study_image_update_service.dart';
+import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
@@ -196,7 +196,7 @@ class RouterService {
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
                             getIt<StudyService>(),
-                            getIt<StudyImageUpdateService>()),
+                            getIt<ImageUpdateService>()),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),

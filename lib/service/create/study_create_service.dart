@@ -24,13 +24,13 @@ class StudyCreateService {
   StudyCreateService(this._api);
 
   Future<StudyModel> callCreateApi(
-    String studyName,
-    int max,
-    int isPrivate,
-    String password,
-    String explanation,
-    List<int> categories,
-  ) async {
+      String studyName,
+      int max,
+      int isPrivate,
+      String password,
+      String explanation,
+      List<int> categories,
+      int studyImage) async {
     Map<String, dynamic> studyCreateDtoJson = NewStudyInfo(
       studyName: studyName,
       max: max,
@@ -38,6 +38,7 @@ class StudyCreateService {
       password: password,
       explanation: explanation,
       categories: categories,
+      studyImage: studyImage,
     ).toJson();
 
     try {
