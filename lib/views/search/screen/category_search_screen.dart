@@ -29,7 +29,6 @@ class CategorySearchScreen extends StatelessWidget {
             builder: (context, viewModel, child) {
           List<SearchedStudyInfo> studyList = viewModel.studyList ?? [];
           int searchesCount = viewModel.studyList.length;
-          print(searchesCount);
           return DefaultLayout(
             floatingActionButton: const CreateStudyButton(),
             child: SafeArea(

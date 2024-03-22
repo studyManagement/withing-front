@@ -30,7 +30,8 @@ class StudyInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isTabletPrt = MediaQuery.of(context).size.width >= tabletPortrait;
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isTabletPrt = screenWidth >= tabletPortrait;
     StudyViewModel vm = context.watch<StudyViewModel>();
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
@@ -104,30 +105,33 @@ class StudyInfoScreen extends StatelessWidget {
                     ),
                     if (offstage) const SizedBox(height: 20),
                     if (offstage)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 16),
-                          StudyMainButtons(
-                            onTap: () {
-                              context.push('/studies/$studyId/schedules');
-                            },
-                            title: "Schedule",
-                            subtitle: "일정",
-                            image: Image.asset('asset/schedule.png'),
-                          ),
-                          const SizedBox(width: 9),
-                          StudyMainButtons(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            StudyMainButtons(
                               onTap: () {
-                                context.push('/studies/$studyId/boards');
+                                context.push('/studies/$studyId/schedules');
                               },
-                              title: "Community",
-                              subtitle: "게시판",
-                              image: Image.asset('asset/community.png')),
-                          const SizedBox(width: 16),
-                        ],
+                              title: "Schedule",
+                              subtitle: "일정",
+                              width: screenWidth * 0.4,
+                              image: Image.asset('asset/schedule.png'),
+                            ),
+                            SizedBox(width: screenWidth * 0.024),
+                            StudyMainButtons(
+                                onTap: () {
+                                  context.push('/studies/$studyId/boards');
+                                },
+                                title: "Community",
+                                subtitle: "게시판",
+                                width: screenWidth * 0.4,
+                                image: Image.asset('asset/community.png')),
+                          ],
+                        ),
                       ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
                     const Divider(
                       thickness: 6,
                       color: AppColors.gray100,
