@@ -28,6 +28,7 @@ class StudyViewModel extends ChangeNotifier {
   MeetingType? _meetingType;
   String regularMeetingStr = '';
   List<int> selectedDays = [];
+  List<int> _selectedUsers = [];
   String startTime = '미등록';
   String endTime = '미등록';
   String _password = '';
@@ -54,6 +55,8 @@ class StudyViewModel extends ChangeNotifier {
   StudyView? get study => _study;
 
   List<UserModel> get users => _users;
+
+  List<int> get selectedUsers => _selectedUsers;
 
   MeetingType get meetingType => _meetingType!;
 
@@ -97,6 +100,18 @@ class StudyViewModel extends ChangeNotifier {
 
   set password(String password) {
     _password = password;
+    notifyListeners();
+  }
+
+  void updateSelectedUsers(int selectedUserId, int maxCount){
+    if (_selectedUsers.contains(selectedUserId)) {
+      _selectedUsers.remove(selectedUserId);
+    } else {
+      if (_selectedUsers.length >= maxCount) {
+        _selectedUsers.clear();
+      }
+      _selectedUsers.add(selectedUserId);
+    }
     notifyListeners();
   }
 
@@ -186,9 +201,9 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> switchLeader(int studyId, int userId) async {
+  Future<void> switchLeader(int studyId) async {
     try {
-      final studyModel = await _service.switchLeader(studyId, userId);
+      final studyModel = await _service.switchLeader(studyId, selectedUsers[0]);
       _newLeaderId = studyModel.leaderId;
       _isSwitched = true;
     } on ApiException catch (e) {
@@ -198,9 +213,9 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> forceToExitMember(int studyId, List<int> users) async {
+  Future<void> forceToExitMember(int studyId) async {
     try {
-      await _service.forceToExitMember(studyId, users);
+      await _service.forceToExitMember(studyId, _selectedUsers);
       _isOut = true;
     } on ApiException catch (e) {
       rethrow;

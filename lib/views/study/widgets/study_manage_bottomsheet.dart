@@ -30,12 +30,11 @@ class StudyManageBottomSheet extends StatefulWidget {
 }
 
 class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
-  List<int> selectedUsers = [];
 
   @override
   Widget build(BuildContext context) {
     int maxCount = (widget.isOut) ? 14 : 1;
-    final StudyViewModel vm = context.read<StudyViewModel>();
+    final StudyViewModel vm = context.watch<StudyViewModel>();
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.87,
@@ -90,17 +89,8 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                   return GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
-                      final selectedId = widget.users[index].id;
-                      setState(() {
-                        if (selectedUsers.contains(selectedId)) {
-                          selectedUsers.remove(selectedId);
-                        } else {
-                          if (selectedUsers.length >= maxCount) {
-                            selectedUsers.clear();
-                          }
-                          selectedUsers.add(selectedId);
-                        }
-                      });
+                      final selectedUserId = widget.users[index].id;
+                      vm.updateSelectedUsers(selectedUserId, maxCount);
                     },
                     child: StudyMemberListItem(
                       nickname: widget.users[index].nickname,
@@ -108,7 +98,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                       id: widget.users[index].id,
                       isLeader: false,
                       isSelected:
-                          selectedUsers.contains(widget.users[index].id),
+                          vm.selectedUsers.contains(widget.users[index].id),
                     ),
                   );
                 },
@@ -127,12 +117,13 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: StudyBottomButton(
+            color: (vm.selectedUsers.isNotEmpty) ? null : AppColors.gray200,
               onTap: () {
-                if (selectedUsers.isNotEmpty &&
-                    selectedUsers.length <= maxCount) {
+                if (vm.selectedUsers.isNotEmpty &&
+                    vm.selectedUsers.length <= maxCount) {
                   if (widget.isOut) {
                     vm
-                        .forceToExitMember(widget.studyId, selectedUsers)
+                        .forceToExitMember(widget.studyId)
                         .then((_) => {
                               if (vm.isOut)
                                 {
@@ -144,7 +135,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                                 }
                             });
                   } else {
-                    vm.switchLeader(widget.studyId, selectedUsers[0]).then((_) => {
+                    vm.switchLeader(widget.studyId).then((_) => {
                           if (vm.isSwitched)
                             {
                               context.pop(),

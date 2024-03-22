@@ -134,7 +134,7 @@ class StudyManageListItem extends StatelessWidget {
                           studyId: vm.study!.id,
                           title: "멤버 강제 퇴장",
                           content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
-                          buttonText: "강제 퇴장",
+                          buttonText: "${provider.selectedUsers.length}명 퇴장",
                           isOut: true,
                           users: _users,
                         );
