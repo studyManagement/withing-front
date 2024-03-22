@@ -20,6 +20,20 @@ class StudyUpdateScreen extends StatelessWidget {
     viewModel.getStudyInfo(studyId);
     return Consumer<UpdateStudyViewModel>(builder: (context, viewModel, _) {
       return DefaultLayout(
+          floatingActionButton: StudyBottomButton(
+              onTap: (viewModel.checkEverythingFilled())
+                  ? () {
+                      viewModel
+                          .updateStudyInfo()
+                          .then((_) => context.go('/studies/$studyId'));
+                    }
+                  : null,
+              text: '수정하기',
+              color: (viewModel.checkEverythingFilled())
+                  ? null
+                  : AppColors.gray200),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           title: getNewStudyTitle(isCreate: false),
           child: SingleChildScrollView(
             child: Column(
@@ -42,17 +56,6 @@ class StudyUpdateScreen extends StatelessWidget {
                 StudyMemberCount(
                   viewModel: viewModel,
                 ),
-                StudyBottomButton(
-                    onTap: (viewModel.checkEverythingFilled())
-                        ? () {
-                            viewModel.updateStudyInfo().then((_) => context.go(
-                                '/studies/$studyId'));
-                          }
-                        : null,
-                    text: '수정하기',
-                    color: (viewModel.checkEverythingFilled())
-                        ? null
-                        : AppColors.gray200),
               ],
             ),
           ));

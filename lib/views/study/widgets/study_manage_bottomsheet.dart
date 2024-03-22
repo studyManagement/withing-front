@@ -12,7 +12,7 @@ class StudyManageBottomSheet extends StatefulWidget {
   final int studyId;
   final String title;
   final String content;
-  final String buttontext;
+  final String buttonText;
   final bool isOut;
   final List<UserModel> users;
 
@@ -21,7 +21,7 @@ class StudyManageBottomSheet extends StatefulWidget {
       required this.studyId,
       required this.title,
       required this.content,
-      required this.buttontext,
+      required this.buttonText,
       required this.isOut,
       required this.users});
 
@@ -123,37 +123,40 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                 itemCount: widget.users.length),
           ),
         ),
-        const SizedBox(height: 12),
-        StudyBottomButton(
-            onTap: () {
-              if (selectedUsers.isNotEmpty &&
-                  selectedUsers.length <= maxCount) {
-                if (widget.isOut) {
-                  vm
-                      .forceToExitMember(widget.studyId, selectedUsers)
-                      .then((_) => {
-                            if (vm.isOut)
-                              {
-                                context.pop(),
-                                BottomToast(
-                                        context: context,
-                                        text: "선택한 멤버를 퇴장시켰어요.")
-                                    .show()
-                              }
-                          });
-                } else {
-                  vm.switchLeader(widget.studyId, selectedUsers[0]).then((_) => {
-                        if (vm.isSwitched)
-                          {
-                            context.pop(),
-                            BottomToast(context: context, text: "스터디장이 변경되었어요.")
-                                .show(),
-                          }
-                      });
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: StudyBottomButton(
+              onTap: () {
+                if (selectedUsers.isNotEmpty &&
+                    selectedUsers.length <= maxCount) {
+                  if (widget.isOut) {
+                    vm
+                        .forceToExitMember(widget.studyId, selectedUsers)
+                        .then((_) => {
+                              if (vm.isOut)
+                                {
+                                  context.pop(),
+                                  BottomToast(
+                                          context: context,
+                                          text: "선택한 멤버를 퇴장시켰어요.")
+                                      .show()
+                                }
+                            });
+                  } else {
+                    vm.switchLeader(widget.studyId, selectedUsers[0]).then((_) => {
+                          if (vm.isSwitched)
+                            {
+                              context.pop(),
+                              BottomToast(context: context, text: "스터디장이 변경되었어요.")
+                                  .show(),
+                            }
+                        });
+                  }
                 }
-              }
-            },
-            text: widget.buttontext)
+              },
+              text: widget.buttonText),
+        )
       ]),
     );
   }

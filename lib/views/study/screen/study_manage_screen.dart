@@ -114,7 +114,7 @@ class StudyManageListItem extends StatelessWidget {
                         studyId: vm.study!.id,
                         title: "스터디장 변경",
                         content: "스터디장을 위임받을 멤버를 선택해주세요.",
-                        buttontext: "스터디장 위임하기",
+                        buttonText: "스터디장 위임하기",
                         isOut: false,
                         users: _users,
                       );
@@ -134,7 +134,7 @@ class StudyManageListItem extends StatelessWidget {
                           studyId: vm.study!.id,
                           title: "멤버 강제 퇴장",
                           content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
-                          buttontext: "강제 퇴장",
+                          buttonText: "강제 퇴장",
                           isOut: true,
                           users: _users,
                         );

@@ -13,7 +13,6 @@ import '../../common/layout/default_layout.dart';
 import '../../di/injection.dart';
 import '../../view_models/study/create_study_viewmodel.dart';
 
-
 class CreateStudyScreen extends StatelessWidget {
   const CreateStudyScreen({super.key});
 
@@ -25,6 +24,19 @@ class CreateStudyScreen extends StatelessWidget {
       child: Consumer<CreateStudyViewModel>(
         builder: (context, viewModel, child) {
           return DefaultLayout(
+            floatingActionButton: StudyBottomButton(
+                onTap: (viewModel.checkEverythingFilled())
+                    ? () {
+                        viewModel.createStudy().then((_) => context
+                            .pushReplacement('/studies/${viewModel.studyId}'));
+                      }
+                    : null,
+                text: '생성하기',
+                color: (viewModel.checkEverythingFilled())
+                    ? null
+                    : AppColors.gray200),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             title: getNewStudyTitle(isCreate: true),
             child: SingleChildScrollView(
               child: Column(
@@ -47,18 +59,6 @@ class CreateStudyScreen extends StatelessWidget {
                   StudyMemberCount(viewModel: viewModel),
                   const Gray50Divider(dividerHeight: 6),
                   const StudyDiscloseToggle(),
-                  StudyBottomButton(
-                      onTap: (viewModel.checkEverythingFilled())
-                          ? () {
-                              viewModel.createStudy().then((_) =>
-                                  context.pushReplacement(
-                                      '/studies/${viewModel.studyId}'));
-                            }
-                          : null,
-                      text: '생성하기',
-                      color: (viewModel.checkEverythingFilled())
-                          ? null
-                          : AppColors.gray200),
                 ],
               ),
             ),
