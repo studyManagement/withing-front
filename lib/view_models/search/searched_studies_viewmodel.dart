@@ -51,7 +51,8 @@ String getRegularMeetingString(List<dynamic> meetingSchedules) {
     DateTime start =
     DateFormat('HH:mm').parse(meetingSchedules[0].startTime);
     String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-    String time = (start.hour < 12)
+    if(start.hour == 0) start.add(Duration(hours: 12));
+    String time = (start.hour > 0 && start.hour < 12)
         ? meetingSchedules[0].startTime
         : DateFormat('hh:mm').format(start);
     if (days.length == 7) {

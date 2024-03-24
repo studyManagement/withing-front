@@ -31,6 +31,7 @@ class StudyViewModel extends ChangeNotifier {
   List<int> _selectedUsers = [];
   String startTime = '미등록';
   String endTime = '미등록';
+  bool _isStart = true;
   String _password = '';
   List<bool> _isFilled = [for (int i = 0; i < 4; i++) false];
   bool _isInit = true; // 미등록인 경우에만 false
@@ -59,6 +60,8 @@ class StudyViewModel extends ChangeNotifier {
   List<int> get selectedUsers => _selectedUsers;
 
   MeetingType get meetingType => _meetingType!;
+
+  bool get isStart => _isStart;
 
   bool get isInit => _isInit;
 
@@ -100,6 +103,11 @@ class StudyViewModel extends ChangeNotifier {
 
   set password(String password) {
     _password = password;
+    notifyListeners();
+  }
+
+  set isStart(bool value) {
+    _isStart = value;
     notifyListeners();
   }
 
@@ -328,7 +336,9 @@ class StudyViewModel extends ChangeNotifier {
       DateTime start =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      String time = (start.hour < 12)
+      if(start.hour == 0) start.add(Duration(hours: 12));
+
+      String time = (start.hour > 0 && start.hour < 12)
           ? _study!.meetingSchedules[0].startTime
           : DateFormat('hh:mm').format(start);
       if (days.length == 7) {
@@ -367,10 +377,13 @@ class StudyViewModel extends ChangeNotifier {
         _study!.meetingSchedules[0].startTime.trim().isNotEmpty) {
       DateTime start =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
+
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      String time = (start.hour < 12)
-          ? _study!.meetingSchedules[0].startTime
-          : DateFormat('hh:mm').format(start);
+      if(start.hour == 0) start.add(Duration(hours: 12));
+        String time = (start.hour > 0 && start.hour < 12)
+            ? _study!.meetingSchedules[0].startTime
+            : DateFormat('hh:mm').format(start);
+
       startTime = '$startMeridiem $time';
     }
     if (_study!.meetingSchedules.isNotEmpty &&
@@ -378,9 +391,11 @@ class StudyViewModel extends ChangeNotifier {
       DateTime end =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].endTime);
       String endMeridiem = (end.hour < 12) ? '오전' : '오후';
-      String time = (end.hour < 12)
-          ? _study!.meetingSchedules[0].startTime
-          : DateFormat('hh:mm').format(end);
+      if(end.hour == 0) end.add(Duration(hours: 12));
+        String time = (end.hour > 0 && end.hour < 12)
+            ? _study!.meetingSchedules[0].startTime
+            : DateFormat('hh:mm').format(end);
+
       endTime = '$endMeridiem $time';
     }
   }
@@ -397,19 +412,15 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setMeetingTime(bool isStart, DateTime time, MeetingType type) {
+  void setMeetingTime(DateTime time, MeetingType type) {
     _meetingType = type;
-    if (isStart) {
+    if (_isStart) {
       String startMeridiem = (time.hour < 12) ? '오전' : '오후';
-      startTime = (time.hour < 12)
-          ? DateFormat('HH:mm').format(time)
-          : DateFormat('hh:mm').format(time);
+      startTime = DateFormat('hh:mm').format(time);
       startTime = '$startMeridiem $startTime';
     } else {
       String endMeridiem = (time.hour < 12) ? '오전' : '오후';
-      endTime = (time.hour < 12)
-          ? DateFormat('HH:mm').format(time)
-          : DateFormat('hh:mm').format(time);
+      endTime = DateFormat('hh:mm').format(time);
       endTime = '$endMeridiem $endTime';
     }
     notifyListeners();

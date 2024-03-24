@@ -58,7 +58,7 @@ class _SpinnerState extends State<Spinner> {
               (index) => makeTextWidget(
                   widget.children[index],
                   _pickedIndex.value == index
-                      ? AppColors.gray800
+                      ? AppColors.blue400
                       : AppColors.gray300),
             ),
           ),

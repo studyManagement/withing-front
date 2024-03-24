@@ -22,6 +22,19 @@ class SetRegularMeetingScreen extends StatelessWidget {
         child: Consumer<StudyViewModel>(builder: (context, consumer, child) {
           MeetingType curType = consumer.meetingType;
           return DefaultLayout(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: StudyBottomButton(
+                color: (consumer.checkDaysAndTimes(curType))
+                    ? null
+                    : AppColors.gray400,
+                onTap: (consumer.checkDaysAndTimes(curType))
+                    ? () {
+                        consumer.setMeetingSchedule(curType);
+                        context.go('/studies/${viewModel.study!.id}');
+                      }
+                    : null,
+                text: '설정 완료'),
             title: '정기모임',
             leader: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
@@ -30,20 +43,21 @@ class SetRegularMeetingScreen extends StatelessWidget {
             centerTitle: true,
             actions: [
               TextButton(
-                      onPressed: (consumer.meetingType == MeetingType.NONE)
-                          ? null
-                          : () {// 매일, 매주인 경우만 활성화
+                onPressed: (consumer.meetingType == MeetingType.NONE)
+                    ? null
+                    : () {
+                        // 매일, 매주인 경우만 활성화
                         consumer.initDaysAndTime(curType);
-                            },
-                      child: Text("초기화",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: (consumer.meetingType != MeetingType.NONE)
-                                  ? AppColors.blue400
-                                  : AppColors.gray300,
-                              fontSize: 16)),
-                    )
+                      },
+                child: Text("초기화",
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: (consumer.meetingType != MeetingType.NONE)
+                            ? AppColors.blue400
+                            : AppColors.gray300,
+                        fontSize: 16)),
+              )
             ],
-            child: SafeArea(
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -66,7 +80,8 @@ class SetRegularMeetingScreen extends StatelessWidget {
                             const CustomRadioButton(type: MeetingType.DAILY),
                             const SizedBox(width: 10),
                             Text('매일',
-                                style: Theme.of(context).textTheme.titleSmall),
+                                style:
+                                    Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                         const SizedBox(width: 20),
@@ -75,7 +90,8 @@ class SetRegularMeetingScreen extends StatelessWidget {
                             const CustomRadioButton(type: MeetingType.WEEKLY),
                             const SizedBox(width: 10),
                             Text('매주',
-                                style: Theme.of(context).textTheme.titleSmall),
+                                style:
+                                    Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                         const SizedBox(width: 20),
@@ -84,7 +100,8 @@ class SetRegularMeetingScreen extends StatelessWidget {
                             const CustomRadioButton(type: MeetingType.NONE),
                             const SizedBox(width: 10),
                             Text('설정안함',
-                                style: Theme.of(context).textTheme.titleSmall),
+                                style:
+                                    Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                         //  const SizedBox(width: 20),
@@ -94,18 +111,14 @@ class SetRegularMeetingScreen extends StatelessWidget {
                   if (consumer.meetingType == MeetingType.NONE)
                     const SizedBox()
                   else if (consumer.meetingType == MeetingType.WEEKLY)
-                    MeetingDaysSelector(type: curType,),
-                  if(consumer.meetingType != MeetingType.NONE)
-                    MeetingTimePicker(type: curType,),
-                  const Spacer(),
-                  Center(
-                      child: StudyBottomButton(
-                        color: (consumer.checkDaysAndTimes(curType)) ? null : AppColors.gray400,
-                          onTap: (consumer.checkDaysAndTimes(curType)) ? () {
-                            consumer.setMeetingSchedule(curType);
-                            context.pop();
-                          } : null,
-                          text: '설정 완료'))
+                    MeetingDaysSelector(
+                      type: curType,
+                    ),
+                  if (consumer.meetingType != MeetingType.NONE)
+                    MeetingTimePicker(
+                      type: curType,
+                    ),
+                  const SizedBox(height: 100)
                 ],
               ),
             ),
