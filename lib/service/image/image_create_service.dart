@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart' hide Headers;
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/exception/study/study_image_exception.dart';
 import 'package:retrofit/http.dart';
 import '../../common/requester/network_exception.dart';
 part 'image_create_service.g.dart';
@@ -31,7 +33,10 @@ class ImageCreateService {
         image,
       );
       return response;
-    } on NetworkException catch (e) {
+    } on ApiException catch (e){
+      throw StudyImageException(e.cause, e.code);
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
   }

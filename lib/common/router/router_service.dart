@@ -133,7 +133,7 @@ class RouterService {
                   path: 'studies/:studyId',
                   builder: (context, state) {
                     return ChangeNotifierProvider(
-                        create: (_) => StudyViewModel(getIt<StudyService>()),
+                        create: (_) => StudyViewModel(context, getIt<StudyService>()),
                         child: StudyInfoScreen(
                           studyId: int.parse(state.pathParameters['studyId']!),
                         ));

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
-import 'package:modi/model/study/study_exception.dart';
+import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/model/study/study_list_model.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/study/StudyType.dart';
@@ -75,10 +75,7 @@ class StudyService {
       final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        throw StudyException(e.cause, e.code);
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -89,16 +86,7 @@ class StudyService {
       final StudyModel study = await _studyApi.finishStudy(studyId);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 400) {
-        // 이미 종료
-        rethrow;
-      } else if (e.code == 401) {
-        // accessToken 만료
-        rethrow;
-      } else if (e.code == 404) {
-        // studyId 오류
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -111,7 +99,7 @@ class StudyService {
           await _studyApi.updateStudyInfo(studyId, newStudy.toJson());
       return study;
     } on ApiException catch (e) {
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -122,11 +110,7 @@ class StudyService {
       final StudyModel study = await _studyApi.deleteStudy(studyId);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // studyId 오류
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -137,8 +121,7 @@ class StudyService {
       final StudyModel study = await _studyApi.switchLeader(studyId, userId);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 401 || e.code == 400 || e.code == 404) {}
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -164,9 +147,7 @@ class StudyService {
       var response = await _studyApi.joinStudy(studyId, {"password": password});
       return response;
     } on ApiException catch (e) {
-      if (e.code == 400 || e.code == 404) {
-        throw StudyException(e.cause, e.code);
-      }
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -180,10 +161,7 @@ class StudyService {
           await _studyApi.setMeetingSchedule(studyId, meetingSchedules);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 404 || e.code == 400) {
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -194,7 +172,7 @@ class StudyService {
       await _studyApi.pickFavoriteStudy(studyId);
       return;
     } on ApiException catch (e) {
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -205,8 +183,7 @@ class StudyService {
       await _studyApi.cancelFavoriteStudy(studyId);
       return;
     } on ApiException catch (e) {
-
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }

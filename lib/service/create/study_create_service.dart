@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/exception/study/study_image_exception.dart';
 import 'package:retrofit/http.dart';
 import '../../common/requester/network_exception.dart';
 import '../../model/create/new_study_info_model.dart';
@@ -46,7 +48,13 @@ class StudyCreateService {
         studyCreateDtoJson,
       );
       return response;
-    } on NetworkException catch (e) {
+    } on ApiException catch (e) {
+      if(e.code == 404) {
+        throw StudyImageException(e.cause, e.code);
+      }
+      rethrow;
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
   }

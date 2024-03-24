@@ -107,7 +107,7 @@ class StudyManageListItem extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                    create: (_) => StudyViewModel(getIt<StudyService>()),
+                    create: (_) => StudyViewModel(context, getIt<StudyService>()),
                     child: Consumer<StudyViewModel>(
                         builder: (context, provider, child) {
                       return StudyManageBottomSheet(
@@ -127,7 +127,7 @@ class StudyManageListItem extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                      create: (_) => StudyViewModel(getIt<StudyService>()),
+                      create: (_) => StudyViewModel(context, getIt<StudyService>()),
                       child: Consumer<StudyViewModel>(
                           builder: (context, provider, child) {
                         return StudyManageBottomSheet(

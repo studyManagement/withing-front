@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/logger/app_event.dart';
-import 'package:modi/common/requester/api_exception.dart';
-import 'package:modi/model/study/study_exception.dart';
+import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/service/study/MeetingType.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/views/common/study_error_page.dart';
 import '../../common/logger/logging_interface.dart';
+import '../../common/modal/modi_modal.dart';
 import '../../di/injection.dart';
 import '../../model/board/board_model.dart';
 import '../../model/study/study_list_model.dart';
@@ -18,6 +19,7 @@ import 'model/study_view.dart';
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
+  final BuildContext _context;
 
   static final LoggingInterface _logger = getIt<LoggingInterface>();
 
@@ -89,7 +91,7 @@ class StudyViewModel extends ChangeNotifier {
 
   bool get hasLike => _hasLike;
 
-  StudyViewModel(this._service);
+  StudyViewModel(this._context, this._service);
 
   set meetingType(MeetingType type) {
     initDaysAndTime(type);
@@ -111,7 +113,7 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateSelectedUsers(int selectedUserId, int maxCount){
+  void updateSelectedUsers(int selectedUserId, int maxCount) {
     if (_selectedUsers.contains(selectedUserId)) {
       _selectedUsers.remove(selectedUserId);
     } else {
@@ -132,7 +134,7 @@ class StudyViewModel extends ChangeNotifier {
     _isFilled = [for (int i = 0; i < 4; i++) false];
   }
 
-  Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
+  Future<void> fetchStudyInfo(int studyId) async {
     if (_study == null) {
       try {
         _study = StudyView.from(await _service.fetchStudyInfo(studyId));
@@ -149,9 +151,9 @@ class StudyViewModel extends ChangeNotifier {
         }
         notifyListeners();
       } on StudyException catch (e) {
-        // 스터디가 없는 경우
-        if (!context.mounted) return;
-        navigateToStudyErrorPage(context);
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
       }
     }
   }
@@ -181,31 +183,58 @@ class StudyViewModel extends ChangeNotifier {
         _successToJoin = false;
         _isFull = true;
       }
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
     _isChecked = true;
     notifyListeners();
   }
 
   Future<void> pickFavoriteStudy() async {
-    await _service.pickFavoriteStudy(_study!.id);
-    _hasLike = true;
-    notifyListeners();
+    try {
+      await _service.pickFavoriteStudy(_study!.id);
+      _hasLike = true;
+      notifyListeners();
+    } on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
+    }
   }
 
   Future<void> cancelFavoriteStudy() async {
-    await _service.cancelFavoriteStudy(_study!.id);
-    _hasLike = false;
-    notifyListeners();
+    try {
+      await _service.cancelFavoriteStudy(_study!.id);
+      _hasLike = false;
+      notifyListeners();
+    } on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
+    }
   }
 
   /// Admin Study
   Future<void> finishStudy() async {
-    await _service.finishStudy(_study!.id);
+    try {
+      await _service.finishStudy(_study!.id);
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => {_context.pop(), _context.pop()}, () => null);
+    }
     notifyListeners();
   }
 
   Future<void> deleteStudy() async {
-    await _service.deleteStudy(_study!.id);
+    try {
+      await _service.deleteStudy(_study!.id);
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => {_context.pop(), _context.pop()}, () => null);
+    }
     notifyListeners();
   }
 
@@ -214,9 +243,12 @@ class StudyViewModel extends ChangeNotifier {
       final studyModel = await _service.switchLeader(studyId, selectedUsers[0]);
       _newLeaderId = studyModel.leaderId;
       _isSwitched = true;
-    } on ApiException catch (e) {
+    } on StudyException catch (e) {
       // 변경 실패
       _isSwitched = false;
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
     notifyListeners();
   }
@@ -225,8 +257,10 @@ class StudyViewModel extends ChangeNotifier {
     try {
       await _service.forceToExitMember(studyId, _selectedUsers);
       _isOut = true;
-    } on ApiException catch (e) {
-      rethrow;
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
     notifyListeners();
   }
@@ -336,7 +370,7 @@ class StudyViewModel extends ChangeNotifier {
       DateTime start =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      if(start.hour == 0) start.add(Duration(hours: 12));
+      if (start.hour == 0) start.add(Duration(hours: 12));
 
       String time = (start.hour > 0 && start.hour < 12)
           ? _study!.meetingSchedules[0].startTime
@@ -379,10 +413,10 @@ class StudyViewModel extends ChangeNotifier {
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
 
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      if(start.hour == 0) start.add(Duration(hours: 12));
-        String time = (start.hour > 0 && start.hour < 12)
-            ? _study!.meetingSchedules[0].startTime
-            : DateFormat('hh:mm').format(start);
+      if (start.hour == 0) start.add(Duration(hours: 12));
+      String time = (start.hour > 0 && start.hour < 12)
+          ? _study!.meetingSchedules[0].startTime
+          : DateFormat('hh:mm').format(start);
 
       startTime = '$startMeridiem $time';
     }
@@ -391,10 +425,10 @@ class StudyViewModel extends ChangeNotifier {
       DateTime end =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].endTime);
       String endMeridiem = (end.hour < 12) ? '오전' : '오후';
-      if(end.hour == 0) end.add(Duration(hours: 12));
-        String time = (end.hour > 0 && end.hour < 12)
-            ? _study!.meetingSchedules[0].startTime
-            : DateFormat('hh:mm').format(end);
+      if (end.hour == 0) end.add(Duration(hours: 12));
+      String time = (end.hour > 0 && end.hour < 12)
+          ? _study!.meetingSchedules[0].startTime
+          : DateFormat('hh:mm').format(end);
 
       endTime = '$endMeridiem $time';
     }
@@ -440,9 +474,9 @@ class StudyViewModel extends ChangeNotifier {
     _isMember = users.any((user) => user.id == _userId);
   }
 
-  void navigateToStudyErrorPage(BuildContext context) {
+  void navigateToStudyErrorPage() {
     Navigator.push(
-      context,
+      _context,
       MaterialPageRoute(builder: (context) => const StudyErrorPage()),
     );
   }

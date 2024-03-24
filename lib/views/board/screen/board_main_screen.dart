@@ -17,15 +17,13 @@ class BoardMainScreen extends StatelessWidget {
 
   BoardMainScreen({super.key, required this.studyId, required this.isNotice});
 
-  final BoardViewModel vm = BoardViewModel(getIt<BoardService>());
-
   void initCreateScreenState(BoardViewModel viewModel) {
     viewModel.isValid = false;
     viewModel.boardContents = '';
     viewModel.boardTitle = '';
   }
 
-  void loadBoardList() {
+  void loadBoardList(BoardViewModel vm) {
     vm.setStudyId = studyId;
     vm.fetchNotices();
     if (isNotice == false) {
@@ -36,11 +34,13 @@ class BoardMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BoardViewModel vm = BoardViewModel(context, getIt<BoardService>());
+
     return ChangeNotifierProvider.value(
       value: vm,
       child: Consumer<BoardViewModel>(builder: (context, vm, child) {
         if (vm.isRefreshed) {
-          loadBoardList();
+          loadBoardList(vm);
         }
         return DefaultLayout(
             title: (isNotice == true) ? '공지' : '게시판',

@@ -35,7 +35,7 @@ class StudyInfoScreen extends StatelessWidget {
     StudyViewModel vm = context.watch<StudyViewModel>();
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
-    vm.fetchStudyInfo(context, studyId).then((_) {
+    vm.fetchStudyInfo(studyId).then((_) {
       vm.getRegularMeetingString();
       vm.checkRegistered();
     });
@@ -57,10 +57,6 @@ class StudyInfoScreen extends StatelessWidget {
         offstage: offstage,
         child: StudyBottomButton(
             onTap: () {
-              if (vm.study!.headcount >= vm.study!.max) {
-                ModiModal.openDialog(context, '스터디 정원이 초과되었어요.', '', false,
-                    () => context.pop(), () => null);
-              } else {
                 (vm.study!.private)
                     ? showDialog(
                         context: context,
@@ -71,7 +67,6 @@ class StudyInfoScreen extends StatelessWidget {
                               child: InputPasswordModal(studyId: studyId));
                         })
                     : joinToPublicStudy(vm, context);
-              }
             },
             text: '가입하기'),
       ),
@@ -138,7 +133,7 @@ class StudyInfoScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     ChangeNotifierProvider(
-                        create: (_) => BoardViewModel(getIt<BoardService>()),
+                        create: (_) => BoardViewModel(context, getIt<BoardService>()),
                         child: Notice(
                             studyId: studyId,
                             isMember: vm.isMember,
@@ -223,16 +218,6 @@ class StudyInfoScreen extends StatelessWidget {
     vm.joinStudy(null).then((_) => {
           if (vm.successToJoin)
             {context.go('/studies/$studyId')}
-          else if (vm.isFull)
-            {
-              ModiModal.openDialog(context, '스터디 정원이 초과되었어요.', '', false,
-                  () => context.pop(), () => null)
-            }
-          else
-            {
-              ModiModal.openDialog(
-                  context, '스터디 가입 실패', '', false, () => null, () => null)
-            }
         });
   }
 }

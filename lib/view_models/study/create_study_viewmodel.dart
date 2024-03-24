@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:modi/exception/study/study_image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../service/create/study_create_service.dart';
@@ -39,6 +40,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   int _studyMemberCount = 0;
   int? _studyImageId;
   int? _studyId;
+
   int? get studyId => _studyId;
   final List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
@@ -166,6 +168,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   /// create study api
   Future<void> createStudy() async {
+    try {
       final StudyModel newStudy = await _studyCreateService.callCreateApi(
         _studyName,
         _studyMemberCount,
@@ -176,6 +179,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyImageId!,
       );
       _studyId = newStudy.id;
-      notifyListeners();
+    } on StudyImageException catch (e) {}
+    notifyListeners();
   }
 }

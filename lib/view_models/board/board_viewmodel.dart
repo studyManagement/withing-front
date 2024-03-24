@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/model/board/comment_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
-import 'package:modi/views/board/widgets/no_post.dart';
+import '../../common/modal/modi_modal.dart';
+import '../../exception/study/study_exception.dart';
 import '../../model/board/board_model.dart';
-import '../../model/board/post_exception.dart';
 import 'model/post.dart';
 
 class BoardViewModel extends ChangeNotifier {
   final BoardService _service;
+  final BuildContext _context;
 
-  BoardViewModel(this._service);
+  BoardViewModel(this._context, this._service);
 
   static const int SIZE = 20;
 
@@ -51,6 +53,7 @@ class BoardViewModel extends ChangeNotifier {
   String get comment => _comment;
 
   int? get studyId => _studyId;
+
   int? get boardId => _boardId;
 
   Future<void> scrollListener(bool isNotice) async {
@@ -76,25 +79,29 @@ class BoardViewModel extends ChangeNotifier {
     if (newNotices.isNotEmpty) {
       notices.addAll(newNotices);
       hasPost = true;
-      // print(notices.length);
       notifyListeners();
     }
   }
 
   Future<void> fetchBoardList() async {
-    List<BoardModel> newPosts = [];
-    int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
-    if (hasNextPosts == true) {
-      newPosts = await _service.fetchBoardList(_studyId!, false, SIZE, page);
-      if (newPosts.length < SIZE) {
-        hasNextPosts = false;
+    try {
+      List<BoardModel> newPosts = [];
+      int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
+      if (hasNextPosts == true) {
+        newPosts = await _service.fetchBoardList(_studyId!, false, SIZE, page);
+        if (newPosts.length < SIZE) {
+          hasNextPosts = false;
+        }
       }
-    }
-    if (newPosts.isNotEmpty) {
-      posts.addAll(newPosts);
-      hasPost = true;
-      // print(posts.length);
-      notifyListeners();
+      if (newPosts.isNotEmpty) {
+        posts.addAll(newPosts);
+        hasPost = true;
+        notifyListeners();
+      }
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
@@ -107,31 +114,52 @@ class BoardViewModel extends ChangeNotifier {
       notifyListeners();
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
-    } on NoPostException catch (e) {
-      throw const NoPost();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
   Future<void> deletePost(int boardId) async {
-    await _service.deletePost(_studyId!, boardId);
-    notifyListeners();
+    try {
+      await _service.deletePost(_studyId!, boardId);
+      notifyListeners();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
+    }
   }
 
   Future<void> createPost() async {
     if (_isValid) {
-      BoardModel newPost = await _service.createPost(_studyId!, Post(_title, _contents));
-      _boardId = newPost.id;
+      try {
+        BoardModel newPost =
+            await _service.createPost(_studyId!, Post(_title, _contents));
+        _boardId = newPost.id;
+        notifyListeners();
+      } on StudyException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
       }
-      notifyListeners();
     }
+  }
 
   Future<void> updatePost(int boardId) async {
     if (_isValid) {
-      BoardModel boardModel = await _service.updatePost(
-          _studyId!, boardId, Post(_title, _contents));
-      _post = boardModel;
-      _boardId = boardModel.id;
-      notifyListeners();
+      try {
+        BoardModel boardModel = await _service.updatePost(
+            _studyId!, boardId, Post(_title, _contents));
+        _post = boardModel;
+        _boardId = boardModel.id;
+        notifyListeners();
+      } on StudyException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
     }
   }
 
@@ -141,32 +169,52 @@ class BoardViewModel extends ChangeNotifier {
       _isFirst = false;
       comments = await _service.fetchComments(_studyId!, boardId);
       if (comments.isNotEmpty) notifyListeners();
-    } on NoPostException catch (e) {
-      return;
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
   Future<void> createComment(int boardId) async {
     if (_isValid && _comment.trim().isNotEmpty) {
-      CommentModel newComment =
-          await _service.createComments(_studyId!, boardId, _comment);
-      comments.add(newComment);
-      comment = '';
-      _isAddedComment = true;
-      notifyListeners();
+      try {
+        CommentModel newComment =
+            await _service.createComments(_studyId!, boardId, _comment);
+        comments.add(newComment);
+        comment = '';
+        _isAddedComment = true;
+        notifyListeners();
+      } on StudyException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
     }
   }
 
   Future<void> setNotice(int boardId) async {
-    await _service.setNotice(_studyId!, boardId);
-    refreshBoardList();
-    notifyListeners();
+    try {
+      await _service.setNotice(_studyId!, boardId);
+      refreshBoardList();
+      notifyListeners();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
+    }
   }
 
   Future<void> unsetNotice(int boardId) async {
-    await _service.unsetNotice(_studyId!, boardId);
-    refreshBoardList();
-    notifyListeners();
+    try {
+      await _service.unsetNotice(_studyId!, boardId);
+      refreshBoardList();
+      notifyListeners();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
+    }
   }
 
   set setStudyId(int studyId) {
