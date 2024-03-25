@@ -96,14 +96,11 @@ class _StudyMemberCountState extends State<StudyMemberCount> {
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.gray150),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.gray150),
-                    ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.gray150),
+                      borderSide: BorderSide(color: AppColors.black),
                     ),
                     focusedErrorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.gray150),
+                      borderSide: BorderSide(color: AppColors.black),
                     ),
                   ),
                   inputFormatters: <TextInputFormatter>[

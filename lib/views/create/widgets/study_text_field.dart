@@ -69,6 +69,7 @@ class _StudyTextFieldState extends State<StudyTextField> {
                 ),
           ),
           TextField(
+            autofocus: true,
             controller: controller,
             style: Theme.of(context).textTheme.bodyMedium,
             onChanged: (value) =>
@@ -93,16 +94,16 @@ class _StudyTextFieldState extends State<StudyTextField> {
                     color: AppColors.gray500,
                   ),
               enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray150),
+                borderSide: BorderSide(color: AppColors.black),
               ),
               focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray150),
+                borderSide: BorderSide(color: AppColors.black),
               ),
               errorBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: AppColors.gray150),
               ),
               focusedErrorBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.gray150),
+                borderSide: BorderSide(color: AppColors.black),
               ),
             ),
             maxLength: maxLength,
