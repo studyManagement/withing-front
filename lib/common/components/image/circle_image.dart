@@ -17,9 +17,9 @@ class CircleImage extends StatelessWidget {
         width: width,
         height: height,
         decoration: const BoxDecoration(
-          color: AppColors.gray150,
           shape: BoxShape.circle,
         ),
+        child: Image.asset('asset/default_image.png')
       );
     }
 
@@ -38,9 +38,13 @@ class CircleImage extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.gray150,
         shape: BoxShape.circle,
+        border: Border.all(
+          color: AppColors.white,
+          width: 3
+        )
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(360),

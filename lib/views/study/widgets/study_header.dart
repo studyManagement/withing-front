@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/image/circle_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/components/study_categories_widget.dart';
@@ -13,7 +14,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Container grayContainer =
-    Container(width: 64, height: 64, color: AppColors.gray150);
+        Container(width: 64, height: 64, color: AppColors.gray150);
 
     final StudyViewModel vm = context.read<StudyViewModel>();
 
@@ -21,20 +22,19 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          ClipOval(
-            child:  (vm.study!.studyImage != null)
-                ? Image.network(
-              vm.study!.studyImage!,
-              width: 64,
-              height: 64,
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return grayContainer;
-              },
-            )
-                : grayContainer,
-          ),
+          CircleImage(64, 64,
+              image: (vm.study!.studyImage == null)
+                  ? null
+                  : Image.network(
+                      vm.study!.studyImage!,
+                      width: 64,
+                      height: 64,
+                      fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return grayContainer;
+                      },
+                    )),
           const SizedBox(width: 14),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

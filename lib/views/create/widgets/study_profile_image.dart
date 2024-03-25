@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../../common/utils/pick_image_file.dart';
-import '../../../common/theme/app/app_colors.dart';
 
 class StudyProfileImage extends StatelessWidget {
   final StudyInfoViewModel viewModel;
@@ -27,8 +26,9 @@ class StudyProfileImage extends StatelessWidget {
             fit: BoxFit.cover,
           ));
     } else {
-      shapeDecoration =
-          const ShapeDecoration(shape: OvalBorder(), color: AppColors.gray150);
+      shapeDecoration = const ShapeDecoration(
+          shape: OvalBorder(),
+          image: DecorationImage(image: AssetImage('asset/default_image.png')));
     }
     return Padding(
         padding: const EdgeInsets.only(top: 20, bottom: 50),
