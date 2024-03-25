@@ -42,7 +42,7 @@ class StudyViewModel extends ChangeNotifier {
   bool _isSwitched = false;
   bool _isMember = true;
 
-  bool _isValidPwd = true;
+  bool _isValidPwd = false;
   bool _isChecked = false;
   bool _successToJoin = false;
   bool _isFull = false;
@@ -126,7 +126,7 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   void initPasswordProperties() {
-    _isValidPwd = true;
+    _isValidPwd = false;
     _isErrorText = false;
     _isChecked = false;
     _successToJoin = false;
@@ -180,12 +180,15 @@ class StudyViewModel extends ChangeNotifier {
       if (response != null) _successToJoin = true;
     } on StudyException catch (e) {
       if (e.code == 400) {
+        _isErrorText = true;
         _successToJoin = false;
         _isFull = true;
       }
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      else if (e.code == 404){
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
     }
     _isChecked = true;
     notifyListeners();
@@ -302,6 +305,8 @@ class StudyViewModel extends ChangeNotifier {
   /// utils
   void renderObscuringChar(String input) {
     _password = input;
+    _isErrorText = false;
+    _isValidPwd = RegExp(r'^\d{4}$').hasMatch(_password);
     for (int i = 1; i <= 4; i++) {
       if (i <= _password.length) {
         _isFilled[i - 1] = true;
@@ -316,17 +321,10 @@ class StudyViewModel extends ChangeNotifier {
     List<String> errorText = [
       '스터디 가입을 위해 필요해요.',
       '잘못된 비밀번호에요.',
-      '올바른 형식이 아니에요.'
     ];
-
-    if (!successToJoin && _isChecked) {
-      _isErrorText = true;
+    if (!successToJoin && _isChecked && _isErrorText) {
       return errorText[1];
-    } else if (!_isChecked && !_isValidPwd && !successToJoin) {
-      _isErrorText = true;
-      return errorText[2];
     } else {
-      _isErrorText = false;
       return errorText[0];
     }
   }

@@ -16,12 +16,12 @@ class InputPasswordModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final StudyViewModel vm = context.watch<StudyViewModel>();
 
-
     final FocusNode _focusNode = FocusNode();
 
     void _requestFocus() {
       FocusScope.of(context).requestFocus(_focusNode);
     }
+
     return AlertDialog(
       insetPadding: EdgeInsets.zero,
       surfaceTintColor: Colors.white,
@@ -48,29 +48,30 @@ class InputPasswordModal extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 TextField(
-                  controller: _controller,
-                  autofocus: true,
-                  focusNode: _focusNode,
-                  showCursor: false,
-                  maxLength: 4,
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.transparent),
-                  decoration: const InputDecoration(
-                    counterText: '',
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (String data) {
-                    _requestFocus();
-                    vm.renderObscuringChar(data);
-                  },
-                  onSubmitted: (String data) {
-                    vm.isValidPassword().then((_) => {
-                          if (vm.successToJoin)
-                            {context.go('/studies/$studyId')},
-                          _controller.clear()
-                        });
-                  },
-                ),
+                    controller: _controller,
+                    autofocus: true,
+                    focusNode: _focusNode,
+                    showCursor: false,
+                    maxLength: 4,
+                    keyboardType: TextInputType.number,
+                    style: const TextStyle(color: Colors.transparent),
+                    decoration: const InputDecoration(
+                      counterText: '',
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (String data) {
+                      _requestFocus();
+                      vm.renderObscuringChar(data);
+                    },
+                    onSubmitted: (vm.isValidPwd)
+                        ? (String data) {
+                            vm.isValidPassword().then((_) => {
+                                  if (vm.successToJoin)
+                                    {context.go('/studies/$studyId')},
+                                  _controller.clear()
+                                });
+                          }
+                        : null),
                 Positioned(
                   top: 20,
                   child: Wrap(
@@ -111,15 +112,15 @@ class InputPasswordModal extends StatelessWidget {
             ),
             const SizedBox(width: 5),
             ConfirmButton(
-                onTap: () {
+                onTap:  (vm.isValidPwd) ?  () {
                   vm.isValidPassword().then((_) => {
-                        if (vm.successToJoin)
-                          {context.go('/studies/$studyId')},
-                    _controller.clear()
+                        if (vm.successToJoin) {context.go('/studies/$studyId')},
+                        _controller.clear()
                       });
-                },
+                } : null,
                 text: '확인',
-                backgroundColor: AppColors.blue600,
+                backgroundColor:
+                    (vm.isValidPwd) ? AppColors.blue600 : AppColors.gray200,
                 width: 143),
           ],
         ),
