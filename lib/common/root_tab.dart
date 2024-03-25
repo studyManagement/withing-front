@@ -53,7 +53,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           ),
         ),
         height: 80,
-        padding: const EdgeInsets.symmetric(horizontal: 48),
+        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
