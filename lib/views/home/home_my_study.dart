@@ -20,7 +20,12 @@ class HomeMyStudy extends StatelessWidget {
 
     List<Widget> homeWidgets = [];
     if (studies.isEmpty) {
-      homeWidgets.add(ModiException(const ['등록된 스터디가 없습니다.']));
+      homeWidgets.add(
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: ModiException(const ['등록된 스터디가 없어요.']),
+        ),
+      );
     } else {
       homeWidgets.addAll([
         const Padding(

@@ -14,9 +14,9 @@ abstract class SignupApi {
   @POST("/users/signup")
   @Headers({'X-Exclude-Access-Token': 'true'})
   Future<SignupModel> signup(
-    @Field("social_id_type") String provider,
+    @Field("socialIdType") String provider,
     @Field("nickname") String nickname,
-    @Field("social_id") String accessToken,
+    @Field("socialId") String accessToken,
     @Field("introduce") String introduce,
   );
 
