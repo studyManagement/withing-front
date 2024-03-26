@@ -94,7 +94,6 @@ class StudyViewModel extends ChangeNotifier {
   StudyViewModel(this._context, this._service);
 
   set meetingType(MeetingType type) {
-    initDaysAndTime(type);
     _meetingType = type;
     notifyListeners();
   }
@@ -183,8 +182,7 @@ class StudyViewModel extends ChangeNotifier {
         _isErrorText = true;
         _successToJoin = false;
         _isFull = true;
-      }
-      else if (e.code == 404){
+      } else if (e.code == 404) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
@@ -199,10 +197,10 @@ class StudyViewModel extends ChangeNotifier {
       await _service.pickFavoriteStudy(_study!.id);
       _hasLike = true;
       notifyListeners();
-    } on StudyException catch (e){
+    } on StudyException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
+          () => _context.pop(), () => null);
     }
   }
 
@@ -211,10 +209,10 @@ class StudyViewModel extends ChangeNotifier {
       await _service.cancelFavoriteStudy(_study!.id);
       _hasLike = false;
       notifyListeners();
-    } on StudyException catch (e){
+    } on StudyException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
+          () => _context.pop(), () => null);
     }
   }
 
@@ -464,6 +462,12 @@ class StudyViewModel extends ChangeNotifier {
     selectedDays = [];
     startTime = '미등록';
     endTime = '미등록';
+    notifyListeners();
+  }
+
+  void initMeetingSchedule(MeetingType type){
+    initDaysAndTime(type);
+    _meetingType = type;
     notifyListeners();
   }
 

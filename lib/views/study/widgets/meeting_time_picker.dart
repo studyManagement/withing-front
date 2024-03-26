@@ -21,6 +21,7 @@ class MeetingTimePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StudyViewModel>();
+    final List<int> selectedDays = viewModel.selectedDays;
 
     return Column(
       children: [
@@ -44,6 +45,8 @@ class MeetingTimePicker extends StatelessWidget {
               InkWell(
                 onTap: () {
                   viewModel.isStart = true;
+                  viewModel.meetingType = type;
+                  viewModel.selectedDays = selectedDays;
                   ModiModal.openBottomSheet(
                     context,
                     widget: StatefulBuilder(
@@ -87,8 +90,10 @@ class MeetingTimePicker extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ValueButton(viewModel.startTime, onTap: () {
+                                  viewModel.meetingType = type;
                                   setState(() {
-                                    if (!viewModel.isStart) viewModel.isStart = true;
+                                    if (!viewModel.isStart)
+                                      viewModel.isStart = true;
                                   });
                                 },
                                     borderColor: (viewModel.isStart)
@@ -105,8 +110,10 @@ class MeetingTimePicker extends StatelessWidget {
                                 ValueButton(
                                   viewModel.endTime,
                                   onTap: () {
+                                    viewModel.meetingType = type;
                                     setState(() {
-                                      if (viewModel.isStart) viewModel.isStart = false;
+                                      if (viewModel.isStart)
+                                        viewModel.isStart = false;
                                     });
                                   },
                                   borderColor: (!viewModel.isStart)
@@ -124,7 +131,7 @@ class MeetingTimePicker extends StatelessWidget {
                                 SizedBox(
                                   width: 250,
                                   child: TimeSpinner(
-                                    (viewModel.startTime == '미등록')
+                                    (viewModel.study!.meetingSchedules.isEmpty)
                                         ? DateTime.now()
                                         : DateFormat('HH:mm').parse(viewModel
                                             .study!
@@ -141,11 +148,16 @@ class MeetingTimePicker extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 40),
                                 ConfirmButton(
-                                  onTap: () {
-                                    context.pop();
-                                  },
+                                  onTap: (viewModel.checkDaysAndTimes(type))
+                                      ? () {
+                                          context.pop();
+                                        }
+                                      : null,
                                   text: '선택 완료',
-                                  backgroundColor: AppColors.blue600,
+                                  backgroundColor:
+                                      (viewModel.checkDaysAndTimes(type))
+                                          ? AppColors.blue600
+                                          : AppColors.gray200,
                                   height: 50,
                                   width: MediaQuery.of(context).size.width,
                                 ),

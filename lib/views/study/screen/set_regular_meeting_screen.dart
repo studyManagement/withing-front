@@ -148,7 +148,7 @@ class CustomRadioButton extends StatelessWidget {
         value: type,
         groupValue: viewModel.meetingType,
         onChanged: (value) {
-          viewModel.meetingType = value!;
+          viewModel.initMeetingSchedule(value!);
         });
   }
 }

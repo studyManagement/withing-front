@@ -5,9 +5,10 @@ class MinuteGenerator implements DateTimeGenerator {
   List<String> makeElements(DateTime pickedDate) {
     List<String> elements = [];
 
-    for (int i = 1; i < 60; i++) {
+    for (int i = 0; i < 60; i++) {
       int element = i;
-      elements.add(element.toString());
+
+      elements.add(element.toString().padLeft(2,'0'));
     }
 
     return elements;
