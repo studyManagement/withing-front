@@ -74,6 +74,7 @@ flutter:
     - asset/fonts/
     - asset/share/
     - .local.env
+    - shorebird.yaml
 
   fonts:
     - family: Pretendard
