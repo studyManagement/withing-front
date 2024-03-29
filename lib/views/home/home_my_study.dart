@@ -9,6 +9,8 @@ import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/components/image/circle_image.dart';
+
 class HomeMyStudy extends StatelessWidget {
   HomeMyStudy({super.key});
 
@@ -172,10 +174,10 @@ class StudyImage extends StatelessWidget {
               ),
               shape: BoxShape.circle,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(36),
-              child: (studyImage == null)
-                  ? const SizedBox(width: 42, height: 42)
+            child: CircleImage(
+              42,42,
+              image: (studyImage == null)
+                  ? null
                   : Image.network(
                       studyImage!,
                       width: 42,
