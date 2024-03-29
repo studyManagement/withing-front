@@ -57,16 +57,16 @@ class StudyInfoScreen extends StatelessWidget {
         offstage: offstage,
         child: StudyBottomButton(
             onTap: () {
-                (vm.study!.private)
-                    ? showDialog(
-                        context: context,
-                        builder: (_) {
-                          vm.initPasswordProperties();
-                          return ChangeNotifierProvider.value(
-                              value: vm,
-                              child: InputPasswordModal(studyId: studyId));
-                        })
-                    : joinToPublicStudy(vm, context);
+              (vm.study!.private)
+                  ? showDialog(
+                      context: context,
+                      builder: (_) {
+                        vm.initPasswordProperties();
+                        return ChangeNotifierProvider.value(
+                            value: vm,
+                            child: InputPasswordModal(studyId: studyId));
+                      })
+                  : joinToPublicStudy(vm, context);
             },
             text: '가입하기'),
       ),
@@ -74,7 +74,9 @@ class StudyInfoScreen extends StatelessWidget {
           ? Container()
           : SingleChildScrollView(
               child: SizedBox(
-                height: (isTabletPrt) ? MediaQuery.of(context).size.width : MediaQuery.of(context).size.height,
+                height: (isTabletPrt)
+                    ? MediaQuery.of(context).size.width
+                    : MediaQuery.of(context).size.height,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -133,11 +135,16 @@ class StudyInfoScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     ChangeNotifierProvider(
-                        create: (_) => BoardViewModel(context, getIt<BoardService>()),
-                        child: Notice(
-                            studyId: studyId,
-                            isMember: vm.isMember,
-                            isPrivate: vm.study!.private)),
+                        create: (_) =>
+                            BoardViewModel(context, getIt<BoardService>()),
+                        child: Consumer<BoardViewModel>(
+                            builder: (context, boardViewModel, child) {
+                              boardViewModel.isMember = vm.isMember;
+                          return Notice(
+                              studyId: studyId,
+                              isMember: vm.isMember,
+                              isPrivate: vm.study!.private);
+                        })),
                   ],
                 ),
               ),
@@ -216,8 +223,7 @@ class StudyInfoScreen extends StatelessWidget {
 
   void joinToPublicStudy(StudyViewModel vm, BuildContext context) {
     vm.joinStudy(null).then((_) => {
-          if (vm.successToJoin)
-            {context.go('/studies/$studyId')}
+          if (vm.successToJoin) {context.go('/studies/$studyId')}
         });
   }
 }

@@ -27,6 +27,7 @@ class BoardViewModel extends ChangeNotifier {
   bool hasNextPosts = true;
   bool hasPost = false;
   bool? _isNotice;
+  bool isMember = false;
 
   List<BoardModel> posts = [];
   List<BoardModel> notices = [];
@@ -42,15 +43,10 @@ class BoardViewModel extends ChangeNotifier {
   bool get isAddedComment => _isAddedComment;
 
   bool get isFirst => _isFirst;
+
   String _title = '';
   String _contents = '';
   String _comment = '';
-
-  String get title => _title;
-
-  String get contents => _contents;
-
-  String get comment => _comment;
 
   int? get studyId => _studyId;
 
@@ -115,9 +111,14 @@ class BoardViewModel extends ChangeNotifier {
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
     } on StudyException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (e.code == 404) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
+      if (e.code == 400) {
+        setBoardInfoForPublicStudy(boardId);
+      }
     }
   }
 
@@ -241,6 +242,11 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setBoardInfoForPublicStudy(int boardId) {
+    _post = notices.singleWhere((element) => element.id == boardId);
+    notifyListeners();
+  }
+
   void setOrUnsetNotice() {
     if (_isNotice == true) {
       unsetNotice(post!.id);
@@ -288,7 +294,7 @@ class BoardViewModel extends ChangeNotifier {
       case BoardInputType.boardContents:
         return '내용을 입력해주세요.';
       case BoardInputType.comment:
-        return '댓글을 남겨주세요.';
+        return (isMember) ? '댓글을 남겨주세요.' : '스터디 멤버만 댓글을 남길 수 있어요.';
     }
   }
 

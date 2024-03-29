@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/layout/default_layout.dart';
-import 'package:modi/model/board/board_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/screen/create_post_screen.dart';
 import 'package:modi/views/board/widgets/board_list.dart';
@@ -9,13 +8,14 @@ import 'package:modi/views/board/widgets/no_post.dart';
 import 'package:provider/provider.dart';
 import '../../../di/injection.dart';
 import '../../../view_models/board/board_viewmodel.dart';
-import '../widgets/board_appbar.dart';
 
 class BoardMainScreen extends StatelessWidget {
   final int studyId;
   final bool isNotice;
+  final bool? isMember;
 
-  BoardMainScreen({super.key, required this.studyId, required this.isNotice});
+  const BoardMainScreen(
+      {super.key, required this.studyId, required this.isNotice, this.isMember});
 
   void initCreateScreenState(BoardViewModel viewModel) {
     viewModel.isValid = false;
@@ -25,6 +25,7 @@ class BoardMainScreen extends StatelessWidget {
 
   void loadBoardList(BoardViewModel vm) {
     vm.setStudyId = studyId;
+    vm.isMember = isMember!;
     vm.fetchNotices();
     if (isNotice == false) {
       vm.fetchBoardList();
@@ -34,10 +35,8 @@ class BoardMainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BoardViewModel vm = BoardViewModel(context, getIt<BoardService>());
-
-    return ChangeNotifierProvider.value(
-      value: vm,
+    return ChangeNotifierProvider(
+      create: (_) => BoardViewModel(context, getIt<BoardService>()),
       child: Consumer<BoardViewModel>(builder: (context, vm, child) {
         if (vm.isRefreshed) {
           loadBoardList(vm);

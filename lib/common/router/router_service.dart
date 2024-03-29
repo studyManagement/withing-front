@@ -206,13 +206,17 @@ class RouterService {
                       path: 'boards', // 게시판
                       builder: (context, state) => BoardMainScreen(
                           studyId: int.parse(state.pathParameters['studyId']!),
-                          isNotice: false),
+                          isNotice: false,
+                        isMember: true
+                      ),
                     ),
                     GoRoute(
-                      path: 'boards/notice', // 공지 전체보기
+                      path: 'notice/:isMember', // 공지 전체보기
                       builder: (context, state) => BoardMainScreen(
                           studyId: int.parse(state.pathParameters['studyId']!),
-                          isNotice: true),
+                          isNotice: true,
+                        isMember: (state.pathParameters['isMember'] == 'true') ? true : false,
+                      ),
                     ),
                   ],
                 ),

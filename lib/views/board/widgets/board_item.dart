@@ -8,13 +8,11 @@ import '../../../common/theme/app/app_colors.dart';
 import '../../../common/utils/get_created_string.dart';
 
 class BoardItem extends StatelessWidget {
-  final int studyId;
   final bool isOnlyNotice;
   final BoardModel boardItem;
 
   const BoardItem({
     super.key,
-    required this.studyId,
     required this.isOnlyNotice,
     required this.boardItem,
   });

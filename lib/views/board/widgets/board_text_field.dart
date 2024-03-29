@@ -52,6 +52,7 @@ class _BoardTextFieldState extends State<BoardTextField> {
         : Theme.of(context).textTheme.bodySmall;
 
     return TextFormField(
+      enabled: (widget.type == BoardInputType.comment && !widget.viewModel.isMember) ? false : true,
       controller: controller,
       onChanged: (value) {
         widget.viewModel.isValidInput(widget.type, value);

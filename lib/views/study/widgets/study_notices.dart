@@ -42,10 +42,10 @@ class Notice extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  context.push('/studies/$studyId/boards/notice');
+                  context.push('/studies/$studyId/notice/$isMember');
                 },
                 child: Offstage(
-                  offstage: (boardViewModel.hasPost && isMember) ? false : true,
+                  offstage: (boardViewModel.hasPost) ? false : true,
                   child: Text(
                     '전체보기',
                     textAlign: TextAlign.right,
@@ -128,7 +128,6 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
     physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (context, index) {
       return BoardItem(
-        studyId: studyId,
         isOnlyNotice: true,
         boardItem: sublist[index],
       );
