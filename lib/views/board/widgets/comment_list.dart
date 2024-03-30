@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/image/circle_image.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +22,7 @@ class BoardCommentList extends StatelessWidget {
           nickname: vm.comments[index].user.nickname,
           commentId: vm.comments[index].id,
           content: vm.comments[index].contents,
-          createdAt:getCreatedAt(vm.comments[index].createdAt.toString()),
+          createdAt: getCreatedAt(vm.comments[index].createdAt.toString()),
         );
       },
       separatorBuilder: (context, index) {
@@ -59,20 +60,17 @@ class _CommentItem extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipOval(
-              child:  (image != null)
-                  ? Image.network(
-                image!,
-                width: 22,
-                height: 22,
-                fit: BoxFit.cover,
-                errorBuilder: (BuildContext context, Object exception,
-                    StackTrace? stackTrace) {
-                  return const GrayContainer(size:22);
-                },
-              )
-                  : const GrayContainer(size: 22,),
-            ),
+            CircleImage(22, 22,
+                image: (image == null) ? null :Image.network(
+                  image!,
+                  width: 22,
+                  height: 22,
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace? stackTrace) {
+                    return const GrayContainer(size: 22);
+                  },
+                )),
             const SizedBox(width: 8),
             Text(
               nickname,

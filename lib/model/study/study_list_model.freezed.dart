@@ -25,6 +25,7 @@ mixin _$StudyListModel {
   int get max => throw _privateConstructorUsedError;
   int get headcount => throw _privateConstructorUsedError;
   bool get private => throw _privateConstructorUsedError;
+  String? get studyImage => throw _privateConstructorUsedError;
   String get explanation => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $StudyListModelCopyWith<$Res> {
       int max,
       int headcount,
       bool private,
+      String? studyImage,
       String explanation,
       DateTime createdAt,
       List<String> categories,
@@ -73,6 +75,7 @@ class _$StudyListModelCopyWithImpl<$Res, $Val extends StudyListModel>
     Object? max = null,
     Object? headcount = null,
     Object? private = null,
+    Object? studyImage = freezed,
     Object? explanation = null,
     Object? createdAt = null,
     Object? categories = null,
@@ -99,6 +102,10 @@ class _$StudyListModelCopyWithImpl<$Res, $Val extends StudyListModel>
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
               as bool,
+      studyImage: freezed == studyImage
+          ? _value.studyImage
+          : studyImage // ignore: cast_nullable_to_non_nullable
+              as String?,
       explanation: null == explanation
           ? _value.explanation
           : explanation // ignore: cast_nullable_to_non_nullable
@@ -133,6 +140,7 @@ abstract class _$$StudyListModelImplCopyWith<$Res>
       int max,
       int headcount,
       bool private,
+      String? studyImage,
       String explanation,
       DateTime createdAt,
       List<String> categories,
@@ -155,6 +163,7 @@ class __$$StudyListModelImplCopyWithImpl<$Res>
     Object? max = null,
     Object? headcount = null,
     Object? private = null,
+    Object? studyImage = freezed,
     Object? explanation = null,
     Object? createdAt = null,
     Object? categories = null,
@@ -181,6 +190,10 @@ class __$$StudyListModelImplCopyWithImpl<$Res>
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
               as bool,
+      studyImage: freezed == studyImage
+          ? _value.studyImage
+          : studyImage // ignore: cast_nullable_to_non_nullable
+              as String?,
       explanation: null == explanation
           ? _value.explanation
           : explanation // ignore: cast_nullable_to_non_nullable
@@ -210,6 +223,7 @@ class _$StudyListModelImpl implements _StudyListModel {
       required this.max,
       required this.headcount,
       required this.private,
+      required this.studyImage,
       required this.explanation,
       required this.createdAt,
       required final List<String> categories,
@@ -230,6 +244,8 @@ class _$StudyListModelImpl implements _StudyListModel {
   final int headcount;
   @override
   final bool private;
+  @override
+  final String? studyImage;
   @override
   final String explanation;
   @override
@@ -253,7 +269,7 @@ class _$StudyListModelImpl implements _StudyListModel {
 
   @override
   String toString() {
-    return 'StudyListModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, explanation: $explanation, createdAt: $createdAt, categories: $categories, meetingSchedules: $meetingSchedules)';
+    return 'StudyListModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, studyImage: $studyImage, explanation: $explanation, createdAt: $createdAt, categories: $categories, meetingSchedules: $meetingSchedules)';
   }
 
   @override
@@ -268,6 +284,8 @@ class _$StudyListModelImpl implements _StudyListModel {
             (identical(other.headcount, headcount) ||
                 other.headcount == headcount) &&
             (identical(other.private, private) || other.private == private) &&
+            (identical(other.studyImage, studyImage) ||
+                other.studyImage == studyImage) &&
             (identical(other.explanation, explanation) ||
                 other.explanation == explanation) &&
             (identical(other.createdAt, createdAt) ||
@@ -287,6 +305,7 @@ class _$StudyListModelImpl implements _StudyListModel {
       max,
       headcount,
       private,
+      studyImage,
       explanation,
       createdAt,
       const DeepCollectionEquality().hash(_categories),
@@ -314,6 +333,7 @@ abstract class _StudyListModel implements StudyListModel {
           required final int max,
           required final int headcount,
           required final bool private,
+          required final String? studyImage,
           required final String explanation,
           required final DateTime createdAt,
           required final List<String> categories,
@@ -333,6 +353,8 @@ abstract class _StudyListModel implements StudyListModel {
   int get headcount;
   @override
   bool get private;
+  @override
+  String? get studyImage;
   @override
   String get explanation;
   @override

@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/layout/responsive_size.dart';
+import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/search/category_search_viewmodel.dart';
 
 class SearchCategorySelector extends StatelessWidget {
-  SearchCategorySelector({super.key});
+  const SearchCategorySelector({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    bool isTabletPrt = (screenWidth >= tabletPortrait) ? true : false;
     var viewModel = Provider.of<CategorySearchViewModel>(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          mainAxisSpacing: 20,
-        ),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            mainAxisSpacing: 20,
+            mainAxisExtent: (isTabletPrt) ? screenWidth * 0.12: null),
         itemCount: categories.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
               viewModel.searchCategory = index;
-              debugPrint(categories[index]);
               viewModel.search();
             },
             child: _CategoryItem(
@@ -54,21 +56,19 @@ class _CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        Container(
           width: 60,
           height: 60,
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: isSelected ? AppColors.blue100 : Colors.transparent,
-            ),
-            child: Image.asset(
-              imgUrl,
-              scale: 2,
-            ),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isSelected ? AppColors.blue100 : Colors.transparent,
+          ),
+          child: Image.asset(
+            imgUrl,
+            scale: 2,
           ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
         Text(title),
       ],
     );

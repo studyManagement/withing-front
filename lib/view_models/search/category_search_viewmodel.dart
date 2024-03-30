@@ -44,7 +44,6 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
   @override
   void updateSearchFilterValue(String value) {
     _selectedFilterValue = value;
-    debugPrint(_selectedFilterValue);
     notifyListeners();
   }
 
@@ -78,15 +77,11 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
           0
       );
     }
-    debugPrint('검색된 스터디(카테고리)');
-    print(_searchedStudies);
     notifyListeners();
   }
 
   /// fetch category search - 스크롤시 추가
   Future<void> fetchStudiesWithCategory() async {
-    debugPrint('API 추가 요청 - 카테고리');
-    //String categoryId = _selectedCategoryValue.toString();
     int page = _searchedStudies.isNotEmpty ? _searchedStudies.length ~/ size : 0;
 
     if (_searchedStudies.length < _studyCount) {
@@ -101,7 +96,6 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
 
       _searchedStudies.addAll(newStudies);
       notifyListeners();
-      print(_searchedStudies.length);
     }
   }
 }

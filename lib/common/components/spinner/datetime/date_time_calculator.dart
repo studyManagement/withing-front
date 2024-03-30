@@ -12,7 +12,7 @@ class DateTimeCalculator {
     _year = standard.year;
     _month = standard.month;
     _day = standard.day;
-    _isAM = (standard.hour > 11);
+    _isAM = (standard.hour < 12);
     _hour = standard.hour;
     _minute = standard.minute;
   }
@@ -38,7 +38,6 @@ class DateTimeCalculator {
       _onChanged(_makeDateTime());
       return;
     }
-
     _isAM = false;
     _onChanged(_makeDateTime());
   }
@@ -53,12 +52,16 @@ class DateTimeCalculator {
     _onChanged(_makeDateTime());
   }
 
+
   DateTime _makeDateTime() {
-    return DateTime(
+    if(_isAM && _hour ==  12) _hour = 0;
+    else if (_isAM && _hour > 12) _hour -= 12;
+    else if (!_isAM && _hour < 12) _hour += 12;
+    return DateTime( // HHmm
       _year,
       _month,
       _day,
-      (!_isAM) ? _hour + 12 : _hour,
+      _hour,
       _minute,
     );
   }

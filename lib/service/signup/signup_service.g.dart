@@ -30,9 +30,9 @@ class _SignupApi implements SignupApi {
     final _headers = <String, dynamic>{r'X-Exclude-Access-Token': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final _data = {
-      'social_id_type': provider,
+      'socialIdType': provider,
       'nickname': nickname,
-      'social_id': accessToken,
+      'socialId': accessToken,
       'introduce': introduce,
     };
     final _result = await _dio

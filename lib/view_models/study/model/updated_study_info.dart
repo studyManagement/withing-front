@@ -10,9 +10,9 @@ class UpdatedStudyInfo {
   Map<String, dynamic> toJson() {
     return {
       'studyName': studyName,
+      'max': max,
       'explanation': explanation,
       'categories': categories,
-      'max': max,
     };
   }
 }

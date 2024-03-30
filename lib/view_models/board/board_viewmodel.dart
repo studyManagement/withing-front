@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/model/board/comment_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
-import 'package:modi/views/board/widgets/no_post.dart';
+import '../../common/modal/modi_modal.dart';
+import '../../exception/study/study_exception.dart';
 import '../../model/board/board_model.dart';
-import '../../model/board/post_exception.dart';
 import 'model/post.dart';
 
 class BoardViewModel extends ChangeNotifier {
   final BoardService _service;
+  final BuildContext _context;
 
-  BoardViewModel(this._service);
+  BoardViewModel(this._context, this._service);
 
   static const int SIZE = 20;
 
   int? _studyId;
-  bool _isRefreshed = true;
+  int? _boardId;
+  bool isRefreshed = true;
   bool _isLoading = false;
   bool _isValid = false;
+  bool _isAddedComment = false;
   bool _isFirst = true;
   bool hasNextNotices = true;
   bool hasNextPosts = true;
   bool hasPost = false;
+  bool? _isNotice;
+  bool isMember = false;
 
   List<BoardModel> posts = [];
   List<BoardModel> notices = [];
@@ -34,24 +40,17 @@ class BoardViewModel extends ChangeNotifier {
 
   bool get isValid => _isValid;
 
+  bool get isAddedComment => _isAddedComment;
+
   bool get isFirst => _isFirst;
+
   String _title = '';
   String _contents = '';
   String _comment = '';
 
-  String get title => _title;
-
-  String get contents => _contents;
-
-  String get comment => _comment;
-
   int? get studyId => _studyId;
 
-  bool get isRefreshed => _isRefreshed;
-
-  set isRefreshed(bool value){
-    _isRefreshed = value;
-  }
+  int? get boardId => _boardId;
 
   Future<void> scrollListener(bool isNotice) async {
     if (_isLoading) return;
@@ -67,7 +66,7 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> fetchNotices() async {
     List<BoardModel> newNotices = [];
     int page = notices.isEmpty ? 0 : (notices.length ~/ SIZE);
-  if(hasNextNotices) {
+    if (hasNextNotices) {
       newNotices = await _service.fetchBoardList(_studyId!, true, SIZE, page);
       if (newNotices.length < SIZE) {
         hasNextNotices = false;
@@ -76,25 +75,29 @@ class BoardViewModel extends ChangeNotifier {
     if (newNotices.isNotEmpty) {
       notices.addAll(newNotices);
       hasPost = true;
-      // print(notices.length);
       notifyListeners();
     }
   }
 
   Future<void> fetchBoardList() async {
-    List<BoardModel> newPosts = [];
-    int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
-    if (hasNextPosts == true) {
-      newPosts = await _service.fetchBoardList(_studyId!, false, SIZE, page);
-      if (newPosts.length < SIZE){
-        hasNextPosts= false;
+    try {
+      List<BoardModel> newPosts = [];
+      int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
+      if (hasNextPosts == true) {
+        newPosts = await _service.fetchBoardList(_studyId!, false, SIZE, page);
+        if (newPosts.length < SIZE) {
+          hasNextPosts = false;
+        }
       }
-    }
-    if (newPosts.isNotEmpty) {
-      posts.addAll(newPosts);
-      hasPost = true;
-      // print(posts.length);
-      notifyListeners();
+      if (newPosts.isNotEmpty) {
+        posts.addAll(newPosts);
+        hasPost = true;
+        notifyListeners();
+      }
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
@@ -103,65 +106,116 @@ class BoardViewModel extends ChangeNotifier {
       _post = await _service.fetchBoardInfo(_studyId!, boardId);
       boardTitle = _post!.title;
       boardContents = post!.content;
+      _isNotice = post!.notice;
       notifyListeners();
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
-    } on NoPostException catch (e) {
-      throw const NoPost();
+    } on StudyException catch (e) {
+      if (e.code == 404) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
+      if (e.code == 400) {
+        setBoardInfoForPublicStudy(boardId);
+      }
     }
   }
 
   Future<void> deletePost(int boardId) async {
-    await _service.deletePost(_studyId!, boardId);
-    notifyListeners();
+    try {
+      await _service.deletePost(_studyId!, boardId);
+      notifyListeners();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
+    }
   }
 
   Future<void> createPost() async {
     if (_isValid) {
-      await _service.createPost(_studyId!, Post(_title, _contents));
-      notifyListeners();
+      try {
+        BoardModel newPost =
+            await _service.createPost(_studyId!, Post(_title, _contents));
+        _boardId = newPost.id;
+        notifyListeners();
+      } on StudyException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
     }
   }
 
   Future<void> updatePost(int boardId) async {
     if (_isValid) {
-      BoardModel boardModel = await _service.updatePost(
-          _studyId!, boardId, Post(_title, _contents));
-      _post = boardModel;
-      notifyListeners();
+      try {
+        BoardModel boardModel = await _service.updatePost(
+            _studyId!, boardId, Post(_title, _contents));
+        _post = boardModel;
+        _boardId = boardModel.id;
+        notifyListeners();
+      } on StudyException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
     }
   }
 
   Future<void> fetchComments(int boardId) async {
     try {
+      _isAddedComment = false;
       _isFirst = false;
       comments = await _service.fetchComments(_studyId!, boardId);
       if (comments.isNotEmpty) notifyListeners();
-    } on NoPostException catch (e) {
-      return;
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
   Future<void> createComment(int boardId) async {
     if (_isValid && _comment.trim().isNotEmpty) {
-      CommentModel newComment =
-          await _service.createComments(_studyId!, boardId, _comment);
-      comments.add(newComment);
-      comment = '';
-      notifyListeners();
+      try {
+        CommentModel newComment =
+            await _service.createComments(_studyId!, boardId, _comment);
+        comments.add(newComment);
+        comment = '';
+        _isAddedComment = true;
+        notifyListeners();
+      } on StudyException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+            () => _context.pop(), () => null);
+      }
     }
   }
 
   Future<void> setNotice(int boardId) async {
-    await _service.setNotice(_studyId!, boardId);
-    refreshBoardList();
-    notifyListeners();
+    try {
+      await _service.setNotice(_studyId!, boardId);
+      refreshBoardList();
+      notifyListeners();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
+    }
   }
 
   Future<void> unsetNotice(int boardId) async {
-    await _service.unsetNotice(_studyId!, boardId);
-    refreshBoardList();
-    notifyListeners();
+    try {
+      await _service.unsetNotice(_studyId!, boardId);
+      refreshBoardList();
+      notifyListeners();
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
+    }
   }
 
   set setStudyId(int studyId) {
@@ -188,11 +242,18 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setBoardInfoForPublicStudy(int boardId) {
+    _post = notices.singleWhere((element) => element.id == boardId);
+    notifyListeners();
+  }
+
   void setOrUnsetNotice() {
-    if (post?.notice == true) {
+    if (_isNotice == true) {
       unsetNotice(post!.id);
+      _isNotice = false;
     } else {
       setNotice(post!.id);
+      _isNotice = true;
     }
   }
 
@@ -202,11 +263,10 @@ class BoardViewModel extends ChangeNotifier {
     hasPost = false;
     hasNextPosts = true;
     hasNextNotices = true;
-    _isRefreshed = true;
+    isRefreshed = true;
   }
 
   void isValidInput(BoardInputType type, String value) {
-    // print('유효성 검사');
     switch (type) {
       case BoardInputType.boardTitle:
         _isValid = (value.trim().isNotEmpty && _contents.trim().isNotEmpty)
@@ -234,7 +294,7 @@ class BoardViewModel extends ChangeNotifier {
       case BoardInputType.boardContents:
         return '내용을 입력해주세요.';
       case BoardInputType.comment:
-        return '댓글을 남겨주세요.';
+        return (isMember) ? '댓글을 남겨주세요.' : '스터디 멤버만 댓글을 남길 수 있어요.';
     }
   }
 
@@ -255,7 +315,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   String getToSetNoticeText() {
-    if (post?.notice == true) {
+    if (_isNotice!) {
       return '공지 등록 취소하기';
     } else {
       return '공지로 등록하기';
@@ -263,7 +323,7 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   String toastText() {
-    if (post?.notice == true) {
+    if (!_isNotice!) {
       return '공지 등록이 취소되었어요.';
     } else {
       return '공지로 등록되었어요.';

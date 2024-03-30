@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
 import 'package:modi/views/schedule/study/components/study_schedule_list.dart';
 import 'package:modi/views/schedule/study/components/study_schedule_vote_list.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../common/theme/app/app_colors.dart';
 import '../../../../common/theme/app/app_fonts.dart';
 
 class StudyScheduleScreenTab extends StatefulWidget {
-  const StudyScheduleScreenTab({super.key});
+  const StudyScheduleScreenTab({super.key, required this.studyId});
+
+  final int studyId;
 
   @override
   State<StatefulWidget> createState() => _StudyScheduleScreenTabState();
@@ -35,6 +39,9 @@ class _StudyScheduleScreenTabState extends State<StudyScheduleScreenTab>
 
   @override
   Widget build(BuildContext context) {
+    ScheduleViewModel vm = context.read<ScheduleViewModel>();
+    vm.fetchSchedules(widget.studyId);
+
     return Column(
       children: [
         TabBar(
@@ -64,9 +71,9 @@ class _StudyScheduleScreenTabState extends State<StudyScheduleScreenTab>
         Expanded(
           child: TabBarView(
             controller: tabController,
-            children: const [
-              StudyScheduleList(),
-              StudyScheduleVoteList(),
+            children: [
+              StudyScheduleList(studyId: widget.studyId),
+              const StudyScheduleVoteList(),
             ],
           ),
         ),

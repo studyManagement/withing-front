@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:modi/model/study/study_meeting_schedules_model.dart';
 
 part 'searched_study_info_model.freezed.dart';
 part 'searched_study_info_model.g.dart';
@@ -15,7 +16,7 @@ class SearchedStudyInfo with _$SearchedStudyInfo {
     required String? deadline,
     required String? studyImage,
     required List<String> categories,
-    required List<MeetingInfo> meetingSchedules,
+    required List<StudyMeetingSchedulesModel> meetingSchedules,
     required bool private,
   }) = _SearchedStudyInfo;
 

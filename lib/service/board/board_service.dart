@@ -1,13 +1,11 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/cupertino.dart';
-import 'package:modi/views/board/widgets/no_post.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
 import 'package:retrofit/http.dart';
+import '../../exception/study/study_exception.dart';
 import '../../model/board/board_model.dart';
 import '../../model/board/comment_model.dart';
-import '../../model/board/post_exception.dart';
 import '../../view_models/board/model/post.dart';
 
 part 'board_service.g.dart';
@@ -18,11 +16,11 @@ abstract class BoardApi {
 
   @GET('/studies/{id}/boards')
   Future<List<BoardModel>> fetchBoardList(
-      @Path("id") int id,
-      @Query("isNotice") bool isNotice,
-      @Query("size") int size,
-      @Query("page") int page,
-      );
+    @Path("id") int id,
+    @Query("isNotice") bool isNotice,
+    @Query("size") int size,
+    @Query("page") int page,
+  );
 
   @GET('/studies/{id}/boards/{boardId}')
   Future<BoardModel> fetchBoardInfo(
@@ -48,14 +46,10 @@ abstract class BoardApi {
       @Path("boardId") int boardId, @Body() Map<String, dynamic> data);
 
   @POST('/studies/{id}/boards/{boardId}/notice')
-  Future<dynamic> setNotice(@Path("id") int id,
-      @Path("boardId") int boardId);
+  Future<dynamic> setNotice(@Path("id") int id, @Path("boardId") int boardId);
 
   @DELETE('/studies/{id}/boards/{boardId}/notice')
-  Future<dynamic> unsetNotice(@Path("id") int id,
-      @Path("boardId") int boardId);
-
-
+  Future<dynamic> unsetNotice(@Path("id") int id, @Path("boardId") int boardId);
 }
 
 class BoardService {
@@ -63,20 +57,14 @@ class BoardService {
 
   BoardService(this._boardApi);
 
-  Future<List<BoardModel>> fetchBoardList(int studyId, bool isNotice, int size, int page) async {
+  Future<List<BoardModel>> fetchBoardList(
+      int studyId, bool isNotice, int size, int page) async {
     try {
       final List<BoardModel> notices =
           await _boardApi.fetchBoardList(studyId, isNotice, size, page);
       return notices;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // 공지 없음
-        throw List.empty();
-      }
-      if (e.code == 400) {
-        // 참여 중인 스터디가 아님
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -88,11 +76,7 @@ class BoardService {
           await _boardApi.fetchBoardInfo(studyId, boardId);
       return boardModel;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // 게시글 없음
-        throw NoPostException(e.cause);
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -101,15 +85,9 @@ class BoardService {
   Future<dynamic> deletePost(int studyId, int boardId) async {
     try {
       var response = await _boardApi.deletePost(studyId, boardId);
-      debugPrint('[API]: 게시글 삭제됨');
       return response;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // 게시글 없음
-        debugPrint('[API]: ${e.cause}');
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -121,8 +99,7 @@ class BoardService {
           studyId, {"title": newPost.title, "content": newPost.contents});
       return boardModel;
     } on ApiException catch (e) {
-      debugPrint('[API]: ${e.cause}');
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -135,11 +112,7 @@ class BoardService {
           {"title": updatedPost.title, "content": updatedPost.contents});
       return boardModel;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // 게시글 없음
-        debugPrint('[API]: ${e.cause}');
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -151,11 +124,7 @@ class BoardService {
           await _boardApi.fetchComments(studyId, boardId);
       return commentList;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // 게시글 없음
-        throw NoPostException(e.cause);
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -168,42 +137,31 @@ class BoardService {
           .createComments(studyId, boardId, {'contents': contents});
       return comment;
     } on ApiException catch (e) {
-      debugPrint('[API]: ${e.cause}');
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
   }
+
   Future<dynamic> setNotice(int studyId, int boardId) async {
     try {
       var response = await _boardApi.setNotice(studyId, boardId);
-      debugPrint('[API]: 공지로 등록됨');
       return response;
     } on ApiException catch (e) {
-      if (e.code == 404 || e.code == 400) {
-        debugPrint('[API]: ${e.cause}');
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
   }
+
   Future<dynamic> unsetNotice(int studyId, int boardId) async {
     try {
       var response = await _boardApi.unsetNotice(studyId, boardId);
-      debugPrint('[API]: 공지 등록이 취소됨');
       return response;
     } on ApiException catch (e) {
-      if (e.code == 404 || e.code == 400) {
-        debugPrint('[API]: ${e.cause}');
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
   }
-
-
 }

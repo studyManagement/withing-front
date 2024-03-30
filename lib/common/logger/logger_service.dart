@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/src/widgets/navigator.dart';
 import 'package:logger/logger.dart';
 import 'package:modi/common/logger/app_event.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/model/user/user_model.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class LoggerService implements LoggingInterface {
   static final LoggingInterface _instance = LoggerService._privateConstructor();
@@ -18,8 +20,15 @@ class LoggerService implements LoggingInterface {
 
   @override
   void appEvent(AppEvent event,
-      {required String method, Map<String, Object>? parameters}) {
+      {required String method,
+      String? groupId,
+      String? contentType,
+      String? itemId,
+      Map<String, Object>? parameters}) {
     // @Example https://github.com/firebase/flutterfire/blob/master/packages/firebase_analytics/firebase_analytics/example/lib/main.dart
+
+    info(
+        'AppEvent(appEvent=${event.name},method=$method,contentType=$contentType,itemId=$itemId,parameters=$parameters)');
 
     switch (event) {
       case AppEvent.APP_OPEN:
@@ -33,27 +42,50 @@ class LoggerService implements LoggingInterface {
         _firebaseAnalytics.logSignUp(
             signUpMethod: method, parameters: parameters);
         break;
+      case AppEvent.SHARE:
+        assert(contentType != null && itemId != null,
+            "SHARE 이벤트는 ContentType하고 ItemId 인자가 null이 아니여야 합니다.");
+
+        _firebaseAnalytics.logShare(
+          contentType: contentType!,
+          itemId: itemId!,
+          method: method,
+          parameters: parameters,
+        );
+        break;
+
+      case AppEvent.JOIN_GROUP:
+        assert(groupId != null, 'JOIN_GROUP 이벤트는 groupId 인자가 null이 아니여야 합니다.');
+        _firebaseAnalytics.logJoinGroup(
+            groupId: groupId!, parameters: parameters);
+        break;
     }
   }
 
   @override
   void debug(dynamic message) {
-    _logger.d(message);
+    if (kDebugMode) {
+      _logger.d(message);
+      Sentry.captureMessage(message, level: SentryLevel.debug);
+    }
   }
 
   @override
   void info(dynamic message) {
     _logger.i(message);
+    Sentry.captureMessage(message);
   }
 
   @override
   void warn(dynamic message) {
     _logger.w(message);
+    Sentry.captureMessage(message, level: SentryLevel.warning);
   }
 
   @override
   void error(dynamic message) {
     _logger.e(message);
+    Sentry.captureMessage(message, level: SentryLevel.error);
   }
 
   @override

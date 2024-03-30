@@ -1,18 +1,13 @@
-import 'dart:developer';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
-import 'package:modi/model/study/regular_meeting_exception.dart';
-import 'package:modi/model/study/regular_meeting_model.dart';
-import 'package:modi/model/study/study_category_model.dart';
-import 'package:modi/model/study/study_exception.dart';
+import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/model/study/study_list_model.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/study/StudyType.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:retrofit/http.dart';
-import '../../model/board/board_model.dart';
+
 import '../../view_models/study/model/study_meeting_schedule.dart';
 
 part 'study_service.g.dart';
@@ -52,6 +47,12 @@ abstract class StudyApi {
   @POST('/studies/{id}/regular_meeting')
   Future<StudyModel> setMeetingSchedule(
       @Path('id') int id, @Body() List<StudyMeetingSchedule> data);
+
+  @POST('/studies/{id}/favorite')
+  Future<dynamic> pickFavoriteStudy(@Path('id') int id);
+
+  @DELETE('/studies/{id}/favorite')
+  Future<dynamic> cancelFavoriteStudy(@Path('id') int id);
 }
 
 class StudyService {
@@ -74,10 +75,7 @@ class StudyService {
       final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        throw StudyException(e.cause, e.code);
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -86,24 +84,10 @@ class StudyService {
   Future<StudyModel> finishStudy(int studyId) async {
     try {
       final StudyModel study = await _studyApi.finishStudy(studyId);
-      print('Finished studyId: ${study.id}');
       return study;
     } on ApiException catch (e) {
-      if (e.code == 400) {
-        // 이미 종료
-        print(e);
-        rethrow;
-      } else if (e.code == 401) {
-        // accessToken 만료
-        print(e);
-        rethrow;
-      } else if (e.code == 404) {
-        // studyId 오류
-        print(e);
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
-      print(e.message);
       rethrow;
     }
   }
@@ -115,7 +99,7 @@ class StudyService {
           await _studyApi.updateStudyInfo(studyId, newStudy.toJson());
       return study;
     } on ApiException catch (e) {
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -124,17 +108,10 @@ class StudyService {
   Future<StudyModel> deleteStudy(int studyId) async {
     try {
       final StudyModel study = await _studyApi.deleteStudy(studyId);
-      print('Removed studyId: ${study.id}');
       return study;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        // studyId 오류
-        print(e);
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
-      print(e.message);
       rethrow;
     }
   }
@@ -142,16 +119,10 @@ class StudyService {
   Future<StudyModel> switchLeader(int studyId, int userId) async {
     try {
       final StudyModel study = await _studyApi.switchLeader(studyId, userId);
-      print('[API]:Switched leaderId ${study.leaderId}');
       return study;
     } on ApiException catch (e) {
-      if (e.code == 401 || e.code == 400 || e.code == 404) {
-        // accessToken error
-        debugPrint('[API]:${e.cause}');
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
-      debugPrint('[API]:${e.cause}');
       rethrow;
     }
   }
@@ -164,9 +135,7 @@ class StudyService {
     } on ApiException catch (e) {
       if (e.code == 404) {
         throw StudyException(e.cause, e.code);
-      } else if (e.code == 401) {
-        debugPrint('[API]: ${e.cause}');
-      }
+      } else if (e.code == 401) {}
       rethrow;
     } on NetworkException catch (e) {
       rethrow;
@@ -178,10 +147,7 @@ class StudyService {
       var response = await _studyApi.joinStudy(studyId, {"password": password});
       return response;
     } on ApiException catch (e) {
-      if (e.code == 400 || e.code == 404) {
-        debugPrint('[API]: ${e.cause}');
-        throw StudyException(e.cause, e.code);
-      }
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -195,13 +161,30 @@ class StudyService {
           await _studyApi.setMeetingSchedule(studyId, meetingSchedules);
       return study;
     } on ApiException catch (e) {
-      if (e.code == 404 || e.code == 400) {
-        print(e);
-        rethrow;
-      }
-      rethrow;
+      throw StudyException(e.cause, e.code);
     } on NetworkException catch (e) {
-      print(e.message);
+      rethrow;
+    }
+  }
+
+  Future<dynamic> pickFavoriteStudy(int studyId) async {
+    try {
+      await _studyApi.pickFavoriteStudy(studyId);
+      return;
+    } on ApiException catch (e) {
+      throw StudyException(e.cause, e.code);
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> cancelFavoriteStudy(int studyId) async {
+    try {
+      await _studyApi.cancelFavoriteStudy(studyId);
+      return;
+    } on ApiException catch (e) {
+      throw StudyException(e.cause, e.code);
+    } on NetworkException catch (e) {
       rethrow;
     }
   }

@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/material.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/exception/study/study_image_exception.dart';
 import 'package:retrofit/http.dart';
-
 import '../../common/requester/network_exception.dart';
-import '../../model/create/created_study_info_model.dart';
 import '../../model/create/new_study_info_model.dart';
 import '../../model/study/study_model.dart';
 
@@ -15,7 +14,6 @@ abstract class StudyCreateApi {
   factory StudyCreateApi(Dio dio, {String baseUrl}) = _StudyCreateApi;
 
   @POST("/studies")
-//  @Headers({'Content-Type': 'multipart/form-data'})
   Future<StudyModel> create(
     @Body() Map<String, dynamic> data,
   );
@@ -28,13 +26,13 @@ class StudyCreateService {
   StudyCreateService(this._api);
 
   Future<StudyModel> callCreateApi(
-    String studyName,
-    int max,
-    int isPrivate,
-    String password,
-    String explanation,
-    List<int> categories,
-  ) async {
+      String studyName,
+      int max,
+      int isPrivate,
+      String password,
+      String explanation,
+      List<int> categories,
+      int studyImage) async {
     Map<String, dynamic> studyCreateDtoJson = NewStudyInfo(
       studyName: studyName,
       max: max,
@@ -42,17 +40,21 @@ class StudyCreateService {
       password: password,
       explanation: explanation,
       categories: categories,
+      studyImage: studyImage,
     ).toJson();
 
     try {
-      debugPrint('[API]');
       final response = await _api.create(
         studyCreateDtoJson,
       );
-      // print(response);
       return response;
-    } on NetworkException catch (e) {
-      print(e);
+    } on ApiException catch (e) {
+      if(e.code == 404) {
+        throw StudyImageException(e.cause, e.code);
+      }
+      rethrow;
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
   }

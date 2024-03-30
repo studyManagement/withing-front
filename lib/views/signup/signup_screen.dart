@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/button/circle_button.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/service/signup/signup_service.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
@@ -13,27 +16,14 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultLayout(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: const Text(
-          '프로필 설정',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        foregroundColor: Colors.black,
+      leader: CircleButton(
+        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+        onTap: () => context.pop(),
       ),
-      body: Padding(
+      title: '프로필 설정',
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ChangeNotifierProvider(
           create: (context) =>

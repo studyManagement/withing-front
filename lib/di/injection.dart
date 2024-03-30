@@ -4,12 +4,13 @@ import 'package:modi/common/logger/logger_service.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/requester/request_builder.dart';
 import 'package:modi/service/board/board_service.dart';
+import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/signin/signin_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 
 import '../service/create/study_create_service.dart';
-import '../service/image/study_image_create_service.dart';
-import '../service/image/study_image_update_service.dart';
+import '../service/image/image_create_service.dart';
+import '../service/image/image_update_service.dart';
 import '../service/search/study_search_service.dart';
 import '../service/study/study_service.dart';
 
@@ -35,28 +36,24 @@ void setupDependencyInjection() {
   getIt.registerLazySingleton<StudyApi>(
     () => StudyApi(getIt<Dio>(instanceName: 'client')),
   );
-  // getIt.registerLazySingleton<CategorySearchApi>(
-  //   () => CategorySearchApi(getIt<Dio>(instanceName: 'client')),
-  // );
-  // getIt.registerLazySingleton<KeywordSearchApi>(
-  //   () => KeywordSearchApi(getIt<Dio>(instanceName: 'client')),
-  // );
   getIt.registerLazySingleton<StudySearchApi>(
-        () => StudySearchApi(getIt<Dio>(instanceName: 'client')),
+    () => StudySearchApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<StudyCreateApi>(
     () => StudyCreateApi(getIt<Dio>(instanceName: 'client')),
   );
-  getIt.registerLazySingleton<StudyImageCreateApi>(
-    () => StudyImageCreateApi(getIt<Dio>(instanceName: 'client')),
+  getIt.registerLazySingleton<ImageCreateApi>(
+    () => ImageCreateApi(getIt<Dio>(instanceName: 'client')),
   );
-  getIt.registerLazySingleton<StudyImageUpdateApi>(
-        () => StudyImageUpdateApi(getIt<Dio>(instanceName: 'client')),
+  getIt.registerLazySingleton<ImageUpdateApi>(
+    () => ImageUpdateApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<BoardApi>(
     () => BoardApi(getIt<Dio>(instanceName: 'client')),
   );
-
+  getIt.registerLazySingleton<ScheduleApi>(
+    () => ScheduleApi(getIt<Dio>(instanceName: 'client')),
+  );
 
   /// Service
   getIt.registerLazySingleton<SignupService>(
@@ -69,23 +66,19 @@ void setupDependencyInjection() {
     () => StudyService(getIt<StudyApi>()),
   );
   getIt.registerLazySingleton<StudySearchService>(
-        () => StudySearchService(getIt<StudySearchApi>()),
+    () => StudySearchService(getIt<StudySearchApi>()),
   );
-
-  // getIt.registerLazySingleton<CategorySearchService>(
-  //   () => CategorySearchService(getIt<CategorySearchApi>()),
-  // );
-  // getIt.registerLazySingleton<KeywordSearchService>(
-  //   () => KeywordSearchService(getIt<KeywordSearchApi>()),
-  // );
+  getIt.registerLazySingleton<ScheduleService>(
+    () => ScheduleService(getIt<ScheduleApi>()),
+  );
   getIt.registerLazySingleton<StudyCreateService>(
     () => StudyCreateService(getIt<StudyCreateApi>()),
   );
-  getIt.registerLazySingleton<StudyImageCreateService>(
-    () => StudyImageCreateService(getIt<StudyImageCreateApi>()),
+  getIt.registerLazySingleton<ImageCreateService>(
+    () => ImageCreateService(getIt<ImageCreateApi>()),
   );
-  getIt.registerLazySingleton<StudyImageUpdateService>(
-        () => StudyImageUpdateService(getIt<StudyImageUpdateApi>()),
+  getIt.registerLazySingleton<ImageUpdateService>(
+    () => ImageUpdateService(getIt<ImageUpdateApi>()),
   );
   getIt.registerLazySingleton<BoardService>(
     () => BoardService(getIt<BoardApi>()),

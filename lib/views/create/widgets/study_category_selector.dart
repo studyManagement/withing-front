@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/study/create_study_viewmodel.dart';
-import '../../../view_models/study/study_info_viewmodels.dart';
+import '../../../view_models/study/study_info_viewmodel.dart';
 
 class StudyCategorySelector extends StatelessWidget {
   final StudyInfoViewModel viewModel;
@@ -13,9 +13,8 @@ class StudyCategorySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final viewModel = Provider.of<StudyInfoViewModel>(context);
     final List<String> categories = getStudyCategories();
-    final List<String> selectedCategories = viewModel.selectedCategories;
+    List<String> selectedCategories = viewModel.selectedCategories;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -56,11 +55,11 @@ class StudyCategorySelector extends StatelessWidget {
 
 class _BadgeMultiSelector extends StatelessWidget {
   final List<String> options;
-  final List<String> selectedOptions;
+  List<String> selectedOptions;
   final int? maxCount;
   final StudyInfoViewModel viewModel;
 
-  const _BadgeMultiSelector({
+  _BadgeMultiSelector({
     required this.options,
     required this.selectedOptions,
     this.maxCount,
@@ -70,7 +69,6 @@ class _BadgeMultiSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final viewModel = Provider.of<StudyInfoViewModel>(context);
-
     return Wrap(
       spacing: 10,
       runSpacing: 10,

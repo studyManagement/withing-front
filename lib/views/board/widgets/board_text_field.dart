@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 
 import '../../../common/theme/app/app_colors.dart';
+import '../screen/board_info_screen.dart';
 
 enum BoardInputType { boardTitle, boardContents, comment }
 
@@ -51,6 +52,7 @@ class _BoardTextFieldState extends State<BoardTextField> {
         : Theme.of(context).textTheme.bodySmall;
 
     return TextFormField(
+      enabled: (widget.type == BoardInputType.comment && !widget.viewModel.isMember) ? false : true,
       controller: controller,
       onChanged: (value) {
         widget.viewModel.isValidInput(widget.type, value);
@@ -60,15 +62,23 @@ class _BoardTextFieldState extends State<BoardTextField> {
           (widget.type == BoardInputType.comment)
               ? {widget.viewModel.createComment(widget.viewModel.post!.id)}
               : (widget.isNew)
-                  ? widget.viewModel.createPost()
-                  : widget.viewModel.updatePost(widget.viewModel.post!.id);
-          if (widget.type != BoardInputType.comment) {
-            context.pop();
-            widget.viewModel.refreshBoardList();
-          } else {
+                  ? widget.viewModel.createPost().then((_) => {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => BoardInfoScreen(
+                                    boardId: widget.viewModel.boardId!,
+                                    viewModel: widget.viewModel))),
+                        widget.viewModel.refreshBoardList()
+                      })
+                  : widget.viewModel.updatePost(widget.viewModel.post!.id).then(
+                      (_) =>
+                          {context.pop(), widget.viewModel.refreshBoardList()});
+          if (widget.type == BoardInputType.comment) {
             setState(() {
               controller.clear();
             });
+            widget.viewModel.refreshBoardList();
           }
         }
       },

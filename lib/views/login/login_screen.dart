@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:modi/common/authenticator/authentication.dart';
-import 'package:modi/common/components/circle_button.dart';
+import 'package:modi/common/components/button/circle_button.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -28,8 +30,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _showErrorMessage(context);
-    return const Scaffold(
-        body: SafeArea(
+    return const DefaultLayout(
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Center(
@@ -44,7 +45,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -94,17 +95,25 @@ class _Bottom extends StatelessWidget {
 
     List<Widget> loginComponents = [
       CircleButton(
-          image: 'asset/kakao.png',
+          image: Image.asset(
+            'asset/kakao.png',
+            width: 50,
+            height: 50,
+          ),
           onTap: () async {
             await vm.signin('kakao');
           }),
     ];
 
-    if (Platform.isIOS) {
+    if (!kIsWeb && Platform.isIOS) {
       loginComponents.addAll([
         const SizedBox(width: 16),
         CircleButton(
-            image: 'asset/apple.png',
+            image: Image.asset(
+              'asset/apple.png',
+              width: 50,
+              height: 50,
+            ),
             onTap: () async {
               await vm.signin('apple');
             }),

@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/picker/image/image_picker.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
 import 'package:modi/views/signup/signup_profile.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +22,23 @@ class SignupForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Center(
+        Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Profile(),
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                ModiModal.openBottomSheet(
+                  context,
+                  widget: const Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40, top: 30),
+                    child: ImagePicker(),
+                  ),
+                  height: 440,
+                );
+              },
+              child: const Profile(),
+            ),
           ),
         ),
         const SizedBox(height: 60),
@@ -49,7 +65,7 @@ class SignupForm extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: Platform.isAndroid
+            padding: kIsWeb || Platform.isAndroid
                 ? const EdgeInsets.symmetric(vertical: 16)
                 : const EdgeInsets.symmetric(vertical: 32),
             child: Column(

@@ -1,18 +1,16 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart' hide Headers;
-import 'package:flutter/material.dart';
 import 'package:retrofit/http.dart';
 import '../../common/requester/network_exception.dart';
 
-part 'study_image_update_service.g.dart';
+part 'image_update_service.g.dart';
 
 /// API
 @RestApi()
-abstract class StudyImageUpdateApi {
-  factory StudyImageUpdateApi(Dio dio, {String baseUrl}) = _StudyImageUpdateApi;
+abstract class ImageUpdateApi {
+  factory ImageUpdateApi(Dio dio, {String baseUrl}) = _ImageUpdateApi;
 
-  @PATCH("/studies/{study_id}/images")
+  @PATCH("/studies/{study_id}/images") // 추후 수정 필요
   @MultiPart()
   @Headers({'Content-Type': 'multipart/form-data'})
   Future<int> update(
@@ -22,25 +20,22 @@ abstract class StudyImageUpdateApi {
 }
 
 /// Service
-class StudyImageUpdateService {
-  final StudyImageUpdateApi _api;
+class ImageUpdateService {
+  final ImageUpdateApi _api;
 
-  StudyImageUpdateService(this._api);
+  ImageUpdateService(this._api);
 
-  Future<int> callCreateApi(
+  Future<int> callImageUpdateApi(
     int studyId,
     File image,
   ) async {
     try {
-      debugPrint('[API]');
       final response = await _api.update(
         studyId,
         image,
       );
-      print(response);
       return response;
     } on NetworkException catch (e) {
-      print(e);
       rethrow;
     }
   }

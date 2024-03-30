@@ -2,7 +2,7 @@ name: modi
 description: Study Management
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+15
+version: 1.0.0+32
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -13,6 +13,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   table_calendar: ^3.0.9 # 캘린더
   intl: ^0.18.1 # 다국어 처리
+  sentry_flutter: ^7.18.0 # 로깅
+  firebase_core_web: ^2.11.4
   firebase_core: ^2.15.0
   firebase_messaging: ^14.6.5
   firebase_analytics: ^10.8.5
@@ -47,6 +49,9 @@ dependencies:
   sign_in_with_apple: ^5.0.0
   logger: ^2.0.2+1
   device_info_plus: ^9.1.2
+  social_share: ^2.3.1
+  share_plus: ^7.2.2
+  url_launcher: ^6.2.5
   uni_links: ^0.5.1
 
 
@@ -67,7 +72,9 @@ flutter:
     - asset/search_category/
     - asset/study_manage/
     - asset/fonts/
+    - asset/share/
     - .local.env
+    - shorebird.yaml
 
   fonts:
     - family: Pretendard

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-
 import '../../model/search/searched_study_info_model.dart';
 
 abstract class SearchedStudiesViewModel {
@@ -30,56 +28,49 @@ String getFilter(String value) {
     case '인기순':
       return 'popularity';
     default:
-      debugPrint('올바른 필터 형식이 아닙니다.');
       return '최신순';
   }
 }
 
-String stringifySchedule(List<MeetingInfo> meetings) {
-  if(meetings.isEmpty){
-    return '미등록';
+String getRegularMeetingString(List<dynamic> meetingSchedules) {
+  final List<String> _weekString = ['월', '화', '수', '목', '금', '토', '일'];
+  int cnt = 0;
+  List<int> days = [];
+  String regularMeetingStr = '';
+
+  for (int i = 0; i < meetingSchedules.length; i++) {
+    if (!days.contains(meetingSchedules[i].day)) {
+      days.add(meetingSchedules[i].day);
+    }
   }
-  Map<int, String> dayNames = {
-    1: '월요일',
-    2: '화요일',
-    3: '수요일',
-    4: '목요일',
-    5: '금요일',
-    6: '토요일',
-    7: '일요일'
-  };
+  days.sort();
 
-  DateFormat inputFormat = DateFormat('HH:mm');
-  DateFormat outputFormat = DateFormat('h:mm');
-
-  List<String> meetingStrings = [];
-
-  for (var meeting in meetings) {
-    DateTime startTime = inputFormat.parse(meeting.startTime);
-    DateTime endTime = inputFormat.parse(meeting.endTime);
-
-    String startPeriod = startTime.hour >= 12 ? '오후' : '오전';
-    int startHour = startTime.hour >= 12 ? startTime.hour - 12 : startTime.hour;
-    startHour = startHour == 0 ? 12 : startHour;
-
-    String endPeriod = endTime.hour >= 12 ? '오후' : '오전';
-    int endHour = endTime.hour >= 12 ? endTime.hour - 12 : endTime.hour;
-    endHour = endHour == 0 ? 12 : endHour;
-
-    String formattedStartTime = outputFormat.format(startTime);
-    String formattedEndTime = outputFormat.format(endTime);
-
-    // String meetingTime =
-    //     '$startPeriod $formattedStartTime - $endPeriod $formattedEndTime';
-    String meetingTime = '$startPeriod $formattedStartTime';
-    String meetingDay = dayNames[meeting.day]!;
-
-    // meetingStrings.isEmpty
-    //     ? meetingStrings.add('매주 $meetingDay $meetingTime')
-    //     : meetingStrings.add('        $meetingDay $meetingTime');
-
-    meetingStrings.add('매주 $meetingDay $meetingTime');
+  if (days.isEmpty) {
+    regularMeetingStr = '비정기 모임';
+  } else{
+    DateTime start =
+    DateFormat('HH:mm').parse(meetingSchedules[0].startTime);
+    String startMeridiem = (start.hour < 12) ? '오전' : '오후';
+    if(start.hour == 0) start.add(Duration(hours: 12));
+    String time = (start.hour > 0 && start.hour < 12)
+        ? meetingSchedules[0].startTime
+        : DateFormat('hh:mm').format(start);
+    if (days.length == 7) {
+      regularMeetingStr = '매일 $startMeridiem $time';
+    } else {
+      regularMeetingStr = '매주 (';
+      for (int i = 0; i < days.length; i++) {
+        if (cnt < days.length - 1) {
+          regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]}, ';
+          cnt++;
+        } else {
+          regularMeetingStr = '$regularMeetingStr${_weekString[days[i] - 1]})';
+        }
+      }
+      regularMeetingStr =
+      '$regularMeetingStr $startMeridiem $time';
+    }
   }
-
-  return meetingStrings.join('\n');
+  return regularMeetingStr;
 }
+

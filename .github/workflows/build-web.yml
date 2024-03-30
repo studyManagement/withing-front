@@ -1,0 +1,64 @@
+name: build-web-workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  AWS_REGION: ap-northeast-2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.2"
+          channel: "stable"
+
+      - name: Enable desktop
+        run: flutter config --enable-web
+
+      - name: Flutter clean
+        run: flutter clean
+
+      - name: Flutter get packages
+        run: flutter pub get
+
+      - name: Build Runner & version
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Flutter build app
+        run: flutter build web --release --base-href / --dart-define="BASE_URL=https://app.moditeam.io"
+
+      - name: Use random for fix cache
+        run: |
+          ran=$RANDOM
+          echo $ran
+          sed -i "s|flutter\.js|flutter.js?v=$ran|" ./build/web/index.html
+          sed -i "s|main\.dart\.js|main.dart.js?v=$ran|" ./build/web/flutter.js
+
+      - name: Make nonce
+        run: echo "nonce=$(date +%s)" > build.env
+
+      - name: Run docker build
+        run: source build.env && docker build -t 731913951205.dkr.ecr.ap-northeast-2.amazonaws.com/modi-web:$nonce -f Dockerfile .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ECR Login
+        run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 731913951205.dkr.ecr.ap-northeast-2.amazonaws.com
+
+      - name: Push ECR
+        run: source build.env && docker push 731913951205.dkr.ecr.ap-northeast-2.amazonaws.com/modi-web:$nonce

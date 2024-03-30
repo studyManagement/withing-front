@@ -107,14 +107,14 @@ class StudyManageListItem extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                    create: (_) => StudyViewModel(getIt<StudyService>()),
+                    create: (_) => StudyViewModel(context, getIt<StudyService>()),
                     child: Consumer<StudyViewModel>(
                         builder: (context, provider, child) {
                       return StudyManageBottomSheet(
                         studyId: vm.study!.id,
                         title: "스터디장 변경",
                         content: "스터디장을 위임받을 멤버를 선택해주세요.",
-                        buttontext: "스터디장 위임하기",
+                        buttonText: "스터디장 위임하기",
                         isOut: false,
                         users: _users,
                       );
@@ -127,14 +127,14 @@ class StudyManageListItem extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                      create: (_) => StudyViewModel(getIt<StudyService>()),
+                      create: (_) => StudyViewModel(context, getIt<StudyService>()),
                       child: Consumer<StudyViewModel>(
                           builder: (context, provider, child) {
                         return StudyManageBottomSheet(
                           studyId: vm.study!.id,
                           title: "멤버 강제 퇴장",
                           content: "스터디에서 강제퇴장 할 멤버를 선택해주세요.",
-                          buttontext: "강제 퇴장",
+                          buttonText: "${provider.selectedUsers.length}명 퇴장",
                           isOut: true,
                           users: _users,
                         );

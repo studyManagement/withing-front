@@ -30,8 +30,13 @@ class BoardBottomSheet extends StatelessWidget {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         const SizedBox(height: 26),
         GestureDetector(
-          child: Text(viewModel.getToSetNoticeText(),
-              style: Theme.of(context).textTheme.bodySmall),
+          behavior: HitTestBehavior.translucent,
+          child: Row(
+            children: [
+              Text(viewModel.getToSetNoticeText(),
+                  style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
           onTap: () {
             viewModel.setOrUnsetNotice();
             context.pop();
@@ -41,7 +46,12 @@ class BoardBottomSheet extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         GestureDetector(
-          child: Text('수정하기', style: Theme.of(context).textTheme.bodySmall),
+          behavior: HitTestBehavior.translucent,
+          child: Row(
+            children: [
+              Text('수정하기', style: Theme.of(context).textTheme.bodySmall),
+            ],
+          ),
           onTap: () {
             context.pop();
             viewModel.isValid = true;
@@ -54,11 +64,16 @@ class BoardBottomSheet extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         GestureDetector(
-          child: Text('삭제하기',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: AppColors.red400)),
+          behavior: HitTestBehavior.translucent,
+          child: Row(
+            children: [
+              Text('삭제하기',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: AppColors.red400)),
+            ],
+          ),
           onTap: () {
             ModiModal.openDialog(
                 context,

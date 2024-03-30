@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/views/board/widgets/board_submit_button.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
 import 'package:provider/provider.dart';
@@ -18,29 +19,33 @@ class UpdatePostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: viewModel,
-      child: Scaffold(
-        appBar: boardAppBar(
-            context,
-            '',
-            () => {
-                  ModiModal.openDialog(context, '글 작성을 취소하시겠어요?',
-                      '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
-                    context
-                      ..pop()
-                      ..pop();
-                  }, null)
-                }, BoardSubmitButton(
-          onSubmitted: () {
-            (viewModel.isValid)
-                ? {
-                    viewModel.updatePost(viewModel.post!.id),
-                    context.pop(),
-                    viewModel.refreshBoardList()
-                  }
-                : null;
-          },
-        )),
-        body: (viewModel.post == null)
+      child: DefaultLayout(
+        title: '',
+        leader: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              ModiModal.openDialog(context, '글 작성을 취소하시겠어요?',
+                  '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
+                context
+                  ..pop()
+                  ..pop();
+              }, null);
+            }),
+        centerTitle: true,
+        actions: [
+          BoardSubmitButton(
+            onSubmitted: () {
+              (viewModel.isValid)
+                  ? {
+                      viewModel.updatePost(viewModel.post!.id),
+                      context.pop(),
+                      viewModel.refreshBoardList()
+                    }
+                  : null;
+            },
+          )
+        ],
+        child: (viewModel.post == null)
             ? Container()
             : SafeArea(
                 child: Padding(

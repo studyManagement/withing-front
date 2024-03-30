@@ -1,26 +1,32 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/environment/environment.dart';
-import 'package:modi/common/logger/app_event.dart';
-import 'package:modi/common/logger/logger_service.dart';
 import 'package:modi/common/notification/notification_service.dart';
+import 'package:modi/common/router/router_service.dart';
 import 'package:modi/constants/auth.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/firebase_options.dart';
 import 'package:modi/withing_app.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+
+const String sentryDsn =
+    'https://1f4f92d5383cd9332c6e636bdeab4674@o4506934796943360.ingest.us.sentry.io/4506934797991936';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  LoggerService.instance.appEvent(AppEvent.APP_OPEN, method: "main.main()");
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(
@@ -43,6 +49,8 @@ void main() async {
     DeviceOrientation.landscapeRight,
   ]);
 
+  setupDependencyInjection();
+
   KakaoSdk.init(
     nativeAppKey: KAKAO_NATIVE_KEY,
     javaScriptAppKey: KAKAO_JAVSCRIPT_KEY,
@@ -51,7 +59,32 @@ void main() async {
   await Environment.initialize(BuildType.LOCAL);
   await Authentication.initialize();
 
-  setupDependencyInjection();
-  await NotificationService.instance.initialize();
-  runApp(const WithingApp());
+  if (kIsWeb) {
+    usePathUrlStrategy();
+    GoRouter.optionURLReflectsImperativeAPIs = true;
+  }
+
+  await RouterService.instance.initializeRoute();
+
+  if (!kIsWeb) {
+    await NotificationService.instance.initialize();
+  }
+
+  if (!kDebugMode) {
+    runZonedGuarded(() async {
+      await SentryFlutter.init(
+        (options) {
+          options.dsn = sentryDsn;
+          // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+          // We recommend adjusting this value in production.
+          options.tracesSampleRate = 1.0;
+        },
+        appRunner: () => runApp(const WithingApp()),
+      );
+    }, (exception, stackTrace) async {
+      Sentry.captureException(exception, stackTrace: stackTrace);
+    });
+  } else {
+    runApp(const WithingApp());
+  }
 }

@@ -2,99 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
-import 'package:modi/common/theme/app/app_colors.dart';
+import 'package:modi/common/theme/theme_resources.dart';
+import 'package:modi/view_models/search/searched_studies_viewmodel.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/components/image/circle_image.dart';
+
 class HomeMyStudy extends StatelessWidget {
   HomeMyStudy({super.key});
-
-  final _valueList = ['가입한 순', '인기 순', '최신 순'];
-  final _selectValue = '가입한 순';
 
   @override
   Widget build(BuildContext context) {
     List<StudyListView> studies =
         context.select<StudyListViewModel, List<StudyListView>>(
-            (provider) => provider.selectStudyListView);
+            (provider) => provider.studyList);
 
-    return Expanded(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  '내 스터디',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.gray800,
-                  ),
-                ),
-                // DropdownMenuItem,
-                DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    value: _selectValue,
-                    items: _valueList.map(
-                      (val) {
-                        return DropdownMenuItem(
-                          value: val,
-                          child: Text(val),
-                        );
-                      },
-                    ).toList(),
-                    onChanged: (val) {},
-                  ),
-                ),
-              ],
+    List<Widget> homeWidgets = [];
+    if (studies.isEmpty) {
+      homeWidgets.add(
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: ModiException(const ['등록된 스터디가 없어요.']),
+        ),
+      );
+    } else {
+      homeWidgets.addAll([
+        const Padding(
+          padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+          child: Text(
+            '내 스터디',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.gray800,
             ),
           ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                studies.isNotEmpty
-                    ? const MyStudyList()
-                    : ModiException(const ['진행 중인 스터디가 없어요.']),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: MyStudyList(),
+        ),
+      ]);
+    }
 
-class MyStudyListException extends StatelessWidget {
-  const MyStudyListException({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 72,
-      constraints: const BoxConstraints(maxHeight: 72),
-      child: Column(
-        children: [
-          Image.asset('asset/exclamation.png', width: 40, height: 40),
-          const SizedBox(height: 10),
-          const Center(
-            child: Text(
-              '진행 중인 스터디가 없어요.',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey),
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: (studies.isEmpty)
+          ? MainAxisAlignment.center
+          : MainAxisAlignment.start,
+      crossAxisAlignment: (studies.isEmpty)
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
+      children: homeWidgets,
     );
   }
 }
@@ -128,135 +89,111 @@ class MyStudyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final StudyListViewModel vm = context.read<StudyListViewModel>();
-    String weekString = context
-        .select<StudyListViewModel, String>((provider) => provider.weekString);
     DateTime selectedDate = context.select<StudyListViewModel, DateTime>(
         (provider) => provider.selectedDate);
     List<StudyListView> studies =
         context.select<StudyListViewModel, List<StudyListView>>(
-            (provider) => provider.selectStudyListView);
+            (provider) => provider.studyList);
 
-    return Expanded(
-        child: ListView.separated(
-      itemBuilder: (_, index) {
+    return GridView.builder(
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.2,
+      ),
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: studies.length,
+      itemBuilder: (context, index) {
         final item = studies[index];
-        final StudyMeetingSchedule nextMeetingSchedule =
-            vm.getNextPromise(item);
-        final String nextScheduleDate = getNextScheduleDate(
-            selectedDate, item.meetingSchedules.first, nextMeetingSchedule);
 
-        return InkWell(
-          onTap: () {
-            context.push("/studies/${item.id}");
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, top: 8, bottom: 10),
+        // String regularMeeting = (item.meetingSchedules.isNotEmpty)
+        //     ? '매주 (${item.getAllWeekdays()}) ${item.getPromiseByDefault().startTime}'
+        //     : "비정기 모임";
+        String regularMeeting = getRegularMeetingString(item.meetingSchedules);
+
+        return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => context.push('/studies/${item.id}'),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            decoration: const BoxDecoration(
+              color: AppColors.gray50,
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    StudyImage(),
-                    const SizedBox(width: 8),
-                    Text(
-                      item.studyName,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.gray800,
-                      ),
-                    ),
-                  ],
+                StudyImage(item.studyImage),
+                const SizedBox(height: 10),
+                Text(
+                  item.studyName,
+                  style: const TextStyle(
+                    color: AppColors.gray800,
+                    fontSize: 16,
+                    fontWeight: AppFonts.fontWeight600,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Text(
-                      '정기 모임',
-                      style: TextStyle(
-                        color: AppColors.gray400,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '매주 $weekString요일 ${item.getPromise(selectedDate).startTime}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                        color: AppColors.gray800,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Text(
-                      '다음 만남',
-                      style: TextStyle(
-                        color: AppColors.gray400,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '$nextScheduleDate (${WeekString[nextMeetingSchedule.day - 1]}) ${nextMeetingSchedule.startTime}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 13,
-                        color: AppColors.gray800,
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 2),
+                Text(
+                  regularMeeting,
+                  style: const TextStyle(
+                    color: AppColors.gray400,
+                    fontWeight: AppFonts.fontWeight500,
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
           ),
         );
       },
-      separatorBuilder: (_, index) => const Divider(
-        height: 10,
-        color: AppColors.gray100,
-        thickness: 1,
-        indent: 20,
-        endIndent: 20,
-      ),
-      itemCount: studies.length,
-    ));
+    );
   }
 }
 
 class StudyImage extends StatelessWidget {
-  const StudyImage({
+  const StudyImage(
+    this.studyImage, {
     super.key,
   });
+
+  final String? studyImage;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 46,
-      height: 42,
+      width: 50,
+      height: 50,
       child: Stack(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(32),
-            child: Image.network(
-              'https://picsum.photos/42',
-              width: 42,
-              height: 42,
+          Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: AppColors.white,
+                width: 3,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: CircleImage(
+              42,42,
+              image: (studyImage == null)
+                  ? null
+                  : Image.network(
+                      studyImage!,
+                      width: 42,
+                      height: 42,
+                    ),
             ),
           ),
           Positioned(
-            top: -3,
-            right: 0,
+            top: 2,
+            right: 2,
             child: Container(
               width: 16,
               height: 16,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.white,
+                  color: AppColors.gray50,
                   width: 3,
                 ),
                 color: AppColors.red400,

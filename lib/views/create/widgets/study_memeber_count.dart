@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modi/view_models/study/study_info_viewmodels.dart';
+import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/study/create_study_viewmodel.dart';
@@ -96,14 +96,11 @@ class _StudyMemberCountState extends State<StudyMemberCount> {
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.gray150),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.gray150),
-                    ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.gray150),
+                      borderSide: BorderSide(color: AppColors.black),
                     ),
                     focusedErrorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.gray150),
+                      borderSide: BorderSide(color: AppColors.black),
                     ),
                   ),
                   inputFormatters: <TextInputFormatter>[
