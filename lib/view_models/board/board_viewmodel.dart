@@ -111,14 +111,9 @@ class BoardViewModel extends ChangeNotifier {
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
     } on StudyException catch (e) {
-      if (e.code == 404) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
-      }
-      if (e.code == 400) {
-        setBoardInfoForPublicStudy(boardId);
-      }
     }
   }
 
@@ -239,11 +234,6 @@ class BoardViewModel extends ChangeNotifier {
 
   set isValid(bool value) {
     _isValid = value;
-    notifyListeners();
-  }
-
-  void setBoardInfoForPublicStudy(int boardId) {
-    _post = notices.singleWhere((element) => element.id == boardId);
     notifyListeners();
   }
 
