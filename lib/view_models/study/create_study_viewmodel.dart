@@ -38,7 +38,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String _studyDescription = '';
   String _studyDisclosePassword = '';
   int _studyMemberCount = 0;
-  int? _studyImageId;
+  String? _studyImageUuid;
   int? _studyId;
 
   int? get studyId => _studyId;
@@ -149,7 +149,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   Future<void> callImageApi() async {
     if (_studyImageFile != null) {
-      _studyImageId =
+      _studyImageUuid =
       await _imageCreateService.callImageCreateApi(_studyImageFile!);
     }
     notifyListeners();
@@ -176,7 +176,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyDisclosePassword,
         _studyDescription,
         _selectedCategoryIndices..sort(),
-        _studyImageId!,
+        _studyImageUuid!,
       );
       _studyId = newStudy.id;
     } on StudyImageException catch (e) {}
