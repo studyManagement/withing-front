@@ -9,6 +9,7 @@ import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:modi/view_models/schedule/model/schedule_detail.dart';
 import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class StudyScheduleDetail extends StatelessWidget {
@@ -82,6 +83,11 @@ class StudyScheduleDetail extends StatelessWidget {
         context.select<ScheduleViewModel, ScheduleDetail>(
             (provider) => provider.schedule);
 
+    String studyName = context.select<StudyViewModel, String>(
+        (provider) => provider.study?.studyName ?? '');
+    StudyViewModel vm = context.watch<StudyViewModel>();
+    vm.fetchStudyInfo(studyId);
+
     DateFormat dateFormatter = DateFormat('yyyy. MM. dd. HH:mm');
 
     if (scheduleDetail.id == -1) {
@@ -101,7 +107,7 @@ class StudyScheduleDetail extends StatelessWidget {
         actions: [
           _makeShareButton(
             context,
-            '[] ${scheduleDetail.title}',
+            '[$studyName] ${scheduleDetail.title}',
             '스터디 일정을 확인해 주세요',
             '/studies/$studyId/schedules/$studyScheduleId',
           ),
