@@ -133,7 +133,8 @@ class RouterService {
                   path: 'studies/:studyId',
                   builder: (context, state) {
                     return ChangeNotifierProvider(
-                        create: (_) => StudyViewModel(context, getIt<StudyService>()),
+                        create: (_) =>
+                            StudyViewModel(context, getIt<StudyService>()),
                         child: StudyInfoScreen(
                           studyId: int.parse(state.pathParameters['studyId']!),
                         ));
@@ -180,12 +181,23 @@ class RouterService {
                             int studyScheduleId =
                                 int.parse(state.pathParameters['scheduleId']!);
 
-                            return ChangeNotifierProvider(
-                              create: (_) =>
-                                  ScheduleViewModel(getIt<ScheduleService>()),
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                  create: (_) => ScheduleViewModel(
+                                      getIt<ScheduleService>()),
+                                ),
+                                ChangeNotifierProvider(
+                                  create: (_) => StudyViewModel(
+                                    context,
+                                    getIt<StudyService>(),
+                                  ),
+                                ),
+                              ],
                               child: StudyScheduleDetail(
-                                  studyId: studyId,
-                                  studyScheduleId: studyScheduleId),
+                                studyId: studyId,
+                                studyScheduleId: studyScheduleId,
+                              ),
                             );
                           },
                         ),
@@ -195,8 +207,7 @@ class RouterService {
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
-                            getIt<StudyService>(),
-                            getIt<ImageUpdateService>()),
+                            getIt<StudyService>(), getIt<ImageUpdateService>()),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),
@@ -207,15 +218,16 @@ class RouterService {
                       builder: (context, state) => BoardMainScreen(
                           studyId: int.parse(state.pathParameters['studyId']!),
                           isNotice: false,
-                        isMember: true
-                      ),
+                          isMember: true),
                     ),
                     GoRoute(
                       path: 'notice/:isMember', // 공지 전체보기
                       builder: (context, state) => BoardMainScreen(
-                          studyId: int.parse(state.pathParameters['studyId']!),
-                          isNotice: true,
-                        isMember: (state.pathParameters['isMember'] == 'true') ? true : false,
+                        studyId: int.parse(state.pathParameters['studyId']!),
+                        isNotice: true,
+                        isMember: (state.pathParameters['isMember'] == 'true')
+                            ? true
+                            : false,
                       ),
                     ),
                   ],
