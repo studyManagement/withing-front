@@ -1,9 +1,13 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modi/exception/study/study_exception.dart';
+import 'package:modi/exception/study/study_image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
+import '../../common/modal/modi_modal.dart';
 import '../../service/image/image_update_service.dart';
 import '../../service/study/study_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -11,8 +15,9 @@ import '../../views/create/widgets/study_text_field.dart';
 class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyService _studyService;
   final ImageUpdateService _imageUpdateService;
+  final BuildContext _context;
 
-  UpdateStudyViewModel(this._studyService, this._imageUpdateService);
+  UpdateStudyViewModel(this._studyService, this._imageUpdateService, this._context);
 
   @override
   bool get isOldImageLoaded => _isOldImageLoaded;
@@ -33,7 +38,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   List<int> get selectedCategoryIndices => _selectedCategoryIndices;
 
   @override
-  File? get studyImageFile => _file;
+  File? get studyImageFile => _studyImageFile;
 
   @override
   int get studyMemberCount => _studyMemberCount;
@@ -46,12 +51,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   int? _studyId;
   int _headCount = 0;
-  int? _studyImageId;
+  String? _studyImageUuid;
   String _studyName = '', _studyDescription = '', _studyImagePath = '';
   List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
   int _studyMemberCount = 0;
-  File? _file;
+  File? _studyImageFile;
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
   bool _isOldImageLoaded = false;
@@ -122,7 +127,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   set studyImageFile(File? file) {
-    _file = file;
+    _studyImageFile = file;
     _studyImagePath = file!.path;
 
     notifyListeners();
@@ -134,42 +139,53 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void setStudyNameAdnDescription(){
+  void setStudyNameAdnDescription() {
     checkStudyNameAndDescription(NewStudyType.studyName, _studyName);
-    checkStudyNameAndDescription(NewStudyType.studyDescription, _studyDescription);
+    checkStudyNameAndDescription(
+        NewStudyType.studyDescription, _studyDescription);
   }
-
 
   /// call api
   Future<void> getStudyInfo(int studyId) async {
-    StudyModel study = await _studyService.fetchStudyInfo(studyId);
-    _studyId = study.id;
-    _headCount = study.headcount;
-    _studyName = study.studyName;
-    _studyImagePath = study.studyImage ?? '';
-    if (_studyImagePath.isNotEmpty) studyImageFile = File(study.studyImage!);
-    _studyDescription = study.explanation;
-    _selectedCategories = List.from(study.categories);
-    _studyMemberCount = study.max;
-    setStudyNameAdnDescription();
-    notifyListeners();
+    try {
+      StudyModel study = await _studyService.fetchStudyInfo(studyId);
+      _studyId = study.id;
+      _headCount = study.headcount;
+      _studyName = study.studyName;
+      _studyImagePath = study.studyImage ?? '';
+      if (_studyImagePath.isNotEmpty) studyImageFile = File(study.studyImage!);
+      _studyDescription = study.explanation;
+      _selectedCategories = List.from(study.categories);
+      _studyMemberCount = study.max;
+      setStudyNameAdnDescription();
+      notifyListeners();
+    }on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
+    }
   }
 
   @override
   Future<void> callImageApi() async {
-    if (_file != null) {
-      _studyImageId =
-          await _imageUpdateService.callImageUpdateApi(_studyId!, _file!);
-    } else {
-      return;
+    if (_studyImageFile != null) {
+      _studyImageUuid =
+          await _imageUpdateService.callImageUpdateApi(_studyImageFile!);
     }
+    notifyListeners();
   }
 
   Future<void> updateStudyInfo() async {
-    // await updateStudyImage();
-    await _studyService.updateStudyInfo(
-        _studyId!,
-        UpdatedStudyInfo(_studyName, _studyDescription,
-            _selectedCategoryIndices..sort(), _studyMemberCount));
+    try {
+      await _studyService.updateStudyInfo(
+          _studyId!,
+          UpdatedStudyInfo(
+              _studyName,
+              _studyDescription,
+              _selectedCategoryIndices..sort(),
+              _studyMemberCount,
+              _studyImageUuid));
+      notifyListeners();
+    } on StudyImageException catch (e) {}
   }
 }

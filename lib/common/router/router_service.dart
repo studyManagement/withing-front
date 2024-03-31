@@ -207,7 +207,7 @@ class RouterService {
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
-                            getIt<StudyService>(), getIt<ImageUpdateService>()),
+                            getIt<StudyService>(), getIt<ImageUpdateService>(), context),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),

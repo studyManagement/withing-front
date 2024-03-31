@@ -19,7 +19,7 @@ class _ImageCreateApi implements ImageCreateApi {
   String? baseUrl;
 
   @override
-  Future<int> create(File image) async {
+  Future<String> create(File image) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
@@ -32,7 +32,7 @@ class _ImageCreateApi implements ImageCreateApi {
         filename: image.path.split(Platform.pathSeparator).last,
       ),
     ));
-    final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
