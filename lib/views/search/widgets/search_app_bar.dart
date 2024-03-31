@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/debouncer/debouncer.dart';
 import 'package:provider/provider.dart';
 import '../../../common/layout/responsive_size.dart';
 import '../../../view_models/search/keyword_search_viewmodel.dart';
@@ -18,17 +19,12 @@ class SearchAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _SearchAppBarState extends State<SearchAppBar> {
-  Timer? debounce;
-
-  @override
-  void dispose(){
-    debounce?.cancel();
-    super.dispose();
-  }
+  final _debounce = Debouncer(milliseconds: 300);
 
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<KeywordSearchViewModel>(context);
+
     return AppBar(
       surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.transparent,
@@ -44,14 +40,11 @@ class _SearchAppBarState extends State<SearchAppBar> {
               if (value != '') viewModel.searchKeyword = value;
               viewModel.search();
             },
-            onChanged: (String value){
+            onChanged: (String value) {
               viewModel.searchKeyword = value;
-              if (debounce?.isActive ?? false){
-                debounce?.cancel();
-              }
-              debounce = Timer(const Duration(milliseconds: 300), () {
-                  viewModel.search();
-                });
+              _debounce.run(() {
+                viewModel.search();
+              });
             },
             cursorHeight: 20,
             maxLength: 20,
