@@ -1,5 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/logger/logging_interface.dart';
+import 'package:modi/common/modal/modi_modal.dart';
+import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/di/injection.dart';
 import 'package:modi/model/schedule/schedule_detail_model.dart';
 import 'package:modi/model/schedule/schedule_model.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
@@ -8,6 +13,7 @@ import 'package:modi/view_models/schedule/model/schedule_detail.dart';
 
 class ScheduleViewModel extends ChangeNotifier {
   final ScheduleService _service;
+  final LoggingInterface _logger = getIt<LoggingInterface>();
   List<Schedule> schedules = [];
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
@@ -34,13 +40,33 @@ class ScheduleViewModel extends ChangeNotifier {
 
   Future<void> postSchedule(BuildContext context, int studyId, String title,
       String description, DateTime startAt, DateTime endAt) async {
-    ScheduleModel schedule = await _service.postStudySchedule(
-        studyId, title, description, startAt, endAt);
+    try {
+      ScheduleModel schedule = await _service.postStudySchedule(
+          studyId, title, description, startAt, endAt);
 
-    if (!context.mounted) {
-      return;
+      if (!context.mounted) {
+        return;
+      }
+
+      context.go('/studies/$studyId/schedules/${schedule.id}');
+    } on ApiException catch (e) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        e.toString(),
+        false,
+        () => context.pop(),
+        () => null,
+      );
+    } on DioException catch (e) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        '시스템 문제로 인해 작업을 수행할 수 없어요.\n잠시 후 다시 시도해 주세요.',
+        false,
+        () => context.pop,
+        () => null,
+      );
     }
-
-    context.go('/studies/$studyId/schedules/${schedule.id}');
   }
 }

@@ -82,15 +82,15 @@ class _ScheduleApi implements ScheduleApi {
     int id,
     String title,
     String description,
-    DateTime startAt,
-    DateTime endAt,
+    String startAt,
+    String endAt,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
       'name': title,
-      'explain': description,
+      'description': description,
       'startDate': startAt,
       'endDate': endAt,
     };

@@ -22,9 +22,9 @@ abstract class ScheduleApi {
   Future<ScheduleModel> postStudySchedule(
     @Path('id') int id,
     @Field('name') String title,
-    @Field('explain') String description,
-    @Field('startDate') DateTime startAt,
-    @Field('endDate') DateTime endAt,
+    @Field('description') String description,
+    @Field('startDate') String startAt,
+    @Field('endDate') String endAt,
   );
 }
 
@@ -53,8 +53,8 @@ class ScheduleService {
   Future<ScheduleModel> postStudySchedule(int studyId, String title,
       String description, DateTime startAt, DateTime endAt) async {
     try {
-      return await _scheduleApi.postStudySchedule(
-          studyId, title, description, startAt, endAt);
+      return await _scheduleApi.postStudySchedule(studyId, title, description,
+          startAt.toIso8601String(), endAt.toIso8601String());
     } on DioException catch (e) {
       rethrow;
     }
