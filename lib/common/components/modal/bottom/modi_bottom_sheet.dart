@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../theme/app/app_colors.dart';
 
-class BottomModal extends StatelessWidget {
-  const BottomModal(
+class ModiBottomSheet extends StatelessWidget {
+  const ModiBottomSheet(
     this._widget,
     this._height, {
     super.key,

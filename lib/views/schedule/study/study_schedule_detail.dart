@@ -4,6 +4,7 @@ import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/share/share.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/modal/action_sheet_params.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -111,6 +112,18 @@ class StudyScheduleDetail extends StatelessWidget {
             '스터디 일정을 확인해 주세요',
             '/studies/$studyId/schedules/$studyScheduleId',
           ),
+          const SizedBox(width: 12),
+          CircleButton(
+              onTap: () {
+                ModiModal.openActionSheet(
+                  context,
+                  [
+                    ActionSheetParams(title: '테스트', onTap: () {}),
+                    ActionSheetParams(title: '테스트', onTap: () {}),
+                  ],
+                );
+              },
+              icon: const Icon(Icons.more_horiz)),
         ],
         child: (scheduleDetail.id == -1)
             ? const Center(
