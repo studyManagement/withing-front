@@ -16,8 +16,8 @@ class ScheduleViewModel extends ChangeNotifier {
   List<Schedule> schedules = [];
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
-  late String _title;
-  late String _description;
+  late String _title = '';
+  late String _description = '';
   late DateTime _startAt;
   late DateTime _endAt;
   int selectItem = 1;
@@ -72,6 +72,42 @@ class ScheduleViewModel extends ChangeNotifier {
 
   Future<void> postSchedule(BuildContext context, int studyId) async {
     try {
+      if (_title.replaceAll(' ', '').isEmpty) {
+        ModiModal.openDialog(
+          context,
+          '오류가 발생했어요',
+          '일정 제목을 입력해주세요.',
+          false,
+          () => context.pop(),
+          () => null,
+        );
+        return;
+      }
+
+      if (_description.replaceAll(' ', '').isEmpty) {
+        ModiModal.openDialog(
+          context,
+          '오류가 발생했어요',
+          '일정 내용을 입력해주세요.',
+          false,
+          () => context.pop(),
+          () => null,
+        );
+        return;
+      }
+
+      if (_startAt.isAfter(_endAt)) {
+        ModiModal.openDialog(
+          context,
+          '오류가 발생했어요',
+          '시작일이 종료일보다 늦을 수 없어요',
+          false,
+          () => context.pop(),
+          () => null,
+        );
+        return;
+      }
+
       ScheduleModel schedule = await _service.postStudySchedule(
           studyId, _title, _description, _startAt, _endAt);
 
