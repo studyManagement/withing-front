@@ -33,7 +33,6 @@ migrate_working_dir/
 /build/
 macos/Flutter/GeneratedPluginRegistrant.swift
 
-
 # Symbolication related
 app.*.symbols
 
@@ -50,3 +49,5 @@ macos/Flutter/GeneratedPluginRegistrant.swift
 linux/flutter/generated_plugins.cmake
 linux/flutter/generated_plugin_registrant.cc
 
+# FVM Version Cache
+.fvm/
