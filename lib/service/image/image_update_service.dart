@@ -10,12 +10,11 @@ part 'image_update_service.g.dart';
 abstract class ImageUpdateApi {
   factory ImageUpdateApi(Dio dio, {String baseUrl}) = _ImageUpdateApi;
 
-  @PATCH("/studies/{study_id}/images") // 추후 수정 필요
+  @PATCH("/images")
   @MultiPart()
   @Headers({'Content-Type': 'multipart/form-data'})
-  Future<int> update(
-    @Path("study_id") int studyId,
-    @Part(name: "study_image") File image,
+  Future<String> update(
+    @Part(name: "image") File image,
   );
 }
 
@@ -25,13 +24,11 @@ class ImageUpdateService {
 
   ImageUpdateService(this._api);
 
-  Future<int> callImageUpdateApi(
-    int studyId,
+  Future<String> callImageUpdateApi(
     File image,
   ) async {
     try {
       final response = await _api.update(
-        studyId,
         image,
       );
       return response;

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/debouncer/debouncer.dart';
 import 'package:modi/common/components/picker/image/image_picker.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
@@ -10,8 +11,15 @@ import 'package:provider/provider.dart';
 
 import '../../common/components/input/text_input.dart';
 
-class SignupForm extends StatelessWidget {
+class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
+
+  @override
+  State<SignupForm> createState() => _SignupFormState();
+}
+
+class _SignupFormState extends State<SignupForm> {
+  final debounce = Debouncer(milliseconds: 300);
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +51,12 @@ class SignupForm extends StatelessWidget {
         ),
         const SizedBox(height: 60),
         TextInput(
-          '닉네임',
-          '사용할 닉네임을 설정해주세요.',
-          10,
-          (value) => viewModel.changeNickname(value),
-        ),
+            '닉네임',
+            '사용할 닉네임을 설정해주세요.',
+            10,
+            (value) => debounce.run(() {
+                  viewModel.changeNickname(value);
+                })),
         const SizedBox(height: 8),
         Text(
           message,

@@ -106,7 +106,7 @@ class InputPasswordModal extends StatelessWidget {
               onTap: () {
                 context.pop();
               },
-              text: '취소',
+              text: '취소하기',
               backgroundColor: AppColors.blue200,
               width: 143,
             ),
@@ -118,7 +118,7 @@ class InputPasswordModal extends StatelessWidget {
                         _controller.clear()
                       });
                 } : null,
-                text: '확인',
+                text: '가입하기',
                 backgroundColor:
                     (vm.isValidPwd) ? AppColors.blue600 : AppColors.gray200,
                 width: 143),

@@ -13,6 +13,8 @@ class MyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '마이페이지',
+      centerTitle: false,
+      titleFontSize: 20,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

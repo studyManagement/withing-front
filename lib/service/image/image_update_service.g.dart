@@ -19,23 +19,20 @@ class _ImageUpdateApi implements ImageUpdateApi {
   String? baseUrl;
 
   @override
-  Future<int> update(
-    int studyId,
-    File image,
-  ) async {
+  Future<String> update(File image) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
     _headers.removeWhere((k, v) => v == null);
     final _data = FormData();
     _data.files.add(MapEntry(
-      'study_image',
+      'image',
       MultipartFile.fromFileSync(
         image.path,
         filename: image.path.split(Platform.pathSeparator).last,
       ),
     ));
-    final _result = await _dio.fetch<int>(_setStreamType<int>(Options(
+    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
       method: 'PATCH',
       headers: _headers,
       extra: _extra,
@@ -43,7 +40,7 @@ class _ImageUpdateApi implements ImageUpdateApi {
     )
         .compose(
           _dio.options,
-          '/studies/${studyId}/images',
+          '/images',
           queryParameters: queryParameters,
           data: _data,
         )

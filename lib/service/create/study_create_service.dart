@@ -32,7 +32,7 @@ class StudyCreateService {
       String password,
       String explanation,
       List<int> categories,
-      int studyImage) async {
+      String uuid) async {
     Map<String, dynamic> studyCreateDtoJson = NewStudyInfo(
       studyName: studyName,
       max: max,
@@ -40,7 +40,7 @@ class StudyCreateService {
       password: password,
       explanation: explanation,
       categories: categories,
-      studyImage: studyImage,
+      uuid: uuid,
     ).toJson();
 
     try {

@@ -14,7 +14,7 @@ abstract class ImageCreateApi {
   @POST("/images")
   @MultiPart()
   @Headers({'Content-Type': 'multipart/form-data'})
-  Future<int> create(
+  Future<String> create(
     @Part(name: "image") File image,
   );
 }
@@ -25,7 +25,7 @@ class ImageCreateService {
 
   ImageCreateService(this._api);
 
-  Future<int> callImageCreateApi(
+  Future<String> callImageCreateApi(
     File image,
   ) async {
     try {

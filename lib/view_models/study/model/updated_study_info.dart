@@ -3,9 +3,10 @@ class UpdatedStudyInfo {
   final String? explanation;
   final List<int>? categories;
   final int? max;
+  final String? uuid;
 
-  UpdatedStudyInfo( this.studyName, this.explanation,
-      this.categories, this.max);
+  UpdatedStudyInfo(
+      this.studyName, this.explanation, this.categories, this.max, this.uuid);
 
   Map<String, dynamic> toJson() {
     return {
@@ -13,6 +14,7 @@ class UpdatedStudyInfo {
       'max': max,
       'explanation': explanation,
       'categories': categories,
+      'uuid': uuid
     };
   }
 }

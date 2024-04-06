@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class NewStudyInfo {
   String studyName;
   int max;
@@ -7,7 +5,7 @@ class NewStudyInfo {
   String password;
   String explanation;
   List<int> categories;
-  int studyImage;
+  String? uuid;
 
   NewStudyInfo({
     required this.studyName,
@@ -16,7 +14,7 @@ class NewStudyInfo {
     required this.password,
     required this.explanation,
     required this.categories,
-    required this.studyImage,
+    required this.uuid,
   });
 
   Map<String, dynamic> toJson() {
@@ -27,7 +25,7 @@ class NewStudyInfo {
       'password': password,
       'explanation': explanation,
       'categories': categories,
-      "studyImage" : studyImage,
+      'uuid': uuid,
     };
   }
 }

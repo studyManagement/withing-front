@@ -16,8 +16,7 @@ class CustomLogInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    _logger.error(
-        '[ERROR] ${err.response?.requestOptions.path} ${err.response?.requestOptions.queryParameters} ${err.response?.requestOptions.data} - ${err.response?.headers} ${err.response?.data}');
+    _logger.error('[ERROR] $err');
     super.onError(err, handler);
   }
 

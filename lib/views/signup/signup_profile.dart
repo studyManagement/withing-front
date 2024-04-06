@@ -13,13 +13,13 @@ class Profile extends StatelessWidget {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               image: const DecorationImage(
-                  image: AssetImage('asset/default_image.png'))),
+                  image: AssetImage('asset/user_default_image.png'))),
         ),
         Positioned(
           right: 0,
           bottom: 0,
           child: Image.asset(
-            'asset/camera.png',
+            'asset/edit.png',
             width: 32,
             height: 32,
           ),

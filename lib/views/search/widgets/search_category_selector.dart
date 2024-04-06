@@ -20,7 +20,7 @@ class SearchCategorySelector extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            mainAxisSpacing: 20,
+            mainAxisSpacing: 12,
             mainAxisExtent: (isTabletPrt) ? screenWidth * 0.12: null),
         itemCount: categories.length,
         itemBuilder: (context, index) {

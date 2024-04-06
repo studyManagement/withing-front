@@ -53,6 +53,7 @@ class StudyInfoScreen extends StatelessWidget {
       centerTitle: true,
       title: '',
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      resizeToAvoidBottomInset: false,
       floatingActionButton: Offstage(
         offstage: offstage,
         child: StudyBottomButton(
