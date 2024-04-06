@@ -26,6 +26,12 @@ abstract class ScheduleApi {
     @Field('startDate') String startAt,
     @Field('endDate') String endAt,
   );
+
+  @DELETE('/studies/{id}/schedules/{scheduleId}')
+  Future<ScheduleModel> deleteStudySchedule(
+    @Path('id') int id,
+    @Path('scheduleId') int scheduleId,
+  );
 }
 
 class ScheduleService {
@@ -55,6 +61,15 @@ class ScheduleService {
     try {
       return await _scheduleApi.postStudySchedule(studyId, title, description,
           startAt.toIso8601String(), endAt.toIso8601String());
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ScheduleModel> deleteStudySchedule(
+      int studyId, int studyScheduleId) async {
+    try {
+      return await _scheduleApi.deleteStudySchedule(studyId, studyScheduleId);
     } on DioException catch (e) {
       rethrow;
     }

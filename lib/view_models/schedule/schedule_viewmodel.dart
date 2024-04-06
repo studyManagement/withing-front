@@ -70,6 +70,27 @@ class ScheduleViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteSchedule(BuildContext context, int studyId) async {
+    try {
+      await _service.deleteStudySchedule(studyId, schedule.id);
+
+      if (!context.mounted) {
+        return;
+      }
+
+      context.go('/studies/$studyId/schedules');
+    } on ApiException catch (e) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        e.cause,
+        false,
+        () => context.pop(),
+        () => null,
+      );
+    }
+  }
+
   Future<void> postSchedule(BuildContext context, int studyId) async {
     try {
       if (_title.replaceAll(' ', '').isEmpty) {

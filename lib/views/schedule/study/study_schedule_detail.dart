@@ -80,20 +80,21 @@ class StudyScheduleDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScheduleViewModel scheduleViewModel = context.read<ScheduleViewModel>();
+    StudyViewModel studyViewModel = context.read<StudyViewModel>();
+
     ScheduleDetail scheduleDetail =
         context.select<ScheduleViewModel, ScheduleDetail>(
             (provider) => provider.schedule);
 
     String studyName = context.select<StudyViewModel, String>(
         (provider) => provider.study?.studyName ?? '');
-    StudyViewModel vm = context.watch<StudyViewModel>();
-    vm.fetchStudyInfo(studyId);
 
     DateFormat dateFormatter = DateFormat('yyyy. MM. dd. HH:mm');
 
     if (scheduleDetail.id == -1) {
-      ScheduleViewModel vm = context.read<ScheduleViewModel>();
-      vm.fetchSchedule(studyId, studyScheduleId);
+      studyViewModel.fetchStudyInfo(studyId);
+      scheduleViewModel.fetchSchedule(studyId, studyScheduleId);
     }
 
     List<Widget> headerWidget = [];
@@ -119,7 +120,11 @@ class StudyScheduleDetail extends StatelessWidget {
                   context,
                   [
                     ActionSheetParams(title: '테스트', onTap: () {}),
-                    ActionSheetParams(title: '테스트', onTap: () {}),
+                    ActionSheetParams(
+                      title: '삭제하기',
+                      onTap: () =>
+                          scheduleViewModel.deleteSchedule(context, studyId),
+                    ),
                   ],
                 );
               },
