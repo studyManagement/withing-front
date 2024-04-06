@@ -36,7 +36,7 @@ class StudyInfoScreen extends StatelessWidget {
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
     vm.fetchStudyInfo(studyId).then((_) {
-      vm.getRegularMeetingString();
+      vm.getRegularMeetingStringAndSetMeetingType();
       vm.checkRegistered();
     });
     return DefaultLayout(

@@ -6,6 +6,7 @@ import '../../../common/components/gray100_divider.dart';
 import '../../../common/components/study_categories_widget.dart';
 import '../../../model/search/searched_study_info_model.dart';
 import '../../view_models/search/searched_studies_viewmodel.dart';
+import '../utils/get_regular_meeting_string.dart';
 import 'exception/modi_exception.dart';
 
 class AutomatedStudyListView extends StatelessWidget {

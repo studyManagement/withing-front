@@ -348,7 +348,7 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
-  void getRegularMeetingString() {
+  void getRegularMeetingStringAndSetMeetingType() {
     int cnt = 0;
     List<int> days = [];
     for (int i = 0; i < _study!.meetingSchedules.length; i++) {

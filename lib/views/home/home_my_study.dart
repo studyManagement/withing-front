@@ -10,6 +10,7 @@ import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/components/image/circle_image.dart';
+import '../../common/utils/get_regular_meeting_string.dart';
 
 class HomeMyStudy extends StatelessWidget {
   HomeMyStudy({super.key});

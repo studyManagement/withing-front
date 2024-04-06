@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/study/study_list.dart';
 import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/utils/get_regular_meeting_string.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
@@ -84,8 +85,7 @@ class MyStudyListView extends StatelessWidget {
         final String nextScheduleDate = getNextScheduleDate(vm.selectedDate,
             element.meetingSchedules.first, nextMeetingSchedule);
 
-        regularMeeting =
-            "매주 (${element.getAllWeekdays()}) ${element.getPromiseByDefault().startTime}";
+        regularMeeting = getRegularMeetingString(element.meetingSchedules);
 
         if (studyType == StudyType.LIKE) {
           extraElement = '${nextScheduleDate}';
