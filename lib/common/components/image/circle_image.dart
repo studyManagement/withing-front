@@ -38,13 +38,9 @@ class CircleImage extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.gray150,
         shape: BoxShape.circle,
-        border: Border.all(
-          color: AppColors.white,
-          width: 3
-        )
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(360),
