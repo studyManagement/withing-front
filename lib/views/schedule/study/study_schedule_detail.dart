@@ -112,58 +112,66 @@ class StudyScheduleDetail extends StatelessWidget {
             '/studies/$studyId/schedules/$studyScheduleId',
           ),
         ],
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  ...headerWidget,
-                  Text(
-                    scheduleDetail.title,
-                    style: const TextStyle(
-                      color: AppColors.gray800,
-                      fontWeight: AppFonts.fontWeight600,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Divider(
-                  thickness: 1,
-                  color: AppColors.gray50,
-                ),
-              ),
-              _makeScheduleDescription(
-                '시작',
-                dateFormatter.format(scheduleDetail.startAt),
-              ),
-              const SizedBox(height: 8),
-              _makeScheduleDescription(
-                '종료',
-                dateFormatter.format(scheduleDetail.endAt),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                child: Divider(
-                  thickness: 1,
-                  color: AppColors.gray50,
-                ),
-              ),
-              Text(
-                scheduleDetail.description,
-                style: const TextStyle(
-                  color: AppColors.gray600,
-                  fontWeight: AppFonts.fontWeight500,
-                  fontSize: 14,
+        child: (scheduleDetail.id == -1)
+            ? const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [CircularProgressIndicator()],
                 ),
               )
-            ],
-          ),
-        ));
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        ...headerWidget,
+                        Text(
+                          scheduleDetail.title,
+                          style: const TextStyle(
+                            color: AppColors.gray800,
+                            fontWeight: AppFonts.fontWeight600,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Divider(
+                        thickness: 1,
+                        color: AppColors.gray50,
+                      ),
+                    ),
+                    _makeScheduleDescription(
+                      '시작',
+                      dateFormatter.format(scheduleDetail.startAt),
+                    ),
+                    const SizedBox(height: 8),
+                    _makeScheduleDescription(
+                      '종료',
+                      dateFormatter.format(scheduleDetail.endAt),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Divider(
+                        thickness: 1,
+                        color: AppColors.gray50,
+                      ),
+                    ),
+                    Text(
+                      scheduleDetail.description,
+                      style: const TextStyle(
+                        color: AppColors.gray600,
+                        fontWeight: AppFonts.fontWeight500,
+                        fontSize: 14,
+                      ),
+                    )
+                  ],
+                ),
+              ));
   }
 }
