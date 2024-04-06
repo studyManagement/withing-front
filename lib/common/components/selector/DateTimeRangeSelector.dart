@@ -53,6 +53,7 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                 _startAt = startAt;
                 _endAt = endAt;
               });
+              widget.onChange(_startAt, _endAt);
             },
           ),
           const SizedBox(height: 12),
@@ -67,6 +68,7 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                 _startAt = startAt;
                 _endAt = endAt;
               });
+              widget.onChange(_startAt, _endAt);
             },
           ),
         ],

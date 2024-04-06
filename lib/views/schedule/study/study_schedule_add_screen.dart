@@ -23,6 +23,10 @@ class StudyScheduleAddScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScheduleViewModel vm = context.read<ScheduleViewModel>();
 
+    DateTime now = DateTime.now();
+    vm.setStartAt(now);
+    vm.setEndAt(now);
+
     return DefaultLayout(
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -31,8 +35,7 @@ class StudyScheduleAddScreen extends StatelessWidget {
         child: ConfirmButton(
           width: MediaQuery.of(context).size.width,
           onTap: () {
-            vm.postSchedule(context, _studyId, vm.title, vm.description,
-                vm.startAt, vm.endAt);
+            vm.postSchedule(context, _studyId);
           },
           text: '생성하기',
           backgroundColor: AppColors.blue600,
@@ -79,8 +82,8 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextInput('일정 이름', '일정 이름을 입력해 주세요.', 20,
-                (value) => {vm.setTitle(value)}),
+            TextInput(
+                '일정 이름', '일정 이름을 입력해 주세요.', 20, (value) => vm.setTitle(value)),
             const SizedBox(height: 8),
             const Text(
               '2-20자 사이의 이름을 설정해주세요.',
@@ -91,7 +94,7 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             TextInput('일정 설명', '일정 설명을 입력해 주세요.', 65,
-                (value) => {vm.setDescription(value)}),
+                (value) => vm.setDescription(value)),
           ],
         ));
   }

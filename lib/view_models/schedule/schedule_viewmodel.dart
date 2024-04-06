@@ -16,11 +16,16 @@ class ScheduleViewModel extends ChangeNotifier {
   List<Schedule> schedules = [];
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
-  String title = '';
-  String description = '';
-  late DateTime startAt = DateTime.now();
-  late DateTime endAt = DateTime.now();
+  late String _title;
+  late String _description;
+  late DateTime _startAt;
+  late DateTime _endAt;
   int selectItem = 1;
+
+  String get title => _title;
+  String get description => _description;
+  DateTime get startAt => _startAt;
+  DateTime get endAt => _endAt;
 
   ScheduleViewModel(this._service);
 
@@ -30,21 +35,21 @@ class ScheduleViewModel extends ChangeNotifier {
   }
 
   void setTitle(String title) {
-    this.title = title;
+    _title = title;
   }
 
   void setDescription(String description) {
-    this.description = description;
+    _description = description;
   }
 
   void setStartAt(DateTime startAt) {
-    this.startAt = startAt;
-    notifyListeners();
+    _startAt = startAt;
+    //notifyListeners();
   }
 
   void setEndAt(DateTime endAt) {
-    this.endAt = endAt;
-    notifyListeners();
+    _endAt = endAt;
+    //notifyListeners();
   }
 
   Future<void> fetchSchedules(int studyId) async {
@@ -65,11 +70,10 @@ class ScheduleViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> postSchedule(BuildContext context, int studyId, String title,
-      String description, DateTime startAt, DateTime endAt) async {
+  Future<void> postSchedule(BuildContext context, int studyId) async {
     try {
       ScheduleModel schedule = await _service.postStudySchedule(
-          studyId, title, description, startAt, endAt);
+          studyId, _title, _description, _startAt, _endAt);
 
       if (!context.mounted) {
         return;
