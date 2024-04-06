@@ -39,9 +39,9 @@ class TextInput extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          autofocus: true,
+          //autofocus: true,
           maxLength: _maxLength,
-          onChanged: _onChanged,
+          //onChanged: _onChanged,
         ),
       ],
     );

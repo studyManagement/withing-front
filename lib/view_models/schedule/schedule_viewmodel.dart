@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/logger/logging_interface.dart';
@@ -17,8 +16,36 @@ class ScheduleViewModel extends ChangeNotifier {
   List<Schedule> schedules = [];
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
+  String title = '';
+  String description = '';
+  late DateTime startAt = DateTime.now();
+  late DateTime endAt = DateTime.now();
+  int selectItem = 1;
 
   ScheduleViewModel(this._service);
+
+  void setSelectItem(int index) {
+    selectItem = index;
+    notifyListeners();
+  }
+
+  void setTitle(String title) {
+    this.title = title;
+  }
+
+  void setDescription(String description) {
+    this.description = description;
+  }
+
+  void setStartAt(DateTime startAt) {
+    this.startAt = startAt;
+    notifyListeners();
+  }
+
+  void setEndAt(DateTime endAt) {
+    this.endAt = endAt;
+    notifyListeners();
+  }
 
   Future<void> fetchSchedules(int studyId) async {
     List<ScheduleModel> scheduleModels = await _service.fetchSchedules(studyId);
@@ -53,18 +80,9 @@ class ScheduleViewModel extends ChangeNotifier {
       ModiModal.openDialog(
         context,
         '오류가 발생했어요',
-        e.toString(),
+        e.cause,
         false,
         () => context.pop(),
-        () => null,
-      );
-    } on DioException catch (e) {
-      ModiModal.openDialog(
-        context,
-        '오류가 발생했어요',
-        '시스템 문제로 인해 작업을 수행할 수 없어요.\n잠시 후 다시 시도해 주세요.',
-        false,
-        () => context.pop,
         () => null,
       );
     }
