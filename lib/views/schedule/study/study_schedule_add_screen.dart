@@ -15,55 +15,67 @@ import '../../../common/theme/app/app_colors.dart';
 LoggingInterface logger = getIt<LoggingInterface>();
 
 class StudyScheduleAddScreen extends StatelessWidget {
-  const StudyScheduleAddScreen(this._studyId, {super.key});
+  const StudyScheduleAddScreen(this._studyId, this._studyScheduleId,
+      {super.key});
 
   final int _studyId;
+  final int? _studyScheduleId;
 
   @override
   Widget build(BuildContext context) {
-    ScheduleViewModel vm = context.read<ScheduleViewModel>();
+    ScheduleViewModel vm = context.watch<ScheduleViewModel>();
 
     DateTime now = DateTime.now();
-    vm.setStartAt(now);
-    vm.setEndAt(now);
+
+    if (_studyScheduleId != null && vm.schedule.id == -1) {
+      vm.fetchSchedule(_studyId, _studyScheduleId!);
+    } else {
+      vm.setStartAt(now);
+      vm.setEndAt(now);
+      vm.setIsLoading(false);
+    }
 
     return DefaultLayout(
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: ConfirmButton(
-          width: MediaQuery.of(context).size.width,
-          onTap: () {
-            vm.postSchedule(context, _studyId);
-          },
-          text: '생성하기',
-          backgroundColor: AppColors.blue600,
-        ),
-      ),
+      floatingActionButton: (vm.isLoading)
+          ? null
+          : Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: ConfirmButton(
+                width: MediaQuery.of(context).size.width,
+                onTap: () {
+                  vm.postSchedule(context, _studyId);
+                },
+                text: (_studyScheduleId == null) ? '생성하기' : '수정하기',
+                backgroundColor: AppColors.blue600,
+              ),
+            ),
       leader: CircleButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onTap: () => context.pop()),
-      title: '일정 생성',
-      child: Column(
-        children: [
-          const StudyScheduleRegisterInformation(),
-          const SizedBox(height: 24),
-          const Divider(
-            thickness: 6,
-            color: AppColors.gray50,
-          ),
-          const SizedBox(height: 24),
-          DateTimeRangeSelector(
-            startAt: vm.startAt,
-            endAt: vm.endAt,
-            onChange: (DateTime startAt, DateTime endAt) {
-              vm.setStartAt(startAt);
-              vm.setEndAt(endAt);
-            },
-          ),
-        ],
-      ),
+      title: '일정 ${(_studyScheduleId == null) ? '생성' : '수정'}',
+      child: (vm.isLoading)
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                const StudyScheduleRegisterInformation(),
+                const SizedBox(height: 24),
+                const Divider(
+                  thickness: 6,
+                  color: AppColors.gray50,
+                ),
+                const SizedBox(height: 24),
+                DateTimeRangeSelector(
+                  startAt: vm.schedule.startAt,
+                  endAt: vm.schedule.endAt,
+                  onChange: (DateTime startAt, DateTime endAt) {
+                    vm.setStartAt(startAt);
+                    vm.setEndAt(endAt);
+                  },
+                ),
+              ],
+            ),
     );
   }
 }
@@ -83,7 +95,7 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextInput(
-                '일정 이름', '일정 이름을 입력해 주세요.', 20, (value) => vm.setTitle(value)),
+                '일정 이름', '일정 이름을 입력해 주세요.', 20, (value) => vm.setTitle(value), initialValue: vm.schedule.title,),
             const SizedBox(height: 8),
             const Text(
               '2-20자 사이의 이름을 설정해주세요.',
@@ -94,7 +106,7 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             TextInput('일정 설명', '일정 설명을 입력해 주세요.', 65,
-                (value) => vm.setDescription(value)),
+                (value) => vm.setDescription(value), initialValue: vm.schedule.description,),
           ],
         ));
   }

@@ -157,12 +157,19 @@ class RouterService {
                           builder: (context, state) {
                             int studyId =
                                 int.parse(state.pathParameters['studyId']!);
+                            int? scheduleId = state
+                                        .uri.queryParameters['scheduleId'] !=
+                                    null
+                                ? int.parse(
+                                    state.uri.queryParameters['scheduleId']!)
+                                : null;
 
                             return ChangeNotifierProvider(
                               create: (_) =>
                                   ScheduleViewModel(getIt<ScheduleService>()),
                               child: StudyScheduleAddScreen(
                                 studyId,
+                                scheduleId,
                               ),
                             );
                           },
@@ -207,7 +214,9 @@ class RouterService {
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
-                            getIt<StudyService>(), getIt<ImageUpdateService>(), context),
+                            getIt<StudyService>(),
+                            getIt<ImageUpdateService>(),
+                            context),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),

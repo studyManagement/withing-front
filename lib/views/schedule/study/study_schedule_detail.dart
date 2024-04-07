@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/share/share.dart';
@@ -119,7 +120,10 @@ class StudyScheduleDetail extends StatelessWidget {
                 ModiModal.openActionSheet(
                   context,
                   [
-                    ActionSheetParams(title: '테스트', onTap: () {}),
+                    ActionSheetParams(
+                        title: '수정하기',
+                        onTap: () => context.push(
+                            '/studies/$studyId/schedules/register?scheduleId=$studyScheduleId')),
                     ActionSheetParams(
                       title: '삭제하기',
                       onTap: () =>

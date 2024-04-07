@@ -16,40 +16,26 @@ class ScheduleViewModel extends ChangeNotifier {
   List<Schedule> schedules = [];
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
-  late String _title = '';
-  late String _description = '';
-  late DateTime _startAt;
-  late DateTime _endAt;
-  int selectItem = 1;
 
-  String get title => _title;
-  String get description => _description;
-  DateTime get startAt => _startAt;
-  DateTime get endAt => _endAt;
+  bool _isLoading = true;
+  bool get isLoading => _isLoading;
 
   ScheduleViewModel(this._service);
 
-  void setSelectItem(int index) {
-    selectItem = index;
-    notifyListeners();
-  }
-
   void setTitle(String title) {
-    _title = title;
+    schedule.title = title;
   }
 
   void setDescription(String description) {
-    _description = description;
+    schedule.description = description;
   }
 
   void setStartAt(DateTime startAt) {
-    _startAt = startAt;
-    //notifyListeners();
+    schedule.startAt = startAt;
   }
 
   void setEndAt(DateTime endAt) {
-    _endAt = endAt;
-    //notifyListeners();
+    schedule.endAt = endAt;
   }
 
   Future<void> fetchSchedules(int studyId) async {
@@ -66,7 +52,13 @@ class ScheduleViewModel extends ChangeNotifier {
     ScheduleDetailModel scheduleModel =
         await _service.fetchSchedule(studyId, studyScheduleId);
     schedule = ScheduleDetail.from(scheduleModel);
+    _isLoading = false;
 
+    notifyListeners();
+  }
+
+  void setIsLoading(bool isLoading) {
+    _isLoading = isLoading;
     notifyListeners();
   }
 
@@ -93,7 +85,7 @@ class ScheduleViewModel extends ChangeNotifier {
 
   Future<void> postSchedule(BuildContext context, int studyId) async {
     try {
-      if (_title.replaceAll(' ', '').isEmpty) {
+      if (this.schedule.title.replaceAll(' ', '').isEmpty) {
         ModiModal.openDialog(
           context,
           '오류가 발생했어요',
@@ -105,7 +97,7 @@ class ScheduleViewModel extends ChangeNotifier {
         return;
       }
 
-      if (_description.replaceAll(' ', '').isEmpty) {
+      if (this.schedule.description.replaceAll(' ', '').isEmpty) {
         ModiModal.openDialog(
           context,
           '오류가 발생했어요',
@@ -117,7 +109,7 @@ class ScheduleViewModel extends ChangeNotifier {
         return;
       }
 
-      if (_startAt.isAfter(_endAt)) {
+      if (this.schedule.startAt.isAfter(this.schedule.endAt)) {
         ModiModal.openDialog(
           context,
           '오류가 발생했어요',
@@ -130,7 +122,11 @@ class ScheduleViewModel extends ChangeNotifier {
       }
 
       ScheduleModel schedule = await _service.postStudySchedule(
-          studyId, _title, _description, _startAt, _endAt);
+          studyId,
+          this.schedule.title,
+          this.schedule.description,
+          this.schedule.startAt,
+          this.schedule.endAt);
 
       if (!context.mounted) {
         return;

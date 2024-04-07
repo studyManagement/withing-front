@@ -3,15 +3,12 @@ import 'package:modi/common/theme/app/app_colors.dart';
 
 class TextInput extends StatelessWidget {
   const TextInput(
-    this._label,
-    this._placeholder,
-    this._maxLength,
-    this._onChanged, {
-    super.key,
-  });
+      this._label, this._placeholder, this._maxLength, this._onChanged,
+      {this.initialValue, super.key});
 
   final String _label;
   final String _placeholder;
+  final String? initialValue;
   final int _maxLength;
   final Function(String) _onChanged;
 
@@ -29,6 +26,7 @@ class TextInput extends StatelessWidget {
           ),
         ),
         TextFormField(
+          initialValue: initialValue,
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             counterText: '',
