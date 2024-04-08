@@ -64,18 +64,24 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchNotices() async {
-    List<BoardModel> newNotices = [];
-    int page = notices.isEmpty ? 0 : (notices.length ~/ SIZE);
-    if (hasNextNotices) {
-      newNotices = await _service.fetchBoardList(_studyId!, true, SIZE, page);
-      if (newNotices.length < SIZE) {
-        hasNextNotices = false;
+    try {
+      List<BoardModel> newNotices = [];
+      int page = notices.isEmpty ? 0 : (notices.length ~/ SIZE);
+      if (hasNextNotices) {
+        newNotices = await _service.fetchBoardList(_studyId!, true, SIZE, page);
+        if (newNotices.length < SIZE) {
+          hasNextNotices = false;
+        }
       }
-    }
-    if (newNotices.isNotEmpty) {
-      notices.addAll(newNotices);
-      hasPost = true;
-      notifyListeners();
+      if (newNotices.isNotEmpty) {
+        notices.addAll(newNotices);
+        hasPost = true;
+        notifyListeners();
+      }
+    }on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
     }
   }
 
@@ -96,7 +102,7 @@ class BoardViewModel extends ChangeNotifier {
       }
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }
@@ -112,7 +118,7 @@ class BoardViewModel extends ChangeNotifier {
       isValidInput(BoardInputType.boardContents, post!.content);
     } on StudyException catch (e) {
         if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
     }
   }
@@ -123,7 +129,7 @@ class BoardViewModel extends ChangeNotifier {
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }
@@ -137,7 +143,7 @@ class BoardViewModel extends ChangeNotifier {
         notifyListeners();
       } on StudyException catch (e) {
         if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
       }
     }
@@ -153,7 +159,7 @@ class BoardViewModel extends ChangeNotifier {
         notifyListeners();
       } on StudyException catch (e) {
         if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
       }
     }
@@ -167,7 +173,7 @@ class BoardViewModel extends ChangeNotifier {
       if (comments.isNotEmpty) notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }
@@ -183,7 +189,7 @@ class BoardViewModel extends ChangeNotifier {
         notifyListeners();
       } on StudyException catch (e) {
         if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
       }
     }
@@ -196,7 +202,7 @@ class BoardViewModel extends ChangeNotifier {
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }
@@ -208,7 +214,7 @@ class BoardViewModel extends ChangeNotifier {
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }

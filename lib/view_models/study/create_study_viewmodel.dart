@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:modi/exception/study/study_image_exception.dart';
+import 'package:modi/common/requester/network_exception.dart';
+import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../service/create/study_create_service.dart';
@@ -179,7 +180,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyImageUuid!,
       );
       _studyId = newStudy.id;
-    } on StudyImageException catch (e) {}
+    } on NetworkException catch (e) {
+      rethrow;
+    }
     notifyListeners();
   }
 }

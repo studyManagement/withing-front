@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/requester/network_exception.dart';
 import 'package:modi/exception/study/study_exception.dart';
-import 'package:modi/exception/study/study_image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
@@ -161,7 +161,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       notifyListeners();
     }on StudyException catch (e){
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
               () => _context.pop(), () => null);
     }
   }
@@ -186,6 +186,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyMemberCount,
               _studyImageUuid));
       notifyListeners();
-    } on StudyImageException catch (e) {}
+    } on NetworkException catch (e) {
+      rethrow;
+    }
   }
 }

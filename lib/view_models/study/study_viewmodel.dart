@@ -33,7 +33,7 @@ class StudyViewModel extends ChangeNotifier {
   List<int> _selectedUsers = [];
   String startTime = '미등록';
   String endTime = '미등록';
-  bool _isStart = true;
+  bool _isStart = false;
   String _password = '';
   List<bool> _isFilled = [for (int i = 0; i < 4; i++) false];
   bool _isInit = true; // 미등록인 경우에만 false
@@ -47,7 +47,7 @@ class StudyViewModel extends ChangeNotifier {
   bool _successToJoin = false;
   bool _isFull = false;
   bool _isErrorText = false;
-
+  bool _isAfter = true;
   bool _hasLike = false;
   bool hasPost = false;
   int numOfPosts = 0;
@@ -151,7 +151,7 @@ class StudyViewModel extends ChangeNotifier {
         notifyListeners();
       } on StudyException catch (e) {
         if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
       }
     }
@@ -184,7 +184,7 @@ class StudyViewModel extends ChangeNotifier {
         _isFull = true;
       } else if (e.code == 404) {
         if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
       }
     }
@@ -199,7 +199,7 @@ class StudyViewModel extends ChangeNotifier {
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }
@@ -211,7 +211,7 @@ class StudyViewModel extends ChangeNotifier {
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
   }
@@ -222,7 +222,7 @@ class StudyViewModel extends ChangeNotifier {
       await _service.finishStudy(_study!.id);
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => {_context.pop(), _context.pop()}, () => null);
     }
     notifyListeners();
@@ -233,7 +233,7 @@ class StudyViewModel extends ChangeNotifier {
       await _service.deleteStudy(_study!.id);
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => {_context.pop(), _context.pop()}, () => null);
     }
     notifyListeners();
@@ -248,7 +248,7 @@ class StudyViewModel extends ChangeNotifier {
       // 변경 실패
       _isSwitched = false;
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
     notifyListeners();
@@ -260,43 +260,63 @@ class StudyViewModel extends ChangeNotifier {
       _isOut = true;
     } on StudyException catch (e) {
       if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '문제가 발생했어요', e.cause, false,
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
     }
     notifyListeners();
   }
 
   Future<void> setMeetingSchedule(MeetingType type) async {
-    List<StudyMeetingSchedule> _meetingSchedules = [];
-    _meetingType = type;
+    try {
+      List<StudyMeetingSchedule> _meetingSchedules = [];
+      _meetingType = type;
 
-    if (checkDaysAndTimes(type)) {
-      if (_meetingType != MeetingType.NONE) {
-        DateTime start = DateFormat('hh:mm')
-            .parse(startTime.substring(3, 8)); // 입력된 시간 포맷을 해석합니다.
-        DateTime end = DateFormat('hh:mm')
-            .parse(endTime.substring(3, 8)); // 입력된 시간 포맷을 해석합니다.
-        if (startTime.contains('오후')) {
-          start = start.add(const Duration(hours: 12));
-        }
-        if (endTime.contains('오후')) {
-          end = end.add(const Duration(hours: 12));
-        }
-        String startTime24 = DateFormat('HH:mm').format(start);
-        String endTime24 = DateFormat('HH:mm').format(end);
-        if (_meetingType == MeetingType.DAILY) {
-          for (int i = 1; i <= 7; i++) {
-            _meetingSchedules
-                .add(StudyMeetingSchedule.withoutId(i, startTime24, endTime24));
+      if (checkDaysAndTimes(type)) {
+        if (_meetingType != MeetingType.NONE) {
+          DateTime start = DateFormat('hh:mm').parse(startTime.substring(3, 8));
+          DateTime end = DateFormat('hh:mm').parse(endTime.substring(3, 8));
+
+          if (startTime.contains('오후')) {
+            start = start.add(const Duration(hours: 12));
           }
-        } else if (_meetingType == MeetingType.WEEKLY) {
-          for (var day in selectedDays) {
-            _meetingSchedules.add(
-                StudyMeetingSchedule.withoutId(day, startTime24, endTime24));
+          if (endTime.contains('오후')) {
+            end = end.add(const Duration(hours: 12));
           }
+          _isAfter = start.isAfter(end);
+          String startTime24 = DateFormat('HH:mm').format(start);
+          String endTime24 = DateFormat('HH:mm').format(end);
+          if (_meetingType == MeetingType.DAILY) {
+            for (int i = 1; i <= 7; i++) {
+              _meetingSchedules.add(
+                  StudyMeetingSchedule.withoutId(i, startTime24, endTime24));
+            }
+          } else if (_meetingType == MeetingType.WEEKLY) {
+            for (var day in selectedDays) {
+              _meetingSchedules.add(
+                  StudyMeetingSchedule.withoutId(day, startTime24, endTime24));
+            }
+          }
+        }
+        if (!_isAfter) {
+          await _service.setMeetingSchedule(study!.id, _meetingSchedules);
+          if (!_context.mounted) return;
+          _context.go('/studies/${study!.id}');
+        } else {
+          if (!_context.mounted) return;
+          ModiModal.openDialog(
+              _context,
+              '오류가 발생했어요',
+              '시작 시간이 종료 시간보다 늦을 수 없어요.',
+              false,
+              () => _context.pop(),
+              () => null);
+          return;
         }
       }
-      await _service.setMeetingSchedule(study!.id, _meetingSchedules);
+    } on StudyException catch (e) {
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
@@ -423,7 +443,7 @@ class StudyViewModel extends ChangeNotifier {
       String endMeridiem = (end.hour < 12) ? '오전' : '오후';
       if (end.hour == 0) end.add(Duration(hours: 12));
       String time = (end.hour > 0 && end.hour < 12)
-          ? _study!.meetingSchedules[0].startTime
+          ? _study!.meetingSchedules[0].endTime
           : DateFormat('hh:mm').format(end);
 
       endTime = '$endMeridiem $time';
@@ -465,7 +485,7 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initMeetingSchedule(MeetingType type){
+  void initMeetingSchedule(MeetingType type) {
     initDaysAndTime(type);
     _meetingType = type;
     notifyListeners();

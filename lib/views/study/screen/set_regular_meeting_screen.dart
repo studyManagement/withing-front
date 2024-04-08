@@ -31,7 +31,6 @@ class SetRegularMeetingScreen extends StatelessWidget {
                 onTap: (consumer.checkDaysAndTimes(curType))
                     ? () {
                         consumer.setMeetingSchedule(curType);
-                        context.go('/studies/${viewModel.study!.id}');
                       }
                     : null,
                 text: '설정 완료'),
@@ -80,8 +79,7 @@ class SetRegularMeetingScreen extends StatelessWidget {
                             const CustomRadioButton(type: MeetingType.DAILY),
                             const SizedBox(width: 10),
                             Text('매일',
-                                style:
-                                    Theme.of(context).textTheme.titleSmall),
+                                style: Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                         const SizedBox(width: 20),
@@ -90,8 +88,7 @@ class SetRegularMeetingScreen extends StatelessWidget {
                             const CustomRadioButton(type: MeetingType.WEEKLY),
                             const SizedBox(width: 10),
                             Text('매주',
-                                style:
-                                    Theme.of(context).textTheme.titleSmall),
+                                style: Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                         const SizedBox(width: 20),
@@ -100,8 +97,7 @@ class SetRegularMeetingScreen extends StatelessWidget {
                             const CustomRadioButton(type: MeetingType.NONE),
                             const SizedBox(width: 10),
                             Text('설정안함',
-                                style:
-                                    Theme.of(context).textTheme.titleSmall),
+                                style: Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                         //  const SizedBox(width: 20),
