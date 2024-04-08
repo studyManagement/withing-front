@@ -99,7 +99,7 @@ class HomeStudyNotificatorList extends StatelessWidget {
           ),
         );
       },
-      itemCount: 1,
+      itemCount: studies.length,
     );
   }
 }
