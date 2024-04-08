@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/requester/network_exception.dart';
+import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
@@ -168,11 +169,17 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   Future<void> callImageApi() async {
-    if (_studyImageFile != null) {
-      _studyImageUuid =
-          await _imageUpdateService.callImageUpdateApi(_studyImageFile!);
+    try {
+      if (_studyImageFile != null) {
+        _studyImageUuid =
+        await _imageUpdateService.callImageUpdateApi(_studyImageFile!);
+      }
+      notifyListeners();
+    } on ImageException catch(e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
     }
-    notifyListeners();
   }
 
   Future<void> updateStudyInfo() async {

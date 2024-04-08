@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/network_exception.dart';
 import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
@@ -11,8 +13,9 @@ import '../../views/create/widgets/study_text_field.dart';
 class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyCreateService _studyCreateService;
   final ImageCreateService _imageCreateService;
+  final BuildContext _context;
 
-  CreateStudyViewModel(this._studyCreateService, this._imageCreateService);
+  CreateStudyViewModel(this._studyCreateService, this._imageCreateService, this._context);
 
   @override
   String get studyDescription => _studyDescription;
@@ -149,11 +152,17 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   /// call create image api
   @override
   Future<void> callImageApi() async {
-    if (_studyImageFile != null) {
-      _studyImageUuid =
-      await _imageCreateService.callImageCreateApi(_studyImageFile!);
+    try {
+      if (_studyImageFile != null) {
+        _studyImageUuid =
+        await _imageCreateService.callImageCreateApi(_studyImageFile!);
+      }
+      notifyListeners();
+    } on ImageException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
     }
-    notifyListeners();
   }
 
   /// update study password

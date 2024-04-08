@@ -20,7 +20,7 @@ class CreateStudyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => CreateStudyViewModel(
-          getIt<StudyCreateService>(), getIt<ImageCreateService>()),
+          getIt<StudyCreateService>(), getIt<ImageCreateService>(),context),
       child: Consumer<CreateStudyViewModel>(
         builder: (context, viewModel, child) {
           return DefaultLayout(
