@@ -23,7 +23,7 @@ class HomeStudyNotificator extends StatelessWidget {
           )
         : Container(
             decoration: const BoxDecoration(color: AppColors.gray50),
-            height: 120,
+            height: 88,
             width: MediaQuery.of(context).size.width,
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +58,7 @@ class HomeStudyNotificatorList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         StudyListView study = studies[index];
         return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -99,7 +99,7 @@ class HomeStudyNotificatorList extends StatelessWidget {
           ),
         );
       },
-      itemCount: studies.length,
+      itemCount: 1,
     );
   }
 }
