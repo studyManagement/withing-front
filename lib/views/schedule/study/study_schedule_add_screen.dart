@@ -45,7 +45,11 @@ class StudyScheduleAddScreen extends StatelessWidget {
               child: ConfirmButton(
                 width: MediaQuery.of(context).size.width,
                 onTap: () {
-                  vm.postSchedule(context, _studyId);
+                  if (_studyScheduleId != null) {
+                    vm.postSchedule(context, _studyId);
+                  } else {
+                    vm.putSchedule(context, _studyId, _studyScheduleId!);
+                  }
                 },
                 text: (_studyScheduleId == null) ? '생성하기' : '수정하기',
                 backgroundColor: AppColors.blue600,
@@ -95,7 +99,12 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextInput(
-                '일정 이름', '일정 이름을 입력해 주세요.', 20, (value) => vm.setTitle(value), initialValue: vm.schedule.title,),
+              '일정 이름',
+              '일정 이름을 입력해 주세요.',
+              20,
+              (value) => vm.setTitle(value),
+              initialValue: vm.schedule.title,
+            ),
             const SizedBox(height: 8),
             const Text(
               '2-20자 사이의 이름을 설정해주세요.',
@@ -105,8 +114,13 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            TextInput('일정 설명', '일정 설명을 입력해 주세요.', 65,
-                (value) => vm.setDescription(value), initialValue: vm.schedule.description,),
+            TextInput(
+              '일정 설명',
+              '일정 설명을 입력해 주세요.',
+              65,
+              (value) => vm.setDescription(value),
+              initialValue: vm.schedule.description,
+            ),
           ],
         ));
   }

@@ -10,7 +10,7 @@ class CustomLogInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _logger.info(
-        '[REQUEST] ${options.path} ${options.queryParameters} ${options.headers} ${options.data}');
+        '[REQUEST] ${options.method} ${options.path} ${options.queryParameters} ${options.headers} ${options.data}');
     super.onRequest(options, handler);
   }
 

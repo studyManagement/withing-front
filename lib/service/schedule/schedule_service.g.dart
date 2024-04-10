@@ -116,17 +116,26 @@ class _ScheduleApi implements ScheduleApi {
   }
 
   @override
-  Future<ScheduleModel> deleteStudySchedule(
+  Future<ScheduleModel> putStudySchedule(
     int id,
+    String title,
     int scheduleId,
+    String description,
+    String startAt,
+    String endAt,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    final _data = {
+      'name': title,
+      'description': description,
+      'startDate': startAt,
+      'endDate': endAt,
+    };
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ScheduleModel>(Options(
-      method: 'DELETE',
+      method: 'PUT',
       headers: _headers,
       extra: _extra,
     )
@@ -142,6 +151,38 @@ class _ScheduleApi implements ScheduleApi {
               baseUrl,
             ))));
     final value = ScheduleModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<ScheduleModel>> deleteStudySchedule(
+    int id,
+    int scheduleId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<ScheduleModel>>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/schedules/${scheduleId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => ScheduleModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

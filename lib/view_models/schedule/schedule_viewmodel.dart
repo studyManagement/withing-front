@@ -83,41 +83,81 @@ class ScheduleViewModel extends ChangeNotifier {
     }
   }
 
+  bool checkEverythingFilled(BuildContext context) {
+    if (schedule.title.replaceAll(' ', '').isEmpty) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        '일정 제목을 입력해주세요.',
+        false,
+        () => context.pop(),
+        () => null,
+      );
+      return false;
+    }
+
+    if (schedule.description.replaceAll(' ', '').isEmpty) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        '일정 내용을 입력해주세요.',
+        false,
+        () => context.pop(),
+        () => null,
+      );
+      return false;
+    }
+
+    if (schedule.startAt.isAfter(schedule.endAt)) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        '시작일이 종료일보다 늦을 수 없어요',
+        false,
+        () => context.pop(),
+        () => null,
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> putSchedule(
+      BuildContext context, int studyId, int studyScheduleId) async {
+    try {
+      if (!checkEverythingFilled(context)) {
+        return;
+      }
+
+      ScheduleModel schedule = await _service.putStudySchedule(
+          studyId,
+          studyScheduleId,
+          this.schedule.title,
+          this.schedule.description,
+          this.schedule.startAt,
+          this.schedule.endAt);
+
+      if (!context.mounted) {
+        return;
+      }
+
+      context.go('/studies/$studyId/schedules/${schedule.id}');
+    } on ApiException catch (e) {
+      ModiModal.openDialog(
+        context,
+        '오류가 발생했어요',
+        e.cause,
+        false,
+        () => context.pop(),
+        () => null,
+      );
+    }
+  }
+
   Future<void> postSchedule(BuildContext context, int studyId) async {
     try {
-      if (this.schedule.title.replaceAll(' ', '').isEmpty) {
-        ModiModal.openDialog(
-          context,
-          '오류가 발생했어요',
-          '일정 제목을 입력해주세요.',
-          false,
-          () => context.pop(),
-          () => null,
-        );
-        return;
-      }
-
-      if (this.schedule.description.replaceAll(' ', '').isEmpty) {
-        ModiModal.openDialog(
-          context,
-          '오류가 발생했어요',
-          '일정 내용을 입력해주세요.',
-          false,
-          () => context.pop(),
-          () => null,
-        );
-        return;
-      }
-
-      if (this.schedule.startAt.isAfter(this.schedule.endAt)) {
-        ModiModal.openDialog(
-          context,
-          '오류가 발생했어요',
-          '시작일이 종료일보다 늦을 수 없어요',
-          false,
-          () => context.pop(),
-          () => null,
-        );
+      if (!checkEverythingFilled(context)) {
         return;
       }
 
