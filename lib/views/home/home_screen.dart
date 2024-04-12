@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/bottom_shadow.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
@@ -48,9 +49,11 @@ class _HomeScreen extends State<HomeScreen> {
       title: '이번주 일정',
       centerTitle: false,
       titleFontSize: 20,
-      titleBottom: MainCalendarV2(
-        onDaySelected: onDaySelected,
-        selectedDate: selectedDate,
+      titleBottom: BottomShadow(
+        child: MainCalendarV2(
+          onDaySelected: onDaySelected,
+          selectedDate: selectedDate,
+        ),
       ),
       actions: [
         IconButton(
