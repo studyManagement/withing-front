@@ -9,6 +9,7 @@ import 'package:modi/views/home/main_calendar.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/layout/default_layout.dart';
+import 'main_calendar_v2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,7 +48,7 @@ class _HomeScreen extends State<HomeScreen> {
       title: '이번주 일정',
       centerTitle: false,
       titleFontSize: 20,
-      titleBottom: MainCalendar(
+      titleBottom: MainCalendarV2(
         onDaySelected: onDaySelected,
         selectedDate: selectedDate,
       ),
