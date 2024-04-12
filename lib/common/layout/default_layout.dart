@@ -4,12 +4,14 @@ import 'package:modi/common/theme/app/app_fonts.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
+  final Color? appBarShadowColor;
   final Widget child;
   final String? title;
   final Widget? customTitleWidget;
   final Widget? titleBottom;
   final double? titleFontSize;
   final double? scrolledUnderElevation;
+  final double? elevation;
   final Widget? bottomNavigationBar;
   final Widget? leader;
   final bool? resizeToAvoidBottomInset;
@@ -20,12 +22,14 @@ class DefaultLayout extends StatelessWidget {
 
   const DefaultLayout({
     this.backgroundColor,
+    this.appBarShadowColor,
     required this.child,
     this.title,
     this.customTitleWidget,
     this.titleBottom,
     this.titleFontSize,
     this.scrolledUnderElevation,
+    this.elevation,
     this.bottomNavigationBar,
     this.leader,
     this.actions,
@@ -73,7 +77,9 @@ class DefaultLayout extends StatelessWidget {
 
     return AppBar(
       backgroundColor: Colors.white,
-      elevation: 0,
+      elevation: elevation ?? 0,
+      surfaceTintColor: Colors.white,
+      shadowColor: appBarShadowColor ?? Colors.transparent,
       centerTitle: centerTitle ?? true,
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

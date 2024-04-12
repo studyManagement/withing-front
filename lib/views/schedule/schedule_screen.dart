@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/bottom_shadow.dart';
 import 'package:modi/common/components/schedule/schedule_list.dart';
 import 'package:modi/common/components/schedule/schedule_list_item.dart';
 import 'package:modi/common/layout/default_layout.dart';
@@ -12,6 +13,8 @@ class ScheduleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '일정',
+      elevation: 10,
+      appBarShadowColor: Color.fromARGB(40, 0, 0, 0),
       child: ScheduleList(
         scheduleGroups: [
           ScheduleGroupModel(
