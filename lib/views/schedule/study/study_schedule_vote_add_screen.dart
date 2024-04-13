@@ -5,7 +5,7 @@ import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/button/value_button.dart';
 import 'package:modi/common/components/calendar/calendar.dart';
 import 'package:modi/common/components/input/text_input.dart';
-import 'package:modi/common/components/spinner/datetime/time_spinner.dart';
+import 'package:modi/common/components/selector/TimeRangeSelector.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/modal/modi_modal.dart';
@@ -90,78 +90,135 @@ class StudyScheduleRegisterDateTime extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    ModiModal.openBottomSheet(
-                      context,
-                      widget: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          Positioned(
-                            top: MediaQuery.of(context).size.height - 380,
-                            child: ConfirmButton(
-                              onTap: () {},
-                              text: '선택 완료',
-                              backgroundColor: AppColors.blue600,
-                              height: 50,
-                              width: MediaQuery.of(context).size.width - 32,
-                            ),
-                          ),
-                          const Column(
+          ListView.separated(
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              Widget? deleteButton = index != 0
+                  ? GestureDetector(
+                      onTap: () {},
+                      behavior: HitTestBehavior.translucent,
+                      child: Container(
+                        width: 16,
+                        height: 16,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.red400,
+                        ),
+                        child: Image.asset('asset/delete.png'),
+                      ),
+                    )
+                  : null;
+
+              return Row(
+                children: [
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.gray100,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '$index',
+                        style: const TextStyle(
+                          color: AppColors.gray400,
+                          fontSize: 12,
+                          fontWeight: AppFonts.fontWeight500,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      child: ValueButton(
+                        '2023. 09. 02 (토) 오전 9:00',
+                        rightWidget: deleteButton,
+                      ),
+                      onTap: () {
+                        ModiModal.openBottomSheet(
+                          context,
+                          widget: Stack(
+                            alignment: AlignmentDirectional.center,
                             children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: 40, left: 16, right: 16, bottom: 20),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      '날짜 선택',
-                                      style: TextStyle(
-                                        color: AppColors.gray800,
-                                        fontWeight: AppFonts.fontWeight600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      '일정 투표를 받고 싶은 날짜를 선택해주세요. (최대 7일)',
-                                      style: TextStyle(
-                                        color: AppColors.gray400,
-                                        fontSize: 14,
-                                        fontWeight: AppFonts.fontWeight500,
-                                      ),
-                                    ),
-                                  ],
+                              Positioned(
+                                top: MediaQuery.of(context).size.height - 524,
+                                child: ConfirmButton(
+                                  onTap: () {},
+                                  text: '선택 완료',
+                                  backgroundColor: AppColors.blue600,
+                                  height: 50,
+                                  width: MediaQuery.of(context).size.width - 32,
                                 ),
                               ),
-                              Divider(
-                                thickness: 1,
-                                color: AppColors.gray150,
-                              ),
-                              SizedBox(height: 10),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: Column(
-                                  children: [
-                                    Calendar(),
-                                  ],
-                                ),
+                              Column(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 40,
+                                        left: 16,
+                                        right: 16,
+                                        bottom: 20),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '날짜 선택',
+                                          style: TextStyle(
+                                            color: AppColors.gray800,
+                                            fontWeight: AppFonts.fontWeight600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          '일정 투표를 받고 싶은 날짜를 선택해주세요. (최대 7일)',
+                                          style: TextStyle(
+                                            color: AppColors.gray400,
+                                            fontSize: 14,
+                                            fontWeight: AppFonts.fontWeight500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(
+                                    thickness: 1,
+                                    color: AppColors.gray150,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: Column(
+                                      children: [
+                                        Calendar(
+                                          onDaySelected: (DateTime? rangeStart,
+                                              DateTime? rangeEnd) {
+                                            logger.info(
+                                                '[onDaySelected] rangeStart: $rangeStart, rangeEnd: $rangeEnd');
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      height: 554,
-                    );
-                  },
-                  child: const ValueButton('2023. 09. 02 (토) 오전 9:00'),
-                ),
-              ),
-            ],
+                          height: 554,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+            itemCount: 2,
+            separatorBuilder: (BuildContext context, int index) {
+              return const SizedBox(height: 8);
+            },
           ),
           const SizedBox(height: 40),
           const Text(
@@ -173,110 +230,10 @@ class StudyScheduleRegisterDateTime extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    ModiModal.openBottomSheet(
-                      context,
-                      widget: Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                top: 40, left: 16, right: 16, bottom: 20),
-                            child: Column(
-                              children: [
-                                Text(
-                                  '기간 선택',
-                                  style: TextStyle(
-                                    color: AppColors.gray800,
-                                    fontWeight: AppFonts.fontWeight600,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  '일정으로 등록할 기간을 선택해주세요.',
-                                  style: TextStyle(
-                                    color: AppColors.gray400,
-                                    fontSize: 14,
-                                    fontWeight: AppFonts.fontWeight500,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            height: 70,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: const BoxDecoration(
-                              color: AppColors.gray50,
-                            ),
-                            child: const Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ValueButton('09. 02 (토) 오전 9:00'),
-                                SizedBox(width: 4),
-                                Text(
-                                  '-',
-                                  style: TextStyle(color: AppColors.gray200),
-                                ),
-                                SizedBox(width: 4),
-                                ValueButton('09. 02 (토) 오전 9:00'),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  width: 250,
-                                  child: TimeSpinner(
-                                    DateTime.now(),
-                                    (DateTime) {
-                                      logger.info(DateTime);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 40),
-                                ConfirmButton(
-                                  onTap: () {},
-                                  text: '선택 완료',
-                                  backgroundColor: AppColors.blue600,
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      height: 496,
-                    );
-                  },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      ValueButton('09. 02 (토) 오전 9:00'),
-                      SizedBox(width: 4),
-                      Text(
-                        '-',
-                        style: TextStyle(color: AppColors.gray200),
-                      ),
-                      SizedBox(width: 4),
-                      ValueButton('09. 02 (토) 오전 9:00'),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          TimeRangeSelector(
+            startAt: DateTime.now(),
+            endAt: DateTime.now(),
+            onChange: (DateTime startAt, DateTime endAt) {},
           ),
         ],
       ),

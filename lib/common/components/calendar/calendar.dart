@@ -5,7 +5,11 @@ import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatefulWidget {
-  const Calendar({super.key});
+  const Calendar({required this.onDaySelected, super.key});
+  final Function(
+    DateTime? rangeStart,
+    DateTime? rangeEnd,
+  ) onDaySelected;
 
   @override
   State<StatefulWidget> createState() => _CalendarState();
@@ -31,6 +35,7 @@ class _CalendarState extends State<Calendar> {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
       });
+      widget.onDaySelected(_rangeStart, _rangeEnd);
     }
   }
 
@@ -41,6 +46,7 @@ class _CalendarState extends State<Calendar> {
       _rangeStart = start;
       _rangeEnd = end;
     });
+    widget.onDaySelected(_rangeStart, _rangeEnd);
   }
 
   @override

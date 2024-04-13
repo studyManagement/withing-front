@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/button/value_button.dart';
-import 'package:modi/common/components/spinner/dateTime/date_time_spinner.dart';
+import 'package:modi/common/components/spinner/datetime/time_spinner.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 
-class DateTimeRangeSelector extends StatefulWidget {
+class TimeRangeSelector extends StatefulWidget {
   final DateTime startAt;
   final DateTime endAt;
   final Function(DateTime, DateTime) onChange;
 
-  const DateTimeRangeSelector({
+  const TimeRangeSelector({
     required this.startAt,
     required this.endAt,
     required this.onChange,
@@ -20,10 +20,10 @@ class DateTimeRangeSelector extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _DateTimeRangeSelectorState();
+  State<StatefulWidget> createState() => _TimeRangeSelectorState();
 }
 
-class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
+class _TimeRangeSelectorState extends State<TimeRangeSelector> {
   late DateTime _startAt;
   late DateTime _endAt;
 
@@ -37,54 +37,48 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _makeScheduleSelector(
-            context,
-            title: '시작일',
-            isStartAt: true,
-            startAt: _startAt,
-            endAt: _endAt,
-            onTap: (DateTime startAt, DateTime endAt) {
-              setState(() {
-                _startAt = startAt;
-                _endAt = endAt;
-              });
-              widget.onChange(_startAt, _endAt);
-            },
-          ),
-          const SizedBox(height: 12),
-          _makeScheduleSelector(
-            context,
-            title: '종료일',
-            isStartAt: false,
-            startAt: _startAt,
-            endAt: _endAt,
-            onTap: (DateTime startAt, DateTime endAt) {
-              setState(() {
-                _startAt = startAt;
-                _endAt = endAt;
-              });
-              widget.onChange(_startAt, _endAt);
-            },
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _makeScheduleSelector(
+          context,
+          isStartAt: true,
+          startAt: _startAt,
+          endAt: _endAt,
+          onTap: (DateTime startAt, DateTime endAt) {
+            setState(() {
+              _startAt = startAt;
+              _endAt = endAt;
+            });
+            widget.onChange(_startAt, _endAt);
+          },
+        ),
+        const SizedBox(height: 12),
+        _makeScheduleSelector(
+          context,
+          isStartAt: false,
+          startAt: _startAt,
+          endAt: _endAt,
+          onTap: (DateTime startAt, DateTime endAt) {
+            setState(() {
+              _startAt = startAt;
+              _endAt = endAt;
+            });
+            widget.onChange(_startAt, _endAt);
+          },
+        ),
+      ],
     );
   }
 
   GestureDetector _makeScheduleSelector(
     BuildContext context, {
-    required String title,
     required bool isStartAt,
     required DateTime startAt,
     required DateTime endAt,
     required Function(DateTime, DateTime) onTap,
   }) {
-    final dateTimeFormatter = DateFormat('MM. dd (E) a hh:mm', 'ko');
+    final dateTimeFormatter = DateFormat('a hh:mm', 'ko');
     int selectItem = isStartAt ? 1 : 2;
     DateTime currentDateTime = isStartAt ? startAt : endAt;
 
@@ -170,7 +164,7 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     children: [
-                      DateTimeSpinner(currentDateTime, (DateTime dateTime) {
+                      TimeSpinner(currentDateTime, (DateTime dateTime) {
                         setState(() {
                           if (selectItem == 1) {
                             startAt = dateTime;
@@ -202,8 +196,6 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(color: AppColors.gray500)),
-          const SizedBox(width: 12),
           Expanded(
             child: ValueButton(dateTimeFormatter.format(currentDateTime)),
           ),
