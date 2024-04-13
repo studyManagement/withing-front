@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/model/schedule/schedule_vote_model.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
@@ -46,12 +47,16 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> postScheduleVote(int studyId) async {
+  Future<void> postScheduleVote(BuildContext context, int studyId) async {
     ScheduleVoteModel scheduleVote = await _service.postScheduleVote(
         studyId, title, description, selectedDates, startAt, endAt);
 
     logger.info('postScheduleVote: $scheduleVote');
 
-    notifyListeners();
+    if (!context.mounted) {
+      return;
+    }
+
+    context.go('/study/$studyId/schedule/${scheduleVote.id}');
   }
 }

@@ -12,8 +12,8 @@ _$ScheduleVoteItemModelImpl _$$ScheduleVoteItemModelImplFromJson(
       id: json['id'] as int,
       studyId: json['studyId'] as int,
       voteDay: DateTime.parse(json['voteDay'] as String),
-      startAt: DateTime.parse(json['startAt'] as String),
-      endAt: DateTime.parse(json['endAt'] as String),
+      startAt: const TimeOfDayConverter().fromJson(json['startAt'] as String),
+      endAt: const TimeOfDayConverter().fromJson(json['endAt'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -23,7 +23,7 @@ Map<String, dynamic> _$$ScheduleVoteItemModelImplToJson(
       'id': instance.id,
       'studyId': instance.studyId,
       'voteDay': instance.voteDay.toIso8601String(),
-      'startAt': instance.startAt.toIso8601String(),
-      'endAt': instance.endAt.toIso8601String(),
+      'startAt': const TimeOfDayConverter().toJson(instance.startAt),
+      'endAt': const TimeOfDayConverter().toJson(instance.endAt),
       'createdAt': instance.createdAt.toIso8601String(),
     };

@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:modi/model/schedule/schedule_vote_item_model.dart';
 
 class ScheduleVoteItem {
   int id;
   int studyId;
   DateTime voteDay;
-  DateTime startAt;
-  DateTime endAt;
+  TimeOfDay startAt;
+  TimeOfDay endAt;
   DateTime createdAt;
 
   ScheduleVoteItem(

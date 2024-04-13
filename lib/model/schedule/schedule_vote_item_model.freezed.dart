@@ -24,8 +24,10 @@ mixin _$ScheduleVoteItemModel {
   int get id => throw _privateConstructorUsedError;
   int get studyId => throw _privateConstructorUsedError;
   DateTime get voteDay => throw _privateConstructorUsedError;
-  DateTime get startAt => throw _privateConstructorUsedError;
-  DateTime get endAt => throw _privateConstructorUsedError;
+  @TimeOfDayConverter()
+  TimeOfDay get startAt => throw _privateConstructorUsedError;
+  @TimeOfDayConverter()
+  TimeOfDay get endAt => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,8 +46,8 @@ abstract class $ScheduleVoteItemModelCopyWith<$Res> {
       {int id,
       int studyId,
       DateTime voteDay,
-      DateTime startAt,
-      DateTime endAt,
+      @TimeOfDayConverter() TimeOfDay startAt,
+      @TimeOfDayConverter() TimeOfDay endAt,
       DateTime createdAt});
 }
 
@@ -86,11 +88,11 @@ class _$ScheduleVoteItemModelCopyWithImpl<$Res,
       startAt: null == startAt
           ? _value.startAt
           : startAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as TimeOfDay,
       endAt: null == endAt
           ? _value.endAt
           : endAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as TimeOfDay,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -112,8 +114,8 @@ abstract class _$$ScheduleVoteItemModelImplCopyWith<$Res>
       {int id,
       int studyId,
       DateTime voteDay,
-      DateTime startAt,
-      DateTime endAt,
+      @TimeOfDayConverter() TimeOfDay startAt,
+      @TimeOfDayConverter() TimeOfDay endAt,
       DateTime createdAt});
 }
 
@@ -152,11 +154,11 @@ class __$$ScheduleVoteItemModelImplCopyWithImpl<$Res>
       startAt: null == startAt
           ? _value.startAt
           : startAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as TimeOfDay,
       endAt: null == endAt
           ? _value.endAt
           : endAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as TimeOfDay,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -172,8 +174,8 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
       {required this.id,
       required this.studyId,
       required this.voteDay,
-      required this.startAt,
-      required this.endAt,
+      @TimeOfDayConverter() required this.startAt,
+      @TimeOfDayConverter() required this.endAt,
       required this.createdAt});
 
   factory _$ScheduleVoteItemModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -186,9 +188,11 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
   @override
   final DateTime voteDay;
   @override
-  final DateTime startAt;
+  @TimeOfDayConverter()
+  final TimeOfDay startAt;
   @override
-  final DateTime endAt;
+  @TimeOfDayConverter()
+  final TimeOfDay endAt;
   @override
   final DateTime createdAt;
 
@@ -236,8 +240,8 @@ abstract class _ScheduleVoteItemModel implements ScheduleVoteItemModel {
       {required final int id,
       required final int studyId,
       required final DateTime voteDay,
-      required final DateTime startAt,
-      required final DateTime endAt,
+      @TimeOfDayConverter() required final TimeOfDay startAt,
+      @TimeOfDayConverter() required final TimeOfDay endAt,
       required final DateTime createdAt}) = _$ScheduleVoteItemModelImpl;
 
   factory _ScheduleVoteItemModel.fromJson(Map<String, dynamic> json) =
@@ -250,9 +254,11 @@ abstract class _ScheduleVoteItemModel implements ScheduleVoteItemModel {
   @override
   DateTime get voteDay;
   @override
-  DateTime get startAt;
+  @TimeOfDayConverter()
+  TimeOfDay get startAt;
   @override
-  DateTime get endAt;
+  @TimeOfDayConverter()
+  TimeOfDay get endAt;
   @override
   DateTime get createdAt;
   @override

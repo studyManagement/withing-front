@@ -40,7 +40,7 @@ class StudyScheduleVoteAddScreen extends StatelessWidget {
         child: ConfirmButton(
           width: MediaQuery.of(context).size.width,
           onTap: () {
-            vm.postScheduleVote(_studyId);
+            vm.postScheduleVote(context, _studyId);
           },
           text: '생성하기',
           backgroundColor: AppColors.blue600,

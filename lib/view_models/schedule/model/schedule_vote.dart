@@ -9,7 +9,7 @@ class ScheduleVote {
   String title;
   String description;
   List<ScheduleVoteItem> votes;
-  DateTime cratedAt;
+  DateTime createdAt;
 
   ScheduleVote(
     this.id,
@@ -18,7 +18,7 @@ class ScheduleVote {
     this.title,
     this.description,
     this.votes,
-    this.cratedAt,
+    this.createdAt,
   );
 
   factory ScheduleVote.from(ScheduleVoteModel model) {
@@ -29,12 +29,12 @@ class ScheduleVote {
       model.title,
       model.description,
       model.votes.map((e) => ScheduleVoteItem.from(e)).toList(),
-      model.cratedAt,
+      model.createdAt,
     );
   }
 
   @override
   String toString() {
-    return "ScheduleVote(id=$id,studyId=$studyId,user=$user,title=$title,description=$description,votes=$votes,cratedAt=$cratedAt)";
+    return "ScheduleVote(id=$id,studyId=$studyId,user=$user,title=$title,description=$description,votes=$votes,createdAt=$createdAt)";
   }
 }

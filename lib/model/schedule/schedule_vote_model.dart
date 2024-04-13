@@ -14,7 +14,7 @@ class ScheduleVoteModel with _$ScheduleVoteModel {
     required String title,
     required String description,
     required List<ScheduleVoteItemModel> votes,
-    required DateTime cratedAt,
+    required DateTime createdAt,
   }) = _ScheduleVoteModel;
 
   factory ScheduleVoteModel.fromJson(Map<String, dynamic> json) =>
