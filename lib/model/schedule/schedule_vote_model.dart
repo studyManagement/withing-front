@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:modi/model/schedule/schedule_vote_item_model.dart';
 import 'package:modi/model/user/user_model.dart';
 
 part 'schedule_vote_model.freezed.dart';
@@ -12,6 +13,7 @@ class ScheduleVoteModel with _$ScheduleVoteModel {
     required UserModel user,
     required String title,
     required String description,
+    required List<ScheduleVoteItemModel> votes,
     required DateTime cratedAt,
   }) = _ScheduleVoteModel;
 

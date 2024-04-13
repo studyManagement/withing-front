@@ -46,6 +46,16 @@ abstract class ScheduleApi {
 
   @GET('/studies/{id}/schedules/votes')
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(@Path('id') int id);
+
+  @POST('/studies/{id}/schedules/votes')
+  Future<ScheduleVoteModel> postScheduleVote(
+    @Path('id') int id,
+    @Field('name') String name,
+    @Field('description') String description,
+    @Field('selectedDates') List<String> selectedDates,
+    @Field('startAt') String startAt,
+    @Field('endAt') String endAt,
+  );
 }
 
 class ScheduleService {
@@ -56,6 +66,28 @@ class ScheduleService {
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(int studyId) async {
     try {
       return await _scheduleApi.fetchScheduleVotes(studyId);
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ScheduleVoteModel> postScheduleVote(
+    int studyId,
+    String name,
+    String description,
+    List<DateTime> selectedDates,
+    DateTime startAt,
+    DateTime endAt,
+  ) async {
+    try {
+      return await _scheduleApi.postScheduleVote(
+        studyId,
+        name,
+        description,
+        selectedDates.map((e) => e.toIso8601String()).toList(),
+        startAt.toIso8601String(),
+        endAt.toIso8601String(),
+      );
     } on NetworkException catch (e) {
       rethrow;
     }

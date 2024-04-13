@@ -26,7 +26,6 @@ mixin _$ScheduleVoteItemModel {
   DateTime get voteDay => throw _privateConstructorUsedError;
   DateTime get startAt => throw _privateConstructorUsedError;
   DateTime get endAt => throw _privateConstructorUsedError;
-  List<ScheduleVoteItemModel> get votes => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,7 +46,6 @@ abstract class $ScheduleVoteItemModelCopyWith<$Res> {
       DateTime voteDay,
       DateTime startAt,
       DateTime endAt,
-      List<ScheduleVoteItemModel> votes,
       DateTime createdAt});
 }
 
@@ -70,7 +68,6 @@ class _$ScheduleVoteItemModelCopyWithImpl<$Res,
     Object? voteDay = null,
     Object? startAt = null,
     Object? endAt = null,
-    Object? votes = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -94,10 +91,6 @@ class _$ScheduleVoteItemModelCopyWithImpl<$Res,
           ? _value.endAt
           : endAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      votes: null == votes
-          ? _value.votes
-          : votes // ignore: cast_nullable_to_non_nullable
-              as List<ScheduleVoteItemModel>,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -121,7 +114,6 @@ abstract class _$$ScheduleVoteItemModelImplCopyWith<$Res>
       DateTime voteDay,
       DateTime startAt,
       DateTime endAt,
-      List<ScheduleVoteItemModel> votes,
       DateTime createdAt});
 }
 
@@ -142,7 +134,6 @@ class __$$ScheduleVoteItemModelImplCopyWithImpl<$Res>
     Object? voteDay = null,
     Object? startAt = null,
     Object? endAt = null,
-    Object? votes = null,
     Object? createdAt = null,
   }) {
     return _then(_$ScheduleVoteItemModelImpl(
@@ -166,10 +157,6 @@ class __$$ScheduleVoteItemModelImplCopyWithImpl<$Res>
           ? _value.endAt
           : endAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      votes: null == votes
-          ? _value._votes
-          : votes // ignore: cast_nullable_to_non_nullable
-              as List<ScheduleVoteItemModel>,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -187,9 +174,7 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
       required this.voteDay,
       required this.startAt,
       required this.endAt,
-      required final List<ScheduleVoteItemModel> votes,
-      required this.createdAt})
-      : _votes = votes;
+      required this.createdAt});
 
   factory _$ScheduleVoteItemModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScheduleVoteItemModelImplFromJson(json);
@@ -204,20 +189,12 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
   final DateTime startAt;
   @override
   final DateTime endAt;
-  final List<ScheduleVoteItemModel> _votes;
-  @override
-  List<ScheduleVoteItemModel> get votes {
-    if (_votes is EqualUnmodifiableListView) return _votes;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_votes);
-  }
-
   @override
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'ScheduleVoteItemModel(id: $id, studyId: $studyId, voteDay: $voteDay, startAt: $startAt, endAt: $endAt, votes: $votes, createdAt: $createdAt)';
+    return 'ScheduleVoteItemModel(id: $id, studyId: $studyId, voteDay: $voteDay, startAt: $startAt, endAt: $endAt, createdAt: $createdAt)';
   }
 
   @override
@@ -230,15 +207,14 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
             (identical(other.voteDay, voteDay) || other.voteDay == voteDay) &&
             (identical(other.startAt, startAt) || other.startAt == startAt) &&
             (identical(other.endAt, endAt) || other.endAt == endAt) &&
-            const DeepCollectionEquality().equals(other._votes, _votes) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, studyId, voteDay, startAt,
-      endAt, const DeepCollectionEquality().hash(_votes), createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, studyId, voteDay, startAt, endAt, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -262,7 +238,6 @@ abstract class _ScheduleVoteItemModel implements ScheduleVoteItemModel {
       required final DateTime voteDay,
       required final DateTime startAt,
       required final DateTime endAt,
-      required final List<ScheduleVoteItemModel> votes,
       required final DateTime createdAt}) = _$ScheduleVoteItemModelImpl;
 
   factory _ScheduleVoteItemModel.fromJson(Map<String, dynamic> json) =
@@ -278,8 +253,6 @@ abstract class _ScheduleVoteItemModel implements ScheduleVoteItemModel {
   DateTime get startAt;
   @override
   DateTime get endAt;
-  @override
-  List<ScheduleVoteItemModel> get votes;
   @override
   DateTime get createdAt;
   @override

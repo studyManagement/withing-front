@@ -21,6 +21,8 @@ class StudyScheduleAddScreen extends StatelessWidget {
   final int _studyId;
   final int? _studyScheduleId;
 
+  bool get isCreate => _studyScheduleId == null;
+
   @override
   Widget build(BuildContext context) {
     ScheduleViewModel vm = context.watch<ScheduleViewModel>();
@@ -30,7 +32,7 @@ class StudyScheduleAddScreen extends StatelessWidget {
     logger.info(
         'StudyScheduleAddScreen: _studyId: $_studyId, _studyScheduleId: $_studyScheduleId');
 
-    if (_studyScheduleId != null && vm.schedule.id == -1) {
+    if (!isCreate && vm.schedule.id == -1) {
       vm.fetchSchedule(_studyId, _studyScheduleId!);
     } else {
       vm.setStartAt(now);
@@ -48,20 +50,20 @@ class StudyScheduleAddScreen extends StatelessWidget {
               child: ConfirmButton(
                 width: MediaQuery.of(context).size.width,
                 onTap: () {
-                  if (_studyScheduleId == null) {
+                  if (isCreate) {
                     vm.postSchedule(context, _studyId);
                   } else {
                     vm.putSchedule(context, _studyId, _studyScheduleId!);
                   }
                 },
-                text: (_studyScheduleId == null) ? '생성하기' : '수정하기',
+                text: (isCreate) ? '생성하기' : '수정하기',
                 backgroundColor: AppColors.blue600,
               ),
             ),
       leader: CircleButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onTap: () => context.pop()),
-      title: '일정 ${(_studyScheduleId == null) ? '생성' : '수정'}',
+      title: '일정 ${(isCreate) ? '생성' : '수정'}',
       child: (vm.isLoading)
           ? const Center(child: CircularProgressIndicator())
           : Column(

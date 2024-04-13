@@ -11,7 +11,6 @@ class ScheduleVoteItemModel with _$ScheduleVoteItemModel {
     required DateTime voteDay,
     required DateTime startAt,
     required DateTime endAt,
-    required List<ScheduleVoteItemModel> votes,
     required DateTime createdAt,
   }) = _ScheduleVoteItemModel;
 

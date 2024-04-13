@@ -12,6 +12,7 @@ import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
+import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/view_models/study/update_study_viewmodel.dart';
@@ -165,8 +166,9 @@ class RouterService {
                                 : null;
 
                             return ChangeNotifierProvider(
-                              create: (_) =>
-                                  ScheduleViewModel(getIt<ScheduleService>()),
+                              create: (_) => ScheduleViewModel(
+                                getIt<ScheduleService>(),
+                              ),
                               child: StudyScheduleAddScreen(
                                 studyId,
                                 scheduleId,
@@ -175,11 +177,17 @@ class RouterService {
                           },
                         ),
                         GoRoute(
-                          path: 'vote',
-                          builder: (context, state) =>
-                              StudyScheduleVoteAddScreen(
-                                  int.parse(state.pathParameters['studyId']!)),
-                        ),
+                            path: 'vote',
+                            builder: (context, state) {
+                              int studyId =
+                                  int.parse(state.pathParameters['studyId']!);
+                              return ChangeNotifierProvider(
+                                create: (_) => ScheduleVoteViewModel(
+                                  getIt<ScheduleService>(),
+                                ),
+                                child: StudyScheduleVoteAddScreen(studyId),
+                              );
+                            }),
                         GoRoute(
                           path: ':scheduleId',
                           builder: (context, state) {
