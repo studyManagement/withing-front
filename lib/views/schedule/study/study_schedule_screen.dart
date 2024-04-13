@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/button/circle_button.dart';
-import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/views/schedule/study/components/study_schedule_screen_tab.dart';
@@ -15,7 +14,6 @@ class StudyScheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isRender = true;
     return DefaultLayout(
       title: '일정',
       resizeToAvoidBottomInset: false,
@@ -62,9 +60,7 @@ class StudyScheduleScreen extends StatelessWidget {
       ],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: (!isRender)
-            ? ModiException(const ['생성된 일정이 없어요.'])
-            : StudyScheduleScreenTab(studyId: _studyId),
+        child: StudyScheduleScreenTab(studyId: _studyId),
       ),
     );
   }

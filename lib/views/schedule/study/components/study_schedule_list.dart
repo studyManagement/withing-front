@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/schedule/model/schedule.dart';
@@ -36,63 +37,68 @@ class StudyScheduleList extends StatelessWidget {
         context.select<ScheduleViewModel, List<Schedule>>(
             (provider) => provider.schedules);
 
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Row(
+    return schedules.isEmpty
+        ? ModiException(const ['생성된 일정이 없어요.'])
+        : Column(
             children: [
-              const Text(
-                '전체',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.gray400,
-                  fontWeight: AppFonts.fontWeight600,
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Row(
+                  children: [
+                    const Text(
+                      '전체',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.gray400,
+                        fontWeight: AppFonts.fontWeight600,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${schedules.length}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.gray600,
+                        fontWeight: AppFonts.fontWeight600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 6),
-              Text(
-                '${schedules.length}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.gray600,
-                  fontWeight: AppFonts.fontWeight600,
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    Schedule schedule = schedules[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        context
+                            .push('/studies/$studyId/schedules/${schedule.id}');
+                      },
+                      behavior: HitTestBehavior.translucent,
+                      child: _StudyScheduleItem(
+                          schedule.title,
+                          _makeScheduleDescription(
+                              schedule.startAt, schedule.endAt),
+                          tag: _isToday(schedule.startAt) ? '오늘' : null),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Divider(
+                        thickness: 1,
+                        color: AppColors.gray50,
+                      ),
+                    );
+                  },
+                  itemCount: schedules.length,
                 ),
               ),
             ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) {
-              Schedule schedule = schedules[index];
-
-              return GestureDetector(
-                onTap: () {
-                  context.push('/studies/$studyId/schedules/${schedule.id}');
-                },
-                behavior: HitTestBehavior.translucent,
-                child: _StudyScheduleItem(schedule.title,
-                    _makeScheduleDescription(schedule.startAt, schedule.endAt),
-                    tag: _isToday(schedule.startAt) ? '오늘' : null),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Divider(
-                  thickness: 1,
-                  color: AppColors.gray50,
-                ),
-              );
-            },
-            itemCount: schedules.length,
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
 

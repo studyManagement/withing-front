@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/bottom_shadow.dart';
+import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/views/home/components/home_study_notificator_v2.dart';
 import 'package:modi/views/home/home_my_study.dart';
-import 'package:modi/views/home/main_calendar.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -56,9 +56,9 @@ class _HomeScreen extends State<HomeScreen> {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () => context.push('/notification'),
-          icon: Image.asset('asset/bell.png'),
+        CircleButton(
+          onTap: () => context.push('/notification'),
+          image: Image.asset('asset/bell.png', width: 32, height: 32),
         ),
       ],
       child: SingleChildScrollView(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
@@ -17,68 +18,70 @@ class StudyScheduleVoteList extends StatelessWidget {
         context.select<ScheduleVoteViewModel, List<ScheduleVote>>(
             (provider) => provider.votes);
 
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          child: Row(
+    return votes.isEmpty
+        ? ModiException(const ['생성된 투표가 없어요.'])
+        : Column(
             children: [
-              const Text(
-                '전체',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.gray400,
-                  fontWeight: AppFonts.fontWeight600,
+              const SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Row(
+                  children: [
+                    const Text(
+                      '전체',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.gray400,
+                        fontWeight: AppFonts.fontWeight600,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${votes.length}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.gray600,
+                        fontWeight: AppFonts.fontWeight600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 6),
-              Text(
-                '${votes.length}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.gray600,
-                  fontWeight: AppFonts.fontWeight600,
+              const SizedBox(height: 10),
+              Expanded(
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    ScheduleVote vote = votes[index];
+
+                    return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () {
+                        context.push(
+                            '/studies/${vote.studyId}/schedules/vote/${vote.id}');
+                      },
+                      child: _StudyScheduleVoteItem(
+                        vote.title,
+                        20,
+                        12,
+                        vote.createdAt,
+                        tag: '미참여',
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Divider(
+                        thickness: 1,
+                        color: AppColors.gray50,
+                      ),
+                    );
+                  },
+                  itemCount: votes.length,
                 ),
               ),
             ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) {
-              ScheduleVote vote = votes[index];
-
-              return GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {
-                  context.push(
-                      '/studies/${vote.studyId}/schedules/vote/${vote.id}');
-                },
-                child: _StudyScheduleVoteItem(
-                  vote.title,
-                  20,
-                  12,
-                  vote.createdAt,
-                  tag: '미참여',
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Divider(
-                  thickness: 1,
-                  color: AppColors.gray50,
-                ),
-              );
-            },
-            itemCount: votes.length,
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
 
