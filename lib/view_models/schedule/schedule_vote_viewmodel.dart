@@ -9,6 +9,7 @@ class ScheduleVoteViewModel extends ChangeNotifier {
   final ScheduleService _service;
 
   List<ScheduleVote> votes = [];
+  ScheduleVote? vote;
 
   String title = '';
   String description = '';
@@ -36,6 +37,13 @@ class ScheduleVoteViewModel extends ChangeNotifier {
 
   void setEndAt(DateTime endAt) {
     this.endAt = endAt;
+  }
+
+  Future<void> fetchScheduleVote(int studyId, int voteId) async {
+    ScheduleVoteModel scheduleVote =
+        await _service.fetchScheduleVote(studyId, voteId);
+    vote = ScheduleVote.from(scheduleVote);
+    notifyListeners();
   }
 
   Future<void> fetchScheduleVotes(int studyId) async {

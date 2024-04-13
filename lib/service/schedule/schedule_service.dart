@@ -47,6 +47,12 @@ abstract class ScheduleApi {
   @GET('/studies/{id}/schedules/votes')
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(@Path('id') int id);
 
+  @GET('/studies/{id}/schedules/votes/{voteId}')
+  Future<ScheduleVoteModel> fetchScheduleVote(
+    @Path('id') int id,
+    @Path('voteId') int voteId,
+  );
+
   @POST('/studies/{id}/schedules/votes')
   Future<ScheduleVoteModel> postScheduleVote(
     @Path('id') int id,
@@ -66,6 +72,14 @@ class ScheduleService {
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(int studyId) async {
     try {
       return await _scheduleApi.fetchScheduleVotes(studyId);
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ScheduleVoteModel> fetchScheduleVote(int studyId, int voteId) async {
+    try {
+      return await _scheduleApi.fetchScheduleVote(studyId, voteId);
     } on NetworkException catch (e) {
       rethrow;
     }

@@ -24,9 +24,10 @@ import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/my/my_study_screen.dart';
 import 'package:modi/views/notification/notification_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
-import 'package:modi/views/schedule/study/study_schedule_detail.dart';
+import 'package:modi/views/schedule/study/study_schedule_detail_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_vote_add_screen.dart';
+import 'package:modi/views/schedule/study/study_schedule_vote_detail_screen.dart';
 import 'package:modi/views/search/screen/keyword_search_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
@@ -144,9 +145,16 @@ class RouterService {
                     GoRoute(
                       path: 'schedules',
                       builder: (context, state) {
-                        return ChangeNotifierProvider(
-                          create: (_) =>
-                              ScheduleViewModel(getIt<ScheduleService>()),
+                        ScheduleService service = getIt<ScheduleService>();
+                        return MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                              create: (_) => ScheduleViewModel(service),
+                            ),
+                            ChangeNotifierProvider(
+                              create: (_) => ScheduleVoteViewModel(service),
+                            ),
+                          ],
                           child: StudyScheduleScreen(
                             int.parse(state.pathParameters['studyId']!),
                           ),
@@ -177,17 +185,45 @@ class RouterService {
                           },
                         ),
                         GoRoute(
-                            path: 'vote',
-                            builder: (context, state) {
-                              int studyId =
-                                  int.parse(state.pathParameters['studyId']!);
-                              return ChangeNotifierProvider(
-                                create: (_) => ScheduleVoteViewModel(
-                                  getIt<ScheduleService>(),
+                          path: 'vote',
+                          builder: (context, state) {
+                            int studyId =
+                                int.parse(state.pathParameters['studyId']!);
+                            return ChangeNotifierProvider(
+                              create: (_) => ScheduleVoteViewModel(
+                                getIt<ScheduleService>(),
+                              ),
+                              child: StudyScheduleVoteAddScreen(studyId),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: 'vote/:voteId',
+                          builder: (context, state) {
+                            int studyId =
+                                int.parse(state.pathParameters['studyId']!);
+                            int voteId =
+                                int.parse(state.pathParameters['voteId']!);
+
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                  create: (_) => ScheduleVoteViewModel(
+                                    getIt<ScheduleService>(),
+                                  ),
                                 ),
-                                child: StudyScheduleVoteAddScreen(studyId),
-                              );
-                            }),
+                                ChangeNotifierProvider(
+                                  create: (_) => StudyViewModel(
+                                    context,
+                                    getIt<StudyService>(),
+                                  ),
+                                ),
+                              ],
+                              child: StudyScheduleVoteDetailScreen(
+                                  studyId, voteId),
+                            );
+                          },
+                        ),
                         GoRoute(
                           path: ':scheduleId',
                           builder: (context, state) {
@@ -200,7 +236,8 @@ class RouterService {
                               providers: [
                                 ChangeNotifierProvider(
                                   create: (_) => ScheduleViewModel(
-                                      getIt<ScheduleService>()),
+                                    getIt<ScheduleService>(),
+                                  ),
                                 ),
                                 ChangeNotifierProvider(
                                   create: (_) => StudyViewModel(
@@ -209,7 +246,7 @@ class RouterService {
                                   ),
                                 ),
                               ],
-                              child: StudyScheduleDetail(
+                              child: StudyScheduleDetailScreen(
                                 studyId: studyId,
                                 studyScheduleId: studyScheduleId,
                               ),

@@ -217,6 +217,36 @@ class _ScheduleApi implements ScheduleApi {
   }
 
   @override
+  Future<ScheduleVoteModel> fetchScheduleVote(
+    int id,
+    int voteId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ScheduleVoteModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/studies/${id}/schedules/votes/${voteId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ScheduleVoteModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<ScheduleVoteModel> postScheduleVote(
     int id,
     String name,

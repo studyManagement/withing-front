@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
+import 'package:modi/view_models/schedule/model/schedule_vote.dart';
+import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class StudyScheduleVoteList extends StatelessWidget {
   const StudyScheduleVoteList({
@@ -9,14 +13,18 @@ class StudyScheduleVoteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ScheduleVote> votes =
+        context.select<ScheduleVoteViewModel, List<ScheduleVote>>(
+            (provider) => provider.votes);
+
     return Column(
       children: [
         const SizedBox(height: 10),
-        const Padding(
+        Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: Row(
             children: [
-              Text(
+              const Text(
                 '전체',
                 style: TextStyle(
                   fontSize: 14,
@@ -24,10 +32,10 @@ class StudyScheduleVoteList extends StatelessWidget {
                   fontWeight: AppFonts.fontWeight600,
                 ),
               ),
-              SizedBox(width: 6),
+              const SizedBox(width: 6),
               Text(
-                '9,999',
-                style: TextStyle(
+                '${votes.length}',
+                style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.gray600,
                   fontWeight: AppFonts.fontWeight600,
@@ -40,9 +48,22 @@ class StudyScheduleVoteList extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             itemBuilder: (context, index) {
-              return _StudyScheduleVoteItem(
-                  '실무 면접 및 대면 피드백', 20, 12, DateTime.now(),
-                  tag: '미참여');
+              ScheduleVote vote = votes[index];
+
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  context.push(
+                      '/studies/${vote.studyId}/schedules/vote/${vote.id}');
+                },
+                child: _StudyScheduleVoteItem(
+                  vote.title,
+                  20,
+                  12,
+                  vote.createdAt,
+                  tag: '미참여',
+                ),
+              );
             },
             separatorBuilder: (BuildContext context, int index) {
               return const Padding(
@@ -53,7 +74,7 @@ class StudyScheduleVoteList extends StatelessWidget {
                 ),
               );
             },
-            itemCount: 10,
+            itemCount: votes.length,
           ),
         ),
       ],
