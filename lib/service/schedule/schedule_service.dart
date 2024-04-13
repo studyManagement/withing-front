@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:modi/model/schedule/schedule_detail_model.dart';
 import 'package:modi/model/schedule/schedule_model.dart';
+import 'package:modi/model/schedule/schedule_vote_model.dart';
 import 'package:retrofit/http.dart';
 
 import '../../common/requester/network_exception.dart';
@@ -42,12 +43,23 @@ abstract class ScheduleApi {
     @Path('id') int id,
     @Path('scheduleId') int scheduleId,
   );
+
+  @GET('/studies/{id}/schedules/votes')
+  Future<List<ScheduleVoteModel>> fetchScheduleVotes(@Path('id') int id);
 }
 
 class ScheduleService {
   final ScheduleApi _scheduleApi;
 
   ScheduleService(this._scheduleApi);
+
+  Future<List<ScheduleVoteModel>> fetchScheduleVotes(int studyId) async {
+    try {
+      return await _scheduleApi.fetchScheduleVotes(studyId);
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
 
   Future<List<ScheduleModel>> fetchSchedules(int studyId) async {
     try {

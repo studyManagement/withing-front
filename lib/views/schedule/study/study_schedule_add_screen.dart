@@ -27,6 +27,9 @@ class StudyScheduleAddScreen extends StatelessWidget {
 
     DateTime now = DateTime.now();
 
+    logger.info(
+        'StudyScheduleAddScreen: _studyId: $_studyId, _studyScheduleId: $_studyScheduleId');
+
     if (_studyScheduleId != null && vm.schedule.id == -1) {
       vm.fetchSchedule(_studyId, _studyScheduleId!);
     } else {
@@ -45,7 +48,7 @@ class StudyScheduleAddScreen extends StatelessWidget {
               child: ConfirmButton(
                 width: MediaQuery.of(context).size.width,
                 onTap: () {
-                  if (_studyScheduleId != null) {
+                  if (_studyScheduleId == null) {
                     vm.postSchedule(context, _studyId);
                   } else {
                     vm.putSchedule(context, _studyId, _studyScheduleId!);
