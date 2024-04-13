@@ -52,10 +52,10 @@ class ModiModal {
           return ListTile(
             title: Text(
               params[index].title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: AppFonts.fontWeight500,
-                color: AppColors.gray900,
+                color: params[index].titleColor ?? AppColors.gray900,
               ),
             ),
             onTap: () {

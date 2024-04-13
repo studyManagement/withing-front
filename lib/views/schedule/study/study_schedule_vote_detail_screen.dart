@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/components/share/share.dart';
+import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/action_sheet_params.dart';
 import 'package:modi/common/modal/modi_modal.dart';
@@ -74,8 +75,12 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
             ModiModal.openActionSheet(
               context,
               [
-                ActionSheetParams(title: '수정하기', onTap: () {}),
-                ActionSheetParams(title: '삭제하기', onTap: () {}),
+                ActionSheetParams(title: '마감하기', onTap: () {}),
+                ActionSheetParams(
+                  title: '삭제하기',
+                  onTap: () {},
+                  titleColor: AppColors.red400,
+                ),
               ],
             );
           },
@@ -121,13 +126,19 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            vote.title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: AppFonts.fontWeight600,
-              color: AppColors.gray800,
-            ),
+          Row(
+            children: [
+              Tag('미참여', TagColorSet.BLUE),
+              const SizedBox(width: 8),
+              Text(
+                vote.title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: AppFonts.fontWeight600,
+                  color: AppColors.gray800,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Text(
