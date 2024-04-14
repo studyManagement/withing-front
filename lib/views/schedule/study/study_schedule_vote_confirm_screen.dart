@@ -27,8 +27,9 @@ class StudyScheduleVoteConfirmScreen extends StatelessWidget {
 
     final dateTimeFormatter = DateFormat('MM. dd (E) a hh:mm', 'ko');
 
-    List<RadioItem> voteItems = vote?.voteAggregates
-            .sublist(0, 5)
+    List<ScheduleVoteItemAggregate> aggregates = vote?.voteAggregates ?? [];
+    List<RadioItem> voteItems = aggregates
+            .sublist(0, (aggregates.length > 5) ? 5 : aggregates.length)
             .map(
               (e) => RadioItem<DateTime>(
                 value: DateTime(
