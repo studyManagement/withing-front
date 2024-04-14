@@ -21,10 +21,14 @@ class MainCalendarV2 extends StatelessWidget {
     List<String> weekDays = ['일', '월', '화', '수', '목', '금', '토'];
     List<DateTime> weekDateTimes = [];
     StudyListViewModel viewModel = context.watch<StudyListViewModel>();
+    DateTime now = DateTime.now();
 
     for (int i = 0; i < 7; i++) {
-      weekDateTimes.add(
-          DateTime.now().subtract(Duration(days: DateTime.now().weekday - i)));
+      if (now.weekday == 7) {
+        weekDateTimes.add(now.add(Duration(days: i)));
+      } else {
+        weekDateTimes.add(now.subtract(Duration(days: now.weekday - i)));
+      }
     }
     List<StudyListView> studies =
         context.select<StudyListViewModel, List<StudyListView>>(
@@ -32,7 +36,8 @@ class MainCalendarV2 extends StatelessWidget {
 
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           for (int i = 0; i < 7; i++)
             GestureDetector(
                 onTap: () {
