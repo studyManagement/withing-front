@@ -40,7 +40,7 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
         Positioned(
           top: 54,
           child: Container(
-            width: MediaQuery.of(context).size.width - 30,
+            width: MediaQuery.of(context).size.width - 32,
             height: 37,
             decoration: BoxDecoration(
               color: AppColors.blue100,

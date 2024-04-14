@@ -89,7 +89,9 @@ class MeetingTimePicker extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                ValueButton(viewModel.startTime, onTap: () {
+                                ValueButton(viewModel.startTime,
+                                    textAlign: TextAlign.center,
+                                    onTap: () {
                                   viewModel.meetingType = type;
                                   setState(() {
                                     if (!viewModel.isStart)
@@ -109,6 +111,7 @@ class MeetingTimePicker extends StatelessWidget {
                                 ),
                                 ValueButton(
                                   viewModel.endTime,
+                                  textAlign: TextAlign.center,
                                   onTap: () {
                                     viewModel.meetingType = type;
                                     setState(() {
@@ -128,34 +131,31 @@ class MeetingTimePicker extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
                               children: [
-                                SizedBox(
-                                  width: 250,
-                                  child: TimeSpinner(
-                                    (viewModel.study!.meetingSchedules.isEmpty)
-                                        ? DateTime.now()
-                                        : DateFormat('HH:mm').parse(viewModel
-                                            .study!
-                                            .meetingSchedules[0]
-                                            .startTime),
-                                    (DateTime) {
-                                      setState(() {
-                                        viewModel.setMeetingTime(
-                                            DateTime, type);
-                                        logger.info(DateTime.toString());
-                                      });
-                                    },
-                                  ),
+                                TimeSpinner(
+                                  (viewModel.study!.meetingSchedules.isEmpty)
+                                      ? DateTime.now()
+                                      : DateFormat('HH:mm').parse(viewModel
+                                          .study!
+                                          .meetingSchedules[0]
+                                          .startTime),
+                                  (DateTime) {
+                                    setState(() {
+                                      viewModel.setMeetingTime(
+                                          DateTime, type);
+                                      logger.info(DateTime.toString());
+                                    });
+                                  },
                                 ),
                                 const SizedBox(height: 40),
                                 ConfirmButton(
-                                  onTap: (viewModel.checkDaysAndTimes(type))
+                                  onTap: (viewModel.checkTimes())
                                       ? () {
                                           context.pop();
                                         }
                                       : null,
                                   text: '선택 완료',
                                   backgroundColor:
-                                      (viewModel.checkDaysAndTimes(type))
+                                      (viewModel.checkTimes())
                                           ? AppColors.blue600
                                           : AppColors.gray200,
                                   height: 50,

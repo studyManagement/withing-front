@@ -12,8 +12,9 @@ class TimeSpinner extends StatefulWidget {
 
   final DateTime standard;
   final Function(DateTime) onChanged;
+  final double? focusedBoxWidth;
 
-  const TimeSpinner(this.standard, this.onChanged, {super.key});
+  const TimeSpinner(this.standard, this.onChanged, {super.key, this.focusedBoxWidth});
 }
 
 class _TimeSpinnerState extends State<TimeSpinner> {
@@ -37,7 +38,7 @@ class _TimeSpinnerState extends State<TimeSpinner> {
         Positioned(
           top: 54,
           child: Container(
-            width: MediaQuery.of(context).size.width - 30,
+            width: widget.focusedBoxWidth ?? MediaQuery.of(context).size.width - 32,
             height: 37,
             decoration: BoxDecoration(
               color: AppColors.blue100,

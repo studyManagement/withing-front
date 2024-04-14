@@ -347,18 +347,17 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
+  bool checkTimes(){
+    return startTime != '미등록' && endTime != '미등록';
+  }
+
   bool checkDaysAndTimes(MeetingType type) {
     if (type == MeetingType.DAILY) {
-      if (startTime != '미등록' && endTime != '미등록') {
-        return true;
-      } else {
-        return false;
-      }
+     return checkTimes();
     } else if (type == MeetingType.WEEKLY) {
       if (selectedDays.isNotEmpty &&
           selectedDays.length <= 3 &&
-          startTime != '미등록' &&
-          endTime != '미등록') {
+          checkTimes()) {
         return true;
       } else {
         return false;
