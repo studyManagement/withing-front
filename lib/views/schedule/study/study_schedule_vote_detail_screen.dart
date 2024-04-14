@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:modi/common/components/image/circle_image.dart';
 import 'package:modi/common/components/share/share.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/layout/default_layout.dart';
@@ -96,11 +99,22 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
                 )
               ],
             )
-          : const Column(
-              children: [
-                StudyScheduleVoteDetailHeader(),
-                Divider(color: AppColors.gray50, thickness: 6),
-              ],
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  const StudyScheduleVoteDetailHeader(),
+                  const Divider(color: AppColors.gray50, thickness: 6),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ScheduleTable(
+                      dateTimes: vote.votes.map((e) => e.voteDay).toList(),
+                      startAt: vote.votes.first.startAt,
+                      endAt: vote.votes.first.endAt,
+                    ),
+                  ),
+                ],
+              ),
             ),
     );
   }
@@ -181,6 +195,211 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
           const SizedBox(height: 14),
         ],
       ),
+    );
+  }
+}
+
+class ScheduleTable extends StatelessWidget {
+  const ScheduleTable({
+    required this.dateTimes,
+    required this.startAt,
+    required this.endAt,
+    super.key,
+  });
+
+  final List<DateTime> dateTimes;
+  final TimeOfDay startAt;
+  final TimeOfDay endAt;
+
+  List<TimeOfDay> getTimeRangeWithoutMinutes(
+      TimeOfDay startTime, TimeOfDay endTime) {
+    List<TimeOfDay> timeRangeList = [];
+
+    int startHour = startTime.hour;
+    int endHour = endTime.hour;
+
+    for (int hour = startHour; hour <= endHour; hour++) {
+      timeRangeList.add(TimeOfDay(hour: hour, minute: 0));
+    }
+
+    return timeRangeList;
+  }
+
+  Row _makeProfile(String nickname, String? profileImage) {
+    return Row(
+      children: [
+        CircleImage(
+          22,
+          22,
+          image: Image.asset('asset/default_image.png'),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          nickname,
+          style: const TextStyle(
+            color: AppColors.gray800,
+            fontWeight: AppFonts.fontWeight500,
+            fontSize: 12,
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final weekDayFormat = DateFormat('E', 'ko');
+    final dateFormat = DateFormat('M/d', 'ko');
+
+    dateTimes.sort((a, b) => a.compareTo(b));
+
+    List<TableCell> headers = dateTimes
+        .map(
+          (dateTime) => TableCell(
+            child: Column(
+              children: [
+                Text(
+                  weekDayFormat.format(dateTime),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: AppFonts.fontWeight500,
+                    color: AppColors.gray400,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  dateFormat.format(dateTime),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: AppFonts.fontWeight500,
+                    color: AppColors.gray800,
+                  ),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
+        )
+        .toList();
+
+    List<TableRow> rows = getTimeRangeWithoutMinutes(startAt, endAt)
+        .map(
+          (time) => TableRow(
+            children: [
+              TableCell(
+                verticalAlignment: TableCellVerticalAlignment.top,
+                child: Container(
+                  padding: const EdgeInsets.only(right: 8),
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    '${time.hour}:00',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: AppFonts.fontWeight500,
+                      color: AppColors.gray500,
+                    ),
+                  ),
+                ),
+              ),
+              ...dateTimes.map(
+                (dateTime) => TableCell(
+                  child: PopupMenuButton(
+                    offset: const Offset(0, 50),
+                    tooltip: '',
+                    color: AppColors.white,
+                    surfaceTintColor: AppColors.white,
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(
+                          enabled: false,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '3명 투표',
+                                style: TextStyle(
+                                  color: AppColors.blue400,
+                                  fontSize: 12,
+                                  fontWeight: AppFonts.fontWeight600,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                height: 100,
+                                width: 120,
+                                child: ListView.builder(
+                                  itemExtent: 30,
+                                  itemBuilder: (context, index) {
+                                    return _makeProfile('김모모', null);
+                                  },
+                                  itemCount: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ];
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: AppColors.blue400,
+                        border: Border.all(color: AppColors.gray50),
+                      ),
+                      child: (time.hour >= 6 && time.hour <= 18)
+                          ? const Icon(
+                              Icons.sunny,
+                              size: 20,
+                              color: AppColors.gray200,
+                            )
+                          : const Icon(
+                              FontAwesomeIcons.solidMoon,
+                              size: 20,
+                              color: AppColors.gray200,
+                            ),
+                    ),
+                  ),
+                  /*
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.gray50),
+                      ),
+                      child: (time.hour >= 6 && time.hour <= 18)
+                          ? const Icon(
+                              Icons.sunny,
+                              size: 20,
+                              color: AppColors.gray200,
+                            )
+                          : const Icon(
+                              FontAwesomeIcons.solidMoon,
+                              size: 20,
+                              color: AppColors.gray200,
+                            ),
+                    ),
+                  ),
+                  */
+                ),
+              ),
+            ],
+          ),
+        )
+        .toList();
+
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: const {0: FractionColumnWidth(.1)},
+      children: [
+        TableRow(
+          children: [const TableCell(child: SizedBox()), ...headers],
+        ),
+        ...rows,
+      ],
     );
   }
 }
