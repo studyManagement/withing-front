@@ -1,8 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:modi/common/components/table/schedule/schedule_table_vote_status.dart';
 import 'package:modi/model/schedule/schedule_vote_model.dart';
 import 'package:modi/model/user/user_model.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote_item.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote_item_status.dart';
+
+class ScheduleVoteItemAggregate {
+  DateTime voteDay;
+  TimeOfDay selectedTime;
+  List<UserModel> users;
+
+  ScheduleVoteItemAggregate(
+    this.voteDay,
+    this.selectedTime,
+    this.users,
+  );
+}
 
 class ScheduleVote {
   int id;
@@ -29,6 +42,37 @@ class ScheduleVote {
         .expand((i) => i)
         .toSet();
     return uniqueMembers.length;
+  }
+
+  Set<TimeOfDay> get selectedTimes {
+    return votes
+        .map((vote) => vote.status.map((e) => e.selectedTime))
+        .expand((i) => i)
+        .toSet();
+  }
+
+  List<ScheduleVoteItemAggregate> get voteAggregates {
+    Set<TimeOfDay> uniqueTimes = selectedTimes;
+    List<ScheduleVoteItemAggregate> aggregates = [];
+
+    for (var vote in votes) {
+      for (var time in uniqueTimes) {
+        List<UserModel> users = vote.status
+            .where((status) => status.selectedTime == time)
+            .map((e) => e.user)
+            .toList();
+        aggregates.add(
+          ScheduleVoteItemAggregate(
+            vote.voteDay,
+            time,
+            users,
+          ),
+        );
+      }
+    }
+
+    aggregates.sort((a, b) => a.users.length.compareTo(b.users.length));
+    return aggregates.reversed.toList();
   }
 
   List<UserModel> get votedMembers {

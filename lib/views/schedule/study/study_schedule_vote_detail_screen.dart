@@ -102,7 +102,12 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
             ModiModal.openActionSheet(
               context,
               [
-                ActionSheetParams(title: '마감하기', onTap: () {}),
+                ActionSheetParams(
+                    title: '마감하기',
+                    onTap: () {
+                      context.push(
+                          '/studies/$studyId/schedules/vote/$voteId/confirm');
+                    }),
                 ActionSheetParams(
                   title: '삭제하기',
                   onTap: () {},

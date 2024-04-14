@@ -35,6 +35,7 @@ import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
+import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
 
 class RouterService {
@@ -222,7 +223,9 @@ class RouterService {
                                 ),
                               ],
                               child: StudyScheduleVoteDetailScreen(
-                                  studyId, voteId),
+                                studyId,
+                                voteId,
+                              ),
                             );
                           },
                           routes: [
@@ -239,6 +242,26 @@ class RouterService {
                                   ),
                                   child: StudyScheduleVoteMembersScreen(
                                       studyId, voteId),
+                                );
+                              },
+                            ),
+                            GoRoute(
+                              path: 'confirm',
+                              builder: (context, state) {
+                                int studyId =
+                                    int.parse(state.pathParameters['studyId']!);
+                                int voteId =
+                                    int.parse(state.pathParameters['voteId']!);
+                                return ChangeNotifierProvider(
+                                  create: (_) {
+                                    return ScheduleVoteViewModel(
+                                      getIt<ScheduleService>(),
+                                    );
+                                  },
+                                  child: StudyScheduleVoteConfirmScreen(
+                                    studyId,
+                                    voteId,
+                                  ),
                                 );
                               },
                             ),
