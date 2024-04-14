@@ -24,6 +24,8 @@ mixin _$ScheduleVoteItemModel {
   int get id => throw _privateConstructorUsedError;
   int get studyId => throw _privateConstructorUsedError;
   DateTime get voteDay => throw _privateConstructorUsedError;
+  List<ScheduleVoteItemStatusModel> get status =>
+      throw _privateConstructorUsedError;
   @TimeOfDayConverter()
   TimeOfDay get startAt => throw _privateConstructorUsedError;
   @TimeOfDayConverter()
@@ -46,6 +48,7 @@ abstract class $ScheduleVoteItemModelCopyWith<$Res> {
       {int id,
       int studyId,
       DateTime voteDay,
+      List<ScheduleVoteItemStatusModel> status,
       @TimeOfDayConverter() TimeOfDay startAt,
       @TimeOfDayConverter() TimeOfDay endAt,
       DateTime createdAt});
@@ -68,6 +71,7 @@ class _$ScheduleVoteItemModelCopyWithImpl<$Res,
     Object? id = null,
     Object? studyId = null,
     Object? voteDay = null,
+    Object? status = null,
     Object? startAt = null,
     Object? endAt = null,
     Object? createdAt = null,
@@ -85,6 +89,10 @@ class _$ScheduleVoteItemModelCopyWithImpl<$Res,
           ? _value.voteDay
           : voteDay // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as List<ScheduleVoteItemStatusModel>,
       startAt: null == startAt
           ? _value.startAt
           : startAt // ignore: cast_nullable_to_non_nullable
@@ -114,6 +122,7 @@ abstract class _$$ScheduleVoteItemModelImplCopyWith<$Res>
       {int id,
       int studyId,
       DateTime voteDay,
+      List<ScheduleVoteItemStatusModel> status,
       @TimeOfDayConverter() TimeOfDay startAt,
       @TimeOfDayConverter() TimeOfDay endAt,
       DateTime createdAt});
@@ -134,6 +143,7 @@ class __$$ScheduleVoteItemModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? studyId = null,
     Object? voteDay = null,
+    Object? status = null,
     Object? startAt = null,
     Object? endAt = null,
     Object? createdAt = null,
@@ -151,6 +161,10 @@ class __$$ScheduleVoteItemModelImplCopyWithImpl<$Res>
           ? _value.voteDay
           : voteDay // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value._status
+          : status // ignore: cast_nullable_to_non_nullable
+              as List<ScheduleVoteItemStatusModel>,
       startAt: null == startAt
           ? _value.startAt
           : startAt // ignore: cast_nullable_to_non_nullable
@@ -174,9 +188,11 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
       {required this.id,
       required this.studyId,
       required this.voteDay,
+      required final List<ScheduleVoteItemStatusModel> status,
       @TimeOfDayConverter() required this.startAt,
       @TimeOfDayConverter() required this.endAt,
-      required this.createdAt});
+      required this.createdAt})
+      : _status = status;
 
   factory _$ScheduleVoteItemModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScheduleVoteItemModelImplFromJson(json);
@@ -187,6 +203,14 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
   final int studyId;
   @override
   final DateTime voteDay;
+  final List<ScheduleVoteItemStatusModel> _status;
+  @override
+  List<ScheduleVoteItemStatusModel> get status {
+    if (_status is EqualUnmodifiableListView) return _status;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_status);
+  }
+
   @override
   @TimeOfDayConverter()
   final TimeOfDay startAt;
@@ -198,7 +222,7 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
 
   @override
   String toString() {
-    return 'ScheduleVoteItemModel(id: $id, studyId: $studyId, voteDay: $voteDay, startAt: $startAt, endAt: $endAt, createdAt: $createdAt)';
+    return 'ScheduleVoteItemModel(id: $id, studyId: $studyId, voteDay: $voteDay, status: $status, startAt: $startAt, endAt: $endAt, createdAt: $createdAt)';
   }
 
   @override
@@ -209,6 +233,7 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.studyId, studyId) || other.studyId == studyId) &&
             (identical(other.voteDay, voteDay) || other.voteDay == voteDay) &&
+            const DeepCollectionEquality().equals(other._status, _status) &&
             (identical(other.startAt, startAt) || other.startAt == startAt) &&
             (identical(other.endAt, endAt) || other.endAt == endAt) &&
             (identical(other.createdAt, createdAt) ||
@@ -217,8 +242,8 @@ class _$ScheduleVoteItemModelImpl implements _ScheduleVoteItemModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, studyId, voteDay, startAt, endAt, createdAt);
+  int get hashCode => Object.hash(runtimeType, id, studyId, voteDay,
+      const DeepCollectionEquality().hash(_status), startAt, endAt, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -240,6 +265,7 @@ abstract class _ScheduleVoteItemModel implements ScheduleVoteItemModel {
       {required final int id,
       required final int studyId,
       required final DateTime voteDay,
+      required final List<ScheduleVoteItemStatusModel> status,
       @TimeOfDayConverter() required final TimeOfDay startAt,
       @TimeOfDayConverter() required final TimeOfDay endAt,
       required final DateTime createdAt}) = _$ScheduleVoteItemModelImpl;
@@ -253,6 +279,8 @@ abstract class _ScheduleVoteItemModel implements ScheduleVoteItemModel {
   int get studyId;
   @override
   DateTime get voteDay;
+  @override
+  List<ScheduleVoteItemStatusModel> get status;
   @override
   @TimeOfDayConverter()
   TimeOfDay get startAt;

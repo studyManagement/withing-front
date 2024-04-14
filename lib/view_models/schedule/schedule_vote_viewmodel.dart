@@ -43,6 +43,7 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     ScheduleVoteModel scheduleVote =
         await _service.fetchScheduleVote(studyId, voteId);
     vote = ScheduleVote.from(scheduleVote);
+    vote!.votes.sort((a, b) => a.voteDay.compareTo(b.voteDay));
     notifyListeners();
   }
 

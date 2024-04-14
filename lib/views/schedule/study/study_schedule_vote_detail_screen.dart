@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:modi/common/components/image/circle_image.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/share/share.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/layout/default_layout.dart';
@@ -9,12 +8,15 @@ import 'package:modi/common/modal/action_sheet_params.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
+import 'package:modi/model/user/user_model.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/components/button/circle_button.dart';
+import '../../../common/components/button/confirm_button.dart';
+import '../../../common/components/table/schedule/schedule_table.dart';
 
 class StudyScheduleVoteDetailScreen extends StatelessWidget {
   const StudyScheduleVoteDetailScreen(this.studyId, this.voteId, {super.key});
@@ -55,8 +57,15 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
     ScheduleVote? vote = context.select<ScheduleVoteViewModel, ScheduleVote?>(
         (provider) => provider.vote);
 
+    int userId = Authentication.instance.userId;
+
+    List<UserModel> members = context.select<StudyViewModel, List<UserModel>>(
+        (provider) => provider.study?.users ?? []);
+
     String studyName = context.select<StudyViewModel, String>(
         (provider) => provider.study?.studyName ?? '');
+
+    bool isVoted = vote?.isVoted(userId) ?? false;
 
     if (vote == null) {
       studyViewModel.fetchStudyInfo(studyId);
@@ -65,6 +74,16 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
 
     return DefaultLayout(
       title: '',
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: ConfirmButton(
+          width: MediaQuery.of(context).size.width,
+          onTap: () {},
+          text: isVoted ? '다시 투표하기' : '투표하기',
+          backgroundColor: AppColors.blue600,
+        ),
+      ),
       actions: [
         _makeShareButton(
           context,
@@ -102,7 +121,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  const StudyScheduleVoteDetailHeader(),
+                  StudyScheduleVoteDetailHeader(isVoted: isVoted),
                   const Divider(color: AppColors.gray50, thickness: 6),
                   const SizedBox(height: 16),
                   Padding(
@@ -111,6 +130,9 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
                       dateTimes: vote.votes.map((e) => e.voteDay).toList(),
                       startAt: vote.votes.first.startAt,
                       endAt: vote.votes.first.endAt,
+                      voteStatus: vote.toTableVoteStatus(),
+                      maxVoteCount: members.length,
+                      readOnly: true,
                     ),
                   ),
                 ],
@@ -123,12 +145,35 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
 class StudyScheduleVoteDetailHeader extends StatelessWidget {
   const StudyScheduleVoteDetailHeader({
     super.key,
+    required this.isVoted,
   });
+
+  final bool isVoted;
+
+  Row _makeHeader(String title, Widget body) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: AppFonts.fontWeight500,
+            color: AppColors.gray400,
+          ),
+        ),
+        const SizedBox(width: 8),
+        body,
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    DateFormat dateFormatter = DateFormat('yyyy. MM. dd. HH:mm');
     ScheduleVote? vote = context.select<ScheduleVoteViewModel, ScheduleVote?>(
         (provider) => provider.vote);
+    List<UserModel> members = context.select<StudyViewModel, List<UserModel>>(
+        (provider) => provider.study?.users ?? []);
 
     if (vote == null) {
       return const SizedBox();
@@ -142,7 +187,10 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              Tag('미참여', TagColorSet.BLUE),
+              Tag(
+                isVoted ? '참여완료' : '미참여',
+                isVoted ? TagColorSet.GRAY : TagColorSet.RED,
+              ),
               const SizedBox(width: 8),
               Text(
                 vote.title,
@@ -166,240 +214,41 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
           const SizedBox(height: 16),
           const Divider(color: AppColors.gray150),
           const SizedBox(height: 16),
-          const Text(
+          _makeHeader(
             '확정 일정',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: AppFonts.fontWeight500,
-              color: AppColors.gray400,
+            const Text(
+              '-',
+              style: TextStyle(
+                  color: AppColors.gray800,
+                  fontSize: 13,
+                  fontWeight: AppFonts.fontWeight500),
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          _makeHeader(
             '투표 인원',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: AppFonts.fontWeight500,
-              color: AppColors.gray400,
+            Text(
+              '${vote.totalVoteCount}/${members.length}',
+              style: const TextStyle(
+                  color: AppColors.gray800,
+                  fontSize: 13,
+                  fontWeight: AppFonts.fontWeight500),
             ),
           ),
           const SizedBox(height: 8),
-          const Text(
+          _makeHeader(
             '투표 생성',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: AppFonts.fontWeight500,
-              color: AppColors.gray400,
+            Text(
+              dateFormatter.format(vote.createdAt),
+              style: const TextStyle(
+                  color: AppColors.gray800,
+                  fontSize: 13,
+                  fontWeight: AppFonts.fontWeight500),
             ),
           ),
           const SizedBox(height: 14),
         ],
       ),
-    );
-  }
-}
-
-class ScheduleTable extends StatelessWidget {
-  const ScheduleTable({
-    required this.dateTimes,
-    required this.startAt,
-    required this.endAt,
-    super.key,
-  });
-
-  final List<DateTime> dateTimes;
-  final TimeOfDay startAt;
-  final TimeOfDay endAt;
-
-  List<TimeOfDay> getTimeRangeWithoutMinutes(
-      TimeOfDay startTime, TimeOfDay endTime) {
-    List<TimeOfDay> timeRangeList = [];
-
-    int startHour = startTime.hour;
-    int endHour = endTime.hour;
-
-    for (int hour = startHour; hour <= endHour; hour++) {
-      timeRangeList.add(TimeOfDay(hour: hour, minute: 0));
-    }
-
-    return timeRangeList;
-  }
-
-  Row _makeProfile(String nickname, String? profileImage) {
-    return Row(
-      children: [
-        CircleImage(
-          22,
-          22,
-          image: Image.asset('asset/default_image.png'),
-        ),
-        const SizedBox(width: 6),
-        Text(
-          nickname,
-          style: const TextStyle(
-            color: AppColors.gray800,
-            fontWeight: AppFonts.fontWeight500,
-            fontSize: 12,
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final weekDayFormat = DateFormat('E', 'ko');
-    final dateFormat = DateFormat('M/d', 'ko');
-
-    dateTimes.sort((a, b) => a.compareTo(b));
-
-    List<TableCell> headers = dateTimes
-        .map(
-          (dateTime) => TableCell(
-            child: Column(
-              children: [
-                Text(
-                  weekDayFormat.format(dateTime),
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: AppFonts.fontWeight500,
-                    color: AppColors.gray400,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  dateFormat.format(dateTime),
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: AppFonts.fontWeight500,
-                    color: AppColors.gray800,
-                  ),
-                ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
-        )
-        .toList();
-
-    List<TableRow> rows = getTimeRangeWithoutMinutes(startAt, endAt)
-        .map(
-          (time) => TableRow(
-            children: [
-              TableCell(
-                verticalAlignment: TableCellVerticalAlignment.top,
-                child: Container(
-                  padding: const EdgeInsets.only(right: 8),
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    '${time.hour}:00',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: AppFonts.fontWeight500,
-                      color: AppColors.gray500,
-                    ),
-                  ),
-                ),
-              ),
-              ...dateTimes.map(
-                (dateTime) => TableCell(
-                  child: PopupMenuButton(
-                    offset: const Offset(0, 50),
-                    tooltip: '',
-                    color: AppColors.white,
-                    surfaceTintColor: AppColors.white,
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        PopupMenuItem(
-                          enabled: false,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                '3명 투표',
-                                style: TextStyle(
-                                  color: AppColors.blue400,
-                                  fontSize: 12,
-                                  fontWeight: AppFonts.fontWeight600,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              SizedBox(
-                                height: 100,
-                                width: 120,
-                                child: ListView.builder(
-                                  itemExtent: 30,
-                                  itemBuilder: (context, index) {
-                                    return _makeProfile('김모모', null);
-                                  },
-                                  itemCount: 10,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ];
-                    },
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: AppColors.blue400,
-                        border: Border.all(color: AppColors.gray50),
-                      ),
-                      child: (time.hour >= 6 && time.hour <= 18)
-                          ? const Icon(
-                              Icons.sunny,
-                              size: 20,
-                              color: AppColors.gray200,
-                            )
-                          : const Icon(
-                              FontAwesomeIcons.solidMoon,
-                              size: 20,
-                              color: AppColors.gray200,
-                            ),
-                    ),
-                  ),
-                  /*
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () {
-                    },
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.gray50),
-                      ),
-                      child: (time.hour >= 6 && time.hour <= 18)
-                          ? const Icon(
-                              Icons.sunny,
-                              size: 20,
-                              color: AppColors.gray200,
-                            )
-                          : const Icon(
-                              FontAwesomeIcons.solidMoon,
-                              size: 20,
-                              color: AppColors.gray200,
-                            ),
-                    ),
-                  ),
-                  */
-                ),
-              ),
-            ],
-          ),
-        )
-        .toList();
-
-    return Table(
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {0: FractionColumnWidth(.1)},
-      children: [
-        TableRow(
-          children: [const TableCell(child: SizedBox()), ...headers],
-        ),
-        ...rows,
-      ],
     );
   }
 }
