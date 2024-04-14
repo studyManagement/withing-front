@@ -31,6 +31,14 @@ class ScheduleVote {
     return uniqueMembers.length;
   }
 
+  List<UserModel> get votedMembers {
+    Set<UserModel> uniqueMembers = votes
+        .map((vote) => vote.status.map((e) => e.user))
+        .expand((i) => i)
+        .toSet();
+    return uniqueMembers.toList();
+  }
+
   bool isVoted(int userId) {
     return votes
         .any((vote) => vote.status.any((status) => status.user.id == userId));

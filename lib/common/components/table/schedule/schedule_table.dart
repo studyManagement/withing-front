@@ -42,13 +42,13 @@ class ScheduleTable extends StatelessWidget {
   Color _getBackgroundColorByRatio(double ratio) {
     if (ratio == 0) {
       return AppColors.white;
-    } else if (ratio > 0.75) {
+    } else if (ratio >= 0.75) {
       return AppColors.blue400;
-    } else if (ratio > 0.5) {
+    } else if (ratio >= 0.5) {
       return AppColors.blue300;
-    } else if (ratio > 0.25) {
+    } else if (ratio >= 0.25) {
       return AppColors.blue200;
-    } else if (ratio > 0.1) {
+    } else if (ratio >= 0.1) {
       return AppColors.blue100;
     } else {
       return AppColors.blue500;

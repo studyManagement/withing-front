@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
@@ -17,6 +18,8 @@ class StudyScheduleVoteList extends StatelessWidget {
     List<ScheduleVote> votes =
         context.select<ScheduleVoteViewModel, List<ScheduleVote>>(
             (provider) => provider.votes);
+
+    int userId = Authentication.instance.userId;
 
     return votes.isEmpty
         ? ModiException(const ['생성된 투표가 없어요.'])
@@ -52,6 +55,7 @@ class StudyScheduleVoteList extends StatelessWidget {
                 child: ListView.separated(
                   itemBuilder: (context, index) {
                     ScheduleVote vote = votes[index];
+                    bool isVoted = vote.isVoted(userId);
 
                     return GestureDetector(
                       behavior: HitTestBehavior.translucent,
@@ -64,7 +68,7 @@ class StudyScheduleVoteList extends StatelessWidget {
                         20,
                         12,
                         vote.createdAt,
-                        tag: '미참여',
+                        isVoted: isVoted,
                       ),
                     );
                   },
@@ -86,28 +90,25 @@ class StudyScheduleVoteList extends StatelessWidget {
 }
 
 class _StudyScheduleVoteItem extends StatelessWidget {
-  String? tag;
   String title;
   int numberOfPeople;
   int currentPeople;
   DateTime createdAt;
+  bool isVoted;
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = [];
-
-    if (tag != null) {
-      widgets.add(Tag(tag!, TagColorSet.RED));
-      widgets.add(const SizedBox(width: 6));
-    }
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            ...widgets,
+            Tag(
+              isVoted ? '참여완료' : '미참여',
+              isVoted ? TagColorSet.GRAY : TagColorSet.RED,
+            ),
+            const SizedBox(width: 6),
             Text(
               title,
               style: const TextStyle(
@@ -168,5 +169,5 @@ class _StudyScheduleVoteItem extends StatelessWidget {
 
   _StudyScheduleVoteItem(
       this.title, this.numberOfPeople, this.currentPeople, this.createdAt,
-      {super.key, this.tag});
+      {super.key, required this.isVoted});
 }

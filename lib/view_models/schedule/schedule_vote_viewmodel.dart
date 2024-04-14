@@ -67,6 +67,6 @@ class ScheduleVoteViewModel extends ChangeNotifier {
       return;
     }
 
-    context.go('/study/$studyId/schedule/${scheduleVote.id}');
+    context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
   }
 }

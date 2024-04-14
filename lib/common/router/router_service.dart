@@ -35,6 +35,8 @@ import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
+import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
+
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
   static final RouterService _instance = RouterService._privateConstructor();
@@ -223,6 +225,24 @@ class RouterService {
                                   studyId, voteId),
                             );
                           },
+                          routes: [
+                            GoRoute(
+                              path: 'members',
+                              builder: (context, state) {
+                                int studyId =
+                                    int.parse(state.pathParameters['studyId']!);
+                                int voteId =
+                                    int.parse(state.pathParameters['voteId']!);
+                                return ChangeNotifierProvider(
+                                  create: (_) => ScheduleVoteViewModel(
+                                    getIt<ScheduleService>(),
+                                  ),
+                                  child: StudyScheduleVoteMembersScreen(
+                                      studyId, voteId),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                         GoRoute(
                           path: ':scheduleId',

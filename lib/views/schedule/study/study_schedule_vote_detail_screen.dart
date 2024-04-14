@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/share/share.dart';
@@ -11,6 +12,7 @@ import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:modi/model/user/user_model.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
+import 'package:modi/view_models/study/model/study_view.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -66,8 +68,9 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
         (provider) => provider.study?.studyName ?? '');
 
     bool isVoted = vote?.isVoted(userId) ?? false;
+    bool isLoading = vote == null;
 
-    if (vote == null) {
+    if (isLoading) {
       studyViewModel.fetchStudyInfo(studyId);
       voteViewModel.fetchScheduleVote(studyId, voteId);
     }
@@ -75,15 +78,17 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
     return DefaultLayout(
       title: '',
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        child: ConfirmButton(
-          width: MediaQuery.of(context).size.width,
-          onTap: () {},
-          text: isVoted ? '다시 투표하기' : '투표하기',
-          backgroundColor: AppColors.blue600,
-        ),
-      ),
+      floatingActionButton: isLoading
+          ? null
+          : Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: ConfirmButton(
+                width: MediaQuery.of(context).size.width,
+                onTap: () {},
+                text: isVoted ? '다시 투표하기' : '투표하기',
+                backgroundColor: AppColors.blue600,
+              ),
+            ),
       actions: [
         _makeShareButton(
           context,
@@ -109,7 +114,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.more_horiz),
         ),
       ],
-      child: (vote == null)
+      child: (isLoading)
           ? const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -174,8 +179,12 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
         (provider) => provider.vote);
     List<UserModel> members = context.select<StudyViewModel, List<UserModel>>(
         (provider) => provider.study?.users ?? []);
+    StudyView? studyView = context
+        .select<StudyViewModel, StudyView?>((provider) => provider.study);
 
-    if (vote == null) {
+    bool isLoading = vote == null;
+
+    if (isLoading) {
       return const SizedBox();
     }
 
@@ -227,12 +236,28 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
           const SizedBox(height: 8),
           _makeHeader(
             '투표 인원',
-            Text(
-              '${vote.totalVoteCount}/${members.length}',
-              style: const TextStyle(
-                  color: AppColors.gray800,
-                  fontSize: 13,
-                  fontWeight: AppFonts.fontWeight500),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                context.push(
+                    '/studies/${studyView?.id ?? -1}/schedules/vote/${vote.id}/members');
+              },
+              child: Row(
+                children: [
+                  Text(
+                    '${vote.totalVoteCount}/${members.length}',
+                    style: const TextStyle(
+                        color: AppColors.gray800,
+                        fontSize: 13,
+                        fontWeight: AppFonts.fontWeight500),
+                  ),
+                  Image.asset(
+                    'asset/arrowright16.png',
+                    width: 16,
+                    height: 16,
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 8),

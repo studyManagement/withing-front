@@ -2,6 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 
+// NoAnimation 사용하려면 플러터 버전 업그레이드 해야 됨
+// https://github.com/flutter/flutter/issues/145585
+class _NoScalingAnimation extends FloatingActionButtonAnimator {
+  @override
+  Offset getOffset(
+      {required Offset begin, required Offset end, required double progress}) {
+    return end;
+  }
+
+  @override
+  Animation<double> getRotationAnimation({required Animation<double> parent}) {
+    return Tween<double>(begin: 1.0, end: 1.0).animate(parent);
+  }
+
+  @override
+  Animation<double> getScaleAnimation({required Animation<double> parent}) {
+    return Tween<double>(begin: 1.0, end: 1.0).animate(parent);
+  }
+}
+
 class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
   final Color? appBarShadowColor;
@@ -50,6 +70,7 @@ class DefaultLayout extends StatelessWidget {
       resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButton: floatingActionButton,
+      floatingActionButtonAnimator: _NoScalingAnimation(),
     );
   }
 
