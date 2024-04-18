@@ -14,10 +14,10 @@ abstract class UserApi {
   Future<void> withdraw();
 
   @POST("/users")
-  Future<void> edit(
-      @Field('nickname') String nickname, @Field('introduce') String introduce);
+  Future<TokenModel> edit(@Field('nickname') String nickname,
+      @Field('introduce') String introduce, @Field('uuid') String imageUuid);
 
-  @GET("/me")
+  @GET("/users")
   Future<UserModel> fetchMe();
 
   @GET("/users/token")
@@ -28,6 +28,7 @@ abstract class UserApi {
 
 class UserService {
   final UserApi _userApi;
+
   UserService(this._userApi);
 
   Future<void> withdraw() async {
@@ -38,9 +39,10 @@ class UserService {
     }
   }
 
-  Future<void> edit(String nickname, String introduce) async {
+  Future<TokenModel> edit(String nickname, String introduce, String imageUuid) async {
     try {
-      await _userApi.edit(nickname, introduce);
+      TokenModel tokenModel = await _userApi.edit(nickname, introduce, imageUuid);
+      return tokenModel;
     } on ApiException catch (e) {
       rethrow;
     }

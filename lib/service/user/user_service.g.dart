@@ -43,9 +43,10 @@ class _UserApi implements UserApi {
   }
 
   @override
-  Future<void> edit(
+  Future<TokenModel> edit(
     String nickname,
     String introduce,
+    String imageUuid,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -53,23 +54,27 @@ class _UserApi implements UserApi {
     final _data = {
       'nickname': nickname,
       'introduce': introduce,
+      'uuid': imageUuid,
     };
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<TokenModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/users',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
+            .compose(
+              _dio.options,
+              '/users',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = TokenModel.fromJson(_result.data!);
+    return value;
   }
 
   @override
@@ -86,7 +91,7 @@ class _UserApi implements UserApi {
     )
             .compose(
               _dio.options,
-              '/me',
+              '/users',
               queryParameters: queryParameters,
               data: _data,
             )

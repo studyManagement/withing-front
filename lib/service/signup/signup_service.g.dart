@@ -23,6 +23,7 @@ class _SignupApi implements SignupApi {
     String provider,
     String nickname,
     String accessToken,
+    String imageUuid,
     String introduce,
   ) async {
     const _extra = <String, dynamic>{};
@@ -33,6 +34,7 @@ class _SignupApi implements SignupApi {
       'socialIdType': provider,
       'nickname': nickname,
       'socialId': accessToken,
+      'uuid': imageUuid,
       'introduce': introduce,
     };
     final _result = await _dio

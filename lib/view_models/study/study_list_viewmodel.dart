@@ -6,6 +6,8 @@ import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
 class StudyListViewModel extends ChangeNotifier {
+  bool _disposed = false;
+
   final StudyService _service;
   List<StudyListView> studyList = [];
   List<StudyListView> selectStudyListView = [];
@@ -55,5 +57,17 @@ class StudyListViewModel extends ChangeNotifier {
   void setSelectedDate(DateTime dateTime) {
     selectedDate = dateTime;
     weekString = WeekString[dateTime.weekday - 1];
+  }
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
   }
 }

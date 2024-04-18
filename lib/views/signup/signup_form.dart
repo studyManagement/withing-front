@@ -40,12 +40,17 @@ class _SignupFormState extends State<SignupForm> {
                   context,
                   widget: const Padding(
                     padding: EdgeInsets.only(left: 40, right: 40, top: 30),
-                    child: ImagePicker(),
+                    child: ImagePicker(
+                      type: UpdateType.USER,
+                    ),
                   ),
                   height: 440,
                 );
               },
-              child: const Profile(),
+              child: Profile(
+                  image: Image.network(
+                      'https://static.moditeam.io/asset/default/representative/default.webp'),
+                  bottomImagePath: 'asset/camera.png'),
             ),
           ),
         ),

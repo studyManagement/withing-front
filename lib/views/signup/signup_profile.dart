@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  final Image image;
+  final String bottomImagePath;
+  const Profile({super.key, required this.image, required this.bottomImagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +14,14 @@ class Profile extends StatelessWidget {
           height: 100,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              image: const DecorationImage(
-                  image: AssetImage('asset/user_default_image.png'))),
+              image: DecorationImage(
+                  image: image.image)),
         ),
         Positioned(
           right: 0,
           bottom: 0,
           child: Image.asset(
-            'asset/edit.png',
+            bottomImagePath,
             width: 32,
             height: 32,
           ),

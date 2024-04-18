@@ -1,16 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/signup/signup_exception.dart';
+import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
+
+import '../../di/injection.dart';
 
 class SignupViewModel extends ChangeNotifier {
   final SignupService _service;
+
   final String _provider;
   final String _uuid;
   late String _introduce;
   late String _nickname;
+  late String _imageUuid;
+  String? _imagePath;
 
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
@@ -53,9 +61,17 @@ class SignupViewModel extends ChangeNotifier {
     _introduce = introduce;
   }
 
+  createImage(BuildContext context) async {
+    try{
+      _imageUuid = await getIt<ImageCreateService>().callImageCreateApi(File(_imagePath!));
+    } on ApiException catch (e) {
+      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
+    }
+  }
+
   signup(BuildContext context) async {
     try {
-      await _service.signup(_provider, _nickname, _uuid, _introduce);
+      await _service.signup(_provider, _nickname, _uuid, _introduce, _imageUuid);
 
       if (!context.mounted) return;
       context.go('/');
