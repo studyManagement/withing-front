@@ -46,17 +46,20 @@ class StudyScheduleVoteAddScreen extends StatelessWidget {
           backgroundColor: AppColors.blue600,
         ),
       ),
-      child: const Column(
-        children: [
-          StudyScheduleRegisterInformation(),
-          SizedBox(height: 24),
-          Divider(
-            thickness: 6,
-            color: AppColors.gray50,
-          ),
-          SizedBox(height: 24),
-          StudyScheduleRegisterDateTime(),
-        ],
+      child: const SingleChildScrollView(
+        child: Column(
+          children: [
+            StudyScheduleRegisterInformation(),
+            SizedBox(height: 24),
+            Divider(
+              thickness: 6,
+              color: AppColors.gray50,
+            ),
+            SizedBox(height: 24),
+            StudyScheduleRegisterDateTime(),
+            SizedBox(height: 80),
+          ],
+        ),
       ),
     );
   }

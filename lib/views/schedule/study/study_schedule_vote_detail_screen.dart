@@ -145,6 +145,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
                       readOnly: true,
                     ),
                   ),
+                  const SizedBox(height: 80),
                 ],
               ),
             ),
