@@ -5,6 +5,7 @@ import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/view_models/image/image_picker_viewmodel.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import 'package:provider/provider.dart';
+import '../../../common/components/image/profile.dart';
 import '../../../common/components/picker/image/image_picker.dart';
 import '../../../common/modal/modi_modal.dart';
 import '../../../common/utils/pick_image_file.dart';
@@ -40,8 +41,8 @@ class StudyProfileImage extends StatelessWidget {
     }
     return Padding(
         padding: const EdgeInsets.only(top: 20, bottom: 50),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
+        child: Profile(
+          shapeDecoration: shapeDecoration,
           onTap: () {
             ModiModal.openBottomSheet(context, widget:
                 ChangeNotifierProvider(
@@ -67,18 +68,8 @@ class StudyProfileImage extends StatelessWidget {
                 })
           ), height: 496);
           },
-          child: Center(
-            child: Container(
-              width: 105,
-              height: 105,
-              decoration: shapeDecoration,
-              alignment: Alignment.bottomRight,
-              child: Image.asset(
-                'asset/camera.png',
-                scale: 2,
-              ),
-            ),
+          bottomImagePath: 'asset/camera.png',
           ),
-        ));
+        );
   }
 }

@@ -6,7 +6,7 @@ import 'package:modi/common/components/debouncer/debouncer.dart';
 import 'package:modi/common/components/picker/image/image_picker.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
-import 'package:modi/views/signup/signup_profile.dart';
+import 'package:modi/common/components/image/profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/components/input/text_input.dart';
@@ -33,8 +33,11 @@ class _SignupFormState extends State<SignupForm> {
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
+            child: Profile(
+              shapeDecoration: ShapeDecoration(
+                shape: OvalBorder()
+              ),
+            bottomImagePath: 'asset/camera.png',
               onTap: () {
                 ModiModal.openBottomSheet(
                   context,
@@ -50,10 +53,6 @@ class _SignupFormState extends State<SignupForm> {
                   height: 440,
                 );
               },
-              child: Profile(
-                  image: Image.network(
-                      'https://static.moditeam.io/asset/default/representative/default.webp'),
-                  bottomImagePath: 'asset/camera.png'),
             ),
           ),
         ),

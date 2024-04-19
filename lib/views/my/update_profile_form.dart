@@ -10,6 +10,7 @@ import 'package:modi/view_models/my/update_profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/components/debouncer/debouncer.dart';
+import '../../common/components/image/profile.dart';
 import '../../common/components/input/text_input.dart';
 import '../../common/components/picker/image/image_picker.dart';
 import '../../common/modal/modi_modal.dart';
@@ -55,7 +56,8 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: GestureDetector(
+            child: Profile(
+              shapeDecoration: shapeDecoration,
                 onTap: () {
                   ModiModal.openBottomSheet(context,
                       widget: ChangeNotifierProvider(
@@ -84,19 +86,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                           })),
                       height: 496);
                 },
-                child: Center(
-                    child: Container(
-                  width: 105,
-                  height: 105,
-                  decoration: shapeDecoration,
-                      alignment: Alignment.bottomRight,
-                  child: Image.asset(
-                    'asset/camera.png',
-                    width: 32,
-                    height: 32,
-                    scale: 2,
-                  ),
-                ))),
+                bottomImagePath: 'asset/camera.png'),
           ),
         ),
         const SizedBox(height: 60),
