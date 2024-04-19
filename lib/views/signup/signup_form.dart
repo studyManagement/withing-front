@@ -38,10 +38,13 @@ class _SignupFormState extends State<SignupForm> {
               onTap: () {
                 ModiModal.openBottomSheet(
                   context,
-                  widget: const Padding(
+                  widget: Padding(
                     padding: EdgeInsets.only(left: 40, right: 40, top: 30),
                     child: ImagePicker(
-                      type: UpdateType.USER,
+                      onSelected: (){
+
+                      },
+                      type:ObjectType.USER,
                     ),
                   ),
                   height: 440,

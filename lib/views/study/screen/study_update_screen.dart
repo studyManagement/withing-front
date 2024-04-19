@@ -40,6 +40,7 @@ class StudyUpdateScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 StudyProfileImage(
+                  isCreate: false,
                   viewModel: viewModel,
                 ),
                 StudyTextField(

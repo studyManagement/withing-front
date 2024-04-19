@@ -41,6 +41,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String _studyName = '';
   String _studyDescription = '';
   String _studyDisclosePassword = '';
+  String _studyImagePath = '';
   int _studyMemberCount = 0;
   String? _studyImageUuid;
   int? _studyId;
@@ -57,7 +58,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   bool get isStudyDescriptionError => _isStudyDescriptionError;
 
   @override
-  String get studyImagePath => ''; // 사용 안 함
+  String get studyImagePath => _studyImagePath;
 
   @override
   bool isOldImageLoaded = true;
@@ -146,6 +147,11 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   set studyImageFile(File? file) {
     _studyImageFile = file;
+    notifyListeners();
+  }
+  @override
+  set studyImagePath(String value) {
+    _studyImagePath = value;
     notifyListeners();
   }
 

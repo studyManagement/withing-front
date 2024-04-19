@@ -7,8 +7,6 @@ abstract class StudyInfoViewModel {
   // create or update study
   String get studyName;
 
-  String get studyImagePath;
-
   String get studyDescription;
 
   List<String> get selectedCategories;
@@ -18,6 +16,8 @@ abstract class StudyInfoViewModel {
   int get studyMemberCount;
 
   File? get studyImageFile;
+
+  String get studyImagePath;
 
   bool get isStudyNameError;
 
@@ -40,6 +40,8 @@ abstract class StudyInfoViewModel {
   set studyImageFile(File? file);
 
   set memberCount(int value);
+
+  set studyImagePath(String value);
 
   set isOldImageLoaded(bool value);
 

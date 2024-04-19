@@ -23,8 +23,6 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   bool get isOldImageLoaded => _isOldImageLoaded;
 
-  @override
-  String get studyImagePath => _studyImagePath;
 
   @override
   String get studyDescription => _studyDescription;
@@ -40,6 +38,9 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   File? get studyImageFile => _studyImageFile;
+
+  @override
+  String get studyImagePath => _studyImagePath;
 
   @override
   int get studyMemberCount => _studyMemberCount;
@@ -129,8 +130,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   set studyImageFile(File? file) {
     _studyImageFile = file;
-    _studyImagePath = file!.path;
+    notifyListeners();
+  }
 
+  @override
+  set studyImagePath(String value) {
+    _studyImagePath = value;
     notifyListeners();
   }
 

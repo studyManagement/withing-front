@@ -37,8 +37,11 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                   ModiModal.openBottomSheet(context, widget:
                   StatefulBuilder(builder: (BuildContext context,
                       StateSetter setState) {
-                    return const ImagePicker(
-                      type: UpdateType.USER,
+                    return ImagePicker(
+                      onSelected: (){
+
+                      },
+                      type: ObjectType.USER,
                     );
                   }), height: 496);
                 },
