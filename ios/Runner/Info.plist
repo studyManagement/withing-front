@@ -59,6 +59,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>앨범 접근 권한 허용이 필요합니다. 앨범에서 가져온 이미지는 스터디 또는 프로필 이미지에 사용됩니다.</string>
+	<key>NSCameraUsageDescription</key>
+    <string>카메라 접근 권한 허용이 필요합니다. 카메라로 촬영한 이미지는 스터디 또는 프로필 이미지에 사용됩니다.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
