@@ -30,7 +30,7 @@ class MyScreen extends StatelessWidget {
                       context.push('/my/profile');
                     },
                     child: Profile(
-                      image: Image.network(viewModel.imagePath),
+                      image: Image.network(viewModel.userImagePath),
                       bottomImagePath: 'asset/edit.png',
                     )),
               ),

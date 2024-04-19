@@ -17,21 +17,35 @@ class UpdateProfileViewModel extends ChangeNotifier{
 
   String _nickname = Authentication.instance.nickname;
   String _introduce = Authentication.instance.introduce;
-  String _imagePath = "https://static.moditeam.io/asset/default/representative/default.webp";
-  String _imageUuid = '';
+  String _userImagePath = "https://static.moditeam.io/asset/default/representative/default.webp";
+  String _userImageUuid = '';
+  File? _userImageFile;
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
+  bool isOldImageLoaded = false;
 
   String get nickname => _nickname;
   String get introduce => _introduce;
-  String get imagePath => _imagePath;
+  String get userImagePath => _userImagePath;
+  File? get userImageFile => _userImageFile;
+
+  set userImageFile(File? file) {
+    _userImageFile = file;
+    notifyListeners();
+  }
+
+
+  set userImagePath(String value) {
+    _userImagePath = value;
+    notifyListeners();
+  }
 
 
   UpdateProfileViewModel(this._context, this._userService ,this._imageUpdateService);
 
   Future<void> updateProfileImage() async{
     try{
-      _imageUuid = await _imageUpdateService.callImageUpdateApi(File(_imagePath));
+      _userImageUuid = await _imageUpdateService.callImageUpdateApi(File(_userImagePath));
     } on ApiException catch(e){
       if(!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
@@ -40,7 +54,7 @@ class UpdateProfileViewModel extends ChangeNotifier{
 
   Future<void> updateUserProfile() async {
     try {
-      TokenModel token = await _userService.edit(_nickname, _introduce, _imageUuid);
+      TokenModel token = await _userService.edit(_nickname, _introduce, _userImageUuid);
 
       Authentication.from(token.accessToken, token.refreshToken);
       Authentication.instance.save();

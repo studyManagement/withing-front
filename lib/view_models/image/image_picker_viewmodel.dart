@@ -72,6 +72,7 @@ class ImagePickerViewModel extends ChangeNotifier {
     defaultImage = Image.network((type == ObjectType.USER)
         ? representativeImagesUrl[0]
         : representativeImagesUrl[1]);
+    image ??= defaultImage;
   }
 
   takeOrPickPhoto(ImageSource source, ObjectType type) async {

@@ -36,7 +36,7 @@ class StudyProfileImage extends StatelessWidget {
     } else {
       shapeDecoration = const ShapeDecoration(
           shape: OvalBorder(),
-          image: DecorationImage(image: AssetImage('asset/default_image.png')));
+          image: DecorationImage(image: NetworkImage('https://static.moditeam.io/asset/default/representative/group_default.webp')));
     }
     return Padding(
         padding: const EdgeInsets.only(top: 20, bottom: 50),
