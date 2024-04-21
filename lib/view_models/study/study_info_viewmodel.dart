@@ -45,6 +45,8 @@ abstract class StudyInfoViewModel {
 
   set isOldImageLoaded(bool value);
 
+  set studyImageUuid(String value);
+
   /// RegExp pattern-matching
   bool validateInput(NewStudyType type, String input, String pattern) {
     final isValid = RegExp(pattern).hasMatch(input);

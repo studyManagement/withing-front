@@ -72,12 +72,13 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
                                 viewModel.userImageFile = imgVm.imageFile;
                                 viewModel.userImagePath = imgVm.imagePath;
+
                               });
                             }
                             return ImagePicker(
                               onSelected: () {
                                 imgVm.isSelected = true;
-                                imgVm.updateImage();
+                                imgVm.createImage().then((value) => viewModel.userImageUuid = imgVm.imageUuid);
                                 viewModel.isOldImageLoaded = true;
                                 context.pop();
                               },

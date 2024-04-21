@@ -34,23 +34,26 @@ class UpdateProfileViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
-
   set userImagePath(String value) {
     _userImagePath = value;
+    notifyListeners();
+  }
+  set userImageUuid(String value){
+    _userImageUuid = value;
     notifyListeners();
   }
 
 
   UpdateProfileViewModel(this._context, this._userService ,this._imageUpdateService);
 
-  Future<void> updateProfileImage() async{
-    try{
-      _userImageUuid = await _imageUpdateService.callImageUpdateApi(File(_userImagePath));
-    } on ApiException catch(e){
-      if(!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
-    }
-  }
+  // Future<void> updateProfileImage() async{
+  //   try{
+  //     _userImageUuid = await _imageUpdateService.callImageUpdateApi(File(_userImagePath));
+  //   } on ApiException catch(e){
+  //     if(!_context.mounted) return;
+  //     ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
+  //   }
+  // }
 
   Future<void> updateUserProfile() async {
     try {

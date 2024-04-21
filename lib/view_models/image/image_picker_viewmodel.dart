@@ -39,6 +39,7 @@ class ImagePickerViewModel extends ChangeNotifier {
   bool get isSelected => _isSelected;
 
   String get imagePath => _imagePath;
+  String get imageUuid => _imageUuid;
 
   set isSelected(bool value) {
     _isSelected = value;
@@ -48,15 +49,15 @@ class ImagePickerViewModel extends ChangeNotifier {
   ImagePickerViewModel(
       this._imageUpdateService, this._imageCreateService, this._context);
 
-  Future<void> updateImage() async {
-    try {
-      _imageUuid = await _imageUpdateService!.callImageUpdateApi(imageFile!);
-    } on ImageException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(
-          _context, '오류가 발생했어요.', e.cause, false, _context.pop, () => null);
-    }
-  }
+  // Future<void> updateImage() async {
+  //   try {
+  //     _imageUuid = await _imageUpdateService!.callImageUpdateApi(imageFile!);
+  //   } on ImageException catch (e) {
+  //     if (!_context.mounted) return;
+  //     ModiModal.openDialog(
+  //         _context, '오류가 발생했어요.', e.cause, false, _context.pop, () => null);
+  //   }
+  // }
 
   Future<void> createImage() async {
     try {

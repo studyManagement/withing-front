@@ -59,7 +59,7 @@ class StudyProfileImage extends StatelessWidget {
                   return ImagePicker(
                     onSelected: (){
                       imgVm.isSelected = true;
-                      isCreate ? imgVm.createImage() : imgVm.updateImage();
+                      imgVm.createImage().then((value) => viewModel.studyImageUuid = imgVm.imageUuid);
                       viewModel.isOldImageLoaded = true;
                       context.pop();
                     },

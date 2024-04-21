@@ -140,6 +140,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   @override
+  set studyImageUuid(String value) {
+    _studyImageUuid = value;
+    notifyListeners();
+  }
+
+  @override
   set isOldImageLoaded(bool value) {
     _isOldImageLoaded = value;
     notifyListeners();

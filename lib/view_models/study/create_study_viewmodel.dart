@@ -154,7 +154,11 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _studyImagePath = value;
     notifyListeners();
   }
-
+  @override
+  set studyImageUuid(String value) {
+    _studyImageUuid = value;
+    notifyListeners();
+  }
   /// call create image api
   @override
   Future<void> callImageApi() async {
