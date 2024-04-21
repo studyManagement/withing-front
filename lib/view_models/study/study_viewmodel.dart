@@ -8,6 +8,7 @@ import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 import 'package:modi/views/common/study_error_page.dart';
+import '../../common/components/bottom_toast.dart';
 import '../../common/logger/logging_interface.dart';
 import '../../common/modal/modi_modal.dart';
 import '../../di/injection.dart';
@@ -220,6 +221,7 @@ class StudyViewModel extends ChangeNotifier {
   Future<void> finishStudy() async {
     try {
       await _service.finishStudy(_study!.id);
+      BottomToast(context: _context, text: "스터디가 종료되었어요.").show();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
@@ -231,6 +233,8 @@ class StudyViewModel extends ChangeNotifier {
   Future<void> deleteStudy() async {
     try {
       await _service.deleteStudy(_study!.id);
+      BottomToast(context: _context, text: "스터디가 삭제되었어요.")
+          .show();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,

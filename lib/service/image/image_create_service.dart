@@ -35,6 +35,8 @@ class ImageCreateService {
       return response;
     } on ApiException catch (e){
       throw ImageException(e.cause, e.code);
+    } on NetworkException catch (e){
+      rethrow;
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:modi/common/requester/network_exception.dart';
 import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
+import '../../exception/study/study_exception.dart';
 import '../../service/create/study_create_service.dart';
 import '../../service/image/image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -199,7 +200,12 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyImageUuid!,
       );
       _studyId = newStudy.id;
-    } on NetworkException catch (e) {
+    } on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
     notifyListeners();

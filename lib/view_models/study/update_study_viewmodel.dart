@@ -204,7 +204,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyMemberCount,
               _studyImageUuid));
       notifyListeners();
-    } on NetworkException catch (e) {
+    } on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
   }
