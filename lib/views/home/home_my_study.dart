@@ -176,10 +176,12 @@ class StudyImage extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: CircleImage(
-              42,42,
+              42,
+              42,
               image: (studyImage == null)
                   ? null
                   : Image.network(
+                      fit: BoxFit.cover,
                       studyImage!,
                       width: 42,
                       height: 42,

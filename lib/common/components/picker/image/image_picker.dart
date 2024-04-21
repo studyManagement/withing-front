@@ -67,7 +67,7 @@ class ImagePicker extends StatelessWidget {
                       viewModel
                           .setImageFile(viewModel.representativeImagesUrl[i]);
                     },
-                    image: Image.network(viewModel.representativeImagesUrl[i]),
+                    image: Image.network(viewModel.representativeImagesUrl[i], fit: BoxFit.cover),
                   ),
                 CircleImage(
                   50,
@@ -83,7 +83,7 @@ class ImagePicker extends StatelessWidget {
                       viewModel
                           .setImageFile(viewModel.representativeImagesUrl[i]);
                     },
-                    image: Image.network(viewModel.representativeImagesUrl[i]),
+                    image: Image.network(viewModel.representativeImagesUrl[i], fit: BoxFit.cover,),
                   ),
               ],
             ),

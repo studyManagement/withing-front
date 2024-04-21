@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,10 +9,9 @@ import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import '../../common/components/picker/image/image_picker.dart';
 import '../../common/modal/modi_modal.dart';
-import '../../common/requester/api_exception.dart';
 import 'package:path_provider/path_provider.dart';
-
 import '../../common/utils/pick_image_file.dart';
+import '../../exception/image/image_exception.dart';
 
 class ImagePickerViewModel extends ChangeNotifier {
   final List<String> representativeImagesUrl = [
@@ -51,27 +51,28 @@ class ImagePickerViewModel extends ChangeNotifier {
   Future<void> updateImage() async {
     try {
       _imageUuid = await _imageUpdateService!.callImageUpdateApi(imageFile!);
-    } on ApiException catch (e) {
+    } on ImageException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(
-          _context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
+          _context, '오류가 발생했어요.', e.cause, false, _context.pop, () => null);
     }
   }
 
   Future<void> createImage() async {
     try {
+      print(imageFile);
       _imageUuid = await _imageCreateService!.callImageCreateApi(imageFile!);
-    } on ApiException catch (e) {
+    } on ImageException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(
-          _context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
+          _context, '오류가 발생했어요.', e.cause, false, _context.pop, () => null);
     }
   }
 
   setDefaultImage(ObjectType type) {
     defaultImage = Image.network((type == ObjectType.USER)
         ? representativeImagesUrl[0]
-        : representativeImagesUrl[1]);
+        : representativeImagesUrl[1], fit: BoxFit.cover);
     image ??= defaultImage;
   }
 
@@ -91,11 +92,11 @@ class ImagePickerViewModel extends ChangeNotifier {
     if (representativeImagesUrl.contains(_imagePath)) {
       // 대표 이미지
       imageFile = await _fileFromImageUrl(_imagePath);
-      image = Image.network(_imagePath);
+      image = Image.network(_imagePath,fit: BoxFit.cover);
     } else {
       // 사용자 선택 이미지
       imageFile = File(imageUrl);
-      image = Image.file(imageFile!);
+      image = Image.file(imageFile!, fit: BoxFit.cover);
     }
     notifyListeners();
   }
@@ -103,13 +104,13 @@ class ImagePickerViewModel extends ChangeNotifier {
   Future<File?> _fileFromImageUrl(String imageUrl) async {
     var rng = Random();
     Directory tempDir = await getTemporaryDirectory();
-    String tempPath = tempDir.path;
 
-    File file = File('$tempPath' + (rng.nextInt(100)).toString() + '.jpg');
+    String tempPath = "${tempDir.parent.parent.path}/tmp/";
+
+    File file = File('$tempPath' + (rng.nextInt(10000)).toString() + '.png');
 
     http.Response response = await http.get(Uri.parse(imageUrl));
     if (response.statusCode == 200) {
-      print(file);
       await file.writeAsBytes(response.bodyBytes);
       return file;
     }
