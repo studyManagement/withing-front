@@ -13,7 +13,7 @@ import 'package:modi/view_models/schedule/model/schedule_detail.dart';
 class ScheduleViewModel extends ChangeNotifier {
   final ScheduleService _service;
   final LoggingInterface _logger = getIt<LoggingInterface>();
-  List<Schedule> schedules = [];
+  List<Schedule>? schedules;
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
 
@@ -41,8 +41,7 @@ class ScheduleViewModel extends ChangeNotifier {
   Future<void> fetchSchedules(int studyId) async {
     List<ScheduleModel> scheduleModels = await _service.fetchSchedules(studyId);
 
-    // inDays(yesterday=-1,today=0,tomorrow=1)
-    scheduleModels.sort((a, b) => a.startAt.difference(b.startAt).inDays);
+    scheduleModels.sort((a, b) => a.startAt.compareTo(b.startAt));
     schedules = scheduleModels.reversed.map((e) => Schedule.from(e)).toList();
 
     notifyListeners();

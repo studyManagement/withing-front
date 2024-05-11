@@ -33,72 +33,84 @@ class StudyScheduleList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Schedule> schedules =
-        context.select<ScheduleViewModel, List<Schedule>>(
+    final List<Schedule>? schedules =
+        context.select<ScheduleViewModel, List<Schedule>?>(
             (provider) => provider.schedules);
 
-    return schedules.isEmpty
-        ? ModiException(const ['생성된 일정이 없어요.'])
-        : Column(
-            children: [
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: Row(
-                  children: [
-                    const Text(
-                      '전체',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.gray400,
-                        fontWeight: AppFonts.fontWeight600,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${schedules.length}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.gray600,
-                        fontWeight: AppFonts.fontWeight600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    Schedule schedule = schedules[index];
+    bool isLoading = schedules == null;
 
-                    return GestureDetector(
-                      onTap: () {
-                        context
-                            .push('/studies/$studyId/schedules/${schedule.id}');
-                      },
-                      behavior: HitTestBehavior.translucent,
-                      child: _StudyScheduleItem(
-                          schedule.title,
-                          _makeScheduleDescription(
-                              schedule.startAt, schedule.endAt),
-                          tag: _isToday(schedule.startAt) ? '오늘' : null),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Divider(
-                        thickness: 1,
-                        color: AppColors.gray50,
-                      ),
-                    );
-                  },
-                  itemCount: schedules.length,
-                ),
-              ),
+    return (isLoading)
+        ? const Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: CircularProgressIndicator(),
+              )
             ],
-          );
+          )
+        : schedules.isEmpty
+            ? ModiException(const ['생성된 일정이 없어요.'])
+            : Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    child: Row(
+                      children: [
+                        const Text(
+                          '전체',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.gray400,
+                            fontWeight: AppFonts.fontWeight600,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '${schedules.length}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColors.gray600,
+                            fontWeight: AppFonts.fontWeight600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        Schedule schedule = schedules[index];
+
+                        return GestureDetector(
+                          onTap: () {
+                            context.push(
+                                '/studies/$studyId/schedules/${schedule.id}');
+                          },
+                          behavior: HitTestBehavior.translucent,
+                          child: _StudyScheduleItem(
+                              schedule.title,
+                              _makeScheduleDescription(
+                                  schedule.startAt, schedule.endAt),
+                              tag: _isToday(schedule.startAt) ? '오늘' : null),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Divider(
+                            thickness: 1,
+                            color: AppColors.gray50,
+                          ),
+                        );
+                      },
+                      itemCount: schedules.length,
+                    ),
+                  ),
+                ],
+              );
   }
 }
 

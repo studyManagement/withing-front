@@ -30,6 +30,68 @@ class _DateRangeSelectorState extends State<DateRangeSelector> {
   late DateTime? startAt;
   late DateTime? endAt;
 
+  void _makeModal() {
+    ModiModal.openBottomSheet(
+      context,
+      widget: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+            child: Column(
+              children: [
+                Text(
+                  '날짜 선택',
+                  style: TextStyle(
+                    color: AppColors.gray800,
+                    fontWeight: AppFonts.fontWeight600,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  '일정 투표를 받고 싶은 날짜를 선택해주세요. (최대 7일)',
+                  style: TextStyle(
+                    color: AppColors.gray400,
+                    fontSize: 14,
+                    fontWeight: AppFonts.fontWeight500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(
+            thickness: 1,
+            color: AppColors.gray150,
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Calendar(
+                  onDaySelected: (
+                    DateTime? rangeStart,
+                    DateTime? rangeEnd,
+                  ) =>
+                      onSelectDate(rangeStart, rangeEnd),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          ConfirmButton(
+            onTap: () => setDates(context),
+            text: '선택 완료',
+            backgroundColor: AppColors.blue600,
+            height: 50,
+            width: MediaQuery.of(context).size.width - 32,
+          ),
+        ],
+      ),
+      height: 554,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -158,76 +220,12 @@ class _DateRangeSelectorState extends State<DateRangeSelector> {
               ),
             ),
             const SizedBox(width: 8),
-            Expanded(
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                child: ValueButton(
-                  dateTimeFormatter.format(selectedDate),
-                  rightWidget: deleteButton,
-                ),
-                onTap: () {
-                  ModiModal.openBottomSheet(
-                    context,
-                    widget: Column(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              top: 40, left: 16, right: 16, bottom: 20),
-                          child: Column(
-                            children: [
-                              Text(
-                                '날짜 선택',
-                                style: TextStyle(
-                                  color: AppColors.gray800,
-                                  fontWeight: AppFonts.fontWeight600,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                '일정 투표를 받고 싶은 날짜를 선택해주세요. (최대 7일)',
-                                style: TextStyle(
-                                  color: AppColors.gray400,
-                                  fontSize: 14,
-                                  fontWeight: AppFonts.fontWeight500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 1,
-                          color: AppColors.gray150,
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Column(
-                            children: [
-                              Calendar(
-                                onDaySelected: (
-                                  DateTime? rangeStart,
-                                  DateTime? rangeEnd,
-                                ) =>
-                                    onSelectDate(rangeStart, rangeEnd),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        ConfirmButton(
-                          onTap: () => setDates(context),
-                          text: '선택 완료',
-                          backgroundColor: AppColors.blue600,
-                          height: 50,
-                          width: MediaQuery.of(context).size.width - 32,
-                        ),
-                      ],
-                    ),
-                    height: 554,
-                  );
-                },
-              ),
+            ValueButton(
+              dateTimeFormatter.format(selectedDate),
+              rightWidget: deleteButton,
+              onTap: () {
+                _makeModal();
+              },
             ),
           ],
         );

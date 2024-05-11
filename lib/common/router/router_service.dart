@@ -27,6 +27,7 @@ import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_detail_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_vote_add_screen.dart';
+import 'package:modi/views/schedule/study/study_schedule_vote_choice_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_vote_detail_screen.dart';
 import 'package:modi/views/search/screen/keyword_search_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
@@ -197,6 +198,35 @@ class RouterService {
                                 getIt<ScheduleService>(),
                               ),
                               child: StudyScheduleVoteAddScreen(studyId),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: 'vote/:voteId/edit',
+                          builder: (context, state) {
+                            int studyId =
+                                int.parse(state.pathParameters['studyId']!);
+                            int voteId =
+                                int.parse(state.pathParameters['voteId']!);
+
+                            return MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider(
+                                  create: (_) => ScheduleVoteViewModel(
+                                    getIt<ScheduleService>(),
+                                  ),
+                                ),
+                                ChangeNotifierProvider(
+                                  create: (_) => StudyViewModel(
+                                    context,
+                                    getIt<StudyService>(),
+                                  ),
+                                ),
+                              ],
+                              child: StudyScheduleVoteChoiceScreen(
+                                studyId,
+                                voteId,
+                              ),
                             );
                           },
                         ),

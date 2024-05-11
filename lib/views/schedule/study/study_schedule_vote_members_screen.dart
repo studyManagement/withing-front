@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:modi/common/components/image/circle_image.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
@@ -29,34 +29,43 @@ class StudyScheduleVoteMembersScreen extends StatelessWidget {
 
     return DefaultLayout(
       title: '참여자 정보',
-      child: ListView.builder(
-        itemExtent: 60,
-        itemBuilder: (context, index) {
-          UserModel user = users[index];
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
+      child: (isLoading)
+          ? const Column(
               children: [
-                CircleImage(
-                  38,
-                  38,
-                  image: Image.asset('asset/default_image.png'),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  user.nickname,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: AppFonts.fontWeight600,
-                    color: AppColors.gray800,
-                  ),
+                Center(
+                  child: CircularProgressIndicator(),
                 ),
               ],
+            )
+          : ListView.builder(
+              itemExtent: 60,
+              itemBuilder: (context, index) {
+                UserModel user = users[index];
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      CircleImage(
+                        38,
+                        38,
+                        image: Image.asset('asset/default_image.png'),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        user.nickname,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: AppFonts.fontWeight600,
+                          color: AppColors.gray800,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              itemCount: users.length,
             ),
-          );
-        },
-        itemCount: users.length,
-      ),
     );
   }
 }

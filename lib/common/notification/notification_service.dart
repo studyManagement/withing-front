@@ -94,7 +94,7 @@ class NotificationService {
   Future<void> initialize() async {
     await _requestPermission();
 
-    logger.info(await FirebaseMessaging.instance.getToken());
+    //logger.info(await FirebaseMessaging.instance.getToken());
 
     FirebaseMessaging.onMessage.listen(_foregroundHandler);
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);

@@ -196,9 +196,7 @@ class _TimeRangeSelectorState extends State<TimeRangeSelector> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-            child: ValueButton(dateTimeFormatter.format(currentDateTime)),
-          ),
+          ValueButton(dateTimeFormatter.format(currentDateTime)),
         ],
       ),
     );
