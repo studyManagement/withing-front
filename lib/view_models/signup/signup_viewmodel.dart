@@ -17,13 +17,32 @@ class SignupViewModel extends ChangeNotifier {
   final String _uuid;
   late String _introduce;
   late String _nickname;
-  late String _imageUuid;
-  String? _imagePath;
+  String _userImagePath = '';
+  late String _userImageUuid;
+  File? _userImageFile;
+  bool isOldImage = true;
+
+  String get userImagePath => _userImagePath;
+  File? get userImageFile => _userImageFile;
 
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
 
   SignupViewModel(this._provider, this._uuid, this._service);
+
+  set userImageUuid(String value){
+    _userImageUuid = value;
+    notifyListeners();
+  }
+  set userImageFile(File? file) {
+    _userImageFile = file;
+    notifyListeners();
+  }
+
+  set userImagePath(String value){
+    _userImagePath = value;
+    notifyListeners();
+  }
 
   _checkViolationWords(String nickname) {
     final matchPattern = RegExp(r'(\s|[^a-zA-Zㄱ-힣0-9])');
@@ -63,7 +82,7 @@ class SignupViewModel extends ChangeNotifier {
 
   createImage(BuildContext context) async {
     try{
-      _imageUuid = await getIt<ImageCreateService>().callImageCreateApi(File(_imagePath!));
+      _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(File(_userImagePath));
     } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
@@ -71,7 +90,7 @@ class SignupViewModel extends ChangeNotifier {
 
   signup(BuildContext context) async {
     try {
-      await _service.signup(_provider, _nickname, _uuid, _introduce, _imageUuid);
+      await _service.signup(_provider, _nickname, _uuid, _userImageUuid, _introduce);
 
       if (!context.mounted) return;
       context.go('/');

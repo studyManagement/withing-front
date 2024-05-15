@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/api_exception.dart';
@@ -9,20 +10,20 @@ import 'package:modi/service/signup/signup_service.dart';
 import 'package:modi/service/user/user_service.dart';
 import '../../di/injection.dart';
 import '../../model/signup/signup_exception.dart';
+import '../../model/user/user_model.dart';
 
 class UpdateProfileViewModel extends ChangeNotifier{
   final UserService _userService;
-  final ImageUpdateService _imageUpdateService;
   final BuildContext _context;
 
   String _nickname = Authentication.instance.nickname;
   String _introduce = Authentication.instance.introduce;
-  String _userImagePath = "https://static.moditeam.io/asset/default/representative/default.webp";
+  String _userImagePath = '';
   String _userImageUuid = '';
   File? _userImageFile;
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
-  bool isOldImageLoaded = false;
+  bool isOldImage = true;
 
   String get nickname => _nickname;
   String get introduce => _introduce;
@@ -43,17 +44,23 @@ class UpdateProfileViewModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  UpdateProfileViewModel(this._context, this._userService);
 
-  UpdateProfileViewModel(this._context, this._userService ,this._imageUpdateService);
-
-  // Future<void> updateProfileImage() async{
-  //   try{
-  //     _userImageUuid = await _imageUpdateService.callImageUpdateApi(File(_userImagePath));
-  //   } on ApiException catch(e){
-  //     if(!_context.mounted) return;
-  //     ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
-  //   }
-  // }
+  Future<void> fetchUserProfileImage() async {
+    if(_userImagePath.isEmpty) {
+      try {
+        UserModel user = await _userService.fetchMe();
+        _userImagePath = user.profileImage ??
+            "https://static.moditeam.io/asset/default/representative/default.png";
+        _userImageFile = File(_userImagePath);
+        notifyListeners();
+      } on ApiException catch (e) {
+        if (!_context.mounted) return;
+        ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () =>
+            _context.pop(), () => null);
+      }
+    }
+}
 
   Future<void> updateUserProfile() async {
     try {
@@ -65,7 +72,7 @@ class UpdateProfileViewModel extends ChangeNotifier{
       notifyListeners();
     } on ApiException catch (e){
       if(!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () => null, () => null);
+      ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false, () => _context.pop(), () => null);
     }
 
   }

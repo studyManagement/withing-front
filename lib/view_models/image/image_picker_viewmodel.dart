@@ -15,15 +15,15 @@ import '../../exception/image/image_exception.dart';
 
 class ImagePickerViewModel extends ChangeNotifier {
   final List<String> representativeImagesUrl = [
-    'https://static.moditeam.io/asset/default/representative/default.webp',
-    'https://static.moditeam.io/asset/default/representative/group_default.webp',
-    'https://static.moditeam.io/asset/default/representative/default2.webp',
-    'https://static.moditeam.io/asset/default/representative/default3.webp',
-    'https://static.moditeam.io/asset/default/representative/default4.webp',
-    'https://static.moditeam.io/asset/default/representative/default5.webp',
-    'https://static.moditeam.io/asset/default/representative/default6.webp',
-    'https://static.moditeam.io/asset/default/representative/default7.webp',
-    'https://static.moditeam.io/asset/default/representative/default8.webp',
+    'https://static.moditeam.io/asset/default/representative/default.png',
+    'https://static.moditeam.io/asset/default/representative/group_default.png',
+    'https://static.moditeam.io/asset/default/representative/default2.png',
+    'https://static.moditeam.io/asset/default/representative/default3.png',
+    'https://static.moditeam.io/asset/default/representative/default4.png',
+    'https://static.moditeam.io/asset/default/representative/default5.png',
+    'https://static.moditeam.io/asset/default/representative/default6.png',
+    'https://static.moditeam.io/asset/default/representative/default7.png',
+    'https://static.moditeam.io/asset/default/representative/default8.png',
   ];
 
   final ImageUpdateService? _imageUpdateService;
@@ -61,12 +61,13 @@ class ImagePickerViewModel extends ChangeNotifier {
 
   Future<void> createImage() async {
     try {
-      print(imageFile);
+      isSelected = true;
       _imageUuid = await _imageCreateService!.callImageCreateApi(imageFile!);
     } on ImageException catch (e) {
+      isSelected = false;
       if (!_context.mounted) return;
       ModiModal.openDialog(
-          _context, '오류가 발생했어요.', e.cause, false, _context.pop, () => null);
+          _context, '오류가 발생했어요.', e.cause, false,()=> _context.pop(), () => null);
     }
   }
 

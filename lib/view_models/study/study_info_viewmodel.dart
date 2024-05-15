@@ -23,7 +23,9 @@ abstract class StudyInfoViewModel {
 
   bool get isStudyDescriptionError;
 
-  bool get isOldImageLoaded;
+  bool get isOldImage;
+
+  String get studyImageUuid;
 
   void checkStudyNameAndDescription(NewStudyType type, String input);
 
@@ -43,7 +45,7 @@ abstract class StudyInfoViewModel {
 
   set studyImagePath(String value);
 
-  set isOldImageLoaded(bool value);
+  set isOldImage(bool value);
 
   set studyImageUuid(String value);
 

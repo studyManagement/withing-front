@@ -42,9 +42,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String _studyName = '';
   String _studyDescription = '';
   String _studyDisclosePassword = '';
-  String _studyImagePath = '';
+  String _studyImagePath = 'https://static.moditeam.io/asset/default/representative/group_default.png';
   int _studyMemberCount = 0;
-  String? _studyImageUuid;
+  String _studyImageUuid = '';
   int? _studyId;
 
   int? get studyId => _studyId;
@@ -62,7 +62,10 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String get studyImagePath => _studyImagePath;
 
   @override
-  bool isOldImageLoaded = true;
+  bool isOldImage = true;
+
+  @override
+  String get studyImageUuid => _studyImageUuid;
 
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
 
@@ -197,7 +200,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyDisclosePassword,
         _studyDescription,
         _selectedCategoryIndices..sort(),
-        _studyImageUuid!,
+        _studyImageUuid,
       );
       _studyId = newStudy.id;
     } on StudyException catch (e){

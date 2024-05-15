@@ -84,7 +84,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           const ScheduleScreen(),
           ChangeNotifierProvider(
               create: (_) => UpdateProfileViewModel(
-                  context, getIt<UserService>(), getIt<ImageUpdateService>()),
+                  context, getIt<UserService>()),
               child: const MyScreen())
     ]
     ),

@@ -18,9 +18,10 @@ class MyProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: ChangeNotifierProvider(
                 create: (context) => UpdateProfileViewModel(
-                    context, getIt<UserService>(), getIt<ImageUpdateService>()),
+                    context, getIt<UserService>()),
                 child: Consumer<UpdateProfileViewModel>(
                     builder: (context, consumer, child) {
+                      consumer.fetchUserProfileImage();
                   return const UpdateProfileForm();
                 }))));
   }

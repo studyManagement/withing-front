@@ -13,7 +13,8 @@ class MyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<UpdateProfileViewModel>();
+    final viewModel = context.watch<UpdateProfileViewModel>();
+    viewModel.fetchUserProfileImage();
     return DefaultLayout(
       title: '마이페이지',
       centerTitle: false,
@@ -29,9 +30,9 @@ class MyScreen extends StatelessWidget {
                     onTap: () =>
                       context.push('/my/profile'),
                       shapeDecoration: ShapeDecoration(
-                          shape: OvalBorder(),
+                          shape: const OvalBorder(),
                           image: DecorationImage(
-                              image: Image.network(viewModel.userImagePath).image)),
+                              image: NetworkImage(viewModel.userImagePath.isEmpty ? "https://static.moditeam.io/asset/default/representative/default.png" : viewModel.userImagePath), fit: BoxFit.cover)),
                       bottomImagePath: 'asset/edit.png',
                     )),
               ),

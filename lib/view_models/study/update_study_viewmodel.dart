@@ -21,7 +21,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   UpdateStudyViewModel(this._studyService, this._imageUpdateService, this._context);
 
   @override
-  bool get isOldImageLoaded => _isOldImageLoaded;
+  bool get isOldImage => _isOldImage;
 
 
   @override
@@ -51,17 +51,20 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   bool get isStudyDescriptionError => _isStudyDescriptionError;
 
+  @override
+  String get studyImageUuid => _studyImageUuid;
+
   int? _studyId;
   int _headCount = 0;
-  String? _studyImageUuid;
-  String _studyName = '', _studyDescription = '', _studyImagePath = '';
+  String _studyImageUuid ='';
+  String _studyName = '', _studyDescription = '', _studyImagePath = 'https://static.moditeam.io/asset/default/representative/group_default.png';
   List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
   int _studyMemberCount = 0;
   File? _studyImageFile;
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
-  bool _isOldImageLoaded = false;
+  bool _isOldImage = true;
 
   @override
   bool checkEverythingFilled() {
@@ -146,8 +149,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   @override
-  set isOldImageLoaded(bool value) {
-    _isOldImageLoaded = value;
+  set isOldImage(bool value) {
+    _isOldImage = value;
     notifyListeners();
   }
 
@@ -164,8 +167,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _studyId = study.id;
       _headCount = study.headcount;
       _studyName = study.studyName;
-      _studyImagePath = study.studyImage ?? '';
-      if (_studyImagePath.isNotEmpty) studyImageFile = File(study.studyImage!);
+      _studyImagePath = study.studyImage ?? 'https://static.moditeam.io/asset/default/representative/group_default.png';
+      _studyImageFile = File(_studyImagePath) ;
       _studyDescription = study.explanation;
       _selectedCategories = List.from(study.categories);
       _studyMemberCount = study.max;

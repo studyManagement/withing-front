@@ -28,27 +28,18 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
   final debounce = Debouncer(milliseconds: 300);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     final viewModel = context.watch<UpdateProfileViewModel>();
     ShapeDecoration? shapeDecoration;
-    if (viewModel.userImagePath.isNotEmpty || viewModel.userImageFile != null) {
-      // 수정 시 파일 형식 이슈
-      var image = (!viewModel.isOldImageLoaded)
-          ? NetworkImage(viewModel.userImagePath)
-          : FileImage(viewModel.userImageFile!);
-      shapeDecoration = ShapeDecoration(
-          shape: const OvalBorder(),
-          image: DecorationImage(
-            image: image as ImageProvider,
-            fit: BoxFit.cover,
-          ));
-    } else {
-      shapeDecoration = const ShapeDecoration(
-          shape: OvalBorder(),
-          image: DecorationImage(
-              image: NetworkImage(
-                  'https://static.moditeam.io/asset/default/representative/group_default.webp')));
-    }
+    var image = (viewModel.isOldImage)
+        ? NetworkImage(viewModel.userImagePath.isEmpty ? "https://static.moditeam.io/asset/default/representative/default.png" :viewModel.userImagePath)
+        : FileImage(viewModel.userImageFile!);
+    shapeDecoration = ShapeDecoration(
+        shape: const OvalBorder(),
+        image: DecorationImage(
+          image: image as ImageProvider,
+          fit: BoxFit.cover,
+        ));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +57,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                               getIt<ImageCreateService>(),
                               context),
                           child: Consumer<ImagePickerViewModel>(
-                              builder: (context, imgVm, child) {
+                              builder: (context, imgVm, _) {
                             imgVm.setDefaultImage(ObjectType.USER);
                             if (imgVm.isSelected) {
                               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -77,9 +68,9 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                             }
                             return ImagePicker(
                               onSelected: () {
-                                imgVm.isSelected = true;
-                                imgVm.createImage().then((value) => viewModel.userImageUuid = imgVm.imageUuid);
-                                viewModel.isOldImageLoaded = true;
+                                imgVm.createImage().then((value) =>
+                                viewModel.userImageUuid = imgVm.imageUuid);
+                                viewModel.isOldImage = false;
                                 context.pop();
                               },
                               type: ObjectType.USER,
@@ -137,7 +128,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Color(0xff1F3358),
+                      color: const Color(0xff1F3358),
                     ),
                     child: const Center(
                       child: Text(
