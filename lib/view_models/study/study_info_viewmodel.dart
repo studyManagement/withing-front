@@ -7,8 +7,6 @@ abstract class StudyInfoViewModel {
   // create or update study
   String get studyName;
 
-  String get studyImagePath;
-
   String get studyDescription;
 
   List<String> get selectedCategories;
@@ -19,11 +17,15 @@ abstract class StudyInfoViewModel {
 
   File? get studyImageFile;
 
+  String get studyImagePath;
+
   bool get isStudyNameError;
 
   bool get isStudyDescriptionError;
 
-  bool get isOldImageLoaded;
+  bool get isOldImage;
+
+  String get studyImageUuid;
 
   void checkStudyNameAndDescription(NewStudyType type, String input);
 
@@ -41,7 +43,11 @@ abstract class StudyInfoViewModel {
 
   set memberCount(int value);
 
-  set isOldImageLoaded(bool value);
+  set studyImagePath(String value);
+
+  set isOldImage(bool value);
+
+  set studyImageUuid(String value);
 
   /// RegExp pattern-matching
   bool validateInput(NewStudyType type, String input, String pattern) {

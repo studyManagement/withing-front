@@ -17,6 +17,7 @@ abstract class SignupApi {
     @Field("socialIdType") String provider,
     @Field("nickname") String nickname,
     @Field("socialId") String accessToken,
+    @Field("uuid") String imageUuid,
     @Field("introduce") String introduce,
   );
 
@@ -30,10 +31,10 @@ class SignupService {
   SignupService(this._signupApi);
 
   Future<void> signup(String provider, String nickname, String socialUUID,
-      String introduce) async {
+      String introduce, String imageUuid) async {
     try {
       final token =
-          await _signupApi.signup(provider, nickname, socialUUID, introduce);
+          await _signupApi.signup(provider, nickname, socialUUID, introduce, imageUuid);
 
       Authentication.from(token.accessToken, token.refreshToken);
       Authentication.instance.save();

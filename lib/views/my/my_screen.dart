@@ -4,13 +4,17 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
-import 'package:modi/views/signup/signup_profile.dart';
+import 'package:modi/view_models/my/update_profile_viewmodel.dart';
+import 'package:modi/common/components/image/profile.dart';
+import 'package:provider/provider.dart';
 
 class MyScreen extends StatelessWidget {
   const MyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<UpdateProfileViewModel>();
+    viewModel.fetchUserProfileImage();
     return DefaultLayout(
       title: '마이페이지',
       centerTitle: false,
@@ -19,12 +23,19 @@ class MyScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
+            Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
-                child: Profile(),
+                child: Profile(
+                    onTap: () =>
+                      context.push('/my/profile'),
+                      shapeDecoration: ShapeDecoration(
+                          shape: const OvalBorder(),
+                          image: DecorationImage(
+                              image: NetworkImage(viewModel.userImagePath.isEmpty ? "https://static.moditeam.io/asset/default/representative/default.png" : viewModel.userImagePath), fit: BoxFit.cover)),
+                      bottomImagePath: 'asset/edit.png',
+                    )),
               ),
-            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),

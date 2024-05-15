@@ -6,6 +6,7 @@ import 'package:modi/common/requester/network_exception.dart';
 import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
+import '../../exception/study/study_exception.dart';
 import '../../service/create/study_create_service.dart';
 import '../../service/image/image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -41,8 +42,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String _studyName = '';
   String _studyDescription = '';
   String _studyDisclosePassword = '';
+  String _studyImagePath = 'https://static.moditeam.io/asset/default/representative/group_default.png';
   int _studyMemberCount = 0;
-  String? _studyImageUuid;
+  String _studyImageUuid = '';
   int? _studyId;
 
   int? get studyId => _studyId;
@@ -57,10 +59,13 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   bool get isStudyDescriptionError => _isStudyDescriptionError;
 
   @override
-  String get studyImagePath => ''; // 사용 안 함
+  String get studyImagePath => _studyImagePath;
 
   @override
-  bool isOldImageLoaded = true;
+  bool isOldImage = true;
+
+  @override
+  String get studyImageUuid => _studyImageUuid;
 
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
 
@@ -148,7 +153,16 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _studyImageFile = file;
     notifyListeners();
   }
-
+  @override
+  set studyImagePath(String value) {
+    _studyImagePath = value;
+    notifyListeners();
+  }
+  @override
+  set studyImageUuid(String value) {
+    _studyImageUuid = value;
+    notifyListeners();
+  }
   /// call create image api
   @override
   Future<void> callImageApi() async {
@@ -186,10 +200,15 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyDisclosePassword,
         _studyDescription,
         _selectedCategoryIndices..sort(),
-        _studyImageUuid!,
+        _studyImageUuid,
       );
       _studyId = newStudy.id;
-    } on NetworkException catch (e) {
+    } on StudyException catch (e){
+      if (!_context.mounted) return;
+      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
+              () => _context.pop(), () => null);
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
     notifyListeners();

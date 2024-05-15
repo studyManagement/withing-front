@@ -41,7 +41,6 @@ class BoardBottomSheet extends StatelessWidget {
             viewModel.setOrUnsetNotice();
             context.pop();
             // viewModel.refreshBoardList();
-            BottomToast(context: context, text: viewModel.toastText()).show();
           },
         ),
         const SizedBox(height: 12),

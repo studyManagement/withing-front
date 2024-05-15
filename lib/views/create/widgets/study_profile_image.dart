@@ -1,56 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:modi/service/image/image_create_service.dart';
+import 'package:modi/service/image/image_update_service.dart';
+import 'package:modi/view_models/image/image_picker_viewmodel.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
-import '../../../common/utils/pick_image_file.dart';
+import 'package:provider/provider.dart';
+import '../../../common/components/image/profile.dart';
+import '../../../common/components/picker/image/image_picker.dart';
+import '../../../common/modal/modi_modal.dart';
+import '../../../di/injection.dart';
 
 class StudyProfileImage extends StatelessWidget {
   final StudyInfoViewModel viewModel;
+  final bool isCreate;
 
-  const StudyProfileImage({
-    super.key,
-    required this.viewModel,
-  });
+  const StudyProfileImage(
+      {super.key, required this.viewModel, required this.isCreate});
 
   @override
   Widget build(BuildContext context) {
-    // final viewModel2 = Provider.of<UpdateStudyViewModel>(context);
     ShapeDecoration? shapeDecoration;
-    if (viewModel.studyImagePath.isNotEmpty ||
-        viewModel.studyImageFile != null) {
-      var image = (!viewModel.isOldImageLoaded)
-          ? NetworkImage(viewModel.studyImagePath)
-          : FileImage(viewModel.studyImageFile!);
+      var image = (viewModel.isOldImage)
+              ? NetworkImage(viewModel.studyImagePath)
+              : FileImage(viewModel.studyImageFile!);
       shapeDecoration = ShapeDecoration(
           shape: const OvalBorder(),
           image: DecorationImage(
             image: image as ImageProvider,
             fit: BoxFit.cover,
           ));
-    } else {
-      shapeDecoration = const ShapeDecoration(
-          shape: OvalBorder(),
-          image: DecorationImage(image: AssetImage('asset/default_image.png')));
-    }
     return Padding(
-        padding: const EdgeInsets.only(top: 20, bottom: 50),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () async {
-            viewModel.studyImageFile = await pickImageFile();
-            viewModel.callImageApi();
-            viewModel.isOldImageLoaded = true;
-          },
-          child: Center(
-            child: Container(
-              width: 105,
-              height: 105,
-              decoration: shapeDecoration,
-              alignment: Alignment.bottomRight,
-              child: Image.asset(
-                'asset/camera.png',
-                scale: 2,
-              ),
-            ),
-          ),
-        ));
+      padding: const EdgeInsets.only(top: 20, bottom: 50),
+      child: Profile(
+        shapeDecoration: shapeDecoration,
+        onTap: () {
+          ModiModal.openBottomSheet(context,
+              widget: ChangeNotifierProvider(
+                  create: (_) => ImagePickerViewModel(
+                      getIt<ImageUpdateService>(),
+                      getIt<ImageCreateService>(),
+                      context),
+                  child: Consumer<ImagePickerViewModel>(
+                      builder: (context, imgVm, _) {
+                    if (imgVm.isSelected) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        viewModel.studyImageFile = imgVm.imageFile;
+                        viewModel.studyImagePath = imgVm.imagePath;
+                      });
+                    }
+                    return ImagePicker(
+                      onSelected: () {
+                        imgVm.createImage().then((value) =>
+                            viewModel.studyImageUuid = imgVm.imageUuid);
+                        viewModel.isOldImage = false;
+                        context.pop();
+                      },
+                      type: ObjectType.STUDY,
+                    );
+                  })),
+              height: 496);
+        },
+        bottomImagePath: 'asset/camera.png',
+      ),
+    );
   }
 }

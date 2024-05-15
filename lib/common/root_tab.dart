@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/di/injection.dart';
+import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/study/study_service.dart';
+import 'package:modi/service/user/user_service.dart';
+import 'package:modi/view_models/my/update_profile_viewmodel.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:modi/views/my/my_screen.dart';
 import 'package:modi/views/schedule/schedule_screen.dart';
@@ -53,7 +56,8 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           ),
         ),
         height: 80,
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.1),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,9 +82,12 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           ),
           const CategorySearchScreen(),
           const ScheduleScreen(),
-          const MyScreen(),
-        ],
-      ),
+          ChangeNotifierProvider(
+              create: (_) => UpdateProfileViewModel(
+                  context, getIt<UserService>()),
+              child: const MyScreen())
+    ]
+    ),
     );
   }
 

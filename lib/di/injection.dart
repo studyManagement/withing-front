@@ -13,6 +13,7 @@ import '../service/image/image_create_service.dart';
 import '../service/image/image_update_service.dart';
 import '../service/search/study_search_service.dart';
 import '../service/study/study_service.dart';
+import '../service/user/user_service.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -32,6 +33,9 @@ void setupDependencyInjection() {
   );
   getIt.registerLazySingleton<SigninApi>(
     () => SigninApi(getIt<Dio>(instanceName: 'client')),
+  );
+  getIt.registerLazySingleton<UserApi>(
+        () => UserApi(getIt<Dio>(instanceName: 'client')),
   );
   getIt.registerLazySingleton<StudyApi>(
     () => StudyApi(getIt<Dio>(instanceName: 'client')),
@@ -61,6 +65,9 @@ void setupDependencyInjection() {
   );
   getIt.registerLazySingleton<SigninService>(
     () => SigninService(getIt<SigninApi>()),
+  );
+  getIt.registerLazySingleton<UserService>(
+        () => UserService(getIt<UserApi>()),
   );
   getIt.registerLazySingleton<StudyService>(
     () => StudyService(getIt<StudyApi>()),

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/model/board/comment_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
+import '../../common/components/bottom_toast.dart';
 import '../../common/modal/modi_modal.dart';
 import '../../exception/study/study_exception.dart';
 import '../../model/board/board_model.dart';
@@ -199,6 +200,7 @@ class BoardViewModel extends ChangeNotifier {
     try {
       await _service.setNotice(_studyId!, boardId);
       refreshBoardList();
+      BottomToast(context: _context, text: toastText()).show();
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;
@@ -211,6 +213,7 @@ class BoardViewModel extends ChangeNotifier {
     try {
       await _service.unsetNotice(_studyId!, boardId);
       refreshBoardList();
+      BottomToast(context: _context, text: toastText()).show();
       notifyListeners();
     } on StudyException catch (e) {
       if (!_context.mounted) return;

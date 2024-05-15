@@ -2,14 +2,19 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/debouncer/debouncer.dart';
 import 'package:modi/common/components/picker/image/image_picker.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
-import 'package:modi/views/signup/signup_profile.dart';
+import 'package:modi/common/components/image/profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/components/input/text_input.dart';
+import '../../di/injection.dart';
+import '../../service/image/image_create_service.dart';
+import '../../service/image/image_update_service.dart';
+import '../../view_models/image/image_picker_viewmodel.dart';
 
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
@@ -23,9 +28,20 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    SignupViewModel viewModel = context.read();
+    SignupViewModel viewModel = context.watch();
     String message = context.select((SignupViewModel vm) => vm.message);
     int rgb = context.select((SignupViewModel vm) => vm.rgb);
+
+    ShapeDecoration? shapeDecoration;
+    var image = (viewModel.isOldImage)
+        ? NetworkImage(viewModel.userImagePath)
+        : FileImage(viewModel.userImageFile!);
+    shapeDecoration = ShapeDecoration(
+        shape: const OvalBorder(),
+        image: DecorationImage(
+          image: image as ImageProvider,
+          fit: BoxFit.cover,
+        ));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,19 +49,41 @@ class _SignupFormState extends State<SignupForm> {
         Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
+            child: Profile(
+              shapeDecoration: shapeDecoration,
+            bottomImagePath: 'asset/camera.png',
               onTap: () {
                 ModiModal.openBottomSheet(
                   context,
-                  widget: const Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40, top: 30),
-                    child: ImagePicker(),
+                  widget: ChangeNotifierProvider<ImagePickerViewModel>(
+                    create: (context) => ImagePickerViewModel(
+                        getIt<ImageUpdateService>(),
+                        getIt<ImageCreateService>(),
+                        context),
+                    child: Consumer<ImagePickerViewModel>(
+                      builder: (context, imgVm, _) {
+                        imgVm.setDefaultImage(ObjectType.USER);
+                        if (imgVm.isSelected) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            viewModel.userImageFile = imgVm.imageFile;
+                            viewModel.userImagePath = imgVm.imagePath;
+                          });
+                        }
+                        return ImagePicker(
+                          onSelected: (){
+                            imgVm.createImage().then((value) =>
+                            viewModel.userImageUuid = imgVm.imageUuid);
+                            viewModel.isOldImage = false;
+                            context.pop();
+                          },
+                          type:ObjectType.USER,
+                        );
+                      }
+                    ),
                   ),
-                  height: 440,
+                  height: 496,
                 );
               },
-              child: const Profile(),
             ),
           ),
         ),

@@ -52,9 +52,6 @@ class StudyManageScreen extends StatelessWidget {
                         "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
                       viewModel.deleteStudy();
                       context.pop();
-                      BottomToast(context: context, text: "스터디가 삭제되었어요.")
-                          .show();
-                      // context.go('/home');
                     }, null);
                   },
                   child: Text('스터디 삭제하기',
@@ -145,7 +142,6 @@ class StudyManageListItem extends StatelessWidget {
                 "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.", true, () {
               vm.finishStudy();
               context.pop();
-              BottomToast(context: context, text: "스터디가 종료되었어요.").show();
               // context.go('/home');
             }, null);
           }
