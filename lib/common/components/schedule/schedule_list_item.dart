@@ -4,21 +4,19 @@ import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 
 class ScheduleListItem extends StatelessWidget {
-  final int id;
-  final String title;
-  final String description;
+  final String studyName;
+  final String scheduleName;
   final bool isLast;
-  final DateTime startAt;
-  final DateTime endAt;
+  final String startTime;
+  final String endTime;
 
   const ScheduleListItem({
     super.key,
-    required this.id,
-    required this.title,
-    required this.description,
+    required this.studyName,
+    required this.scheduleName,
     required this.isLast,
-    required this.startAt,
-    required this.endAt,
+    required this.startTime,
+    required this.endTime,
   });
 
   @override
@@ -34,7 +32,7 @@ class ScheduleListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${DateFormat.jm('ko').format(startAt).toString()} - ${DateFormat.jm('ko').format(endAt).toString()}',
+                    '$startTime - $endTime',
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: AppFonts.fontSize13,
@@ -42,7 +40,7 @@ class ScheduleListItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    title,
+                    scheduleName,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: AppFonts.fontSize16,
@@ -50,7 +48,7 @@ class ScheduleListItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    description,
+                    studyName,
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: AppFonts.fontSize14,
