@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/image/circle_image.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
@@ -31,41 +32,45 @@ class StudyScheduleVoteMembersScreen extends StatelessWidget {
       title: '참여자 정보',
       child: (isLoading)
           ? const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
                   child: CircularProgressIndicator(),
                 ),
               ],
             )
-          : ListView.builder(
-              itemExtent: 60,
-              itemBuilder: (context, index) {
-                UserModel user = users[index];
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Row(
-                    children: [
-                      CircleImage(
-                        38,
-                        38,
-                        image: Image.asset('asset/default_image.png'),
+          : (users.isEmpty)
+              ? ModiException(const ['투표에 참여한 참여자가 없어요.'])
+              : ListView.builder(
+                  itemExtent: 60,
+                  itemBuilder: (context, index) {
+                    UserModel user = users[index];
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Row(
+                        children: [
+                          CircleImage(
+                            38,
+                            38,
+                            image: Image.asset('asset/default_image.png'),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            user.nickname,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: AppFonts.fontWeight600,
+                              color: AppColors.gray800,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        user.nickname,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: AppFonts.fontWeight600,
-                          color: AppColors.gray800,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              itemCount: users.length,
-            ),
+                    );
+                  },
+                  itemCount: users.length,
+                ),
     );
   }
 }

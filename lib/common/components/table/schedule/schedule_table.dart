@@ -220,7 +220,7 @@ class ScheduleTable extends StatelessWidget {
 
     return Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {0: FractionColumnWidth(.1)},
+      columnWidths: const {0: FractionColumnWidth(.11)},
       children: [
         TableRow(
           children: [const TableCell(child: SizedBox()), ...headers],
