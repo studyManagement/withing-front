@@ -45,7 +45,7 @@ class CategorySearchScreen extends StatelessWidget {
                   child: SizedBox(
                     height: (searchesCount == 0)
                         ? scrollableHeight * 0.85
-                        : scrollableHeight + (searchesCount) * 150,
+                        : scrollableHeight + (searchesCount+1) * 150,
                     child: Column(
                       children: [
                         const SearchBox(),
