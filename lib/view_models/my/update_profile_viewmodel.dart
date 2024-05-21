@@ -8,9 +8,11 @@ import 'package:modi/model/user/token_model.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 import 'package:modi/service/user/user_service.dart';
+import '../../common/utils/get_image_file.dart';
 import '../../di/injection.dart';
 import '../../model/signup/signup_exception.dart';
 import '../../model/user/user_model.dart';
+import '../../service/image/image_create_service.dart';
 
 class UpdateProfileViewModel extends ChangeNotifier{
   final UserService _userService;
@@ -46,7 +48,7 @@ class UpdateProfileViewModel extends ChangeNotifier{
 
   UpdateProfileViewModel(this._context, this._userService);
 
-  Future<void> fetchUserProfileImage() async {
+  Future<void> fetchUserProfileImage() async { // 프로필 수정 화면으로 이동 시
     if(_userImagePath.isEmpty) {
       try {
         UserModel user = await _userService.fetchMe();
@@ -64,6 +66,11 @@ class UpdateProfileViewModel extends ChangeNotifier{
 
   Future<void> updateUserProfile() async {
     try {
+      if(_userImageUuid.isEmpty) {
+        _userImageFile = await fileFromImageUrl(_userImagePath);
+        _userImageUuid =
+        await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
+      }
       TokenModel token = await _userService.edit(_nickname, _introduce, _userImageUuid);
 
       Authentication.from(token.accessToken, token.refreshToken);

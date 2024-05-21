@@ -3,23 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/requester/network_exception.dart';
+import 'package:modi/common/utils/get_image_file.dart';
 import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/model/study/study_model.dart';
+import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../common/modal/modi_modal.dart';
 import '../../common/requester/api_exception.dart';
+import '../../di/injection.dart';
 import '../../service/image/image_update_service.dart';
 import '../../service/study/study_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
 
 class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyService _studyService;
-  final ImageUpdateService _imageUpdateService;
   final BuildContext _context;
 
-  UpdateStudyViewModel(this._studyService, this._imageUpdateService, this._context);
+  UpdateStudyViewModel(this._studyService, this._context);
 
   @override
   bool get isOldImage => _isOldImage;
@@ -182,23 +184,13 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     }
   }
 
-  @override
-  Future<void> callImageApi() async {
-    try {
-      if (_studyImageFile != null) {
-        _studyImageUuid =
-        await _imageUpdateService.callImageUpdateApi(_studyImageFile!);
-      }
-      notifyListeners();
-    } on ApiException catch(e){
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
-    }
-  }
-
   Future<void> updateStudyInfo() async {
     try {
+      if(_studyImageUuid.isEmpty) {
+        _studyImageFile = await fileFromImageUrl(_studyImagePath);
+        _studyImageUuid =
+        await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
+      }
       await _studyService.updateStudyInfo(
           _studyId!,
           UpdatedStudyInfo(

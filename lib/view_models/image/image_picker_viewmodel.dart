@@ -1,18 +1,17 @@
 import 'dart:io';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:math';
 import 'package:modi/common/utils/take_photo.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import '../../common/components/picker/image/image_picker.dart';
 import '../../common/modal/modi_modal.dart';
-import 'package:path_provider/path_provider.dart';
+
 import '../../common/requester/api_exception.dart';
+import '../../common/utils/get_image_file.dart';
 import '../../common/utils/pick_image_file.dart';
-import '../../exception/image/image_exception.dart';
+
 
 class ImagePickerViewModel extends ChangeNotifier {
   final List<String> representativeImagesUrl = [
@@ -94,7 +93,7 @@ class ImagePickerViewModel extends ChangeNotifier {
     _imagePath = imageUrl;
     if (representativeImagesUrl.contains(_imagePath)) {
       // 대표 이미지
-      imageFile = await _fileFromImageUrl(_imagePath);
+      imageFile = await fileFromImageUrl(_imagePath);
       image = Image.network(_imagePath,fit: BoxFit.cover);
     } else {
       // 사용자 선택 이미지
@@ -104,19 +103,5 @@ class ImagePickerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<File?> _fileFromImageUrl(String imageUrl) async {
-    var rng = Random();
-    Directory tempDir = await getTemporaryDirectory();
 
-    String tempPath = "${tempDir.parent.parent.path}/tmp/";
-
-    File file = File('$tempPath' + (rng.nextInt(10000)).toString() + '.png');
-
-    http.Response response = await http.get(Uri.parse(imageUrl));
-    if (response.statusCode == 200) {
-      await file.writeAsBytes(response.bodyBytes);
-      return file;
-    }
-    return null;
-  }
 }

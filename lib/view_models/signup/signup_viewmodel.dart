@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/common/utils/get_image_file.dart';
 import 'package:modi/model/signup/signup_exception.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
@@ -82,7 +83,9 @@ class SignupViewModel extends ChangeNotifier {
 
   createImage(BuildContext context) async {
     try{
-      _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(File(_userImagePath));
+      if(_userImagePath.isEmpty) _userImagePath = "https://static.moditeam.io/asset/default/representative/default.png";
+      _userImageFile = await fileFromImageUrl(_userImagePath);
+      _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
     } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
@@ -90,6 +93,7 @@ class SignupViewModel extends ChangeNotifier {
 
   signup(BuildContext context) async {
     try {
+      await createImage(context);
       await _service.signup(_provider, _nickname, _uuid, _userImageUuid, _introduce);
 
       if (!context.mounted) return;

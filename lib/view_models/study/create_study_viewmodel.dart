@@ -7,6 +7,8 @@ import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../common/requester/api_exception.dart';
+import '../../common/utils/get_image_file.dart';
+import '../../di/injection.dart';
 import '../../exception/study/study_exception.dart';
 import '../../service/create/study_create_service.dart';
 import '../../service/image/image_create_service.dart';
@@ -14,10 +16,9 @@ import '../../views/create/widgets/study_text_field.dart';
 
 class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyCreateService _studyCreateService;
-  final ImageCreateService _imageCreateService;
   final BuildContext _context;
 
-  CreateStudyViewModel(this._studyCreateService, this._imageCreateService, this._context);
+  CreateStudyViewModel(this._studyCreateService, this._context);
 
   @override
   String get studyDescription => _studyDescription;
@@ -164,21 +165,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _studyImageUuid = value;
     notifyListeners();
   }
-  /// call create image api
-  @override
-  Future<void> callImageApi() async {
-    try {
-      if (_studyImageFile != null) {
-        _studyImageUuid =
-        await _imageCreateService.callImageCreateApi(_studyImageFile!);
-      }
-      notifyListeners();
-    } on ApiException catch (e){
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
-    }
-  }
 
   /// update study password
   set password(String newValue) {
@@ -194,6 +180,11 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   /// create study api
   Future<void> createStudy() async {
     try {
+      if(_studyImageUuid.isEmpty) {
+        _studyImageFile = await fileFromImageUrl(_studyImagePath);
+        _studyImageUuid =
+        await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
+      }
       final StudyModel newStudy = await _studyCreateService.callCreateApi(
         _studyName,
         _studyMemberCount,

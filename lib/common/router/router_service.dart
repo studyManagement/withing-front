@@ -333,7 +333,6 @@ class RouterService {
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
                             getIt<StudyService>(),
-                            getIt<ImageUpdateService>(),
                             context),
                         child: StudyUpdateScreen(
                             studyId:

@@ -35,7 +35,6 @@ abstract class StudyInfoViewModel {
 
   void updateSelectedCategoryIndices();
 
-  Future<void> callImageApi();
 
   bool checkEverythingFilled();
 
