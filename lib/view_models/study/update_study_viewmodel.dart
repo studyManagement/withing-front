@@ -9,6 +9,7 @@ import 'package:modi/model/study/study_model.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../common/modal/modi_modal.dart';
+import '../../common/requester/api_exception.dart';
 import '../../service/image/image_update_service.dart';
 import '../../service/study/study_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -174,7 +175,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _studyMemberCount = study.max;
       setStudyNameAdnDescription();
       notifyListeners();
-    }on StudyException catch (e){
+    }on ApiException catch (e){
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
               () => _context.pop(), () => null);
@@ -189,7 +190,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         await _imageUpdateService.callImageUpdateApi(_studyImageFile!);
       }
       notifyListeners();
-    } on ImageException catch(e){
+    } on ApiException catch(e){
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
               () => _context.pop(), () => null);
@@ -207,7 +208,9 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyMemberCount,
               _studyImageUuid));
       notifyListeners();
-    } on StudyException catch (e){
+      if (!_context.mounted) return;
+     _context.go('/studies/$_studyId');
+    } on ApiException catch (e){
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
               () => _context.pop(), () => null);

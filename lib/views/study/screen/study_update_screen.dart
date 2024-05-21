@@ -23,9 +23,7 @@ class StudyUpdateScreen extends StatelessWidget {
           floatingActionButton: StudyBottomButton(
               onTap: (viewModel.checkEverythingFilled())
                   ? () {
-                      viewModel
-                          .updateStudyInfo()
-                          .then((_) => context.go('/studies/$studyId'));
+                      viewModel.updateStudyInfo();
                     }
                   : null,
               text: '수정하기',

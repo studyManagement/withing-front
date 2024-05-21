@@ -75,7 +75,7 @@ class StudyService {
       final StudyModel study = await _studyApi.fetchStudyInfo(studyId);
       return study;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -86,7 +86,7 @@ class StudyService {
       final StudyModel study = await _studyApi.finishStudy(studyId);
       return study;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -99,7 +99,7 @@ class StudyService {
           await _studyApi.updateStudyInfo(studyId, newStudy.toJson());
       return study;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -110,7 +110,7 @@ class StudyService {
       final StudyModel study = await _studyApi.deleteStudy(studyId);
       return study;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -121,7 +121,7 @@ class StudyService {
       final StudyModel study = await _studyApi.switchLeader(studyId, userId);
       return study;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -133,9 +133,6 @@ class StudyService {
           await _studyApi.forceToExitMember(studyId, {"users": users});
       return response;
     } on ApiException catch (e) {
-      if (e.code == 404) {
-        throw StudyException(e.cause, e.code);
-      } else if (e.code == 401) {}
       rethrow;
     } on NetworkException catch (e) {
       rethrow;
@@ -147,7 +144,7 @@ class StudyService {
       var response = await _studyApi.joinStudy(studyId, {"password": password});
       return response;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -161,7 +158,7 @@ class StudyService {
           await _studyApi.setMeetingSchedule(studyId, meetingSchedules);
       return study;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -172,7 +169,7 @@ class StudyService {
       await _studyApi.pickFavoriteStudy(studyId);
       return;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -183,7 +180,7 @@ class StudyService {
       await _studyApi.cancelFavoriteStudy(studyId);
       return;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }

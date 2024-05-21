@@ -5,6 +5,7 @@ import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
 import '../../common/components/bottom_toast.dart';
 import '../../common/modal/modi_modal.dart';
+import '../../common/requester/api_exception.dart';
 import '../../exception/study/study_exception.dart';
 import '../../model/board/board_model.dart';
 import 'model/post.dart';
@@ -101,7 +102,7 @@ class BoardViewModel extends ChangeNotifier {
         hasPost = true;
         notifyListeners();
       }
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -117,7 +118,7 @@ class BoardViewModel extends ChangeNotifier {
       notifyListeners();
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
@@ -128,7 +129,7 @@ class BoardViewModel extends ChangeNotifier {
     try {
       await _service.deletePost(_studyId!, boardId);
       notifyListeners();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -142,7 +143,7 @@ class BoardViewModel extends ChangeNotifier {
             await _service.createPost(_studyId!, Post(_title, _contents));
         _boardId = newPost.id;
         notifyListeners();
-      } on StudyException catch (e) {
+      } on ApiException catch (e) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
@@ -158,7 +159,7 @@ class BoardViewModel extends ChangeNotifier {
         _post = boardModel;
         _boardId = boardModel.id;
         notifyListeners();
-      } on StudyException catch (e) {
+      } on ApiException catch (e) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
@@ -172,7 +173,7 @@ class BoardViewModel extends ChangeNotifier {
       _isFirst = false;
       comments = await _service.fetchComments(_studyId!, boardId);
       if (comments.isNotEmpty) notifyListeners();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -188,7 +189,7 @@ class BoardViewModel extends ChangeNotifier {
         comment = '';
         _isAddedComment = true;
         notifyListeners();
-      } on StudyException catch (e) {
+      } on ApiException catch (e) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
@@ -202,7 +203,7 @@ class BoardViewModel extends ChangeNotifier {
       refreshBoardList();
       BottomToast(context: _context, text: toastText()).show();
       notifyListeners();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -215,7 +216,7 @@ class BoardViewModel extends ChangeNotifier {
       refreshBoardList();
       BottomToast(context: _context, text: toastText()).show();
       notifyListeners();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);

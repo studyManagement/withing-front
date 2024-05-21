@@ -10,6 +10,7 @@ import 'package:modi/service/image/image_update_service.dart';
 import '../../common/components/picker/image/image_picker.dart';
 import '../../common/modal/modi_modal.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../common/requester/api_exception.dart';
 import '../../common/utils/pick_image_file.dart';
 import '../../exception/image/image_exception.dart';
 
@@ -52,7 +53,7 @@ class ImagePickerViewModel extends ChangeNotifier {
   // Future<void> updateImage() async {
   //   try {
   //     _imageUuid = await _imageUpdateService!.callImageUpdateApi(imageFile!);
-  //   } on ImageException catch (e) {
+  //   } on ApiException catch (e) {
   //     if (!_context.mounted) return;
   //     ModiModal.openDialog(
   //         _context, '오류가 발생했어요.', e.cause, false, _context.pop, () => null);
@@ -63,7 +64,7 @@ class ImagePickerViewModel extends ChangeNotifier {
     try {
       isSelected = true;
       _imageUuid = await _imageCreateService!.callImageCreateApi(imageFile!);
-    } on ImageException catch (e) {
+    } on ApiException catch (e) {
       isSelected = false;
       if (!_context.mounted) return;
       ModiModal.openDialog(

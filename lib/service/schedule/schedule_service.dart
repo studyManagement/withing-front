@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/schedule/schedule_detail_model.dart';
 import 'package:modi/model/schedule/schedule_model.dart';
 import 'package:modi/model/schedule/schedule_vote_model.dart';
@@ -72,7 +73,10 @@ class ScheduleService {
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(int studyId) async {
     try {
       return await _scheduleApi.fetchScheduleVotes(studyId);
-    } on NetworkException catch (e) {
+    } on ApiException catch (e){
+      rethrow;
+    }
+    on NetworkException catch (e) {
       rethrow;
     }
   }
@@ -80,6 +84,8 @@ class ScheduleService {
   Future<ScheduleVoteModel> fetchScheduleVote(int studyId, int voteId) async {
     try {
       return await _scheduleApi.fetchScheduleVote(studyId, voteId);
+    } on ApiException catch (e){
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -102,6 +108,8 @@ class ScheduleService {
         startAt.toIso8601String(),
         endAt.toIso8601String(),
       );
+    } on ApiException catch (e){
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -110,6 +118,8 @@ class ScheduleService {
   Future<List<ScheduleModel>> fetchSchedules(int studyId) async {
     try {
       return await _scheduleApi.fetchStudySchedules(studyId);
+    } on ApiException catch (e){
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -119,6 +129,8 @@ class ScheduleService {
       int studyId, int studyScheduleId) async {
     try {
       return await _scheduleApi.fetchStudySchedule(studyId, studyScheduleId);
+    } on ApiException catch (e){
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -129,7 +141,9 @@ class ScheduleService {
     try {
       return await _scheduleApi.postStudySchedule(studyId, title, description,
           startAt.toIso8601String(), endAt.toIso8601String());
-    } on DioException catch (e) {
+    } on ApiException catch (e) {
+      rethrow;
+    } on NetworkException catch (e) {
       rethrow;
     }
   }
@@ -149,7 +163,9 @@ class ScheduleService {
           description,
           startAt.toIso8601String(),
           endAt.toIso8601String());
-    } on DioException catch (e) {
+    } on ApiException catch (e) {
+      rethrow;
+    } on NetworkException catch (e) {
       rethrow;
     }
   }
@@ -158,7 +174,9 @@ class ScheduleService {
       int studyId, int studyScheduleId) async {
     try {
       return await _scheduleApi.deleteStudySchedule(studyId, studyScheduleId);
-    } on DioException catch (e) {
+    } on ApiException catch (e) {
+      rethrow;
+    } on NetworkException catch (e) {
       rethrow;
     }
   }

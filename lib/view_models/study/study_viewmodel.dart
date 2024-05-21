@@ -11,6 +11,7 @@ import 'package:modi/views/common/study_error_page.dart';
 import '../../common/components/bottom_toast.dart';
 import '../../common/logger/logging_interface.dart';
 import '../../common/modal/modi_modal.dart';
+import '../../common/requester/api_exception.dart';
 import '../../di/injection.dart';
 import '../../model/board/board_model.dart';
 import '../../model/study/study_list_model.dart';
@@ -150,7 +151,7 @@ class StudyViewModel extends ChangeNotifier {
           }
         }
         notifyListeners();
-      } on StudyException catch (e) {
+      } on ApiException catch (e) {
         if (!_context.mounted) return;
         ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
             () => _context.pop(), () => null);
@@ -178,7 +179,7 @@ class StudyViewModel extends ChangeNotifier {
         groupId: study!.id.toString(),
       );
       if (response != null) _successToJoin = true;
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (e.code == 400) {
         _isErrorText = true;
         _successToJoin = false;
@@ -198,7 +199,7 @@ class StudyViewModel extends ChangeNotifier {
       await _service.pickFavoriteStudy(_study!.id);
       _hasLike = true;
       notifyListeners();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -210,7 +211,7 @@ class StudyViewModel extends ChangeNotifier {
       await _service.cancelFavoriteStudy(_study!.id);
       _hasLike = false;
       notifyListeners();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -222,7 +223,7 @@ class StudyViewModel extends ChangeNotifier {
     try {
       await _service.finishStudy(_study!.id);
       BottomToast(context: _context, text: "스터디가 종료되었어요.").show();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => {_context.pop(), _context.pop()}, () => null);
@@ -235,7 +236,7 @@ class StudyViewModel extends ChangeNotifier {
       await _service.deleteStudy(_study!.id);
       BottomToast(context: _context, text: "스터디가 삭제되었어요.")
           .show();
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => {_context.pop(), _context.pop()}, () => null);
@@ -248,7 +249,7 @@ class StudyViewModel extends ChangeNotifier {
       final studyModel = await _service.switchLeader(studyId, selectedUsers[0]);
       _newLeaderId = studyModel.leaderId;
       _isSwitched = true;
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       // 변경 실패
       _isSwitched = false;
       if (!_context.mounted) return;
@@ -262,7 +263,7 @@ class StudyViewModel extends ChangeNotifier {
     try {
       await _service.forceToExitMember(studyId, _selectedUsers);
       _isOut = true;
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
@@ -317,7 +318,7 @@ class StudyViewModel extends ChangeNotifier {
           return;
         }
       }
-    } on StudyException catch (e) {
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);

@@ -50,7 +50,7 @@ class StudyCreateService {
       );
       return response;
     } on ApiException catch (e){
-      throw StudyException(e.cause, e.code);
+      rethrow;
     }
     on NetworkException catch (e) {
       rethrow;

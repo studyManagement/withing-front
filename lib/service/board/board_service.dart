@@ -64,7 +64,7 @@ class BoardService {
           await _boardApi.fetchBoardList(studyId, isNotice, size, page);
       return notices;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -76,7 +76,7 @@ class BoardService {
           await _boardApi.fetchBoardInfo(studyId, boardId);
       return boardModel;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -87,7 +87,7 @@ class BoardService {
       var response = await _boardApi.deletePost(studyId, boardId);
       return response;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -99,7 +99,7 @@ class BoardService {
           studyId, {"title": newPost.title, "content": newPost.contents});
       return boardModel;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -112,7 +112,7 @@ class BoardService {
           {"title": updatedPost.title, "content": updatedPost.contents});
       return boardModel;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -124,7 +124,7 @@ class BoardService {
           await _boardApi.fetchComments(studyId, boardId);
       return commentList;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -137,7 +137,7 @@ class BoardService {
           .createComments(studyId, boardId, {'contents': contents});
       return comment;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -148,7 +148,7 @@ class BoardService {
       var response = await _boardApi.setNotice(studyId, boardId);
       return response;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
@@ -159,7 +159,7 @@ class BoardService {
       var response = await _boardApi.unsetNotice(studyId, boardId);
       return response;
     } on ApiException catch (e) {
-      throw StudyException(e.cause, e.code);
+      rethrow;
     } on NetworkException catch (e) {
       rethrow;
     }
