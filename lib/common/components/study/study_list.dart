@@ -10,13 +10,15 @@ class StudyListViewParam {
   Map<String, String>? extra;
   List<String>? tag;
   String link;
+  String? imagePath;
 
   @override
   String toString() {
-    return "StudyListViewParam(title=$title,link=$link,extra=$extra,tag=$tag)";
+    return "StudyListViewParam(title=$title,link=$link,extra=$extra,tag=$tag,image:$imagePath)";
   }
 
-  StudyListViewParam(this.title, this.link, {this.extra, this.tag});
+  StudyListViewParam(this.title, this.link,
+      {this.extra, this.tag, this.imagePath});
 }
 
 class StudyList extends StatelessWidget {
@@ -26,6 +28,9 @@ class StudyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Container grayContainer =
+    Container(width: 38, height: 38, color: AppColors.gray150);
+
     return ListView.separated(
       itemCount: params.length,
       itemBuilder: (BuildContext context, int index) {
@@ -34,14 +39,26 @@ class StudyList extends StatelessWidget {
 
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () => context.push(param.link),
+          onTap: () {}, // context.push(param.link),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  CircleImage(38, 38),
+                  CircleImage(38, 38,
+                      image: (param.imagePath == null)
+                          ? null
+                          : Image.network(
+                              param.imagePath!,
+                              width: 38,
+                              height: 38,
+                              fit: BoxFit.cover,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return grayContainer;
+                              },
+                            )),
                   const SizedBox(width: 8),
                   Text(
                     param.title,
@@ -56,7 +73,7 @@ class StudyList extends StatelessWidget {
               const SizedBox(height: 8),
               ...extraWidgets,
               const SizedBox(height: 8),
-              TagList(param.tag ?? []),
+              TagList(param.tag!),
             ],
           ),
         );

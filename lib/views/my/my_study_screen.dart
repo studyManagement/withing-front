@@ -100,17 +100,13 @@ class MyStudyListView extends StatelessWidget {
       extra['참여 인원'] = "${element.headcount}/${element.max}";
       extra['정기 모임'] = regularMeeting;
 
-      if (studyType == StudyType.LIKE) {
-        extra['다음 만남'] = '';
-      } else {
-        extra['종료일'] = '더미 데이터';
-      }
 
       StudyListViewParam param = StudyListViewParam(
         element.studyName,
         '/studies/${element.id}',
         extra: extra,
         tag: element.categories,
+        imagePath: element.studyImage
       );
 
       params.add(param);
