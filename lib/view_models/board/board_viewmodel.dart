@@ -16,7 +16,7 @@ class BoardViewModel extends ChangeNotifier {
 
   BoardViewModel(this._context, this._service);
 
-  static const int SIZE = 20;
+  final int SIZE = 20;
 
   int? _studyId;
   int? _boardId;

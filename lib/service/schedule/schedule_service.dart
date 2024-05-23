@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:modi/common/requester/api_exception.dart';
+import 'package:modi/exception/signin/user_not_found_exception.dart';
 import 'package:modi/model/schedule/schedule_detail_model.dart';
 import 'package:modi/model/schedule/schedule_model.dart';
 import 'package:modi/model/schedule/schedule_vote_model.dart';
 import 'package:retrofit/http.dart';
-
 import '../../common/requester/network_exception.dart';
+import '../../model/schedule/user_schedule_model.dart';
 
 part 'schedule_service.g.dart';
 
@@ -63,6 +64,10 @@ abstract class ScheduleApi {
     @Field('startAt') String startAt,
     @Field('endAt') String endAt,
   );
+
+  @GET('/users/schedules')
+  Future<List<UserScheduleModel>> fetchUserSchedule(
+      @Query('date') String date, @Query('size') int size);
 }
 
 class ScheduleService {
@@ -180,4 +185,16 @@ class ScheduleService {
       rethrow;
     }
   }
+
+  Future<List<UserScheduleModel>> fetchUserSchedule(
+      String date, int size) async{
+    try{
+      return await _scheduleApi.fetchUserSchedule(date, size);
+    } on ApiException catch(e){
+      rethrow;
+    } on NetworkException catch (e){
+      rethrow;
+    }
+  }
+
 }
