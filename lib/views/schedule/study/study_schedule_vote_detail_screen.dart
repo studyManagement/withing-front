@@ -84,7 +84,8 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: ConfirmButton(
                 width: MediaQuery.of(context).size.width,
-                onTap: () {},
+                onTap: () => context
+                    .push('/studies/$studyId/schedules/vote/$voteId/edit'),
                 text: isVoted ? '다시 투표하기' : '투표하기',
                 backgroundColor: AppColors.blue600,
               ),
@@ -122,6 +123,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
       child: (isLoading)
           ? const Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Center(
                   child: CircularProgressIndicator(),

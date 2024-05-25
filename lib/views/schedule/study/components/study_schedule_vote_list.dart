@@ -27,7 +27,7 @@ class StudyScheduleVoteList extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Row(
                   children: [
                     const Text(

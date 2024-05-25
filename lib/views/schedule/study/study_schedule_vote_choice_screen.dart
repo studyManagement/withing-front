@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/table/schedule/schedule_table.dart';
 import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +25,19 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
 
     return DefaultLayout(
         title: '일정 투표',
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: isLoading
+            ? null
+            : Container(
+                color: AppColors.white,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                child: ConfirmButton(
+                  width: MediaQuery.of(context).size.width,
+                  onTap: () => {},
+                  text: '투표 완료',
+                  backgroundColor: AppColors.blue600,
+                ),
+              ),
         child: (isLoading)
             ? const Column(
                 children: [
@@ -41,7 +56,8 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
                       endAt: vote.votes.first.endAt,
                       voteStatus: const {},
                       maxVoteCount: 1,
-                      readOnly: true,
+                      readOnly: false,
+                      onClick: (value) => {},
                     ),
                   ],
                 ),

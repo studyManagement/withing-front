@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/components/checkbox/checkbox_state.dart';
+import 'package:modi/common/components/checkbox/icon_checkbox.dart';
 import 'package:modi/common/components/table/schedule/schedule_table_vote_status.dart';
+import 'package:modi/common/logger/logging_interface.dart';
+import 'package:modi/di/injection.dart';
 
 import '../../../theme/app/app_colors.dart';
 import '../../../theme/app/app_fonts.dart';
@@ -15,6 +19,7 @@ class ScheduleTable extends StatelessWidget {
     required this.voteStatus,
     required this.maxVoteCount,
     required this.readOnly,
+    this.onClick,
     super.key,
   });
 
@@ -23,6 +28,7 @@ class ScheduleTable extends StatelessWidget {
   final TimeOfDay endAt;
   final Map<int, List<ScheduleTableVoteStatus>> voteStatus;
   final int maxVoteCount;
+  final ValueChanged<CheckBoxState>? onClick;
   final bool readOnly;
 
   List<TimeOfDay> getTimeRangeWithoutMinutes(
@@ -115,6 +121,7 @@ class ScheduleTable extends StatelessWidget {
   }
 
   List<TableRow> _makeTableRow() {
+    final LoggingInterface logger = getIt<LoggingInterface>();
     return getTimeRangeWithoutMinutes(startAt, endAt)
         .map(
           (time) => TableRow(
@@ -149,43 +156,46 @@ class ScheduleTable extends StatelessWidget {
                       color: AppColors.white,
                       surfaceTintColor: AppColors.white,
                       itemBuilder: (BuildContext context) {
-                        return [
-                          PopupMenuItem(
-                            enabled: false,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${statuses.length}명 투표',
-                                  style: const TextStyle(
-                                    color: AppColors.blue400,
-                                    fontSize: 12,
-                                    fontWeight: AppFonts.fontWeight600,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                SizedBox(
-                                  height: 100,
-                                  width: 120,
-                                  child: ListView.builder(
-                                    itemExtent: 30,
-                                    itemBuilder: (context, index) {
-                                      ScheduleTableVoteStatus status =
-                                          statuses[index];
+                        return readOnly
+                            ? [
+                                PopupMenuItem(
+                                  enabled: false,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${statuses.length}명 투표',
+                                        style: const TextStyle(
+                                          color: AppColors.blue400,
+                                          fontSize: 12,
+                                          fontWeight: AppFonts.fontWeight600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      SizedBox(
+                                        height: 100,
+                                        width: 120,
+                                        child: ListView.builder(
+                                          itemExtent: 30,
+                                          itemBuilder: (context, index) {
+                                            ScheduleTableVoteStatus status =
+                                                statuses[index];
 
-                                      return _makeProfile(
-                                        status.nickname,
-                                        null,
-                                      );
-                                    },
-                                    itemCount: statuses.length,
+                                            return _makeProfile(
+                                              status.nickname,
+                                              null,
+                                            );
+                                          },
+                                          itemCount: statuses.length,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ];
+                              ]
+                            : [];
                       },
                       child: Container(
                         height: 40,
@@ -193,13 +203,24 @@ class ScheduleTable extends StatelessWidget {
                           color: _getBackgroundColorByRatio(ratio),
                           border: Border.all(color: AppColors.gray50),
                         ),
-                        child: Icon(
-                          (time.hour >= 6 && time.hour <= 18)
-                              ? Icons.sunny
-                              : FontAwesomeIcons.solidMoon,
-                          size: 20,
-                          color: _getColorByRatio(ratio),
-                        ),
+                        child: readOnly
+                            ? _makeElementIcon(time.hour, ratio)
+                            : IconCheckBox<DateTime>(
+                                notCheckedBackgroundColor: Colors.transparent,
+                                checkedBackgroundColor: AppColors.blue400,
+                                checkedColor: AppColors.white,
+                                notCheckedColor: AppColors.gray200,
+                                icon: _makeIconData(time.hour),
+                                size: 20,
+                                value: DateTime(
+                                  entry.value.year,
+                                  entry.value.month,
+                                  entry.value.day,
+                                  time.hour,
+                                  0,
+                                ),
+                                onChange: (state) =>
+                                    {if (onClick != null) onClick!(state)}),
                       ),
                     ),
                   );
@@ -209,6 +230,18 @@ class ScheduleTable extends StatelessWidget {
           ),
         )
         .toList();
+  }
+
+  IconData _makeIconData(int hour) {
+    return (hour >= 6 && hour <= 18) ? Icons.sunny : FontAwesomeIcons.solidMoon;
+  }
+
+  Icon _makeElementIcon(int hour, double ratio) {
+    return Icon(
+      _makeIconData(hour),
+      size: 20,
+      color: _getColorByRatio(ratio),
+    );
   }
 
   @override
