@@ -12,18 +12,15 @@ import '../../common/requester/api_exception.dart';
 import '../../common/utils/get_image_file.dart';
 import '../../common/utils/pick_image_file.dart';
 
-
 class ImagePickerViewModel extends ChangeNotifier {
   final List<String> representativeImagesUrl = [
-    'https://static.moditeam.io/asset/default/representative/default.png',
-    'https://static.moditeam.io/asset/default/representative/group_default.png',
-    'https://static.moditeam.io/asset/default/representative/default2.png',
-    'https://static.moditeam.io/asset/default/representative/default3.png',
-    'https://static.moditeam.io/asset/default/representative/default4.png',
-    'https://static.moditeam.io/asset/default/representative/default5.png',
-    'https://static.moditeam.io/asset/default/representative/default6.png',
-    'https://static.moditeam.io/asset/default/representative/default7.png',
-    'https://static.moditeam.io/asset/default/representative/default8.png',
+    'asset/user_default_image.png',
+   'asset/search_category/2_certification.png',
+    'asset/search_category/4_exam.png',
+    'asset/search_category/5_hobby.png',
+    'asset/search_category/3_employment.png',
+    'asset/search_category/6_programming.png',
+    'asset/search_category/1_language.png'
   ];
 
   final ImageUpdateService? _imageUpdateService;
@@ -39,6 +36,7 @@ class ImagePickerViewModel extends ChangeNotifier {
   bool get isSelected => _isSelected;
 
   String get imagePath => _imagePath;
+
   String get imageUuid => _imageUuid;
 
   set isSelected(bool value) {
@@ -66,15 +64,13 @@ class ImagePickerViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       isSelected = false;
       if (!_context.mounted) return;
-      ModiModal.openDialog(
-          _context, '오류가 발생했어요.', e.cause, false,()=> _context.pop(), () => null);
+      ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false,
+          () => _context.pop(), () => null);
     }
   }
 
   setDefaultImage(ObjectType type) {
-    defaultImage = Image.network((type == ObjectType.USER)
-        ? representativeImagesUrl[0]
-        : representativeImagesUrl[1], fit: BoxFit.cover);
+    defaultImage = Image.asset(representativeImagesUrl[1], fit: BoxFit.cover);
     image ??= defaultImage;
   }
 
@@ -93,8 +89,8 @@ class ImagePickerViewModel extends ChangeNotifier {
     _imagePath = imageUrl;
     if (representativeImagesUrl.contains(_imagePath)) {
       // 대표 이미지
-      imageFile = await fileFromImageUrl(_imagePath);
-      image = Image.network(_imagePath,fit: BoxFit.cover);
+      imageFile = await getImageFileFromAssets(_imagePath);
+      image = Image.asset(_imagePath, fit: BoxFit.cover);
     } else {
       // 사용자 선택 이미지
       imageFile = File(imageUrl);
@@ -102,6 +98,4 @@ class ImagePickerViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
-
-
 }

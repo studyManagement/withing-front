@@ -21,17 +21,20 @@ class BoardHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleImage(22, 22,
-                  image:(vm.post!.user.profileImage == null) ? null : Image.network(
-                    vm.post!.user.profileImage!,
-                    width: 22,
-                    height: 22,
-                    fit: BoxFit.cover,
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return const GrayContainer(size: 38);
-                    },
-                  )),
+              CircleImage(
+                  size: 22,
+                  image: (vm.post!.user.profileImage == null)
+                      ? null
+                      : Image.network(
+                          vm.post!.user.profileImage!,
+                          width: 22,
+                          height: 22,
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return const GrayContainer(size: 38);
+                          },
+                        )),
               const SizedBox(width: 12),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,

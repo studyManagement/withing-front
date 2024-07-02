@@ -60,17 +60,20 @@ class _CommentItem extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleImage(22, 22,
-                image: (image == null) ? null :Image.network(
-                  image!,
-                  width: 22,
-                  height: 22,
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return const GrayContainer(size: 22);
-                  },
-                )),
+            CircleImage(
+                size: 22,
+                image: (image == null)
+                    ? null
+                    : Image.network(
+                        image!,
+                        width: 22,
+                        height: 22,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return const GrayContainer(size: 22);
+                        },
+                      )),
             const SizedBox(width: 8),
             Text(
               nickname,

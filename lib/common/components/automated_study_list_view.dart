@@ -103,17 +103,20 @@ class _StudyHeader extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleImage(38, 38,
-                image:(studyImageUrl == null) ? null : Image.network(
-                  studyImageUrl!,
-                  width: 38,
-                  height: 38,
-                  fit: BoxFit.cover,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return grayContainer;
-                  },
-                )),
+            CircleImage(
+                size: 38,
+                image: (studyImageUrl == null)
+                    ? null
+                    : Image.network(
+                        studyImageUrl!,
+                        width: 38,
+                        height: 38,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return grayContainer;
+                        },
+                      )),
             const SizedBox(width: 8),
             Row(
               children: [

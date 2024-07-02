@@ -22,7 +22,7 @@ class ImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int topCount = 5, bottomCount = 9;
+    int topCount = 3, bottomCount = 7;
     final ImagePickerViewModel viewModel = context.read();
 
     return Padding(
@@ -30,62 +30,51 @@ class ImagePicker extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 40),
-          Text('대표 이미지', style: Theme.of(context).textTheme.titleMedium),
+          Text('스터디 대표 이미지', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 28),
-          CircleImage(105, 105, image: viewModel.image),
+          CircleImage(size: 105, image: viewModel.image),
           const SizedBox(height: 40),
           Expanded(
-            child: GridView(
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                crossAxisCount: 5,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 33),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 20,
+                  crossAxisCount: 4,
+                ),
+                itemCount: 8,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return CircleImage(
+                      size: 50,
+                      onTap: () =>
+                          viewModel.takeOrPickPhoto(ImageSource.camera, type),
+                      image: Image.asset('asset/camera_icon.png'),
+                    );
+                  }
+                  if (index == 1) {
+                    return CircleImage(
+                      size: 50,
+                      onTap: () =>
+                          viewModel.takeOrPickPhoto(ImageSource.gallery, type),
+                      image: Image.asset('asset/gallery_icon.png'),
+                    );
+                  } else {
+                    return CircleImage(
+                      size: 50,
+                      onTap: () {
+                        viewModel.setImageFile(
+                            viewModel.representativeImagesUrl[index-1]);
+                      },
+                      image: Image.asset(
+                          viewModel.representativeImagesUrl[index-1],
+                          fit: BoxFit.cover),
+                    );
+                  }
+                },
               ),
-              children: [
-                CircleImage(
-                  50,
-                  50,
-                  onTap: () => viewModel.takeOrPickPhoto(ImageSource.camera, type),
-                  icon: const Icon(Icons.camera_alt),
-                ),
-                CircleImage(
-                  50,
-                  50,
-                  onTap: () {
-                    viewModel.setImageFile((type == ObjectType.USER)
-                        ? viewModel.representativeImagesUrl[0]
-                        : viewModel.representativeImagesUrl[1]);
-                  },
-                  image: viewModel.defaultImage,
-                ),
-                for (int i = 2; i < topCount; i++)
-                  CircleImage(
-                    50,
-                    50,
-                    onTap: () {
-                      viewModel
-                          .setImageFile(viewModel.representativeImagesUrl[i]);
-                    },
-                    image: Image.network(viewModel.representativeImagesUrl[i], fit: BoxFit.cover),
-                  ),
-                CircleImage(
-                  50,
-                  50,
-                  onTap: () => viewModel.takeOrPickPhoto(ImageSource.gallery,type),
-                  icon: const Icon(Icons.photo),
-                ),
-                for (int i = topCount; i < bottomCount; i++)
-                  CircleImage(
-                    50,
-                    50,
-                    onTap: () {
-                      viewModel
-                          .setImageFile(viewModel.representativeImagesUrl[i]);
-                    },
-                    image: Image.network(viewModel.representativeImagesUrl[i], fit: BoxFit.cover,),
-                  ),
-              ],
             ),
           ),
           Row(

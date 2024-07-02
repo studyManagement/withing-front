@@ -46,7 +46,7 @@ class StudyList extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleImage(38, 38,
+                  CircleImage(size: 38,
                       image: (param.imagePath == null)
                           ? null
                           : Image.network(
