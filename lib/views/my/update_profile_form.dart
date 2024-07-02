@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/view_models/image/image_picker_viewmodel.dart';
@@ -14,6 +15,7 @@ import '../../common/components/image/profile.dart';
 import '../../common/components/input/text_input.dart';
 import '../../common/components/picker/image/image_picker.dart';
 import '../../common/modal/modi_modal.dart';
+import '../../common/theme/app/app_colors.dart';
 import '../../di/injection.dart';
 import '../../service/image/image_update_service.dart';
 
@@ -28,11 +30,13 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
   final debounce = Debouncer(milliseconds: 300);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final viewModel = context.watch<UpdateProfileViewModel>();
     ShapeDecoration? shapeDecoration;
     var image = (viewModel.isOldImage)
-        ? NetworkImage(viewModel.userImagePath.isEmpty ? "https://static.moditeam.io/asset/default/representative/default.png" :viewModel.userImagePath)
+        ? NetworkImage(viewModel.userImagePath.isEmpty
+            ? "https://static.moditeam.io/asset/default/representative/default.png"
+            : viewModel.userImagePath)
         : FileImage(viewModel.userImageFile!);
     shapeDecoration = ShapeDecoration(
         shape: const OvalBorder(),
@@ -48,7 +52,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Profile(
-              shapeDecoration: shapeDecoration,
+                shapeDecoration: shapeDecoration,
                 onTap: () {
                   ModiModal.openBottomSheet(context,
                       widget: ChangeNotifierProvider(
@@ -58,25 +62,66 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                               context),
                           child: Consumer<ImagePickerViewModel>(
                               builder: (context, imgVm, _) {
-                            imgVm.setDefaultImage(ObjectType.USER);
-                            if (imgVm.isSelected) {
-                              WidgetsBinding.instance.addPostFrameCallback((_) {
-                                viewModel.userImageFile = imgVm.imageFile;
-                                viewModel.userImagePath = imgVm.imagePath;
-
-                              });
-                            }
-                            return ImagePicker(
-                              onSelected: () {
-                                imgVm.createImage().then((value) =>
-                                viewModel.userImageUuid = imgVm.imageUuid);
-                                viewModel.isOldImage = false;
-                                context.pop();
-                              },
-                              type: ObjectType.USER,
+                            return Container(
+                              padding:
+                                  EdgeInsets.only(top: 26, left: 16, right: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    behavior:HitTestBehavior.translucent,
+                                    onTap:(){
+                                      // 갤러리
+                                      imgVm.takeOrPickPhoto(ImageSource.gallery, ObjectType.USER);
+                                    },
+                                      child: Text('앨범에서 가져오기',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall)),
+                                  const SizedBox(height: 18),
+                                  GestureDetector(
+                                      behavior:HitTestBehavior.translucent,
+                                      onTap:(){
+                                        // 카메라
+                                      },
+                                      child: Text('직접 촬영하기',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall)),
+                                  const SizedBox(height: 18),
+                                  GestureDetector(
+                                      behavior:HitTestBehavior.translucent,
+                                      onTap:(){
+                                        // 기본 이미지로 변경
+                                      },
+                                      child: Text('기본 이미지로 변경',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall!
+                                              .copyWith(
+                                                  color: AppColors.red400))),
+                                ],
+                              ),
                             );
+                            // imgVm.setDefaultImage(ObjectType.USER);
+                            // if (imgVm.isSelected) {
+                            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                            //     viewModel.userImageFile = imgVm.imageFile;
+                            //     viewModel.userImagePath = imgVm.imagePath;
+                            //
+                            //   });
+                            // }
+                            // return ImagePicker(
+                            //   onSelected: () {
+                            //     imgVm.createImage().then((value) =>
+                            //     viewModel.userImageUuid = imgVm.imageUuid);
+                            //     viewModel.isOldImage = false;
+                            //     context.pop();
+                            //   },
+                            //   type: ObjectType.USER,
+                            // );
                           })),
-                      height: 496);
+                      height: 168);
                 },
                 bottomImagePath: 'asset/camera.png'),
           ),

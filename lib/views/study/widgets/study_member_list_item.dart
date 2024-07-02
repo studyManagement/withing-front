@@ -50,7 +50,8 @@ class StudyMemberListItem extends StatelessWidget {
                   width: 1, // 테두리 두께
                 ),
               ),
-              child: CircleImage(38, 38,
+              child: CircleImage(
+                  size: 38,
                   image: (imageUrl != null)
                       ? Image.network(
                           imageUrl!,

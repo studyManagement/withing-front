@@ -52,8 +52,7 @@ class StudyScheduleVoteMembersScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           CircleImage(
-                            38,
-                            38,
+                            size: 38,
                             image: Image.asset('asset/default_image.png'),
                           ),
                           const SizedBox(width: 8),

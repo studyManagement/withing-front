@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 
 class CircleImage extends StatelessWidget {
-  double width;
-  double height;
+  CircleImage({super.key, required this.size, this.image, this.icon, this.onTap});
+  double size;
   Image? image;
   Icon? icon;
   Function()? onTap;
@@ -16,16 +16,18 @@ class CircleImage extends StatelessWidget {
         onTap: onTap,
         child: (image == null && icon == null)
             ? Container(
-                width: width,
-                height: height,
+                width: size,
+                height: size,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
+                  color: AppColors.blue100
                 ),
-                child: Image.asset('asset/default_image.png'))
+          child:  Image.asset('asset/search_category/2_certification.png'),
+        )
             : (image == null)
                 ? Container(
-                    width: width,
-                    height: height,
+                    width: size,
+                    height: size,
                     decoration: const BoxDecoration(
                       color: AppColors.gray150,
                       shape: BoxShape.circle,
@@ -33,10 +35,10 @@ class CircleImage extends StatelessWidget {
                     child: icon,
                   )
                 : Container(
-                    width: width,
-                    height: height,
+                    width: size,
+                    height: size,
                     decoration: const BoxDecoration(
-                      color: AppColors.gray150,
+                      color: AppColors.blue100,
                       shape: BoxShape.circle,
                     ),
                     child: ClipRRect(
@@ -46,6 +48,4 @@ class CircleImage extends StatelessWidget {
                   ));
   }
 
-  CircleImage(this.width, this.height,
-      {super.key, this.image, this.icon, this.onTap});
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/view_models/image/image_picker_viewmodel.dart';
@@ -25,6 +26,7 @@ class StudyProfileImage extends StatelessWidget {
               : FileImage(viewModel.studyImageFile!);
       shapeDecoration = ShapeDecoration(
           shape: const OvalBorder(),
+          color: AppColors.blue100,
           image: DecorationImage(
             image: image as ImageProvider,
             fit: BoxFit.cover,

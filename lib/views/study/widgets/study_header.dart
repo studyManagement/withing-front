@@ -22,7 +22,8 @@ class Header extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          CircleImage(64, 64,
+          CircleImage(
+              size: 64,
               image: (vm.study!.studyImage == null)
                   ? null
                   : Image.network(
