@@ -67,7 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '941895894851',
     projectId: 'modi-31349',
     storageBucket: 'modi-31349.appspot.com',
-    iosBundleId: 'io.moditeam.modi',
+    iosBundleId: 'com.modiapp.modi',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
