@@ -3,14 +3,17 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modi/common/components/debouncer/debouncer.dart';
 import 'package:modi/common/components/picker/image/image_picker.dart';
 import 'package:modi/common/modal/modi_modal.dart';
+import 'package:modi/common/utils/get_image_file.dart';
 import 'package:modi/view_models/signup/signup_viewmodel.dart';
 import 'package:modi/common/components/image/profile.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/components/input/text_input.dart';
+import '../../common/theme/app/app_colors.dart';
 import '../../di/injection.dart';
 import '../../service/image/image_create_service.dart';
 import '../../service/image/image_update_service.dart';
@@ -33,8 +36,8 @@ class _SignupFormState extends State<SignupForm> {
     int rgb = context.select((SignupViewModel vm) => vm.rgb);
 
     ShapeDecoration? shapeDecoration;
-    var image = (viewModel.isOldImage)
-        ? NetworkImage(viewModel.userImagePath)
+    var image = (viewModel.isDefault)
+        ? AssetImage(viewModel.userImagePath)
         : FileImage(viewModel.userImageFile!);
     shapeDecoration = ShapeDecoration(
         shape: const OvalBorder(),
@@ -51,7 +54,7 @@ class _SignupFormState extends State<SignupForm> {
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Profile(
               shapeDecoration: shapeDecoration,
-            bottomImagePath: 'asset/camera.png',
+              bottomImagePath: 'asset/camera.png',
               onTap: () {
                 ModiModal.openBottomSheet(
                   context,
@@ -61,27 +64,29 @@ class _SignupFormState extends State<SignupForm> {
                         getIt<ImageCreateService>(),
                         context),
                     child: Consumer<ImagePickerViewModel>(
-                      builder: (context, imgVm, _) {
-                        imgVm.setDefaultImage(ObjectType.USER);
-                        if (imgVm.isSelected) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            viewModel.userImageFile = imgVm.imageFile;
-                            viewModel.userImagePath = imgVm.imagePath;
-                          });
-                        }
-                        return ImagePicker(
-                          onSelected: (){
-                            imgVm.createImage().then((value) =>
-                            viewModel.userImageUuid = imgVm.imageUuid);
-                            viewModel.isOldImage = false;
-                            context.pop();
-                          },
-                          type:ObjectType.USER,
-                        );
+                        builder: (context, imgVm, _) {
+                      if (imgVm.isSelected) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          viewModel.userImageFile = imgVm.imageFile;
+                          viewModel.userImagePath = imgVm.imagePath;
+                        });
                       }
-                    ),
+                      return UserImageBottomSheet(
+                        onSelected: () {
+                          imgVm.createImage().then((value) =>
+                              viewModel.userImageUuid = imgVm.imageUuid);
+                          viewModel.isDefault = false;
+                          context.pop();
+                        },
+                        onDefault: () async {
+                          viewModel.isDefault = true;
+                          viewModel.userImagePath = 'asset/user_default_image.png';
+                          context.pop();
+                        },
+                      );
+                    }),
                   ),
-                  height: 496,
+                  height: 168,
                 );
               },
             ),
@@ -128,7 +133,7 @@ class _SignupFormState extends State<SignupForm> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Color(0xff1F3358),
+                      color: const Color(0xff1F3358),
                     ),
                     child: const Center(
                       child: Text(

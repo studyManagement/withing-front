@@ -50,14 +50,13 @@ class StudyProfileImage extends StatelessWidget {
                         viewModel.studyImagePath = imgVm.imagePath;
                       });
                     }
-                    return ImagePicker(
+                    return StudyImagePicker(
                       onSelected: () {
                         imgVm.createImage().then((value) =>
                             viewModel.studyImageUuid = imgVm.imageUuid);
                         viewModel.isOldImage = false;
                         context.pop();
                       },
-                      type: ObjectType.STUDY,
                     );
                   })),
               height: 496);

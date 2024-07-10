@@ -23,11 +23,17 @@ Future<File?> fileFromImageUrl(String imageUrl) async {
 
 
 Future<File> getImageFileFromAssets(String path) async {
-  final byteData = await rootBundle.load(path);
+  // Asset 이미지 로드
+  ByteData data = await rootBundle.load(path);
 
-  final file = File('${(await getTemporaryDirectory()).path}/$path');
-  await file.create(recursive: true);
-  await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+  // ByteData를 파일로 변환
+  final buffer = data.buffer;
+  Directory tempDir = await getTemporaryDirectory();
+  String tempPath = tempDir.path;
+  var filePath = '$tempPath.png'; // 임시 파일 경로
+
+  File file = await File(filePath).writeAsBytes(
+      buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
   return file;
 }
