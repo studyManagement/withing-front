@@ -18,10 +18,11 @@ class SignupViewModel extends ChangeNotifier {
   final String _uuid;
   late String _introduce;
   late String _nickname;
-  String _userImagePath = '';
+  String _userImagePath = 'asset/user_default_image.png';
   late String _userImageUuid;
   File? _userImageFile;
-  bool isOldImage = true;
+  bool isOldImage = false; /// always false
+  bool isDefault = true;
 
   String get userImagePath => _userImagePath;
   File? get userImageFile => _userImageFile;
@@ -83,8 +84,7 @@ class SignupViewModel extends ChangeNotifier {
 
   createImage(BuildContext context) async {
     try{
-      if(_userImagePath.isEmpty) _userImagePath = "https://static.moditeam.io/asset/default/representative/default.png";
-      _userImageFile = await fileFromImageUrl(_userImagePath);
+      _userImageFile = (isDefault) ? await getImageFileFromAssets('asset/user_default_image.png') : await fileFromImageUrl(_userImagePath);
       _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
     } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);

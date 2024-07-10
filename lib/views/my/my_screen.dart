@@ -32,14 +32,14 @@ class MyScreen extends StatelessWidget {
                       shapeDecoration: ShapeDecoration(
                           shape: const OvalBorder(),
                           image: DecorationImage(
-                              image: NetworkImage(viewModel.userImagePath.isEmpty ? "https://static.moditeam.io/asset/default/representative/default.png" : viewModel.userImagePath), fit: BoxFit.cover)),
+                              image:_buildProfileImage(viewModel.userImagePath), fit: BoxFit.cover)),
                       bottomImagePath: 'asset/edit.png',
                     )),
               ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(Authentication.instance.nickname,
+                child: Text(viewModel.nickname,
                     style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.gray800,
@@ -57,7 +57,7 @@ class MyScreen extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    Authentication.instance.introduce,
+                    viewModel.introduce,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         color: AppColors.gray600,
@@ -145,5 +145,11 @@ class MyScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  ImageProvider _buildProfileImage(String path){
+    if(path.isEmpty){
+      return const AssetImage('asset/user_default_image.png');
+    }
+    return NetworkImage(path);
   }
 }

@@ -36,6 +36,7 @@ import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
+import '../../views/my/my_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
 
@@ -93,6 +94,7 @@ class RouterService {
             (Authentication.state.isAuthentication) ? '/' : '/login',
         refreshListenable: Authentication.state,
         errorBuilder: (context, state) {
+          print(state);
           return const ErrorPage();
         },
         routes: [
@@ -104,6 +106,10 @@ class RouterService {
                 return const RootTab();
               },
               routes: [
+                GoRoute(
+                  path: 'my',
+                  builder: (context, state) => const MyScreen(),
+                ),
                 GoRoute(
                   path: 'notification',
                   builder: (context, state) => const NotificationScreen(),

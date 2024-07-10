@@ -33,11 +33,13 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<UpdateProfileViewModel>();
     ShapeDecoration? shapeDecoration;
-    var image = (viewModel.isOldImage)
-        ? NetworkImage(viewModel.userImagePath.isEmpty
-            ? "https://static.moditeam.io/asset/default/representative/default.png"
-            : viewModel.userImagePath)
-        : FileImage(viewModel.userImageFile!);
+
+    var image = viewModel.isDefault || viewModel.userImagePath.isEmpty
+        ? const AssetImage('asset/user_default_image.png')
+        : viewModel.isOldImage
+            ? NetworkImage(viewModel.userImagePath)
+            : FileImage(viewModel.userImageFile!);
+
     shapeDecoration = ShapeDecoration(
         shape: const OvalBorder(),
         image: DecorationImage(
@@ -62,64 +64,27 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                               context),
                           child: Consumer<ImagePickerViewModel>(
                               builder: (context, imgVm, _) {
-                            return Container(
-                              padding:
-                                  EdgeInsets.only(top: 26, left: 16, right: 16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    behavior:HitTestBehavior.translucent,
-                                    onTap:(){
-                                      // 갤러리
-                                      imgVm.takeOrPickPhoto(ImageSource.gallery, ObjectType.USER);
-                                    },
-                                      child: Text('앨범에서 가져오기',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall)),
-                                  const SizedBox(height: 18),
-                                  GestureDetector(
-                                      behavior:HitTestBehavior.translucent,
-                                      onTap:(){
-                                        // 카메라
-                                      },
-                                      child: Text('직접 촬영하기',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall)),
-                                  const SizedBox(height: 18),
-                                  GestureDetector(
-                                      behavior:HitTestBehavior.translucent,
-                                      onTap:(){
-                                        // 기본 이미지로 변경
-                                      },
-                                      child: Text('기본 이미지로 변경',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleSmall!
-                                              .copyWith(
-                                                  color: AppColors.red400))),
-                                ],
-                              ),
+                            if (imgVm.isSelected) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                viewModel.userImageFile = imgVm.imageFile;
+                                viewModel.userImagePath = imgVm.imagePath;
+                              });
+                            }
+                            return UserImageBottomSheet(
+                              onSelected: () {
+                                imgVm.createImage().then((value) =>
+                                    viewModel.userImageUuid = imgVm.imageUuid);
+                                viewModel.isOldImage = false;
+                                viewModel.isDefault = false;
+                                context.pop();
+                              },
+                              onDefault: () async {
+                                viewModel.userImagePath =
+                                    'asset/user_default_image.png';
+                                viewModel.isDefault = true;
+                                context.pop();
+                              },
                             );
-                            // imgVm.setDefaultImage(ObjectType.USER);
-                            // if (imgVm.isSelected) {
-                            //   WidgetsBinding.instance.addPostFrameCallback((_) {
-                            //     viewModel.userImageFile = imgVm.imageFile;
-                            //     viewModel.userImagePath = imgVm.imagePath;
-                            //
-                            //   });
-                            // }
-                            // return ImagePicker(
-                            //   onSelected: () {
-                            //     imgVm.createImage().then((value) =>
-                            //     viewModel.userImageUuid = imgVm.imageUuid);
-                            //     viewModel.isOldImage = false;
-                            //     context.pop();
-                            //   },
-                            //   type: ObjectType.USER,
-                            // );
                           })),
                       height: 168);
                 },
@@ -163,11 +128,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 InkWell(
-                  onTap: () {
-                    viewModel
-                        .updateUserProfile()
-                        .then((value) => context.pop());
-                  },
+                  onTap: () => viewModel.updateUserProfile(),
                   child: Container(
                     width: 343,
                     height: 50,

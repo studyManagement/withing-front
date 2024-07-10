@@ -30,7 +30,7 @@ class ImagePickerViewModel extends ChangeNotifier {
   String _imageUuid = '';
   File? imageFile;
   Image? image;
-  Image? defaultImage;
+
   bool _isSelected = false;
 
   bool get isSelected => _isSelected;
@@ -69,10 +69,6 @@ class ImagePickerViewModel extends ChangeNotifier {
     }
   }
 
-  setDefaultImage(ObjectType type) {
-    defaultImage = Image.asset(representativeImagesUrl[1], fit: BoxFit.cover);
-    image ??= defaultImage;
-  }
 
   takeOrPickPhoto(ImageSource source, ObjectType type) async {
     int index = (type == ObjectType.USER) ? 0 : 1;
