@@ -114,6 +114,12 @@ class MyScreen extends StatelessWidget {
                     ),
                     horizontalTitleGap: 16,
                   ),
+                  const SizedBox(height: 20),
+                  const Divider(
+                    thickness: 5,
+                    height: 1,
+                    color: AppColors.gray50,
+                  ),
                   ListTile(
                     onTap: () {
                       return Authentication.instance
@@ -122,13 +128,13 @@ class MyScreen extends StatelessWidget {
                     trailing: const Text('v1.0.0+31',
                         style: TextStyle(
                             fontSize: 14,
-                            color: AppColors.gray400,
+                            color: AppColors.blue400,
                             fontWeight: AppFonts.fontWeight500)),
-                    leading: Image.asset(
-                      'asset/version.png',
-                      width: 40,
-                      height: 40,
-                    ),
+                    // leading: Image.asset(
+                    //   'asset/version.png',
+                    //   width: 40,
+                    //   height: 40,
+                    // ),
                     title: const Text(
                       '버전 정보',
                       style: TextStyle(
