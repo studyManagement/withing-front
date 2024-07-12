@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-
 Future<File?> fileFromImageUrl(String imageUrl) async {
   var rng = Random();
   Directory tempDir = await getTemporaryDirectory();
@@ -21,19 +20,13 @@ Future<File?> fileFromImageUrl(String imageUrl) async {
   return null;
 }
 
-
 Future<File> getImageFileFromAssets(String path) async {
-  // Asset 이미지 로드
-  ByteData data = await rootBundle.load(path);
+  final byteData = await rootBundle.load(path);
 
-  // ByteData를 파일로 변환
-  final buffer = data.buffer;
-  Directory tempDir = await getTemporaryDirectory();
-  String tempPath = tempDir.path;
-  var filePath = '$tempPath.png'; // 임시 파일 경로
-
-  File file = await File(filePath).writeAsBytes(
-      buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+  final file = File('${(await getTemporaryDirectory()).path}/$path');
+  await file.create(recursive: true);
+  await file.writeAsBytes(byteData.buffer
+      .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
   return file;
 }

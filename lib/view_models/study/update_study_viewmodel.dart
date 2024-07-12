@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/requester/network_exception.dart';
 import 'package:modi/common/utils/get_image_file.dart';
-import 'package:modi/exception/image/image_exception.dart';
-import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/model/study/study_model.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/view_models/study/model/updated_study_info.dart';
@@ -13,7 +10,6 @@ import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../common/modal/modi_modal.dart';
 import '../../common/requester/api_exception.dart';
 import '../../di/injection.dart';
-import '../../service/image/image_update_service.dart';
 import '../../service/study/study_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
 
@@ -25,7 +21,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   bool get isOldImage => _isOldImage;
-
+  @override
+  bool isDefault = true;
 
   @override
   String get studyDescription => _studyDescription;
@@ -59,8 +56,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   int? _studyId;
   int _headCount = 0;
-  String _studyImageUuid ='';
-  String _studyName = '', _studyDescription = '', _studyImagePath = 'https://static.moditeam.io/asset/default/representative/group_default.png';
+  String _studyImageUuid = '';
+  String _studyName = '', _studyDescription = '', _studyImagePath = '';
   List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
   int _studyMemberCount = 0;
@@ -170,27 +167,22 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _studyId = study.id;
       _headCount = study.headcount;
       _studyName = study.studyName;
-      _studyImagePath = study.studyImage ?? 'https://static.moditeam.io/asset/default/representative/group_default.png';
-      _studyImageFile = File(_studyImagePath) ;
+      _studyImagePath = study.studyImage!;
+      _studyImageFile = File(_studyImagePath);
       _studyDescription = study.explanation;
       _selectedCategories = List.from(study.categories);
       _studyMemberCount = study.max;
       setStudyNameAdnDescription();
       notifyListeners();
-    }on ApiException catch (e){
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
+          () => _context.pop(), () => null);
     }
   }
 
   Future<void> updateStudyInfo() async {
     try {
-      if(_studyImageUuid.isEmpty) {
-        _studyImageFile = await fileFromImageUrl(_studyImagePath);
-        _studyImageUuid =
-        await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
-      }
       await _studyService.updateStudyInfo(
           _studyId!,
           UpdatedStudyInfo(
@@ -201,13 +193,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyImageUuid));
       notifyListeners();
       if (!_context.mounted) return;
-     _context.go('/studies/$_studyId');
-    } on ApiException catch (e){
+      _context.go('/studies/$_studyId');
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
-    }
-    on NetworkException catch (e) {
+          () => _context.pop(), () => null);
+    } on NetworkException catch (e) {
       rethrow;
     }
   }

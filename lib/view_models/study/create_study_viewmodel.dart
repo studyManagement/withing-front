@@ -44,7 +44,8 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   String _studyName = '';
   String _studyDescription = '';
   String _studyDisclosePassword = '';
-  String _studyImagePath = 'https://static.moditeam.io/asset/default/representative/group_default.png';
+  String _studyImagePath = 'asset/search_category/2_certification.png';
+  File? _studyImageFile;
   int _studyMemberCount = 0;
   String _studyImageUuid = '';
   int? _studyId;
@@ -52,7 +53,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   int? get studyId => _studyId;
   final List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
-  File? _studyImageFile;
 
   @override
   bool get isStudyNameError => _isStudyNameError;
@@ -65,6 +65,8 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   bool isOldImage = true;
+  @override
+  bool isDefault = true;
 
   @override
   String get studyImageUuid => _studyImageUuid;
@@ -155,11 +157,13 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     _studyImageFile = file;
     notifyListeners();
   }
+
   @override
   set studyImagePath(String value) {
     _studyImagePath = value;
     notifyListeners();
   }
+
   @override
   set studyImageUuid(String value) {
     _studyImageUuid = value;
@@ -180,11 +184,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   /// create study api
   Future<void> createStudy() async {
     try {
-      if(_studyImageUuid.isEmpty) {
-        _studyImageFile = await fileFromImageUrl(_studyImagePath);
-        _studyImageUuid =
-        await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
-      }
       final StudyModel newStudy = await _studyCreateService.callCreateApi(
         _studyName,
         _studyMemberCount,
@@ -195,12 +194,11 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyImageUuid,
       );
       _studyId = newStudy.id;
-    } on ApiException catch (e){
+    } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-              () => _context.pop(), () => null);
-    }
-    on NetworkException catch (e) {
+          () => _context.pop(), () => null);
+    } on NetworkException catch (e) {
       rethrow;
     }
     notifyListeners();
