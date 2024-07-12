@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import '../../../view_models/study/create_study_viewmodel.dart';
 
 class StudyDiscloseToggle extends StatelessWidget {
-  const StudyDiscloseToggle({super.key});
+  final ValueChanged<bool>? onToggleChanged;
+
+  const StudyDiscloseToggle({Key? key, this.onToggleChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,10 @@ class StudyDiscloseToggle extends StatelessWidget {
                 inactiveThumbColor: AppColors.gray400,
                 inactiveTrackColor: AppColors.gray150,
                 value: isToggled,
-                onChanged: (_) => viewModel.toggle(),
+                onChanged: (value) {
+                  viewModel.toggle();
+                  onToggleChanged!(value);
+                },
               ),
             ],
           ),
@@ -103,6 +108,7 @@ class StudyDiscloseToggle extends StatelessWidget {
                     keyboardType: TextInputType.number,
                   ),
                 ),
+                const SizedBox(height: 40)
               ],
             ),
         ],

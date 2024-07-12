@@ -46,27 +46,31 @@ class ModiModal {
       BuildContext context, List<ActionSheetParams> params) {
     openBottomSheet(
       context,
-      widget: ListView.builder(
-        itemExtent: 40,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              params[index].title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: AppFonts.fontWeight500,
-                color: params[index].titleColor ?? AppColors.gray900,
+      widget: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
+        child: ListView.separated(
+          separatorBuilder: (_, __) => const SizedBox(height: 18),
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: Text(
+                params[index].title,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: AppFonts.fontWeight500,
+                  color: params[index].titleColor ?? AppColors.gray900,
+                ),
               ),
-            ),
-            onTap: () {
-              params[index].onTap();
-              context.pop();
-            },
-          );
-        },
-        itemCount: params.length,
+              onTap: () {
+                params[index].onTap();
+                context.pop();
+              },
+            );
+          },
+          itemCount: params.length,
+        ),
       ),
-      height: 20 + (params.length * 40.0),
+      height: 52 + (params.length * 40.0),
     );
   }
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
-import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../view_models/study/create_study_viewmodel.dart';
 
 class StudyMemberCount extends StatefulWidget {
   final StudyInfoViewModel viewModel;
@@ -45,8 +43,6 @@ class _StudyMemberCountState extends State<StudyMemberCount> {
 
   @override
   Widget build(BuildContext context) {
-    // final viewModel = Provider.of<CreateStudyViewModel>(context);
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 40, 16, 24),
       child: Column(
@@ -76,12 +72,10 @@ class _StudyMemberCountState extends State<StudyMemberCount> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
           Row(
             children: [
               SizedBox(
                 width: 54,
-                height: 22,
                 child: TextField(
                   onChanged: (value) {
                     if (value != '') {
@@ -91,15 +85,19 @@ class _StudyMemberCountState extends State<StudyMemberCount> {
                     }
                   },
                   controller: controller,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     counterText: '',
-                    border: UnderlineInputBorder(
+                    hintStyle:
+                    Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: AppColors.gray200,
+                    ),
+                    border: const UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.gray150),
                     ),
-                    focusedBorder: UnderlineInputBorder(
+                    focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.black),
                     ),
-                    focusedErrorBorder: UnderlineInputBorder(
+                    focusedErrorBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: AppColors.black),
                     ),
                   ),

@@ -18,9 +18,10 @@ class CreateStudyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = ScrollController();
+    final toggleKey = GlobalKey();
     return ChangeNotifierProvider(
-      create: (_) => CreateStudyViewModel(
-          getIt<StudyCreateService>(),context),
+      create: (_) => CreateStudyViewModel(getIt<StudyCreateService>(), context),
       child: Consumer<CreateStudyViewModel>(
         builder: (context, viewModel, child) {
           return DefaultLayout(
@@ -39,6 +40,7 @@ class CreateStudyScreen extends StatelessWidget {
                 FloatingActionButtonLocation.centerDocked,
             title: getNewStudyTitle(isCreate: true),
             child: SingleChildScrollView(
+              controller: controller,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -59,7 +61,19 @@ class CreateStudyScreen extends StatelessWidget {
                   ),
                   StudyMemberCount(viewModel: viewModel),
                   const Gray50Divider(dividerHeight: 6),
-                  const StudyDiscloseToggle(),
+                  StudyDiscloseToggle(
+                      key: toggleKey,
+                      onToggleChanged: (isOn) {
+                        if (isOn) {
+                          Future.delayed(const Duration(milliseconds: 150), () {
+                            controller.animateTo(
+                              controller.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 150),
+                              curve: Curves.easeOut,
+                            );
+                          });
+                        }
+                      }),
                 ],
               ),
             ),
