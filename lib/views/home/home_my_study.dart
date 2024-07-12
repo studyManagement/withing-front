@@ -187,22 +187,22 @@ class StudyImage extends StatelessWidget {
                     ),
             ),
           ),
-          Positioned(
-            top: 2,
-            right: 2,
-            child: Container(
-              width: 16,
-              height: 16,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.gray50,
-                  width: 3,
-                ),
-                color: AppColors.red400,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 2,
+          //   right: 2,
+          //   child: Container(
+          //     width: 16,
+          //     height: 16,
+          //     decoration: BoxDecoration(
+          //       border: Border.all(
+          //         color: AppColors.gray50,
+          //         width: 3,
+          //       ),
+          //       color: AppColors.red400,
+          //       shape: BoxShape.circle,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
