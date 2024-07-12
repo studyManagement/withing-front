@@ -35,6 +35,7 @@ class StudyInfoScreen extends StatelessWidget {
     StudyViewModel vm = context.watch<StudyViewModel>();
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
+
     vm.fetchStudyInfo(studyId).then((_) {
       vm.getRegularMeetingStringAndSetMeetingType();
       vm.checkRegistered();
@@ -110,7 +111,9 @@ class StudyInfoScreen extends StatelessWidget {
                           children: [
                             StudyMainButtons(
                               onTap: () {
-                                context.push('/studies/$studyId/schedules');
+                                bool isLeader = Authentication.instance.userId == vm.study!.leaderId;
+                                print(isLeader);
+                                context.push('/studies/$studyId/schedules/${isLeader.toString()}');
                               },
                               title: "Schedule",
                               subtitle: "일정",

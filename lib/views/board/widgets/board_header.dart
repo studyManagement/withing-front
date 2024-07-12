@@ -40,9 +40,19 @@ class BoardHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    vm.post!.title,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  Row(
+                    children: [
+                      if(vm.post!.notice)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: Image.asset('asset/notice_pin.png',
+                            width: 16, height: 16),
+                      ),
+                      Text(
+                        vm.post!.title,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
                   ),
                   Row(
                     children: [

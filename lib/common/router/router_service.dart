@@ -153,7 +153,7 @@ class RouterService {
                   },
                   routes: [
                     GoRoute(
-                      path: 'schedules',
+                      path: 'schedules/:isLeader',
                       builder: (context, state) {
                         ScheduleService service = getIt<ScheduleService>();
                         return MultiProvider(
@@ -166,7 +166,10 @@ class RouterService {
                             ),
                           ],
                           child: StudyScheduleScreen(
-                            int.parse(state.pathParameters['studyId']!),
+                            studyId :int.parse(state.pathParameters['studyId']!),
+                            isLeader: (state.pathParameters['isLeader'] == 'true')
+                                ? true
+                                : false,
                           ),
                         );
                       },
