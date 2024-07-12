@@ -126,6 +126,7 @@ class StudyScheduleDetailScreen extends StatelessWidget {
                           '/studies/$studyId/schedules/register?scheduleId=$studyScheduleId')),
                   ActionSheetParams(
                     title: '삭제하기',
+                    titleColor: AppColors.red400,
                     onTap: () =>
                         scheduleViewModel.deleteSchedule(context, studyId),
                   ),
