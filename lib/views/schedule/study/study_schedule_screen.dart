@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
@@ -8,12 +9,14 @@ import 'package:modi/views/schedule/study/components/study_schedule_screen_tab.d
 import '../../../common/components/button/icon_text_button.dart';
 
 class StudyScheduleScreen extends StatelessWidget {
-  const StudyScheduleScreen(this._studyId, {super.key});
+  const StudyScheduleScreen({required this.studyId,required this.isLeader, super.key});
 
-  final int _studyId;
+  final int studyId;
+  final bool isLeader;
 
   @override
   Widget build(BuildContext context) {
+    print(isLeader);
     return DefaultLayout(
       title: '일정',
       resizeToAvoidBottomInset: false,
@@ -22,6 +25,7 @@ class StudyScheduleScreen extends StatelessWidget {
         onTap: () => Navigator.of(context).pop(),
       ),
       actions: [
+        if(isLeader)
         CircleButton(
           onTap: () {
             ModiModal.openBottomSheet(
@@ -36,7 +40,7 @@ class StudyScheduleScreen extends StatelessWidget {
                     '일정 등록',
                     () {
                       context.pop();
-                      context.push('/studies/$_studyId/schedules/register');
+                      context.push('/studies/$studyId/schedules/register');
                     },
                   ),
                   const SizedBox(width: 11),
@@ -47,7 +51,7 @@ class StudyScheduleScreen extends StatelessWidget {
                     '일정 투표',
                     () {
                       context.pop();
-                      context.push('/studies/$_studyId/schedules/vote');
+                      context.push('/studies/$studyId/schedules/vote');
                     },
                   ),
                 ],
@@ -60,7 +64,7 @@ class StudyScheduleScreen extends StatelessWidget {
       ],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: StudyScheduleScreenTab(studyId: _studyId),
+        child: StudyScheduleScreenTab(studyId: studyId),
       ),
     );
   }
