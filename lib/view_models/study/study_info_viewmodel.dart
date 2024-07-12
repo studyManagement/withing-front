@@ -24,6 +24,7 @@ abstract class StudyInfoViewModel {
   bool get isStudyDescriptionError;
 
   bool get isOldImage;
+  bool get isDefault;
 
   String get studyImageUuid;
 
@@ -45,7 +46,7 @@ abstract class StudyInfoViewModel {
   set studyImagePath(String value);
 
   set isOldImage(bool value);
-
+  set isDefault(bool value);
   set studyImageUuid(String value);
 
   /// RegExp pattern-matching

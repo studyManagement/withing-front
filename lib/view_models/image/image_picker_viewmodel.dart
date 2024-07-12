@@ -30,7 +30,7 @@ class ImagePickerViewModel extends ChangeNotifier {
   String _imageUuid = '';
   File? imageFile;
   Image? image;
-
+  bool isDefault = true;
   bool _isSelected = false;
 
   bool get isSelected => _isSelected;
@@ -85,10 +85,12 @@ class ImagePickerViewModel extends ChangeNotifier {
     _imagePath = imageUrl;
     if (representativeImagesUrl.contains(_imagePath)) {
       // 대표 이미지
+      isDefault = true;
       imageFile = await getImageFileFromAssets(_imagePath);
       image = Image.asset(_imagePath, fit: BoxFit.cover);
     } else {
       // 사용자 선택 이미지
+      isDefault = false;
       imageFile = File(imageUrl);
       image = Image.file(imageFile!, fit: BoxFit.cover);
     }

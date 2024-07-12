@@ -82,18 +82,18 @@ class SignupViewModel extends ChangeNotifier {
     _introduce = introduce;
   }
 
-  createImage(BuildContext context) async {
-    try{
-      _userImageFile = (isDefault) ? await getImageFileFromAssets('asset/user_default_image.png') : await fileFromImageUrl(_userImagePath);
-      _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
-    } on ApiException catch (e) {
-      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
-    }
-  }
+  // createImage(BuildContext context) async {
+  //   try{
+  //     _userImageFile = (isDefault) ? await getImageFileFromAssets('asset/user_default_image.png') : await fileFromImageUrl(_userImagePath);
+  //     _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
+  //   } on ApiException catch (e) {
+  //     ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
+  //   }
+  // }
 
   signup(BuildContext context) async {
     try {
-      await createImage(context);
+    //  await createImage(context);
       await _service.signup(_provider, _nickname, _uuid, _userImageUuid, _introduce);
 
       if (!context.mounted) return;

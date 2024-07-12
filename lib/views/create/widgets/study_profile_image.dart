@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/components/gray_container.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/image/image_update_service.dart';
@@ -21,16 +22,24 @@ class StudyProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ShapeDecoration? shapeDecoration;
-      var image = (viewModel.isOldImage)
-              ? NetworkImage(viewModel.studyImagePath)
-              : FileImage(viewModel.studyImageFile!);
-      shapeDecoration = ShapeDecoration(
-          shape: const OvalBorder(),
-          color: AppColors.blue100,
-          image: DecorationImage(
-            image: image as ImageProvider,
-            fit: BoxFit.cover,
-          ));
+    var image;
+
+    if (isCreate) {
+      image = viewModel.isDefault
+          ? AssetImage(viewModel.studyImagePath)
+          : FileImage(viewModel.studyImageFile!);
+    } else {
+      image = viewModel.isOldImage
+          ? NetworkImage(viewModel.studyImagePath)
+          : FileImage(viewModel.studyImageFile!);
+    }
+    shapeDecoration = ShapeDecoration(
+        shape: const OvalBorder(),
+        color: AppColors.blue100,
+        image: (viewModel.studyImagePath.isEmpty) ? null :DecorationImage(
+          image: image as ImageProvider,
+          fit: BoxFit.cover,
+        ));
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 50),
       child: Profile(
@@ -54,6 +63,7 @@ class StudyProfileImage extends StatelessWidget {
                       onSelected: () {
                         imgVm.createImage().then((value) =>
                             viewModel.studyImageUuid = imgVm.imageUuid);
+                        viewModel.isDefault = imgVm.isDefault;
                         viewModel.isOldImage = false;
                         context.pop();
                       },
