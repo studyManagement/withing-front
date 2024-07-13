@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/user/token_model.dart';
 import 'package:modi/model/user/user_model.dart';
@@ -31,9 +33,15 @@ class UserService {
 
   UserService(this._userApi);
 
-  Future<void> withdraw() async {
+  Future<void> withdraw(BuildContext context) async {
     try {
       await _userApi.withdraw();
+      if (!context.mounted) return;
+      while (GoRouter.of(context).canPop()) {
+        GoRouter.of(context).pop();
+      }
+      context.pushReplacement('/login');
+
     } on ApiException catch (e) {
       rethrow;
     }

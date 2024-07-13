@@ -6,16 +6,24 @@ import 'package:modi/common/theme/app/app_fonts.dart';
 class StudyModal extends StatelessWidget {
   final String title;
   final String content;
+  final String? leftText;
+  final String? rightText;
   final bool isCancel;
   final Function() onOk;
   final Function() onCancel;
+  final Color? leftColor;
+  final Color? rightColor;
 
   const StudyModal(
       {required this.title,
       required this.content,
+        this.leftText,
+        this.rightText,
       required this.isCancel,
       required this.onOk,
       required this.onCancel,
+        this.leftColor,
+        this.rightColor,
       super.key});
 
   @override
@@ -23,8 +31,8 @@ class StudyModal extends StatelessWidget {
     final List<Widget> buttons = [
       ConfirmButton(
         onTap: onOk,
-        text: '확인',
-        backgroundColor: AppColors.blue600,
+        text: leftText ?? '확인',
+        backgroundColor: leftColor ?? AppColors.blue600,
       ),
     ];
 
@@ -33,8 +41,8 @@ class StudyModal extends StatelessWidget {
         const SizedBox(width: 5),
         ConfirmButton(
           onTap: onCancel,
-          text: '취소',
-          backgroundColor: AppColors.blue200,
+          text: rightText ?? '취소',
+          backgroundColor: rightColor ?? AppColors.blue200,
         ),
       ]);
     }
