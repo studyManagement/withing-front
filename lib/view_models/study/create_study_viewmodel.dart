@@ -184,6 +184,10 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   /// create study api
   Future<void> createStudy() async {
     try {
+      if(_studyImageUuid.isEmpty){
+        _studyImageFile = await getImageFileFromAssets(_studyImagePath);
+        _studyImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
+      }
       final StudyModel newStudy = await _studyCreateService.callCreateApi(
         _studyName,
         _studyMemberCount,
