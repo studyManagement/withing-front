@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDQ2t2u1bNVqhgtg_x4Pj-WEyn-XRKSBFc</string>
+	<string>AIzaSyCCCWIlOyZs9PYpQW4fNdjpUVr3xI8t9Ow</string>
 	<key>GCM_SENDER_ID</key>
-	<string>941895894851</string>
+	<string>764940885576</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.modiapp.modi</string>
 	<key>PROJECT_ID</key>
-	<string>modi-31349</string>
+	<string>modi-aff18</string>
 	<key>STORAGE_BUCKET</key>
-	<string>modi-31349.appspot.com</string>
+	<string>modi-aff18.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:941895894851:ios:0fa5719b16007a45b311f6</string>
+	<string>1:764940885576:ios:90e7be309a92213992027d</string>
 </dict>
 </plist>
