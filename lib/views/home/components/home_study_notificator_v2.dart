@@ -13,14 +13,12 @@ class HomeStudyNotificator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<UserScheduleModel> schedules =
-        context.select<StudyListViewModel, List<UserScheduleModel>>(
-            (provider) => provider.todaySchedules);
+    final vm = context.watch<StudyListViewModel>();
     
-    return schedules.isNotEmpty
+    return vm.todaySchedules.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            child: HomeStudyNotificatorList(selectedDate, schedules),
+            child: HomeStudyNotificatorList(selectedDate, vm.todaySchedules),
           )
         : Container(
             decoration: const BoxDecoration(color: AppColors.gray50),

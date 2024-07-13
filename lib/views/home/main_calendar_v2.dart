@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/model/schedule/user_schedule_model.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -30,9 +31,14 @@ class MainCalendarV2 extends StatelessWidget {
         weekDateTimes.add(now.subtract(Duration(days: now.weekday - i)));
       }
     }
-    List<StudyListView> studies =
-        context.select<StudyListViewModel, List<StudyListView>>(
-            (provider) => provider.studyList);
+    List<UserScheduleModel> schedules =
+        context.select<StudyListViewModel, List<UserScheduleModel>>(
+            (provider) => provider.thisWeekSchedules); // 이번주 일정
+    
+    bool hasStudies(DateTime weekDateTime) {
+      int weekday = weekDateTime.weekday;
+      return schedules.where((e) => DateTime.parse(e.date).weekday == weekday).isNotEmpty;
+    }
 
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -84,10 +90,7 @@ class MainCalendarV2 extends StatelessWidget {
                           width: 6,
                           height: 6,
                           decoration: BoxDecoration(
-                            color: studies
-                                    .where((element) =>
-                                        element.hasStudies(weekDateTimes[i]))
-                                    .isNotEmpty // hasStudy
+                            color: hasStudies(weekDateTimes[i]) // hasStudy
                                 ? (selectedDate.day == weekDateTimes[i].day
                                     ? AppColors.white
                                     : AppColors.gray200)
