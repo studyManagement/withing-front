@@ -38,9 +38,9 @@ class StudyListViewModel extends ChangeNotifier {
 
     studyList = _studyViews;
 
-    _studyViews
-        .where((element) => element.hasStudies(selectedDate))
-        .forEach((e) => studyViewSpread.addAll(e.spread()));
+    // _studyViews
+    //     .where((element) => element.hasStudies(selectedDate))
+    //     .forEach((e) => studyViewSpread.addAll(e.spread()));
     //
     // selectStudyListView = studyViewSpread
     //     .where((element) => element.hasStudies(selectedDate))
@@ -51,9 +51,9 @@ class StudyListViewModel extends ChangeNotifier {
 
   Future<void> fetchThisWeekSchedules() async {
     try {
-      thisWeekSchedules =
-          await getIt<ScheduleService>().fetchThisWeekSchedule();
-      notifyListeners();
+        thisWeekSchedules =
+        await getIt<ScheduleService>().fetchThisWeekSchedule();
+        notifyListeners();
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
