@@ -8,7 +8,8 @@ import 'package:modi/common/theme/app/app_fonts.dart';
 
 class ModiModal {
   static void openDialog(BuildContext context, String title, String content,
-      bool isCancel, Function()? onOk, Function()? onCancel) {
+      bool isCancel, Function()? onOk, Function()? onCancel,
+      {String? leftText, String? rightText, Color? leftColor, Color? rightColor}) {
     showDialog(
         barrierColor: Colors.black.withOpacity(0.5),
         context: context,
@@ -16,6 +17,10 @@ class ModiModal {
         builder: (context) {
           return StudyModal(
               title: title,
+              leftText: leftText,
+              leftColor: leftColor,
+              rightColor: rightColor,
+              rightText: rightText,
               content: content,
               isCancel: isCancel,
               onOk: (onOk == null)

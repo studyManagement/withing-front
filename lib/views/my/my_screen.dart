@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/layout/default_layout.dart';
+import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
+import 'package:modi/service/user/user_service.dart';
 import 'package:modi/view_models/my/update_profile_viewmodel.dart';
 import 'package:modi/common/components/image/profile.dart';
 import 'package:provider/provider.dart';
+
+import '../../di/injection.dart';
 
 class MyScreen extends StatelessWidget {
   const MyScreen({super.key});
@@ -25,17 +29,17 @@ class MyScreen extends StatelessWidget {
           children: [
             Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Profile(
-                    onTap: () =>
-                      context.push('/my/profile'),
-                      shapeDecoration: ShapeDecoration(
-                          shape: const OvalBorder(),
-                          image: DecorationImage(
-                              image:_buildProfileImage(viewModel.userImagePath), fit: BoxFit.cover)),
-                      bottomImagePath: 'asset/edit.png',
-                    )),
-              ),
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Profile(
+                    onTap: () => context.push('/my/profile'),
+                    shapeDecoration: ShapeDecoration(
+                        shape: const OvalBorder(),
+                        image: DecorationImage(
+                            image: _buildProfileImage(viewModel.userImagePath),
+                            fit: BoxFit.cover)),
+                    bottomImagePath: 'asset/edit.png',
+                  )),
+            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -122,8 +126,8 @@ class MyScreen extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      return Authentication.instance
-                          .logout(reason: '[디버그] 로그아웃 되었습니다.');
+                      // return Authentication.instance
+                      //     .logout(reason: '[디버그] 로그아웃 되었습니다.');
                     },
                     trailing: const Text('v1.0.0+31',
                         style: TextStyle(
@@ -144,6 +148,43 @@ class MyScreen extends StatelessWidget {
                     ),
                     horizontalTitleGap: 16,
                   ),
+                  ListTile(
+                    onTap: () {
+                      return Authentication.instance
+                          .logout(reason: '로그아웃 되었습니다.');
+                    },
+                    title: const Text(
+                      '로그아웃',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.gray800,
+                          fontWeight: AppFonts.fontWeight600),
+                    ),
+                    horizontalTitleGap: 16,
+                  ),
+                  ListTile(
+                    onTap: () {
+                      ModiModal.openDialog(
+                          context,
+                          '모디를 탈퇴하시겠어요?',
+                          '스터디 및 일정을 포함한 모든 회원 정보가\n삭제되며, 복구할 수 없어요.',
+                          true,
+                          () => context.pop(), () => getIt<UserService>().withdraw(context),
+                        leftText: '취소',
+                        leftColor: AppColors.blue200,
+                        rightText: '탈퇴하기',
+                        rightColor: AppColors.red400
+                      );
+                    },
+                    title: const Text(
+                      '회원탈퇴',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.gray300,
+                          fontWeight: AppFonts.fontWeight600),
+                    ),
+                    horizontalTitleGap: 16,
+                  ),
                 ],
               ),
             )
@@ -152,8 +193,9 @@ class MyScreen extends StatelessWidget {
       ),
     );
   }
-  ImageProvider _buildProfileImage(String path){
-    if(path.isEmpty){
+
+  ImageProvider _buildProfileImage(String path) {
+    if (path.isEmpty) {
       return const AssetImage('asset/user_default_image.png');
     }
     return NetworkImage(path);
