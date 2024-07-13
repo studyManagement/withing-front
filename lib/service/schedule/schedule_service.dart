@@ -49,7 +49,7 @@ abstract class ScheduleApi {
   @GET('/studies/{id}/schedules/votes')
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(@Path('id') int id);
 
-  @GET('/studies/{id}/schedules/votes/{voteId}')
+  @GET('/studies/{id}/schedules/{voteId}/votes')
   Future<ScheduleVoteModel> fetchScheduleVote(
     @Path('id') int id,
     @Path('voteId') int voteId,

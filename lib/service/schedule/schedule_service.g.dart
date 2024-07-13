@@ -233,7 +233,7 @@ class _ScheduleApi implements ScheduleApi {
     )
             .compose(
               _dio.options,
-              '/studies/${id}/schedules/votes/${voteId}',
+              '/studies/${id}/schedules/${voteId}/votes',
               queryParameters: queryParameters,
               data: _data,
             )
