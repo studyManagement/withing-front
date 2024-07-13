@@ -127,7 +127,7 @@ class RouterService {
                       providers: [
                         ChangeNotifierProvider(
                             create: (_) =>
-                                StudyListViewModel(getIt<StudyService>())),
+                                StudyListViewModel(getIt<StudyService>(),context),),
                       ],
                       child: MyStudyScreen(studyType),
                     );
@@ -153,7 +153,7 @@ class RouterService {
                   },
                   routes: [
                     GoRoute(
-                      path: 'schedules/:isLeader',
+                      path: 'schedules',
                       builder: (context, state) {
                         ScheduleService service = getIt<ScheduleService>();
                         return MultiProvider(
@@ -166,10 +166,7 @@ class RouterService {
                             ),
                           ],
                           child: StudyScheduleScreen(
-                            studyId :int.parse(state.pathParameters['studyId']!),
-                            isLeader: (state.pathParameters['isLeader'] == 'true')
-                                ? true
-                                : false,
+                            int.parse(state.pathParameters['studyId']!),
                           ),
                         );
                       },

@@ -14,6 +14,8 @@ import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/authenticator/authentication.dart';
+
 class StudyScheduleDetailScreen extends StatelessWidget {
   const StudyScheduleDetailScreen(
       {required this.studyId, required this.studyScheduleId, super.key});
@@ -115,6 +117,7 @@ class StudyScheduleDetailScreen extends StatelessWidget {
           '/studies/$studyId/schedules/$studyScheduleId',
         ),
         const SizedBox(width: 12),
+        if(StudyViewModel.leaderId == Authentication.instance.userId)
         CircleButton(
             onTap: () {
               ModiModal.openActionSheet(

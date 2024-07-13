@@ -98,6 +98,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
           '/studies/$studyId/schedules/vote/$voteId',
         ),
         const SizedBox(width: 12),
+        if(StudyViewModel.leaderId == Authentication.instance.userId)
         CircleButton(
           onTap: () {
             ModiModal.openActionSheet(

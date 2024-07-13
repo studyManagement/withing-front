@@ -17,6 +17,7 @@ class ScheduleViewModel extends ChangeNotifier {
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
 
+
   bool _isLoading = true;
   bool get isLoading => _isLoading;
 
@@ -58,7 +59,7 @@ class ScheduleViewModel extends ChangeNotifier {
 
   void setIsLoading(bool isLoading) {
     _isLoading = isLoading;
-    notifyListeners();
+   // notifyListeners();
   }
 
   Future<void> deleteSchedule(BuildContext context, int studyId) async {

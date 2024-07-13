@@ -4,19 +4,20 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
+import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
+import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/schedule/study/components/study_schedule_screen_tab.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/components/button/icon_text_button.dart';
 
 class StudyScheduleScreen extends StatelessWidget {
-  const StudyScheduleScreen({required this.studyId,required this.isLeader, super.key});
+  const StudyScheduleScreen(this._studyId, {super.key});
 
-  final int studyId;
-  final bool isLeader;
+  final int _studyId;
 
   @override
   Widget build(BuildContext context) {
-    print(isLeader);
     return DefaultLayout(
       title: '일정',
       resizeToAvoidBottomInset: false,
@@ -25,7 +26,7 @@ class StudyScheduleScreen extends StatelessWidget {
         onTap: () => Navigator.of(context).pop(),
       ),
       actions: [
-        if(isLeader)
+        if(StudyViewModel.leaderId == Authentication.instance.userId)
         CircleButton(
           onTap: () {
             ModiModal.openBottomSheet(
@@ -40,7 +41,7 @@ class StudyScheduleScreen extends StatelessWidget {
                     '일정 등록',
                     () {
                       context.pop();
-                      context.push('/studies/$studyId/schedules/register');
+                      context.push('/studies/$_studyId/schedules/register');
                     },
                   ),
                   const SizedBox(width: 11),
@@ -51,7 +52,7 @@ class StudyScheduleScreen extends StatelessWidget {
                     '일정 투표',
                     () {
                       context.pop();
-                      context.push('/studies/$studyId/schedules/vote');
+                      context.push('/studies/$_studyId/schedules/vote');
                     },
                   ),
                 ],
@@ -64,7 +65,7 @@ class StudyScheduleScreen extends StatelessWidget {
       ],
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: StudyScheduleScreenTab(studyId: studyId),
+        child: StudyScheduleScreenTab(studyId: _studyId),
       ),
     );
   }

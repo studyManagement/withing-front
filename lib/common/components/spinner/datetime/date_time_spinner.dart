@@ -25,7 +25,7 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime standard = widget.standard;
+    DateTime standard = DateTime.now();
     DateTimeGenerator yearGenerator = YearGenerator();
     DateTimeGenerator monthGenerator = MonthGenerator();
     DateTimeGenerator dayGenerator = DayGenerator();
@@ -34,6 +34,11 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
 
     DateTimeCalculator dateTimeCalculator =
         DateTimeCalculator(widget.onChanged, standard);
+    String hour_12 = (standard.hour == 0 || standard.hour == 12)
+        ? '12'
+        : (standard.hour > 12)
+            ? (standard.hour - 12).toString()
+            : standard.hour.toString();
 
     return Stack(
       children: [
@@ -103,7 +108,7 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
                   width: 60,
                   height: 160,
                   children: hourGenerator.makeElements(standard),
-                  initialValue: standard.hour.toString(),
+                  initialValue: hour_12,
                   onChanged: (index, value) =>
                       dateTimeCalculator.setHour(value),
                 ),
@@ -114,7 +119,7 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
                   width: 60,
                   height: 160,
                   children: minuteGenerator.makeElements(standard),
-                  initialValue: standard.minute.toString(),
+                  initialValue: standard.minute.toString().padLeft(2,'0'),
                   onChanged: (index, value) =>
                       dateTimeCalculator.setMinute(value),
                 ),

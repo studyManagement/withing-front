@@ -78,7 +78,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                  create: (_) => StudyListViewModel(getIt<StudyService>())),
+                  create: (_) => StudyListViewModel(getIt<StudyService>(),context)),
             ],
             child: HomeScreen(),
           ),
