@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/schedule/schedule_list_item.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
@@ -32,7 +33,7 @@ class ScheduleList extends StatelessWidget {
         }
         return true;
       },
-      child: CustomScrollView(
+      child:(scheduleGroups.isEmpty) ? ModiException(const ['등록된 일정이 없어요.']) : CustomScrollView(
         slivers: [
           SliverList(
             delegate: SliverChildBuilderDelegate(

@@ -34,11 +34,13 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final StudyListViewModel vm = context.read<StudyListViewModel>();
+    vm.fetchThisWeekSchedules();
 
-    void onDaySelected(DateTime selectedDate, DateTime focusedDate) {
+    void onDaySelected(DateTime selectedDate, DateTime focusedDate) { // 그날 일정만 보여 주기
       setState(() {
         this.selectedDate = selectedDate;
         vm.fetchStudies(StudyType.MY);
+        vm.filterSchedules(selectedDate);
         vm.setSelectedDate(this.selectedDate);
       });
     }

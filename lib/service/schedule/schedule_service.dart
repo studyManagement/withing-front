@@ -68,6 +68,11 @@ abstract class ScheduleApi {
   @GET('/users/schedules')
   Future<List<UserScheduleModel>> fetchUserSchedule(
       @Query('date') String date, @Query('size') int size);
+
+  @GET('/users/schedules/this-week')
+  Future<List<UserScheduleModel>> fetchThisWeekSchedule();
+
+
 }
 
 class ScheduleService {
@@ -190,6 +195,16 @@ class ScheduleService {
       String date, int size) async{
     try{
       return await _scheduleApi.fetchUserSchedule(date, size);
+    } on ApiException catch(e){
+      rethrow;
+    } on NetworkException catch (e){
+      rethrow;
+    }
+  }
+
+  Future<List<UserScheduleModel>> fetchThisWeekSchedule() async{
+    try{
+      return await _scheduleApi.fetchThisWeekSchedule();
     } on ApiException catch(e){
       rethrow;
     } on NetworkException catch (e){

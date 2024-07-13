@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
+import 'package:modi/model/schedule/user_schedule_model.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/study_list_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -12,14 +13,14 @@ class HomeStudyNotificator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<StudyListView> studies =
-        context.select<StudyListViewModel, List<StudyListView>>(
-            (provider) => provider.selectStudyListView);
-
-    return studies.isNotEmpty
+    List<UserScheduleModel> schedules =
+        context.select<StudyListViewModel, List<UserScheduleModel>>(
+            (provider) => provider.todaySchedules);
+    
+    return schedules.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            child: HomeStudyNotificatorList(selectedDate, studies),
+            child: HomeStudyNotificatorList(selectedDate, schedules),
           )
         : Container(
             decoration: const BoxDecoration(color: AppColors.gray50),
@@ -44,10 +45,10 @@ class HomeStudyNotificator extends StatelessWidget {
 }
 
 class HomeStudyNotificatorList extends StatelessWidget {
-  const HomeStudyNotificatorList(this.selectedDate, this.studies, {super.key});
+  const HomeStudyNotificatorList(this.selectedDate, this.schedules, {super.key});
 
   final DateTime selectedDate;
-  final List<StudyListView> studies;
+  final List<UserScheduleModel> schedules;
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +59,17 @@ class HomeStudyNotificatorList extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          StudyListView study = studies[index];
+          UserScheduleModel study = schedules[index];
+         final hours = [int.parse(study.startTime.split(":")[0]), int.parse(study.endTime.split(":")[0])];
+         final mins = [study.startTime.split(":")[1], study.endTime.split(":")[1]];
+            String start = (hours[0] < 12) ? '오전 ${study.startTime}' : '오후 ${(hours[0]-12).toString().padLeft(2,'0')}:${mins[0]}';
+           String end = (hours[1] < 12) ? '오전 ${study.endTime}' : '오후 ${(hours[1]-12).toString().padLeft(2,'0')}:${mins[1]}';
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '오전 9:00 ~ 오전 11:00',
+                '${start} - ${end}',
                 style: const TextStyle(
                   color: AppColors.gray600,
                   fontWeight: AppFonts.fontWeight500,
@@ -73,7 +78,7 @@ class HomeStudyNotificatorList extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Text(
-                study.studyName,
+                study.scheduleName,
                 style: const TextStyle(
                   color: AppColors.gray800,
                   fontWeight: AppFonts.fontWeight600,
@@ -101,7 +106,7 @@ class HomeStudyNotificatorList extends StatelessWidget {
             ),
           );
         },
-        itemCount: studies.length,
+        itemCount: schedules.length,
       ),
     );
   }

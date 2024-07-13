@@ -4,9 +4,13 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
+import 'package:modi/common/utils/get_created_string.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../model/user/user_model.dart';
+import '../../../../view_models/study/study_viewmodel.dart';
 
 class StudyScheduleVoteList extends StatelessWidget {
   const StudyScheduleVoteList({
@@ -65,8 +69,8 @@ class StudyScheduleVoteList extends StatelessWidget {
                       },
                       child: _StudyScheduleVoteItem(
                         vote.title,
-                        20,
-                        12,
+                        StudyViewModel.studyMembers, // 수정
+                      vote.totalVoteCount,
                         vote.createdAt,
                         isVoted: isVoted,
                       ),
@@ -154,7 +158,7 @@ class _StudyScheduleVoteItem extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              createdAt.toString(),
+              getCreatedAt(createdAt.toString()),
               style: const TextStyle(
                 color: AppColors.gray800,
                 fontSize: 13,

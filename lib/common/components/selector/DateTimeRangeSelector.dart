@@ -26,11 +26,11 @@ class DateTimeRangeSelector extends StatefulWidget {
 class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
   late DateTime _startAt;
   late DateTime _endAt;
+  bool isInit = true;
 
   @override
   void initState() {
     super.initState();
-
     _startAt = widget.startAt;
     _endAt = widget.endAt;
   }
@@ -171,13 +171,13 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                   child: Column(
                     children: [
                       DateTimeSpinner(currentDateTime, (DateTime dateTime) {
-                        setState(() {
-                          if (selectItem == 1) {
-                            startAt = dateTime;
-                          } else {
-                            endAt = dateTime;
-                          }
-                        });
+                          setState(() {
+                            if (selectItem == 1) {
+                              startAt = dateTime;
+                            } else {
+                              endAt = dateTime;
+                            }
+                          });
                       }),
                       const SizedBox(height: 40),
                       ConfirmButton(

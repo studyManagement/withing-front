@@ -112,8 +112,7 @@ class StudyInfoScreen extends StatelessWidget {
                             StudyMainButtons(
                               onTap: () {
                                 bool isLeader = Authentication.instance.userId == vm.study!.leaderId;
-                                print(isLeader);
-                                context.push('/studies/$studyId/schedules/${isLeader.toString()}');
+                                context.push('/studies/$studyId/schedules');
                               },
                               title: "Schedule",
                               subtitle: "일정",

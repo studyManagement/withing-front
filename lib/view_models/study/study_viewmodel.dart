@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/logger/app_event.dart';
-import 'package:modi/exception/study/study_exception.dart';
 import 'package:modi/service/study/MeetingType.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/service/study/study_service.dart';
@@ -32,7 +31,7 @@ class StudyViewModel extends ChangeNotifier {
   MeetingType? _meetingType;
   String regularMeetingStr = '';
   List<int> selectedDays = [];
-  List<int> _selectedUsers = [];
+  final List<int> _selectedUsers = [];
   String startTime = '미등록';
   String endTime = '미등록';
   bool _isStart = false;
@@ -56,6 +55,8 @@ class StudyViewModel extends ChangeNotifier {
   List<BoardModel> posts = [];
 
   int? _userId;
+  static int leaderId = 0;
+  static int studyMembers = 0;
 
   StudyView? get study => _study;
 
@@ -139,6 +140,8 @@ class StudyViewModel extends ChangeNotifier {
     if (_study == null) {
       try {
         _study = StudyView.from(await _service.fetchStudyInfo(studyId));
+        leaderId = _study!.leaderId;
+        studyMembers = study!.users.length;
         _users = _study!.users;
         checkRegistered();
         if (!_isMember) {
@@ -302,7 +305,10 @@ class StudyViewModel extends ChangeNotifier {
             }
           }
         }
-        if (!_isAfter) {
+        else{
+          _meetingSchedules = [];
+        }
+        if ((_meetingType != MeetingType.NONE && !_isAfter) || _meetingType == MeetingType.NONE) {
           await _service.setMeetingSchedule(study!.id, _meetingSchedules);
           if (!_context.mounted) return;
           _context.go('/studies/${study!.id}');
@@ -390,7 +396,7 @@ class StudyViewModel extends ChangeNotifier {
       DateTime start =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      if (start.hour == 0) start.add(Duration(hours: 12));
+      if (start.hour == 0) start.add(const Duration(hours: 12));
 
       String time = (start.hour > 0 && start.hour < 12)
           ? _study!.meetingSchedules[0].startTime
@@ -433,7 +439,7 @@ class StudyViewModel extends ChangeNotifier {
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
 
       String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      if (start.hour == 0) start.add(Duration(hours: 12));
+      if (start.hour == 0) start.add(const Duration(hours: 12));
       String time = (start.hour > 0 && start.hour < 12)
           ? _study!.meetingSchedules[0].startTime
           : DateFormat('hh:mm').format(start);
@@ -445,7 +451,7 @@ class StudyViewModel extends ChangeNotifier {
       DateTime end =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].endTime);
       String endMeridiem = (end.hour < 12) ? '오전' : '오후';
-      if (end.hour == 0) end.add(Duration(hours: 12));
+      if (end.hour == 0) end.add(const Duration(hours: 12));
       String time = (end.hour > 0 && end.hour < 12)
           ? _study!.meetingSchedules[0].endTime
           : DateFormat('hh:mm').format(end);

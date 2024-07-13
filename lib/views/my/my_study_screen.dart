@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/circle_button.dart';
+import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/study/study_list.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/utils/get_regular_meeting_string.dart';
@@ -100,18 +101,16 @@ class MyStudyListView extends StatelessWidget {
       extra['참여 인원'] = "${element.headcount}/${element.max}";
       extra['정기 모임'] = regularMeeting;
 
-
       StudyListViewParam param = StudyListViewParam(
-        element.studyName,
-        '/studies/${element.id}',
-        extra: extra,
-        tag: element.categories,
-        imagePath: element.studyImage
-      );
+          element.studyName, '/studies/${element.id}',
+          extra: extra, tag: element.categories, imagePath: element.studyImage);
 
       params.add(param);
     }
 
-    return StudyList(params);
+    return (studies.isEmpty)
+        ? ModiException(
+            ["${studyType == StudyType.LIKE ? "찜한" : "종료된"} 스터디가 없어요."])
+        : StudyList(params);
   }
 }
