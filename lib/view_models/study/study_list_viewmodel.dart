@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:modi/model/study/study_list_model.dart';
 import 'package:modi/service/study/StudyType.dart';
 import 'package:modi/service/study/study_service.dart';
-import 'package:modi/service/user/user_service.dart';
-import 'package:modi/view_models/schedule/user/user_schedule_viewmodel.dart';
 import 'package:modi/view_models/study/model/study_list_view.dart';
 import 'package:modi/view_models/study/model/study_meeting_schedule.dart';
 
@@ -31,26 +29,21 @@ class StudyListViewModel extends ChangeNotifier {
   StudyListViewModel(this._service, this._context);
 
   Future<void> fetchStudies(StudyType studyType) async {
-    List<StudyListModel> studyModels = await _service.fetchMyStudies(studyType);
-    List<StudyListView> _studyViews =
-        studyModels.map((e) => StudyListView.from(e)).toList();
-    List<StudyListView> studyViewSpread = [];
+    if(studyList.isEmpty) {
+      List<StudyListModel> studyModels = await _service.fetchMyStudies(
+          studyType);
+      List<StudyListView> studyViews =
+      studyModels.map((e) => StudyListView.from(e)).toList();
 
-    studyList = _studyViews;
+      studyList = studyViews;
 
-    // _studyViews
-    //     .where((element) => element.hasStudies(selectedDate))
-    //     .forEach((e) => studyViewSpread.addAll(e.spread()));
-    //
-    // selectStudyListView = studyViewSpread
-    //     .where((element) => element.hasStudies(selectedDate))
-    //     .toList();
-
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   Future<void> fetchThisWeekSchedules() async {
-    try {
+    if(thisWeekSchedules.isEmpty) {
+      try {
         thisWeekSchedules =
         await getIt<ScheduleService>().fetchThisWeekSchedule();
         notifyListeners();
@@ -58,6 +51,7 @@ class StudyListViewModel extends ChangeNotifier {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
           () => _context.pop(), () => null);
+    }
     }
   }
 
