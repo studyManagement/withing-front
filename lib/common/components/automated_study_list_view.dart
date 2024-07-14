@@ -74,6 +74,7 @@ class _StudyCard extends StatelessWidget {
                 ('정기 모임', getRegularMeetingString(info.meetingSchedules)),
               ],
             ),
+            if(info.categories.every((e) => e.isNotEmpty))
             StudyCategoriesWidget(categories: info.categories),
           ],
         ),
