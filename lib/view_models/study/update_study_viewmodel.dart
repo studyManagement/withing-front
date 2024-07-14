@@ -183,6 +183,11 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   Future<void> updateStudyInfo() async {
     try {
+      if(_studyImageUuid.isEmpty) {
+        _studyImageFile = await fileFromImageUrl(_studyImagePath);
+        _studyImageUuid =
+        await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
+      }
       await _studyService.updateStudyInfo(
           _studyId!,
           UpdatedStudyInfo(
