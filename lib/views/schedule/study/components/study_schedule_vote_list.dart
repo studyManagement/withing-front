@@ -60,7 +60,6 @@ class StudyScheduleVoteList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     ScheduleVote vote = votes[index];
                     bool isVoted = vote.isVoted(userId);
-                    print(isVoted);
                     return GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
@@ -70,7 +69,7 @@ class StudyScheduleVoteList extends StatelessWidget {
                       child: _StudyScheduleVoteItem(
                         vote.title,
                         StudyViewModel.studyMembers, // 수정
-                      vote.totalVoteCount,
+                      vote.votedMembers.length,
                         vote.createdAt,
                         isVoted: isVoted,
                       ),
