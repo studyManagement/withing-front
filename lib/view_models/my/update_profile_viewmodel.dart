@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/modal/modi_modal.dart';
@@ -10,6 +11,7 @@ import 'package:modi/model/user/token_model.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 import 'package:modi/service/user/user_service.dart';
+import 'package:yaml/yaml.dart';
 import '../../common/utils/get_image_file.dart';
 import '../../di/injection.dart';
 import '../../model/signup/signup_exception.dart';
@@ -29,6 +31,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
   int rgb = 0xFF8B97A4;
   bool isOldImage = true;
   bool isDefault = false;
+  String appVersion = '';
 
   String get nickname => _nickname;
 
@@ -54,6 +57,11 @@ class UpdateProfileViewModel extends ChangeNotifier {
   }
 
   UpdateProfileViewModel(this._context, this._userService);
+
+  Future<void> getAppVersion() async{
+    rootBundle.loadString("pubspec.yaml").then((yamlValue) =>
+    appVersion = loadYaml(yamlValue)['version']);
+  }
 
   Future<void> fetchUserProfileImage() async {
     // 프로필 수정 화면으로 이동 시

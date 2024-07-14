@@ -19,6 +19,7 @@ class MyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = context.watch<UpdateProfileViewModel>();
     viewModel.fetchUserProfileImage();
+    viewModel.getAppVersion();
     return DefaultLayout(
       title: '마이페이지',
       centerTitle: false,
@@ -129,14 +130,14 @@ class MyScreen extends StatelessWidget {
                       // return Authentication.instance
                       //     .logout(reason: '[디버그] 로그아웃 되었습니다.');
                     },
-                    trailing: const Text('v1.0.0+31',
-                        style: TextStyle(
+                    trailing: Text(viewModel.appVersion,
+                        style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.blue400,
                             fontWeight: AppFonts.fontWeight500)),
                     // leading: Image.asset(
                     //   'asset/version.png',
-                    //   width: 40,
+                    //   width: 40,전
                     //   height: 40,
                     // ),
                     title: const Text(
