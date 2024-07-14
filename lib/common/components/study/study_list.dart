@@ -73,6 +73,7 @@ class StudyList extends StatelessWidget {
               const SizedBox(height: 8),
               ...extraWidgets,
               const SizedBox(height: 8),
+              if(param.tag!.every((e) => e.isNotEmpty))
               TagList(param.tag!),
             ],
           ),

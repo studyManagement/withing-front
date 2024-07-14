@@ -46,6 +46,7 @@ class Header extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 8),
+              if(vm.study!.categories.every((e) => e.isNotEmpty))
               StudyCategoriesWidget(categories: vm.study!.categories),
             ],
           ),
