@@ -25,6 +25,7 @@ const String sentryDsn =
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    name: 'Modi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
