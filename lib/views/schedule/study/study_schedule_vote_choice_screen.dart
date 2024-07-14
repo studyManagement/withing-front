@@ -33,7 +33,9 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 child: ConfirmButton(
                   width: MediaQuery.of(context).size.width,
-                  onTap: () => {},
+                  onTap: () => {
+                    voteViewModel.castVote(context, studyId, voteId)
+                  }, // 투표 하기
                   text: '투표 완료',
                   backgroundColor: AppColors.blue600,
                 ),
@@ -48,18 +50,22 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  children: [
-                    ScheduleTable(
-                      dateTimes: vote.votes.map((e) => e.voteDay).toList(),
-                      startAt: vote.votes.first.startAt,
-                      endAt: vote.votes.first.endAt,
-                      voteStatus: const {},
-                      maxVoteCount: 1,
-                      readOnly: false,
-                      onClick: (value) => {},
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ScheduleTable(
+                        dateTimes: vote.votes.map((e) => e.voteDay).toList(),
+                        startAt: vote.votes.first.startAt,
+                        endAt: vote.votes.first.endAt,
+                        voteStatus: const {},
+                        maxVoteCount: 1,
+                        readOnly: false,
+                        onClick: (value) {
+                         voteViewModel.selectVoteDateAndTimes(value.value);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ));
   }

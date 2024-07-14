@@ -7,12 +7,15 @@ import 'package:modi/model/schedule/schedule_vote_model.dart';
 import 'package:retrofit/http.dart';
 import '../../common/requester/network_exception.dart';
 import '../../model/schedule/user_schedule_model.dart';
+import '../../model/schedule/vote_date_time_model.dart';
 
 part 'schedule_service.g.dart';
 
 @RestApi()
 abstract class ScheduleApi {
   factory ScheduleApi(Dio dio, {String baseUrl}) = _ScheduleApi;
+
+/// Schedules
 
   @GET('/studies/{id}/schedules')
   Future<List<ScheduleModel>> fetchStudySchedules(@Path('id') int id);
@@ -46,6 +49,9 @@ abstract class ScheduleApi {
     @Path('scheduleId') int scheduleId,
   );
 
+
+  /// Votes
+
   @GET('/studies/{id}/schedules/votes')
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(@Path('id') int id);
 
@@ -55,7 +61,7 @@ abstract class ScheduleApi {
     @Path('voteId') int voteId,
   );
 
-  @POST('/studies/{id}/schedules/votes')
+  @POST('/studies/{id}/schedules/votes') // 투표 생성
   Future<ScheduleVoteModel> postScheduleVote(
     @Path('id') int id,
     @Field('name') String name,
@@ -64,6 +70,13 @@ abstract class ScheduleApi {
     @Field('startAt') String startAt,
     @Field('endAt') String endAt,
   );
+
+  @POST('/studies/{id}/schedules/{schedule_id}/votes') // 투표 참여
+  Future<ScheduleVoteModel> vote(
+      @Path('id') int id,
+      @Path('schedule_id') int scheduleId,
+      @Body() List<VoteDateTimeModel> selectedList
+      );
 
   @GET('/users/schedules')
   Future<List<UserScheduleModel>> fetchUserSchedule(
@@ -117,6 +130,24 @@ class ScheduleService {
         selectedDates.map((e) => e.toIso8601String()).toList(),
         startAt.toIso8601String(),
         endAt.toIso8601String(),
+      );
+    } on ApiException catch (e){
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ScheduleVoteModel> vote(
+      int studyId,
+      int scheduleId,
+      List<VoteDateTimeModel> selectedList
+      ) async {
+    try {
+      return await _scheduleApi.vote(
+        studyId,
+        scheduleId,
+        selectedList
       );
     } on ApiException catch (e){
       rethrow;
