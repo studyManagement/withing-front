@@ -17,10 +17,15 @@ class LoginScreen extends StatelessWidget {
 
   _showErrorMessage(BuildContext context) async {
     String? errorMessage = Authentication.state.errorMessage;
+    bool isLogOut = Authentication.state.isLogOut;
 
     await Future.delayed(const Duration(microseconds: 50));
-
-    if (errorMessage != null && context.mounted) {
+    if (isLogOut && errorMessage != null && context.mounted) {
+      // ModiModal.openDialog(
+      //     context, '문제가 발생했어요', errorMessage, false, null, null);
+      Authentication.state.resolveErrorStatus();
+    }
+    else if (errorMessage != null && context.mounted) {
       ModiModal.openDialog(
           context, '문제가 발생했어요', errorMessage, false, null, null);
       Authentication.state.resolveErrorStatus();

@@ -9,14 +9,16 @@ import 'package:modi/model/user/user_model.dart';
 class AuthState extends ChangeNotifier {
   bool _isAuthentication = false;
   String? _errorMessage;
+  bool _isLogOut = false;
 
   void _updateAuthStatus(bool isAuthentication) {
     _isAuthentication = isAuthentication;
     notifyListeners();
   }
 
-  void _updateErrorStatus(String? reason) {
+  void _updateErrorStatus(String? reason, bool? isLogOut) {
     _errorMessage = reason;
+    _isLogOut = isLogOut ?? false;
   }
 
   void resolveErrorStatus() {
@@ -26,6 +28,7 @@ class AuthState extends ChangeNotifier {
 
   bool get isAuthentication => _isAuthentication;
   String? get errorMessage => _errorMessage;
+  bool get isLogOut => _isLogOut;
 }
 
 class Authentication {
@@ -45,6 +48,7 @@ class Authentication {
   String _nickname = '';
   int _userId = -1;
   String _socialIdType = '';
+  bool isLogOut = false;
 
   factory Authentication.from(String accessToken, String refreshToken) {
     Map<String, dynamic> decodeToken = JwtDecoder.decode(accessToken);
@@ -80,7 +84,7 @@ class Authentication {
     return JwtDecoder.isExpired(_accessToken!);
   }
 
-  void logout({String? reason}) async {
+  void logout({String? reason, bool? isLogOut}) async {
     _accessToken = null;
     _refreshToken = null;
     _userId = -1;
@@ -88,8 +92,9 @@ class Authentication {
     _introduce = '';
     _socialId = '';
     _socialIdType = '';
+    isLogOut = isLogOut;
 
-    _state._updateErrorStatus(reason);
+    _state._updateErrorStatus(reason,isLogOut);
     _state._updateAuthStatus(false);
 
     await const FlutterSecureStorage().delete(key: 'access_token');

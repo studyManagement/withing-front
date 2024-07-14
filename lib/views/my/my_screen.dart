@@ -152,7 +152,7 @@ class MyScreen extends StatelessWidget {
                   ListTile(
                     onTap: () {
                       return Authentication.instance
-                          .logout(reason: '로그아웃 되었습니다.');
+                          .logout(reason: '로그아웃 되었습니다.', isLogOut: true);
                     },
                     title: const Text(
                       '로그아웃',
