@@ -60,7 +60,7 @@ class StudyScheduleVoteList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     ScheduleVote vote = votes[index];
                     bool isVoted = vote.isVoted(userId);
-
+                    print(isVoted);
                     return GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {

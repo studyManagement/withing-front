@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/model/schedule/schedule_vote_model.dart';
+import 'package:modi/model/schedule/vote_date_time_model.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
@@ -9,6 +10,8 @@ class ScheduleVoteViewModel extends ChangeNotifier {
   final ScheduleService _service;
 
   List<ScheduleVote> votes = [];
+  List<VoteDateTimeModel> votedDateTimeList = [];
+  List<DateTime> selectedDatetimeList = [];
   ScheduleVote? vote;
 
   String title = '';
@@ -39,6 +42,40 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     this.endAt = endAt;
   }
 
+  void selectVoteDateAndTimes(DateTime dateTime) {
+    if (selectedDatetimeList.contains(dateTime)) {
+      selectedDatetimeList.remove(dateTime);
+    } else {
+      selectedDatetimeList.add(dateTime);
+    }
+  }
+
+  _convertDateTimesToVoteDateTimeModels() {
+    // 날짜별로 그룹화된 Map 생성
+    final Map<String, List<String>> groupedByDate = {};
+
+    for (final dateTime in selectedDatetimeList) {
+      final dateKey =
+          "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+      final timeValue =
+          "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+
+      groupedByDate.putIfAbsent(dateKey, () => []).add(timeValue);
+    }
+    // 그룹화된 Map을 List<VoteDateTimeModel>로 변환
+    votedDateTimeList = groupedByDate.entries.map((entry) {
+      // 시간을 정렬
+      entry.value.sort();
+      return VoteDateTimeModel(entry.key, entry.value);
+    }).toList();
+    // 날짜별로 정렬
+    votedDateTimeList.sort((a, b) => a.voteDay.compareTo(b.voteDay));
+    // for(var i in votedDateTimeList){
+    //   print(i.voteDay);
+    //   print(i.selectedTimes);
+    // }
+  }
+
   Future<void> fetchScheduleVote(int studyId, int voteId) async {
     ScheduleVoteModel scheduleVote =
         await _service.fetchScheduleVote(studyId, voteId);
@@ -58,8 +95,25 @@ class ScheduleVoteViewModel extends ChangeNotifier {
   }
 
   Future<void> postScheduleVote(BuildContext context, int studyId) async {
+    // 투표 생성
     ScheduleVoteModel scheduleVote = await _service.postScheduleVote(
         studyId, title, description, selectedDates, startAt, endAt);
+
+    logger.info('postScheduleVote: $scheduleVote');
+
+    if (!context.mounted) {
+      return;
+    }
+
+    context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
+  }
+
+  Future<void> castVote(
+      BuildContext context, int studyId, int scheduleId) async {
+    // 투표 하기
+    _convertDateTimesToVoteDateTimeModels();
+    ScheduleVoteModel scheduleVote =
+        await _service.vote(studyId, scheduleId, votedDateTimeList);
 
     logger.info('postScheduleVote: $scheduleVote');
 
