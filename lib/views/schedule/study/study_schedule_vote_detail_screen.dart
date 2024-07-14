@@ -74,7 +74,6 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
       studyViewModel.fetchStudyInfo(studyId);
       voteViewModel.fetchScheduleVote(studyId, voteId);
     }
-
     return DefaultLayout(
       title: '',
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -107,8 +106,8 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
                 ActionSheetParams(
                     title: '마감하기',
                     onTap: () {
-                      context.push(
-                          '/studies/$studyId/schedules/vote/$voteId/confirm');
+                      // context.push(
+                      //     '/studies/$studyId/schedules/vote/$voteId/confirm');
                     }),
                 ActionSheetParams(
                   title: '삭제하기',
@@ -233,7 +232,7 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
           const Divider(color: AppColors.gray150),
           const SizedBox(height: 16),
           _makeHeader(
-            '확정 일정',
+            '확정 일정', // 수정
             const Text(
               '-',
               style: TextStyle(
@@ -254,7 +253,7 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    '${vote.totalVoteCount}/${members.length}',
+                    '${vote.votedMembers.length}/${members.length}',
                     style: const TextStyle(
                         color: AppColors.gray800,
                         fontSize: 13,

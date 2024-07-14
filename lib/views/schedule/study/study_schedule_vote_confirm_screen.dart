@@ -48,8 +48,7 @@ class StudyScheduleVoteConfirmScreen extends StatelessWidget {
                 ))} - ${e.selectedTime.hour + 1}:00',
               ),
             )
-            .toList() ??
-        [];
+            .toList();
 
     log('voteItems: $voteItems');
     log('voteAggregates: ${vote?.voteAggregates}');

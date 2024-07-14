@@ -114,8 +114,17 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     _convertDateTimesToVoteDateTimeModels();
     ScheduleVoteModel scheduleVote =
         await _service.vote(studyId, scheduleId, votedDateTimeList);
+    // logger.info('postScheduleVote: $scheduleVote');
+    if (!context.mounted) {
+      return;
+    }
 
-    logger.info('postScheduleVote: $scheduleVote');
+    context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
+  }
+
+  Future<void> closeVote(BuildContext context, int studyId, int voteId) async {
+    ScheduleVoteModel scheduleVote = await _service.closeVote(studyId, voteId);
+    logger.info('putScheduleVote: $scheduleVote');
 
     if (!context.mounted) {
       return;

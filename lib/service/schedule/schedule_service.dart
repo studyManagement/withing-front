@@ -78,6 +78,12 @@ abstract class ScheduleApi {
       @Body() List<VoteDateTimeModel> selectedList
       );
 
+  @PUT('/studies/{id}/schedules/votes/{vote_id}')
+  Future<ScheduleVoteModel> closeVote(
+      @Path('id') int id,
+      @Path('vote_id') int voteId,
+      );
+
   @GET('/users/schedules')
   Future<List<UserScheduleModel>> fetchUserSchedule(
       @Query('date') String date, @Query('size') int size);
@@ -148,6 +154,22 @@ class ScheduleService {
         studyId,
         scheduleId,
         selectedList
+      );
+    } on ApiException catch (e){
+      rethrow;
+    } on NetworkException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ScheduleVoteModel> closeVote(
+      int studyId,
+      int voteId,
+      ) async {
+    try {
+      return await _scheduleApi.closeVote(
+          studyId,
+          voteId
       );
     } on ApiException catch (e){
       rethrow;
