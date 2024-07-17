@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/model/schedule/schedule_vote_model.dart';
 import 'package:modi/model/schedule/vote_date_time_model.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
+
+import '../../common/modal/modi_modal.dart';
 
 class ScheduleVoteViewModel extends ChangeNotifier {
   final ScheduleService _service;
@@ -16,9 +19,10 @@ class ScheduleVoteViewModel extends ChangeNotifier {
 
   String title = '';
   String description = '';
-  List<DateTime> selectedDates = [];
+  List<DateTime> selectedDates = [DateTime.now()];
   DateTime startAt = DateTime.now();
   DateTime endAt = DateTime.now();
+  bool isClosed = false;
 
   ScheduleVoteViewModel(this._service);
 
@@ -118,18 +122,35 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     if (!context.mounted) {
       return;
     }
-
     context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
   }
 
   Future<void> closeVote(BuildContext context, int studyId, int voteId) async {
-    ScheduleVoteModel scheduleVote = await _service.closeVote(studyId, voteId);
-    logger.info('putScheduleVote: $scheduleVote');
+    try {
+      print(voteId);
+      ScheduleVoteModel scheduleVote = await _service.closeVote(
+          studyId, voteId);
+      isClosed = true;
+      logger.info('putScheduleVote: $scheduleVote');
 
-    if (!context.mounted) {
-      return;
+      if (!context.mounted) return;
+      context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
+    }  on ApiException catch (e){
+      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
+  }
 
-    context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
+  Future<void> deleteVote(BuildContext context, int studyId, int voteId) async {
+    try {
+      ScheduleVoteModel scheduleVote = await _service.deleteVote(
+          studyId, voteId);
+
+      logger.info('deleteScheduleVote: $scheduleVote');
+
+      if (!context.mounted) return;
+      context.go('/studies/$studyId/schedules');
+    }  on ApiException catch (e){
+      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
+    }
   }
 }

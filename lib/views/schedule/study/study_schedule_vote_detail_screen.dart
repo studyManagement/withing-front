@@ -85,7 +85,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 onTap: () => context
                     .push('/studies/$studyId/schedules/vote/$voteId/edit'),
-                text: isVoted ? '다시 투표하기' : '투표하기',
+                text: (voteViewModel.isClosed) ? '투표 마감' : isVoted ? '다시 투표하기' : '투표하기',
                 backgroundColor: AppColors.blue600,
               ),
             ),
@@ -106,12 +106,13 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
                 ActionSheetParams(
                     title: '마감하기',
                     onTap: () {
-                      // context.push(
-                      //     '/studies/$studyId/schedules/vote/$voteId/confirm');
+                      voteViewModel.closeVote(context, studyId, voteId);
                     }),
                 ActionSheetParams(
                   title: '삭제하기',
-                  onTap: () {},
+                  onTap: () {
+                    voteViewModel.deleteVote(context, studyId, voteId);
+                  },
                   titleColor: AppColors.red400,
                 ),
               ],

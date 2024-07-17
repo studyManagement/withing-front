@@ -9,6 +9,8 @@ import 'package:modi/common/components/spinner/datetime/generator/year_generator
 import 'package:modi/common/components/spinner/spinner.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 
+import '../../../theme/app/app_fonts.dart';
+
 class DateTimeSpinner extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _DateTimeSpinnerState();
@@ -111,6 +113,16 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
                   initialValue: hour_12,
                   onChanged: (index, value) =>
                       dateTimeCalculator.setHour(value),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Spinner(
+                  width: 60,
+                  height: 157,
+                  children: [':'],
+                  initialValue: ':',
+                  onChanged: (index, value) {},
                 ),
               ),
               Expanded(

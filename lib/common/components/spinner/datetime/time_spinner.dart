@@ -80,6 +80,16 @@ class _TimeSpinnerState extends State<TimeSpinner> {
                 flex: 2,
                 child: Spinner(
                   width: 60,
+                  height: 157,
+                  children: [':'],
+                  initialValue: ':',
+                  onChanged: (index, value) {},
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Spinner(
+                  width: 60,
                   height: 160,
                   children: minuteGenerator.makeElements(standard),
                   initialValue: standard.minute.toString(),
