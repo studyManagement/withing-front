@@ -1,0 +1,41 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "modi-25afe",
+          "appId": "1:10829227760:android:a206337630119c804a4435",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "modi-25afe",
+          "appId": "1:10829227760:ios:60c701e94fb30a6e4a4435",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "modi-25afe",
+          "appId": "1:10829227760:ios:3d8ad6f13ce6cd354a4435",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "modi-25afe",
+          "configurations": {
+            "android": "1:10829227760:android:a206337630119c804a4435",
+            "ios": "1:10829227760:ios:60c701e94fb30a6e4a4435",
+            "macos": "1:10829227760:ios:3d8ad6f13ce6cd354a4435",
+            "web": "1:10829227760:web:02ecfab71d1befda4a4435",
+            "windows": "1:10829227760:web:ba3e673d7e823a744a4435"
+          }
+        }
+      }
+    }
+  }
+}
