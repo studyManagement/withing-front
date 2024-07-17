@@ -55,8 +55,18 @@ class StudyScheduleDetailScreen extends StatelessWidget {
     return today == _startAt;
   }
 
-  Widget _makeShareButton(
-      BuildContext context, String title, String message, String path) {
+  String _getDateString(DateTime dateTime) {
+    String timeDifference = (dateTime.hour >= 12) ? '오후' : '오전';
+    String hour = (dateTime.hour > 12) ? (dateTime.hour - 12)
+        .toString()
+        .padLeft(2, '0') : dateTime.hour.toString().padLeft(2, '0');
+    return "${dateTime.year}. ${dateTime.month.toString().padLeft(
+        2, '0')}. ${dateTime.day.toString().padLeft(2, '0')} $timeDifference $hour:${dateTime
+        .minute.toString().padLeft(2, '0')}";
+  }
+
+  Widget _makeShareButton(BuildContext context, String title, String message,
+      String path) {
     return CircleButton(
       onTap: () {
         ModiModal.openBottomSheet(
@@ -87,11 +97,11 @@ class StudyScheduleDetailScreen extends StatelessWidget {
     StudyViewModel studyViewModel = context.read<StudyViewModel>();
 
     ScheduleDetail scheduleDetail =
-        context.select<ScheduleViewModel, ScheduleDetail>(
+    context.select<ScheduleViewModel, ScheduleDetail>(
             (provider) => provider.schedule);
 
     String studyName = context.select<StudyViewModel, String>(
-        (provider) => provider.study?.studyName ?? '');
+            (provider) => provider.study?.studyName ?? '');
 
     DateFormat dateFormatter = DateFormat('yyyy. MM. dd. HH:mm');
 
@@ -118,87 +128,88 @@ class StudyScheduleDetailScreen extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         if(StudyViewModel.leaderId == Authentication.instance.userId)
-        CircleButton(
-            onTap: () {
-              ModiModal.openActionSheet(
-                context,
-                [
-                  ActionSheetParams(
-                      title: '수정하기',
-                      onTap: () => context.push(
-                          '/studies/$studyId/schedules/register?scheduleId=$studyScheduleId')),
-                  ActionSheetParams(
-                    title: '삭제하기',
-                    titleColor: AppColors.red400,
-                    onTap: () =>
-                        scheduleViewModel.deleteSchedule(context, studyId),
-                  ),
-                ],
-              );
-            },
-            icon: const Icon(Icons.more_horiz)),
+          CircleButton(
+              onTap: () {
+                ModiModal.openActionSheet(
+                  context,
+                  [
+                    ActionSheetParams(
+                        title: '수정하기',
+                        onTap: () =>
+                            context.push(
+                                '/studies/$studyId/schedules/register?scheduleId=$studyScheduleId')),
+                    ActionSheetParams(
+                      title: '삭제하기',
+                      titleColor: AppColors.red400,
+                      onTap: () =>
+                          scheduleViewModel.deleteSchedule(context, studyId),
+                    ),
+                  ],
+                );
+              },
+              icon: const Icon(Icons.more_horiz)),
       ],
       child: (scheduleDetail.id == -1)
           ? const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [CircularProgressIndicator()],
-              ),
-            )
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [CircularProgressIndicator()],
+        ),
+      )
           : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ...headerWidget,
-                      Text(
-                        scheduleDetail.title,
-                        style: const TextStyle(
-                          color: AppColors.gray800,
-                          fontWeight: AppFonts.fontWeight600,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                ...headerWidget,
+                Text(
+                  scheduleDetail.title,
+                  style: const TextStyle(
+                    color: AppColors.gray800,
+                    fontWeight: AppFonts.fontWeight600,
+                    fontSize: 16,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Divider(
-                      thickness: 1,
-                      color: AppColors.gray50,
-                    ),
-                  ),
-                  _makeScheduleDescription(
-                    '시작',
-                    dateFormatter.format(scheduleDetail.startAt),
-                  ),
-                  const SizedBox(height: 8),
-                  _makeScheduleDescription(
-                    '종료',
-                    dateFormatter.format(scheduleDetail.endAt),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Divider(
-                      thickness: 1,
-                      color: AppColors.gray50,
-                    ),
-                  ),
-                  Text(
-                    scheduleDetail.description,
-                    style: const TextStyle(
-                      color: AppColors.gray600,
-                      fontWeight: AppFonts.fontWeight500,
-                      fontSize: 14,
-                    ),
-                  )
-                ],
+                ),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Divider(
+                thickness: 1,
+                color: AppColors.gray50,
               ),
             ),
+            _makeScheduleDescription(
+              '시작',
+              _getDateString(scheduleDetail.startAt),
+            ),
+            const SizedBox(height: 8),
+            _makeScheduleDescription(
+              '종료',
+              _getDateString(scheduleDetail.endAt),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Divider(
+                thickness: 1,
+                color: AppColors.gray50,
+              ),
+            ),
+            Text(
+              scheduleDetail.description,
+              style: const TextStyle(
+                color: AppColors.gray600,
+                fontWeight: AppFonts.fontWeight500,
+                fontSize: 14,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

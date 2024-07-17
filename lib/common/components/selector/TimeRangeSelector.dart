@@ -96,7 +96,7 @@ class _TimeRangeSelectorState extends State<TimeRangeSelector> {
                   child: Column(
                     children: [
                       Text(
-                        '기간 선택',
+                        '시간 선택',
                         style: TextStyle(
                           color: AppColors.gray800,
                           fontWeight: AppFonts.fontWeight600,
@@ -105,7 +105,7 @@ class _TimeRangeSelectorState extends State<TimeRangeSelector> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        '일정으로 등록할 기간을 선택해주세요.',
+                        '일정 투표를 받고 싶은 시간대를 선택해주세요.',
                         style: TextStyle(
                           color: AppColors.gray400,
                           fontSize: 14,

@@ -9,6 +9,8 @@ import 'package:modi/view_models/schedule/model/schedule_vote.dart';
 import 'package:modi/view_models/schedule/schedule_vote_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/components/gray_container.dart';
+
 class StudyScheduleVoteMembersScreen extends StatelessWidget {
   final int studyId;
   final int voteId;
@@ -53,7 +55,10 @@ class StudyScheduleVoteMembersScreen extends StatelessWidget {
                         children: [
                           CircleImage(
                             size: 38,
-                            image: Image.asset('asset/default_image.png'),
+                            image: Image.network(user.profileImage!, errorBuilder: (BuildContext context, Object exception,
+                                StackTrace? stackTrace) {
+                              return const GrayContainer(size: 38);
+                            },),
                           ),
                           const SizedBox(width: 8),
                           Text(
