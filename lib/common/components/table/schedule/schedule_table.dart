@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -92,7 +93,7 @@ class ScheduleTable extends StatelessWidget {
     );
   }
 
-  List<TableCell> _makeTableHeader() {
+  List<TableCell> _makeTableHeader(BuildContext context) {
     final weekDayFormat = DateFormat('E', 'ko');
     final dateFormat = DateFormat('M/d', 'ko');
 
@@ -100,6 +101,7 @@ class ScheduleTable extends StatelessWidget {
         .map(
           (dateTime) => TableCell(
             child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   weekDayFormat.format(dateTime),
@@ -182,7 +184,7 @@ class ScheduleTable extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 8),
                                       SizedBox(
-                                        height: (statuses.isEmpty) ? 20 :100,
+                                        height: (statuses.isEmpty) ? 20 : 100,
                                         width: 120,
                                         child: ListView.builder(
                                           itemExtent: 30,
@@ -255,15 +257,18 @@ class ScheduleTable extends StatelessWidget {
   Widget build(BuildContext context) {
     dateTimes.sort((a, b) => a.compareTo(b));
 
-    List<TableCell> headers = _makeTableHeader();
+    List<TableCell> headers = _makeTableHeader(context);
     List<TableRow> rows = _makeTableRow();
 
     return Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths : {0: const FractionColumnWidth(.11)},
+      columnWidths: {
+        0: const FractionColumnWidth(.11),
+         if (dateTimes.length == 1) 1: const FractionColumnWidth(.80)
+      },
       children: [
         TableRow(
-          children: [const TableCell(child: SizedBox()),...headers],
+          children: [const TableCell(child: SizedBox()), ...headers],
         ),
         ...rows,
       ],
