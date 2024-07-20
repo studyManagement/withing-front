@@ -159,6 +159,7 @@ class ScheduleService {
       List<VoteDateTimeModel> selectedList
       ) async {
     try {
+      selectedList.map((e) => e.toJson()).toList();
       return await _scheduleApi.vote(
         studyId,
         scheduleId,

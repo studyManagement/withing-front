@@ -18,6 +18,7 @@ _$ScheduleVoteModelImpl _$$ScheduleVoteModelImplFromJson(
           .map((e) => ScheduleVoteItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       createdAt: DateTime.parse(json['createdAt'] as String),
+      status: json['status'] as String,
     );
 
 Map<String, dynamic> _$$ScheduleVoteModelImplToJson(
@@ -30,4 +31,5 @@ Map<String, dynamic> _$$ScheduleVoteModelImplToJson(
       'description': instance.description,
       'votes': instance.votes,
       'createdAt': instance.createdAt.toIso8601String(),
+      'status': instance.status,
     };

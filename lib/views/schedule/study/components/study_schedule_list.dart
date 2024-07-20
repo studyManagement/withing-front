@@ -104,7 +104,7 @@ class StudyScheduleList extends StatelessWidget {
                     schedule.title,
                     _makeScheduleDescription(
                         schedule.startAt, schedule.endAt),
-                    tag: _isToday(schedule.startAt) ? '오늘' : null),
+                    tag: _isToday(schedule.startAt) ? '오늘' : DateTime.now().isAfter(schedule.endAt) ? '마감' :null),
               );
             },
             separatorBuilder: (BuildContext context, int index) {
@@ -139,10 +139,15 @@ class _StudyScheduleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> widgets = [];
 
-    if (tag != null) {
+    if (tag == '오늘') {
       widgets.add(Tag(tag!, TagColorSet.RED));
       widgets.add(const SizedBox(width: 6));
     }
+    if (tag == '마감') {
+      widgets.add(Tag(tag!, TagColorSet.GRAY));
+      widgets.add(const SizedBox(width: 6));
+    }
+
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

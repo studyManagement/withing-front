@@ -83,10 +83,10 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: ConfirmButton(
                 width: MediaQuery.of(context).size.width,
-                onTap: () => context
+                onTap: () =>  (vote.isFinished) ? null :context
                     .push('/studies/$studyId/schedules/vote/$voteId/edit'),
-                text: (voteViewModel.isClosed) ? '투표 마감' : isVoted ? '다시 투표하기' : '투표하기',
-                backgroundColor: AppColors.blue600,
+                text: (vote.isFinished) ? '투표 마감' : isVoted ? '다시 투표하기' : '투표하기',
+                backgroundColor: (vote.isFinished) ? AppColors.gray200 : AppColors.blue600,
               ),
             ),
       actions: [
@@ -103,6 +103,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
             ModiModal.openActionSheet(
               context,
               [
+                if(!vote!.isFinished)
                 ActionSheetParams(
                     title: '마감하기',
                     onTap: () {
@@ -206,8 +207,8 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
           Row(
             children: [
               Tag(
-                isVoted ? '참여완료' : '미참여',
-                isVoted ? TagColorSet.GRAY : TagColorSet.RED,
+                vote.isFinished ? '마감' : isVoted ? '참여완료' : '미참여',
+                vote.isFinished || isVoted ? TagColorSet.GRAY : TagColorSet.RED,
               ),
               const SizedBox(width: 8),
               Text(

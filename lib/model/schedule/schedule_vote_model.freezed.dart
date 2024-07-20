@@ -27,6 +27,7 @@ mixin _$ScheduleVoteModel {
   String get description => throw _privateConstructorUsedError;
   List<ScheduleVoteItemModel> get votes => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,8 @@ abstract class $ScheduleVoteModelCopyWith<$Res> {
       String title,
       String description,
       List<ScheduleVoteItemModel> votes,
-      DateTime createdAt});
+      DateTime createdAt,
+      String status});
 
   $UserModelCopyWith<$Res> get user;
 }
@@ -72,6 +74,7 @@ class _$ScheduleVoteModelCopyWithImpl<$Res, $Val extends ScheduleVoteModel>
     Object? description = null,
     Object? votes = null,
     Object? createdAt = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -102,6 +105,10 @@ class _$ScheduleVoteModelCopyWithImpl<$Res, $Val extends ScheduleVoteModel>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -129,7 +136,8 @@ abstract class _$$ScheduleVoteModelImplCopyWith<$Res>
       String title,
       String description,
       List<ScheduleVoteItemModel> votes,
-      DateTime createdAt});
+      DateTime createdAt,
+      String status});
 
   @override
   $UserModelCopyWith<$Res> get user;
@@ -153,6 +161,7 @@ class __$$ScheduleVoteModelImplCopyWithImpl<$Res>
     Object? description = null,
     Object? votes = null,
     Object? createdAt = null,
+    Object? status = null,
   }) {
     return _then(_$ScheduleVoteModelImpl(
       id: null == id
@@ -183,13 +192,17 @@ class __$$ScheduleVoteModelImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$ScheduleVoteModelImpl implements _ScheduleVoteModel {
+class _$ScheduleVoteModelImpl extends _ScheduleVoteModel {
   const _$ScheduleVoteModelImpl(
       {required this.id,
       required this.studyId,
@@ -197,8 +210,10 @@ class _$ScheduleVoteModelImpl implements _ScheduleVoteModel {
       required this.title,
       required this.description,
       required final List<ScheduleVoteItemModel> votes,
-      required this.createdAt})
-      : _votes = votes;
+      required this.createdAt,
+      required this.status})
+      : _votes = votes,
+        super._();
 
   factory _$ScheduleVoteModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ScheduleVoteModelImplFromJson(json);
@@ -223,10 +238,12 @@ class _$ScheduleVoteModelImpl implements _ScheduleVoteModel {
 
   @override
   final DateTime createdAt;
+  @override
+  final String status;
 
   @override
   String toString() {
-    return 'ScheduleVoteModel(id: $id, studyId: $studyId, user: $user, title: $title, description: $description, votes: $votes, createdAt: $createdAt)';
+    return 'ScheduleVoteModel(id: $id, studyId: $studyId, user: $user, title: $title, description: $description, votes: $votes, createdAt: $createdAt, status: $status)';
   }
 
   @override
@@ -242,13 +259,22 @@ class _$ScheduleVoteModelImpl implements _ScheduleVoteModel {
                 other.description == description) &&
             const DeepCollectionEquality().equals(other._votes, _votes) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, studyId, user, title,
-      description, const DeepCollectionEquality().hash(_votes), createdAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      studyId,
+      user,
+      title,
+      description,
+      const DeepCollectionEquality().hash(_votes),
+      createdAt,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -265,7 +291,7 @@ class _$ScheduleVoteModelImpl implements _ScheduleVoteModel {
   }
 }
 
-abstract class _ScheduleVoteModel implements ScheduleVoteModel {
+abstract class _ScheduleVoteModel extends ScheduleVoteModel {
   const factory _ScheduleVoteModel(
       {required final int id,
       required final int studyId,
@@ -273,7 +299,9 @@ abstract class _ScheduleVoteModel implements ScheduleVoteModel {
       required final String title,
       required final String description,
       required final List<ScheduleVoteItemModel> votes,
-      required final DateTime createdAt}) = _$ScheduleVoteModelImpl;
+      required final DateTime createdAt,
+      required final String status}) = _$ScheduleVoteModelImpl;
+  const _ScheduleVoteModel._() : super._();
 
   factory _ScheduleVoteModel.fromJson(Map<String, dynamic> json) =
       _$ScheduleVoteModelImpl.fromJson;
@@ -292,6 +320,8 @@ abstract class _ScheduleVoteModel implements ScheduleVoteModel {
   List<ScheduleVoteItemModel> get votes;
   @override
   DateTime get createdAt;
+  @override
+  String get status;
   @override
   @JsonKey(ignore: true)
   _$$ScheduleVoteModelImplCopyWith<_$ScheduleVoteModelImpl> get copyWith =>

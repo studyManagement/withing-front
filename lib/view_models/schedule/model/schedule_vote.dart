@@ -25,6 +25,7 @@ class ScheduleVote {
   String description;
   List<ScheduleVoteItem> votes;
   DateTime createdAt;
+  bool isFinished;
 
   ScheduleVote(
     this.id,
@@ -34,6 +35,7 @@ class ScheduleVote {
     this.description,
     this.votes,
     this.createdAt,
+      this.isFinished
   );
 
   int get totalVoteCount {
@@ -106,6 +108,7 @@ class ScheduleVote {
       model.description,
       model.votes.map((e) => ScheduleVoteItem.from(e)).toList(),
       model.createdAt,
+      model.isFinished
     );
   }
 

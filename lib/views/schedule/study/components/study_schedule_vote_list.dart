@@ -67,6 +67,7 @@ class StudyScheduleVoteList extends StatelessWidget {
                             '/studies/${vote.studyId}/schedules/vote/${vote.id}');
                       },
                       child: _StudyScheduleVoteItem(
+                        isFinished: vote.isFinished,
                         vote.title,
                         StudyViewModel.studyMembers, // 수정
                       vote.votedMembers.length,
@@ -98,6 +99,7 @@ class _StudyScheduleVoteItem extends StatelessWidget {
   int currentPeople;
   DateTime createdAt;
   bool isVoted;
+  bool isFinished;
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +110,8 @@ class _StudyScheduleVoteItem extends StatelessWidget {
         Row(
           children: [
             Tag(
-              isVoted ? '참여완료' : '미참여',
-              isVoted ? TagColorSet.GRAY : TagColorSet.RED,
+              isFinished ? '마감' : isVoted ? '참여완료' : '미참여',
+              isFinished || isVoted ? TagColorSet.GRAY : TagColorSet.RED,
             ),
             const SizedBox(width: 6),
             Text(
@@ -172,5 +174,5 @@ class _StudyScheduleVoteItem extends StatelessWidget {
 
   _StudyScheduleVoteItem(
       this.title, this.numberOfPeople, this.currentPeople, this.createdAt,
-      {super.key, required this.isVoted});
+      {super.key, required this.isVoted, required this.isFinished});
 }
