@@ -10,6 +10,7 @@ class Spinner extends StatefulWidget {
     required this.height,
     required this.initialValue,
     required this.onChanged,
+    required this.selectItem,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class Spinner extends StatefulWidget {
   final double width;
   final String initialValue;
   final Function(int, String) onChanged;
+  final int selectItem;
 
   @override
   State<StatefulWidget> createState() => _SpinnerState();
@@ -36,10 +38,21 @@ class _SpinnerState extends State<Spinner> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // _controller.animateToItem(widget.children.indexOf(widget.initialValue),
-    //     duration: Duration(milliseconds: 200), curve: Curves.bounceIn);
+  void didUpdateWidget(Spinner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectItem != widget.selectItem && oldWidget.initialValue != widget.initialValue) {
+      setState(() {
+        _controller.animateToItem(
+          widget.children.indexOf(widget.initialValue),
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+        );
+      });
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _pickedIndex,
       builder: (context, value, child) {

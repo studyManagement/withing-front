@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/button/value_button.dart';
+import 'package:modi/common/components/debouncer/debouncer.dart';
 import 'package:modi/common/components/spinner/dateTime/date_time_spinner.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
 import 'package:provider/provider.dart';
-
 
 class DateTimeRangeSelector extends StatefulWidget {
   final DateTime startAt;
@@ -52,8 +52,6 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.read<ScheduleViewModel>();
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: InkWell(
@@ -66,8 +64,8 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                 return Column(
                   children: [
                     const Padding(
-                      padding:
-                      EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 20),
+                      padding: EdgeInsets.only(
+                          top: 40, left: 16, right: 16, bottom: 20),
                       child: Column(
                         children: [
                           Text(
@@ -111,7 +109,6 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                               setState(() {
                                 selectItem = 1;
                               }),
-                              vm.isChanged = !vm.isChanged
                             },
                           ),
                           const SizedBox(width: 4),
@@ -130,7 +127,6 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                               setState(() {
                                 selectItem = 2;
                               }),
-                              vm.isChanged = !vm.isChanged
                             },
                           ),
                         ],
@@ -142,13 +138,14 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                       child: Column(
                         children: [
                           DateTimeSpinner(
-                            (selectItem==1)? _startAt:_endAt,
-                                (DateTime dateTime) {
+                            standard: (selectItem == 1) ? _startAt : _endAt,
+                            onChanged: (DateTime dateTime) {
                               setState(() {
                                 _updateDateTime(dateTime);
-                                widget.onChange(_startAt,_endAt);
+                                widget.onChange(_startAt, _endAt);
                               });
                             },
+                            selectItem: selectItem,
                           ),
                           const SizedBox(height: 40),
                           ConfirmButton(
@@ -183,8 +180,8 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     height: 36,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.0),
@@ -207,8 +204,8 @@ class _DateTimeRangeSelectorState extends State<DateTimeRangeSelector> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     height: 36,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.0),

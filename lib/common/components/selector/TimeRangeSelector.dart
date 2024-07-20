@@ -136,13 +136,14 @@ class _TimeRangeSelectorState extends State<TimeRangeSelector> {
                       children: [
                         TimeSpinner(
                           focusedBoxWidth: 244,
-                          (selectItem==1)? _startAt:_endAt,
-                              (DateTime dateTime) {
+                          standard: (selectItem==1)? _startAt:_endAt,
+                              onChanged: (DateTime dateTime) {
                             setState(() {
                               _updateDateTime(dateTime);
                               widget.onChange(_startAt,_endAt);
                             });
                           },
+                          selectItem: selectItem,
                         ),
                         const SizedBox(height: 40),
                         ConfirmButton(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
@@ -112,6 +113,12 @@ class SetRegularMeetingScreen extends StatelessWidget {
                     ),
                   if (consumer.meetingType != MeetingType.NONE)
                     MeetingTimePicker(
+                      startAt: viewModel.startAt,
+                      endAt: viewModel.endAt,
+                      onChange: (DateTime startAt, DateTime endAt) {
+                        viewModel.setStartAt(startAt);
+                        viewModel.setEndAt(endAt);
+                      },
                       type: curType,
                     ),
                   const SizedBox(height: 100)

@@ -23,19 +23,20 @@ class ValueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        height: 36,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6.0),
-          border: Border.all(color: borderColor ?? AppColors.gray150),
-          color: AppColors.white,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: onTap,
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.translucent,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          height: 36,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6.0),
+            border: Border.all(color: borderColor ?? AppColors.gray150),
+            color: AppColors.white,
+          ),
+          child: Row(
+            children: [
+              Expanded(
                 child: Text(
                   value,
                   textAlign: textAlign,
@@ -46,9 +47,9 @@ class ValueButton extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            if (rightWidget != null) rightWidget!,
-          ],
+              if (rightWidget != null) rightWidget!,
+            ],
+          ),
         ),
       ),
     );
