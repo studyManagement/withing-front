@@ -4,13 +4,14 @@ import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
 
 class Spinner extends StatefulWidget {
-  const Spinner(
-      {required this.children,
-      required this.width,
-      required this.height,
-      required this.initialValue,
-      required this.onChanged,
-      super.key});
+  const Spinner({
+    required this.children,
+    required this.width,
+    required this.height,
+    required this.initialValue,
+    required this.onChanged,
+    super.key,
+  });
 
   final List<String> children;
   final double height;
@@ -28,6 +29,7 @@ class _SpinnerState extends State<Spinner> {
 
   @override
   void initState() {
+    super.initState();
     int initialIndex = widget.children.indexOf(widget.initialValue);
     _controller = FixedExtentScrollController(initialItem: initialIndex);
     _pickedIndex = ValueNotifier(initialIndex);
@@ -35,6 +37,9 @@ class _SpinnerState extends State<Spinner> {
 
   @override
   Widget build(BuildContext context) {
+    // _controller.animateToItem(widget.children.indexOf(widget.initialValue),
+    //     duration: Duration(milliseconds: 200), curve: Curves.bounceIn);
+
     return ValueListenableBuilder(
       valueListenable: _pickedIndex,
       builder: (context, value, child) {
@@ -56,10 +61,11 @@ class _SpinnerState extends State<Spinner> {
             children: List.generate(
               widget.children.length,
               (index) => makeTextWidget(
-                  widget.children[index],
-                  _pickedIndex.value == index
-                      ? AppColors.blue400
-                      : AppColors.gray300),
+                widget.children[index],
+                _pickedIndex.value == index
+                    ? AppColors.blue400
+                    : AppColors.gray300,
+              ),
             ),
           ),
         );

@@ -18,26 +18,25 @@ class TimeSpinner extends StatefulWidget {
 }
 
 class _TimeSpinnerState extends State<TimeSpinner> {
-  late DateTimeCalculator dateTimeCalculator;
-  late DateTime standard;
 
   @override
   void initState() {
     super.initState();
-    standard = widget.standard;
-    dateTimeCalculator = DateTimeCalculator(widget.onChanged, standard);
   }
+
 
   @override
   Widget build(BuildContext context) {
     DateTimeGenerator hourGenerator = HourGenerator();
     DateTimeGenerator minuteGenerator = MinuteGenerator();
+    DateTimeCalculator dateTimeCalculator = DateTimeCalculator(widget.onChanged, widget.standard);
 
     return Stack(
       children: [
         Positioned(
           top: 54,
           child: Container(
+            alignment: Alignment.center,
             width: widget.focusedBoxWidth ?? MediaQuery.of(context).size.width - 32,
             height: 37,
             decoration: BoxDecoration(
@@ -46,8 +45,8 @@ class _TimeSpinnerState extends State<TimeSpinner> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14),
+        SizedBox(
+          width: widget.focusedBoxWidth ?? double.infinity,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +57,7 @@ class _TimeSpinnerState extends State<TimeSpinner> {
                   width: 60,
                   height: 160,
                   children: const ['오전', '오후'],
-                  initialValue: (standard.hour > 11) ? '오후' : '오전',
+                  initialValue: (widget.standard.hour > 11) ? '오후' : '오전',
                   onChanged: (index, value) =>
                       dateTimeCalculator.setPart(value),
                 ),
@@ -68,10 +67,10 @@ class _TimeSpinnerState extends State<TimeSpinner> {
                 child: Spinner(
                   width: 60,
                   height: 160,
-                  children: hourGenerator.makeElements(standard),
-                  initialValue: (standard.hour == 0) ? (standard.hour + 12).toString() : (standard.hour > 12)
-                      ? (standard.hour - 12).toString()
-                      : standard.hour.toString(),
+                  children: hourGenerator.makeElements(widget.standard),
+                  initialValue: (widget.standard.hour == 0) ? (widget.standard.hour + 12).toString() : (widget.standard.hour > 12)
+                      ? (widget.standard.hour - 12).toString()
+                      : widget.standard.hour.toString(),
                   onChanged: (index, value) =>
                       dateTimeCalculator.setHour(value),
                 ),
@@ -91,8 +90,8 @@ class _TimeSpinnerState extends State<TimeSpinner> {
                 child: Spinner(
                   width: 60,
                   height: 160,
-                  children: minuteGenerator.makeElements(standard),
-                  initialValue: standard.minute.toString(),
+                  children: minuteGenerator.makeElements(widget.standard),
+                  initialValue: widget.standard.minute.toString(),
                   onChanged: (index, value) =>
                       dateTimeCalculator.setMinute(value),
                 ),

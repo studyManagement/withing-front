@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/logger/logging_interface.dart';
@@ -17,9 +18,12 @@ class ScheduleViewModel extends ChangeNotifier {
   ScheduleDetail schedule =
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
 
+  FixedExtentScrollController controller = FixedExtentScrollController();
+
 
   bool _isLoading = true;
   bool get isLoading => _isLoading;
+  bool isChanged = false;
 
   ScheduleViewModel(this._service);
 
@@ -38,6 +42,8 @@ class ScheduleViewModel extends ChangeNotifier {
   void setEndAt(DateTime endAt) {
     schedule.endAt = endAt;
   }
+  
+
 
   Future<void> fetchSchedules(int studyId) async {
     List<ScheduleModel> scheduleModels = await _service.fetchSchedules(studyId);
