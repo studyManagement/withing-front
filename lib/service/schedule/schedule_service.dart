@@ -84,7 +84,7 @@ abstract class ScheduleApi {
       @Path('vote_id') int voteId,
       );
 
-  @DELETE('studies/{id}/schedules/{vote_id}/votes')
+  @DELETE('/studies/{id}/schedules/{vote_id}/votes')
   Future<ScheduleVoteModel> deleteVote(
       @Path('id') int id,
       @Path('vote_id') int voteId,
