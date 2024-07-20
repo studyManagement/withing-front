@@ -13,11 +13,47 @@ import '../../../common/theme/app/app_colors.dart';
 import '../../../common/theme/app/app_fonts.dart';
 import '../../schedule/study/study_schedule_add_screen.dart';
 
-class MeetingTimePicker extends StatelessWidget {
+class MeetingTimePicker extends StatefulWidget {
   final MeetingType type;
+  final DateTime startAt;
+  final DateTime endAt;
+  final Function(DateTime, DateTime) onChange;
 
-  const MeetingTimePicker({super.key, required this.type});
+  const MeetingTimePicker({
+    super.key,
+    required this.type,
+    required this.startAt,
+    required this.endAt,
+    required this.onChange,
+  });
 
+  @override
+  State<MeetingTimePicker> createState() => _MeetingTimePickerState();
+}
+
+class _MeetingTimePickerState extends State<MeetingTimePicker> {
+  late DateTime _startAt;
+  late DateTime _endAt;
+  late int selectItem;
+  final dateTimeFormatter = DateFormat('a hh:mm', 'ko');
+
+  @override
+  void initState() {
+    super.initState();
+    _startAt = widget.startAt;
+    _endAt = widget.endAt;
+    selectItem = 1;
+  }
+
+  void _updateDateTime(DateTime dateTime) {
+    setState(() {
+      if (selectItem == 1) {
+        _startAt = dateTime;
+      } else {
+        _endAt = dateTime;
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<StudyViewModel>();
@@ -44,8 +80,8 @@ class MeetingTimePicker extends StatelessWidget {
               const SizedBox(height: 12),
               InkWell(
                 onTap: () {
-                  viewModel.isStart = true;
-                  viewModel.meetingType = type;
+                  selectItem =1;
+                  viewModel.meetingType = widget.type;
                   viewModel.selectedDays = selectedDays;
                   ModiModal.openBottomSheet(
                     context,
@@ -89,18 +125,17 @@ class MeetingTimePicker extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                ValueButton(viewModel.startTime,
-                                    textAlign: TextAlign.center,
-                                    onTap: () {
-                                  viewModel.meetingType = type;
+                                ValueButton(dateTimeFormatter.format(_startAt),
+                                    textAlign: TextAlign.center, onTap: () {
+                                  viewModel.meetingType = widget.type;
                                   setState(() {
-                                    if (!viewModel.isStart)
-                                      viewModel.isStart = true;
+                                    selectItem = 1;
                                   });
                                 },
-                                    borderColor: (viewModel.isStart)
-                                        ? AppColors.blue400
-                                        : null),
+                                  borderColor: selectItem == 1
+                                      ? AppColors.blue400
+                                      : AppColors.gray150,
+                                ),
                                 const Padding(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 4.0),
@@ -110,18 +145,17 @@ class MeetingTimePicker extends StatelessWidget {
                                   ),
                                 ),
                                 ValueButton(
-                                  viewModel.endTime,
+                                  dateTimeFormatter.format(_endAt),
                                   textAlign: TextAlign.center,
                                   onTap: () {
-                                    viewModel.meetingType = type;
+                                    viewModel.meetingType = widget.type;
                                     setState(() {
-                                      if (viewModel.isStart)
-                                        viewModel.isStart = false;
+                                      selectItem = 2;
                                     });
                                   },
-                                  borderColor: (!viewModel.isStart)
+                                  borderColor: selectItem == 2
                                       ? AppColors.blue400
-                                      : null,
+                                      : AppColors.gray150,
                                 ),
                               ],
                             ),
@@ -132,32 +166,22 @@ class MeetingTimePicker extends StatelessWidget {
                             child: Column(
                               children: [
                                 TimeSpinner(
-                                  (viewModel.study!.meetingSchedules.isEmpty)
-                                      ? DateTime.now()
-                                      : DateFormat('HH:mm').parse(viewModel
-                                          .study!
-                                          .meetingSchedules[0]
-                                          .startTime),
-                                  (DateTime) {
+                                  standard: (selectItem==1) ? _startAt:_endAt,
+                                  onChanged: (DateTime dateTime) {
                                     setState(() {
-                                      viewModel.setMeetingTime(
-                                          DateTime, type);
-                                      logger.info(DateTime.toString());
+                                      _updateDateTime(dateTime);
+                                     viewModel.meetingType = widget.type;
+                                      widget.onChange(_startAt,_endAt);
                                     });
                                   },
+                                  selectItem: selectItem,
+                                  focusedBoxWidth: 244,
                                 ),
                                 const SizedBox(height: 40),
                                 ConfirmButton(
-                                  onTap: (viewModel.checkTimes())
-                                      ? () {
-                                          context.pop();
-                                        }
-                                      : null,
+                                  onTap:()=>context.pop(),
                                   text: '선택 완료',
-                                  backgroundColor:
-                                      (viewModel.checkTimes())
-                                          ? AppColors.blue600
-                                          : AppColors.gray200,
+                                  backgroundColor:AppColors.blue600,
                                   height: 50,
                                   width: MediaQuery.of(context).size.width,
                                 ),
@@ -189,7 +213,7 @@ class MeetingTimePicker extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6.0),
                               border: Border.all(color: AppColors.gray150),
                             ),
-                            child: Text(viewModel.startTime,
+                            child: Text(dateTimeFormatter.format(_startAt),
                                 style: Theme.of(context).textTheme.bodySmall)),
                       ],
                     ),
@@ -213,7 +237,7 @@ class MeetingTimePicker extends StatelessWidget {
                                 color: AppColors.gray150,
                               ),
                             ),
-                            child: Text(viewModel.endTime,
+                            child: Text(dateTimeFormatter.format(_endAt),
                                 style: Theme.of(context).textTheme.bodySmall)),
                       ],
                     ),

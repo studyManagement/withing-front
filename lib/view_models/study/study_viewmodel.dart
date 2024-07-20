@@ -34,7 +34,9 @@ class StudyViewModel extends ChangeNotifier {
   final List<int> _selectedUsers = [];
   String startTime = '미등록';
   String endTime = '미등록';
-  bool _isStart = false;
+  late DateTime startAt;
+  late DateTime endAt;
+
   String _password = '';
   List<bool> _isFilled = [for (int i = 0; i < 4; i++) false];
   bool _isInit = true; // 미등록인 경우에만 false
@@ -65,10 +67,6 @@ class StudyViewModel extends ChangeNotifier {
   List<int> get selectedUsers => _selectedUsers;
 
   MeetingType get meetingType => _meetingType!;
-
-  bool get isStart => _isStart;
-
-  bool get isInit => _isInit;
 
   String get password => _password;
 
@@ -110,9 +108,13 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set isStart(bool value) {
-    _isStart = value;
-    notifyListeners();
+
+  setStartAt(DateTime start) {
+    startAt = start;
+  }
+
+  setEndAt(DateTime end) {
+    endAt = end;
   }
 
   void updateSelectedUsers(int selectedUserId, int maxCount) {
@@ -237,8 +239,7 @@ class StudyViewModel extends ChangeNotifier {
   Future<void> deleteStudy() async {
     try {
       await _service.deleteStudy(_study!.id);
-      BottomToast(context: _context, text: "스터디가 삭제되었어요.")
-          .show();
+      BottomToast(context: _context, text: "스터디가 삭제되었어요.").show();
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
@@ -281,18 +282,18 @@ class StudyViewModel extends ChangeNotifier {
 
       if (checkDaysAndTimes(type)) {
         if (_meetingType != MeetingType.NONE) {
-          DateTime start = DateFormat('hh:mm').parse(startTime.substring(3, 8));
-          DateTime end = DateFormat('hh:mm').parse(endTime.substring(3, 8));
-
-          if (startTime.contains('오후')) {
-            start = start.add(const Duration(hours: 12));
-          }
-          if (endTime.contains('오후')) {
-            end = end.add(const Duration(hours: 12));
-          }
-          _isAfter = start.isAfter(end);
-          String startTime24 = DateFormat('HH:mm').format(start);
-          String endTime24 = DateFormat('HH:mm').format(end);
+          // DateTime start = DateFormat('hh:mm').parse(startTime.substring(3, 8));
+          // DateTime end = DateFormat('hh:mm').parse(endTime.substring(3, 8));
+          //
+          // if (startTime.contains('오후')) {
+          //   start = start.add(const Duration(hours: 12));
+          // }
+          // if (endTime.contains('오후')) {
+          //   end = end.add(const Duration(hours: 12));
+          // }
+          _isAfter = startAt.isAfter(endAt);
+          String startTime24 = DateFormat('HH:mm').format(startAt);
+          String endTime24 = DateFormat('HH:mm').format(endAt);
           if (_meetingType == MeetingType.DAILY) {
             for (int i = 1; i <= 7; i++) {
               _meetingSchedules.add(
@@ -304,11 +305,11 @@ class StudyViewModel extends ChangeNotifier {
                   StudyMeetingSchedule.withoutId(day, startTime24, endTime24));
             }
           }
-        }
-        else{
+        } else {
           _meetingSchedules = [];
         }
-        if ((_meetingType != MeetingType.NONE && !_isAfter) || _meetingType == MeetingType.NONE) {
+        if ((_meetingType != MeetingType.NONE && !_isAfter) ||
+            _meetingType == MeetingType.NONE) {
           await _service.setMeetingSchedule(study!.id, _meetingSchedules);
           if (!_context.mounted) return;
           _context.go('/studies/${study!.id}');
@@ -358,17 +359,9 @@ class StudyViewModel extends ChangeNotifier {
     }
   }
 
-  bool checkTimes(){
-    return startTime != '미등록' && endTime != '미등록';
-  }
-
   bool checkDaysAndTimes(MeetingType type) {
-    if (type == MeetingType.DAILY) {
-     return checkTimes();
-    } else if (type == MeetingType.WEEKLY) {
-      if (selectedDays.isNotEmpty &&
-          selectedDays.length <= 3 &&
-          checkTimes()) {
+    if (type == MeetingType.WEEKLY) {
+      if (selectedDays.isNotEmpty && selectedDays.length <= 3) {
         return true;
       } else {
         return false;
@@ -423,7 +416,12 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   void getSelectedDaysAndTime() {
-    if (_meetingType != MeetingType.NONE) {
+    if(_meetingType == MeetingType.NONE){
+      startAt = DateTime.now();
+      endAt = DateTime.now();
+      return;
+    }
+    else{
       List<int> days = [];
       for (int i = 0; i < _study!.meetingSchedules.length; i++) {
         if (!days.contains(_study!.meetingSchedules[i].day)) {
@@ -435,28 +433,14 @@ class StudyViewModel extends ChangeNotifier {
     }
     if (_study!.meetingSchedules.isNotEmpty &&
         _study!.meetingSchedules[0].startTime.trim().isNotEmpty) {
-      DateTime start =
+      startAt =
           DateFormat('HH:mm').parse(_study!.meetingSchedules[0].startTime);
-
-      String startMeridiem = (start.hour < 12) ? '오전' : '오후';
-      if (start.hour == 0) start.add(const Duration(hours: 12));
-      String time = (start.hour > 0 && start.hour < 12)
-          ? _study!.meetingSchedules[0].startTime
-          : DateFormat('hh:mm').format(start);
-
-      startTime = '$startMeridiem $time';
+      startTime = DateFormat('a hh:mm', 'ko').format(startAt);
     }
     if (_study!.meetingSchedules.isNotEmpty &&
         _study!.meetingSchedules[0].endTime.trim().isNotEmpty) {
-      DateTime end =
-          DateFormat('HH:mm').parse(_study!.meetingSchedules[0].endTime);
-      String endMeridiem = (end.hour < 12) ? '오전' : '오후';
-      if (end.hour == 0) end.add(const Duration(hours: 12));
-      String time = (end.hour > 0 && end.hour < 12)
-          ? _study!.meetingSchedules[0].endTime
-          : DateFormat('hh:mm').format(end);
-
-      endTime = '$endMeridiem $time';
+      endAt = DateFormat('HH:mm').parse(_study!.meetingSchedules[0].endTime);
+      endTime = DateFormat('a hh:mm', 'ko').format(endAt);
     }
   }
 
@@ -469,20 +453,6 @@ class StudyViewModel extends ChangeNotifier {
       selectedDays.remove(value);
     }
     selectedDays.sort();
-    notifyListeners();
-  }
-
-  void setMeetingTime(DateTime time, MeetingType type) {
-    _meetingType = type;
-    if (_isStart) {
-      String startMeridiem = (time.hour < 12) ? '오전' : '오후';
-      startTime = DateFormat('hh:mm').format(time);
-      startTime = '$startMeridiem $startTime';
-    } else {
-      String endMeridiem = (time.hour < 12) ? '오전' : '오후';
-      endTime = DateFormat('hh:mm').format(time);
-      endTime = '$endMeridiem $endTime';
-    }
     notifyListeners();
   }
 

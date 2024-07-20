@@ -232,17 +232,17 @@ class StudyScheduleVoteDetailHeader extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Divider(color: AppColors.gray150),
-          const SizedBox(height: 16),
-          _makeHeader(
-            '확정 일정', // 수정
-            const Text(
-              '-',
-              style: TextStyle(
-                  color: AppColors.gray800,
-                  fontSize: 13,
-                  fontWeight: AppFonts.fontWeight500),
-            ),
-          ),
+          // const SizedBox(height: 16),
+          // _makeHeader(
+          //   '확정 일정', // 수정
+          //   const Text(
+          //     '-',
+          //     style: TextStyle(
+          //         color: AppColors.gray800,
+          //         fontSize: 13,
+          //         fontWeight: AppFonts.fontWeight500),
+          //   ),
+          // ),
           const SizedBox(height: 8),
           _makeHeader(
             '투표 인원',

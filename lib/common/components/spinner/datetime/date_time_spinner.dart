@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:modi/common/components/spinner/dateTime/date_time_spinner.dart';
 import 'package:modi/common/components/spinner/datetime/date_time_calculator.dart';
 import 'package:modi/common/components/spinner/datetime/generator/date_time_generator.dart';
 import 'package:modi/common/components/spinner/datetime/generator/day_generator.dart';
@@ -16,33 +17,16 @@ import '../../../theme/app/app_fonts.dart';
 class DateTimeSpinner extends StatefulWidget {
   final DateTime standard;
   final Function(DateTime) onChanged;
+  final int selectItem;
 
-  const DateTimeSpinner(
-   this.standard,
-   this.onChanged,
-  {super.key}
-  );
+  const DateTimeSpinner({super.key, required this.standard, required this.onChanged, required this.selectItem});
 
   @override
-  State<StatefulWidget> createState() => _DateTimeSpinnerState();
+  State<DateTimeSpinner> createState() => _DateTimeSpinnerState();
 }
 
+
 class _DateTimeSpinnerState extends State<DateTimeSpinner> {
-  late DateTime standard;
-
-  @override
-  void initState(){
-    super.initState();
-    standard = widget.standard;
-  }
-
-  void _updateDateTime(DateTime newDateTime) {
-    setState(() {
-      standard = newDateTime;
-    });
-    widget.onChanged(standard);
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +38,12 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
     DateTimeGenerator minuteGenerator = MinuteGenerator();
 
     DateTimeCalculator dateTimeCalculator =
-    DateTimeCalculator(_updateDateTime, standard);
-    String hour_12 = (standard.hour == 0 || standard.hour == 12)
+        DateTimeCalculator(widget.onChanged, widget.standard);
+    String hour_12 = (widget.standard.hour == 0 || widget.standard.hour == 12)
         ? '12'
-        : (standard.hour > 12)
-        ? (standard.hour - 12).toString()
-        : standard.hour.toString();
+        : (widget.standard.hour > 12)
+            ? (widget.standard.hour - 12).toString()
+            : widget.standard.hour.toString();
 
     return Stack(
       children: [
@@ -83,56 +67,66 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 160,
-                  children: yearGenerator.makeElements(standard),
-                  initialValue: standard.year.toString(),
-                  onChanged: (index, value) => dateTimeCalculator.setYear(value),
+                  children: yearGenerator.makeElements(widget.standard),
+                  initialValue: widget.standard.year.toString(),
+                  onChanged: (index, value) =>
+                      dateTimeCalculator.setYear(value),
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 160,
-                  children: monthGenerator.makeElements(standard),
-                  initialValue: standard.month.toString(),
-                  onChanged: (index, value) => dateTimeCalculator.setMonth(value),
+                  children: monthGenerator.makeElements(widget.standard),
+                  initialValue: widget.standard.month.toString(),
+                  onChanged: (index, value) =>
+                      dateTimeCalculator.setMonth(value),
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 160,
-                  children: dayGenerator.makeElements(standard),
-                  initialValue: standard.day.toString(),
+                  children: dayGenerator.makeElements(widget.standard),
+                  initialValue: widget.standard.day.toString(),
                   onChanged: (index, value) => dateTimeCalculator.setDay(value),
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 160,
                   children: const ['오전', '오후'],
-                  initialValue: (standard.hour > 11) ? '오후' : '오전',
-                  onChanged: (index, value) => dateTimeCalculator.setPart(value),
+                  initialValue: (widget.standard.hour > 11) ? '오후' : '오전',
+                  onChanged: (index, value) =>
+                      dateTimeCalculator.setPart(value),
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 160,
-                  children: hourGenerator.makeElements(standard),
+                  children: hourGenerator.makeElements(widget.standard),
                   initialValue: hour_12,
-                  onChanged: (index, value) => dateTimeCalculator.setHour(value),
+                  onChanged: (index, value) =>
+                      dateTimeCalculator.setHour(value),
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 157,
                   children: [':'],
@@ -143,11 +137,13 @@ class _DateTimeSpinnerState extends State<DateTimeSpinner> {
               Expanded(
                 flex: 2,
                 child: Spinner(
+                  selectItem: widget.selectItem,
                   width: 60,
                   height: 160,
-                  children: minuteGenerator.makeElements(standard),
-                  initialValue: standard.minute.toString().padLeft(2,'0'),
-                  onChanged: (index, value) => dateTimeCalculator.setMinute(value),
+                  children: minuteGenerator.makeElements(widget.standard),
+                  initialValue: widget.standard.minute.toString().padLeft(2, '0'),
+                  onChanged: (index, value) =>
+                      dateTimeCalculator.setMinute(value),
                 ),
               ),
             ],
