@@ -116,6 +116,10 @@ class StudyScheduleDetailScreen extends StatelessWidget {
       headerWidget.add(Tag('오늘', TagColorSet.RED));
       headerWidget.add(const SizedBox(width: 6));
     }
+    else if(DateTime.now().isAfter(scheduleDetail.endAt)){
+      headerWidget.add(Tag('마감', TagColorSet.GRAY));
+      headerWidget.add(const SizedBox(width: 6));
+    }
 
     return DefaultLayout(
       title: '',

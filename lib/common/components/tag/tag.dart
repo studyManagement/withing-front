@@ -5,7 +5,7 @@ import 'package:modi/common/theme/app/app_fonts.dart';
 enum TagColorSet {
   BLUE(AppColors.blue500, AppColors.blue100),
   RED(AppColors.red500, AppColors.red100),
-  GRAY(AppColors.gray500, AppColors.gray100);
+  GRAY(AppColors.gray600, AppColors.gray100);
 
   final Color textColor;
   final Color backgroundColor;

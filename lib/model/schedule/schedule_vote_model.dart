@@ -7,6 +7,8 @@ part 'schedule_vote_model.g.dart';
 
 @freezed
 class ScheduleVoteModel with _$ScheduleVoteModel {
+  const ScheduleVoteModel._();
+
   const factory ScheduleVoteModel({
     required int id,
     required int studyId,
@@ -15,8 +17,10 @@ class ScheduleVoteModel with _$ScheduleVoteModel {
     required String description,
     required List<ScheduleVoteItemModel> votes,
     required DateTime createdAt,
+    required String status
   }) = _ScheduleVoteModel;
 
   factory ScheduleVoteModel.fromJson(Map<String, dynamic> json) =>
       _$ScheduleVoteModelFromJson(json);
+  bool get isFinished => status == "FINISHED";
 }

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/components/checkbox/checkbox_state.dart';
 import 'package:modi/common/components/checkbox/icon_checkbox.dart';
+import 'package:modi/common/components/gray_container.dart';
 import 'package:modi/common/components/table/schedule/schedule_table_vote_status.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/di/injection.dart';
@@ -65,12 +66,18 @@ class ScheduleTable extends StatelessWidget {
     return (ratio > 0) ? AppColors.white : AppColors.gray200;
   }
 
-  Row _makeProfile(String nickname, String? profileImage) {
+  Row _makeProfile(String nickname, String profileImage) {
     return Row(
       children: [
         CircleImage(
           size: 22,
-          image: Image.asset('asset/default_image.png'),
+          image: Image.network(
+            profileImage,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return const GrayContainer(size: 22);
+            },
+          ),
         ),
         const SizedBox(width: 6),
         Text(
@@ -148,6 +155,7 @@ class ScheduleTable extends StatelessWidget {
                           .toList() ??
                       [];
                   double ratio = statuses.length / maxVoteCount;
+
                   return TableCell(
                     child: PopupMenuButton(
                       offset: const Offset(0, 50),
@@ -174,7 +182,7 @@ class ScheduleTable extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 8),
                                       SizedBox(
-                                        height: 100,
+                                        height: (statuses.isEmpty) ? 20 :100,
                                         width: 120,
                                         child: ListView.builder(
                                           itemExtent: 30,
@@ -184,7 +192,7 @@ class ScheduleTable extends StatelessWidget {
 
                                             return _makeProfile(
                                               status.nickname,
-                                              null,
+                                              status.profileImage!,
                                             );
                                           },
                                           itemCount: statuses.length,
@@ -252,10 +260,10 @@ class ScheduleTable extends StatelessWidget {
 
     return Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {0: FractionColumnWidth(.11)},
+      columnWidths : {0: const FractionColumnWidth(.11)},
       children: [
         TableRow(
-          children: [const TableCell(child: SizedBox()), ...headers],
+          children: [const TableCell(child: SizedBox()),...headers],
         ),
         ...rows,
       ],
