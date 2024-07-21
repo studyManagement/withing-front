@@ -98,70 +98,69 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> postScheduleVote(BuildContext context, int studyId) async {
-    // 투표 생성
-    if(startAt.isAfter(endAt)) {
-      if (!context.mounted) return;
-      ModiModal.openDialog(
-          context,
-          '오류가 발생했어요',
-          '시작 시간이 종료 시간보다 늦을 수 없어요.',
-          false,
-              () => context.pop(),
-              () => null);
-      return;
-    }
-    ScheduleVoteModel scheduleVote = await _service.postScheduleVote(
-        studyId, title, description, selectedDates, startAt, endAt);
+  Future<void> postScheduleVote(BuildContext context, int studyId) async {// 투표 생성
+    try {
+      if (startAt.isAfter(endAt)) {
+        if (!context.mounted) return;
+        ModiModal.openDialog(context, '오류가 발생했어요', '시작 시간이 종료 시간보다 늦을 수 없어요.',
+            false, () => context.pop(), () => null);
+        return;
+      }
+      ScheduleVoteModel scheduleVote = await _service.postScheduleVote(
+          studyId, title, description, selectedDates, startAt, endAt);
 
-    logger.info('postScheduleVote: $scheduleVote');
+      logger.info('postScheduleVote: $scheduleVote');
 
-    if (!context.mounted) {
-      return;
+      if (!context.mounted) {
+        return;
+      }
+      context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
+    } on ApiException catch (e) {
+      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
-    context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
   }
 
-  Future<void> castVote(
-      BuildContext context, int studyId, int scheduleId) async {
-    // 투표 하기
-    _convertDateTimesToVoteDateTimeModels();
-    ScheduleVoteModel scheduleVote =
-        await _service.vote(studyId, scheduleId, votedDateTimeList);
-    // logger.info('postScheduleVote: $scheduleVote');
-
-    if (!context.mounted) {
-      return;
+  Future<void> castVote(BuildContext context, int studyId, int scheduleId) async { // 투표 하기
+    try {
+      vote = null;
+      _convertDateTimesToVoteDateTimeModels();
+      ScheduleVoteModel scheduleVote =
+          await _service.vote(studyId, scheduleId, votedDateTimeList);
+      if (!context.mounted) {
+        return;
+      }
+      context.pop();
+      context.pop();
+      context.push('/studies/$studyId/schedules/vote/${scheduleVote.id}');
+    } on ApiException catch (e) {
+      ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
-    vote = null;
-    context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
   }
 
   Future<void> closeVote(BuildContext context, int studyId, int voteId) async {
     try {
-      print(voteId);
-      ScheduleVoteModel scheduleVote = await _service.closeVote(
-          studyId, voteId);
+      ScheduleVoteModel scheduleVote =
+          await _service.closeVote(studyId, voteId);
       isClosed = true;
       logger.info('putScheduleVote: $scheduleVote');
 
       if (!context.mounted) return;
       context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
-    }  on ApiException catch (e){
+    } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
   }
 
   Future<void> deleteVote(BuildContext context, int studyId, int voteId) async {
     try {
-      ScheduleVoteModel scheduleVote = await _service.deleteVote(
-          studyId, voteId);
+      ScheduleVoteModel scheduleVote =
+          await _service.deleteVote(studyId, voteId);
 
       logger.info('deleteScheduleVote: $scheduleVote');
 
       if (!context.mounted) return;
       context.go('/studies/$studyId/schedules');
-    }  on ApiException catch (e){
+    } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
   }

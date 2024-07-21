@@ -56,12 +56,12 @@ class _HomeScreen extends State<HomeScreen> {
           selectedDate: selectedDate,
         ),
       ),
-      actions: [
-        CircleButton(
-          onTap: () => context.push('/notification'),
-          image: Image.asset('asset/bell.png', width: 32, height: 32),
-        ),
-      ],
+      // actions: [
+      //   CircleButton(
+      //     onTap: () => context.push('/notification'),
+      //     image: Image.asset('asset/bell.png', width: 32, height: 32),
+      //   ),
+      // ],
       child: SingleChildScrollView(
         child: Column(
           children: [

@@ -76,14 +76,14 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
     }
     return DefaultLayout(
       title: '',
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: isLoading
           ? null
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               child: ConfirmButton(
                 width: MediaQuery.of(context).size.width,
-                onTap: () =>  (vote.isFinished) ? null :context
+                onTap: () =>  (vote.isFinished) ? null : context
                     .push('/studies/$studyId/schedules/vote/$voteId/edit'),
                 text: (vote.isFinished) ? '투표 마감' : isVoted ? '다시 투표하기' : '투표하기',
                 backgroundColor: (vote.isFinished) ? AppColors.gray200 : AppColors.blue600,

@@ -5,6 +5,8 @@ import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/network_exception.dart';
 import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
+import 'package:modi/service/search/study_search_service.dart';
+import 'package:modi/view_models/search/category_search_viewmodel.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../common/requester/api_exception.dart';
 import '../../common/utils/get_image_file.dart';
@@ -138,7 +140,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   void updateSelectedCategoryIndices() {
     _selectedCategoryIndices = _selectedCategories
-        .map((category) => getStudyCategories().indexOf(category))
+        .map((category) => getStudyCategories().indexOf(category)+1)
         .toList();
   }
 
