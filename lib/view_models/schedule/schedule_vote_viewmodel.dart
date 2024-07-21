@@ -119,9 +119,11 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     ScheduleVoteModel scheduleVote =
         await _service.vote(studyId, scheduleId, votedDateTimeList);
     // logger.info('postScheduleVote: $scheduleVote');
+
     if (!context.mounted) {
       return;
     }
+    vote = null;
     context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
   }
 
