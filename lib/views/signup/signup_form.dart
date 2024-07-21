@@ -133,7 +133,7 @@ class _SignupFormState extends State<SignupForm> {
                     height: 50,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: const Color(0xff1F3358),
+                      color: viewModel.buttonColor,
                     ),
                     child: const Center(
                       child: Text(
