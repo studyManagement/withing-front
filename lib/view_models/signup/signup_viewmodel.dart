@@ -9,6 +9,7 @@ import 'package:modi/model/signup/signup_exception.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 
+import '../../common/theme/app/app_colors.dart';
 import '../../di/injection.dart';
 
 class SignupViewModel extends ChangeNotifier {
@@ -29,6 +30,8 @@ class SignupViewModel extends ChangeNotifier {
 
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
   int rgb = 0xFF8B97A4;
+
+  Color buttonColor = AppColors.gray200;
 
   SignupViewModel(this._provider, this._uuid, this._service);
 
@@ -68,11 +71,13 @@ class SignupViewModel extends ChangeNotifier {
 
       message = '사용 가능한 닉네임이에요.';
       rgb = 0xFF4282FF;
+      buttonColor = AppColors.blue600;
 
       _nickname = nickname;
     } on SignupException catch (error) {
       message = error.cause;
       rgb = 0xFFFF416A;
+      buttonColor = AppColors.gray200;
     } finally {
       notifyListeners();
     }
@@ -84,7 +89,7 @@ class SignupViewModel extends ChangeNotifier {
 
   createImage(BuildContext context) async {
     try{
-      _userImageFile = (isDefault) ? await getImageFileFromAssets('asset/user_default_image.png') : await fileFromImageUrl(_userImagePath);
+      _userImageFile = await getImageFileFromAssets((isDefault) ? 'asset/user_default_image.png' : _userImagePath);
       _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
     } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
