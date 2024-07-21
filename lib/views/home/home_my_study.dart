@@ -117,6 +117,7 @@ class MyStudyList extends StatelessWidget {
           onTap: () => context.push('/studies/${item.id}'),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: const BoxDecoration(
               color: AppColors.gray50,
               borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -128,6 +129,7 @@ class MyStudyList extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   item.studyName,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: AppColors.gray800,
                     fontSize: 16,

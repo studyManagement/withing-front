@@ -25,6 +25,7 @@ class StudyListViewModel extends ChangeNotifier {
   List<UserScheduleModel> thisWeekSchedules = [];
   late DateTime selectedDate = DateTime.now();
   String weekString = '';
+  bool isInit = true;
 
   StudyListViewModel(this._service, this._context);
 
@@ -42,11 +43,12 @@ class StudyListViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchThisWeekSchedules() async {
-    if(thisWeekSchedules.isEmpty) {
+    if(thisWeekSchedules.isEmpty && isInit) {
       try {
         thisWeekSchedules =
         await getIt<ScheduleService>().fetchThisWeekSchedule();
         notifyListeners();
+        isInit = false;
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,

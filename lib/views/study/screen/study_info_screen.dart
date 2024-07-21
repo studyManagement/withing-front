@@ -6,7 +6,9 @@ import 'package:modi/common/layout/responsive_size.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
+import 'package:modi/service/search/study_search_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/view_models/search/category_search_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/study/screen/study_manage_screen.dart';
 import 'package:modi/views/study/widgets/input_password_modal.dart';
@@ -44,7 +46,12 @@ class StudyInfoScreen extends StatelessWidget {
       leader: IconButton(
         icon: const Icon(Icons.arrow_back_ios),
         onPressed: () => {
-          if (studyId == -1) {context.go('/')} else {context.pop()}
+          if (studyId == -1)
+            {context.go('/')}
+          else
+            {
+              context.pop(),
+            }
         },
       ),
       actions: [
@@ -111,7 +118,9 @@ class StudyInfoScreen extends StatelessWidget {
                           children: [
                             StudyMainButtons(
                               onTap: () {
-                                bool isLeader = Authentication.instance.userId == vm.study!.leaderId;
+                                bool isLeader =
+                                    Authentication.instance.userId ==
+                                        vm.study!.leaderId;
                                 context.push('/studies/$studyId/schedules');
                               },
                               title: "Schedule",
@@ -142,7 +151,7 @@ class StudyInfoScreen extends StatelessWidget {
                             BoardViewModel(context, getIt<BoardService>()),
                         child: Consumer<BoardViewModel>(
                             builder: (context, boardViewModel, child) {
-                              boardViewModel.isMember = vm.isMember;
+                          boardViewModel.isMember = vm.isMember;
                           return Notice(
                               studyId: studyId,
                               isMember: vm.isMember,

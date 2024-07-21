@@ -108,7 +108,6 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   setStartAt(DateTime start) {
     startAt = start;
   }
@@ -282,28 +281,18 @@ class StudyViewModel extends ChangeNotifier {
 
       if (checkDaysAndTimes(type)) {
         if (_meetingType != MeetingType.NONE) {
-          // DateTime start = DateFormat('hh:mm').parse(startTime.substring(3, 8));
-          // DateTime end = DateFormat('hh:mm').parse(endTime.substring(3, 8));
-          //
-          // if (startTime.contains('오후')) {
-          //   start = start.add(const Duration(hours: 12));
-          // }
-          // if (endTime.contains('오후')) {
-          //   end = end.add(const Duration(hours: 12));
-          // }
           _isAfter = startAt.isAfter(endAt);
           String startTime24 = DateFormat('HH:mm').format(startAt);
           String endTime24 = DateFormat('HH:mm').format(endAt);
           if (_meetingType == MeetingType.DAILY) {
-            for (int i = 1; i <= 7; i++) {
-              _meetingSchedules.add(
-                  StudyMeetingSchedule.withoutId(i, startTime24, endTime24));
-            }
+            _meetingSchedules.addAll(List.generate(
+              7, (index) => StudyMeetingSchedule.withoutId(
+                  index + 1, startTime24, endTime24),
+            ));
           } else if (_meetingType == MeetingType.WEEKLY) {
-            for (var day in selectedDays) {
-              _meetingSchedules.add(
-                  StudyMeetingSchedule.withoutId(day, startTime24, endTime24));
-            }
+            _meetingSchedules.addAll(
+                selectedDays.map((day) => StudyMeetingSchedule.withoutId(day, startTime24, endTime24)).toList()
+            );
           }
         } else {
           _meetingSchedules = [];
@@ -416,12 +405,11 @@ class StudyViewModel extends ChangeNotifier {
   }
 
   void getSelectedDaysAndTime() {
-    if(_meetingType == MeetingType.NONE){
+    if (_meetingType == MeetingType.NONE) {
       startAt = DateTime.now();
       endAt = DateTime.now();
       return;
-    }
-    else{
+    } else {
       List<int> days = [];
       for (int i = 0; i < _study!.meetingSchedules.length; i++) {
         if (!days.contains(_study!.meetingSchedules[i].day)) {

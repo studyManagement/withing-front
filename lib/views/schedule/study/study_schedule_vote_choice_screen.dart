@@ -18,8 +18,7 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
         (provider) => provider.vote);
 
     bool isLoading = vote == null;
-
-    if (isLoading) {
+    if(isLoading){
       voteViewModel.fetchScheduleVote(studyId, voteId);
     }
 
@@ -33,26 +32,28 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 child: ConfirmButton(
                   width: MediaQuery.of(context).size.width,
-                  onTap: () => {
-                    voteViewModel.castVote(context, studyId, voteId)
+                  onTap: () {
+                    voteViewModel.castVote(context, studyId, voteId);
                   }, // 투표 하기
                   text: '투표 완료',
                   backgroundColor: AppColors.blue600,
                 ),
               ),
         child: (isLoading)
-            ? const Column(
-                children: [
-                  Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ],
+            ? const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                  ],
+                ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      const SizedBox(height: 20),
                       ScheduleTable(
                         dateTimes: vote.votes.map((e) => e.voteDay).toList(),
                         startAt: vote.votes.first.startAt,
@@ -61,7 +62,7 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
                         maxVoteCount: 1,
                         readOnly: false,
                         onClick: (value) {
-                         voteViewModel.selectVoteDateAndTimes(value.value);
+                          voteViewModel.selectVoteDateAndTimes(value.value);
                         },
                       ),
                     ],

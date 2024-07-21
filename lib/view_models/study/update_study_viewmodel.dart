@@ -118,7 +118,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   void updateSelectedCategoryIndices() {
     _selectedCategoryIndices = _selectedCategories
-        .map((category) => getStudyCategories().indexOf(category))
+        .map((category) => getStudyCategories().indexOf(category)+1)
         .toList();
   }
 
@@ -170,7 +170,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _studyImagePath = study.studyImage!;
       _studyImageFile = File(_studyImagePath);
       _studyDescription = study.explanation;
-      _selectedCategories = List.from(study.categories);
+      _selectedCategories = List.from(study.categories)..remove('');
       _studyMemberCount = study.max;
       setStudyNameAdnDescription();
       notifyListeners();
