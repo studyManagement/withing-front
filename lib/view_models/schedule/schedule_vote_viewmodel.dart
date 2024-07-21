@@ -100,6 +100,17 @@ class ScheduleVoteViewModel extends ChangeNotifier {
 
   Future<void> postScheduleVote(BuildContext context, int studyId) async {
     // 투표 생성
+    if(startAt.isAfter(endAt)) {
+      if (!context.mounted) return;
+      ModiModal.openDialog(
+          context,
+          '오류가 발생했어요',
+          '시작 시간이 종료 시간보다 늦을 수 없어요.',
+          false,
+              () => context.pop(),
+              () => null);
+      return;
+    }
     ScheduleVoteModel scheduleVote = await _service.postScheduleVote(
         studyId, title, description, selectedDates, startAt, endAt);
 
@@ -108,7 +119,6 @@ class ScheduleVoteViewModel extends ChangeNotifier {
     if (!context.mounted) {
       return;
     }
-
     context.go('/studies/$studyId/schedules/vote/${scheduleVote.id}');
   }
 
