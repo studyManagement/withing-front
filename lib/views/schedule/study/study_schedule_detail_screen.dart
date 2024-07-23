@@ -124,12 +124,12 @@ class StudyScheduleDetailScreen extends StatelessWidget {
     return DefaultLayout(
       title: '',
       actions: [
-        _makeShareButton(
-          context,
-          '[$studyName] ${scheduleDetail.title}',
-          '스터디 일정을 확인해 주세요',
-          '/studies/$studyId/schedules/$studyScheduleId',
-        ),
+        // _makeShareButton(
+        //   context,
+        //   '[$studyName] ${scheduleDetail.title}',
+        //   '스터디 일정을 확인해 주세요',
+        //   '/studies/$studyId/schedules/$studyScheduleId',
+        // ),
         const SizedBox(width: 12),
         if(StudyViewModel.leaderId == Authentication.instance.userId)
           CircleButton(

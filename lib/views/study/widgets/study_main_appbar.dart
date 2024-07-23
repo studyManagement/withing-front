@@ -30,34 +30,36 @@ class StudyMainAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       foregroundColor: AppColors.black,
       elevation: 0,
-      actions: <Widget>[makeShareButton(context), makeLikeButton(context)],
+      actions: <Widget>[
+        // makeShareButton(context),
+        makeLikeButton(context)],
     );
   }
 
-  Widget makeShareButton(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        ModiModal.openBottomSheet(
-          context,
-          widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-            child: Share(
-              title: '초대가 왔어요!',
-              message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
-              path: '',
-              contentType: '',
-              itemId: '',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          height: 221,
-        );
-      },
-      icon: Image.asset('asset/share.png'),
-    );
-  }
+  // Widget makeShareButton(BuildContext context) {
+  //   return IconButton(
+  //     onPressed: () {
+  //       ModiModal.openBottomSheet(
+  //         context,
+  //         widget: Padding(
+  //           padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+  //           child: Share(
+  //             title: '초대가 왔어요!',
+  //             message: '가입 후 스터디를 시작해보세요\n\nhttps://modi.tips/s/GnvfgYAE',
+  //             path: '',
+  //             contentType: '',
+  //             itemId: '',
+  //             onTap: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ),
+  //         height: 221,
+  //       );
+  //     },
+  //     icon: Image.asset('asset/share.png'),
+  //   );
+  // }
 
   Widget makeLikeButton(BuildContext context) {
     final viewModel = context.watch<StudyViewModel>();
