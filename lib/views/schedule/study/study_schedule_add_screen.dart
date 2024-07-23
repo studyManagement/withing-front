@@ -27,17 +27,13 @@ class StudyScheduleAddScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ScheduleViewModel vm = context.watch<ScheduleViewModel>();
 
-    DateTime now = DateTime.now();
-
-    logger.info(
-        'StudyScheduleAddScreen: _studyId: $_studyId, _studyScheduleId: $_studyScheduleId');
+    // logger.info(
+    //     'StudyScheduleAddScreen: _studyId: $_studyId, _studyScheduleId: $_studyScheduleId');
 
     if (!isCreate && vm.schedule.id == -1) {
       vm.fetchSchedule(_studyId, _studyScheduleId!);
-    } else {
-      vm.setStartAt(now);
-      vm.setEndAt(now);
-      vm.setIsLoading(false);
+    } else{
+      vm.initialize();
     }
 
     return DefaultLayout(
@@ -97,6 +93,7 @@ class StudyScheduleRegisterInformation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScheduleViewModel vm = context.read<ScheduleViewModel>();
+    print(vm.schedule);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
