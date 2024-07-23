@@ -19,6 +19,7 @@ class ScheduleViewModel extends ChangeNotifier {
       ScheduleDetail(-1, '', '', DateTime.now(), DateTime.now());
 
   FixedExtentScrollController controller = FixedExtentScrollController();
+  bool _isInitialized = false;
 
 
   bool _isLoading = true;
@@ -62,6 +63,17 @@ class ScheduleViewModel extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void initialize() { // 생성 시
+    if (!_isInitialized) {
+      DateTime now = DateTime.now();
+      setStartAt(now);
+      setEndAt(now);
+      _isLoading = false;
+      _isInitialized = true;
+    }
+  }
+
 
   void setIsLoading(bool isLoading) {
     _isLoading = isLoading;
