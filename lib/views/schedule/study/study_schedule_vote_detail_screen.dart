@@ -90,12 +90,12 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
               ),
             ),
       actions: [
-        _makeShareButton(
-          context,
-          '[$studyName] ${vote?.title}',
-          '스터디 일정을 투표해 주세요',
-          '/studies/$studyId/schedules/vote/$voteId',
-        ),
+        // _makeShareButton(
+        //   context,
+        //   '[$studyName] ${vote?.title}',
+        //   '스터디 일정을 투표해 주세요',
+        //   '/studies/$studyId/schedules/vote/$voteId',
+        // ),
         const SizedBox(width: 12),
         if(StudyViewModel.leaderId == Authentication.instance.userId)
         CircleButton(

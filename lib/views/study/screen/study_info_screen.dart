@@ -55,7 +55,7 @@ class StudyInfoScreen extends StatelessWidget {
         },
       ),
       actions: [
-        makeShareButton(context, vm.study?.studyName ?? ''),
+        // makeShareButton(context, vm.study?.studyName ?? ''),
         makeLikeButton(context)
       ],
       centerTitle: true,
@@ -164,30 +164,30 @@ class StudyInfoScreen extends StatelessWidget {
     );
   }
 
-  Widget makeShareButton(BuildContext context, String studyName) {
-    return IconButton(
-      onPressed: () {
-        ModiModal.openBottomSheet(
-          context,
-          widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-            child: Share(
-              title: '[$studyName] 초대가 왔어요!',
-              message: '가입 후 스터디를 시작해보세요',
-              path: '/studies/$studyId',
-              contentType: 'study',
-              itemId: '$studyId',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          height: 221,
-        );
-      },
-      icon: Image.asset('asset/share.png'),
-    );
-  }
+  // Widget makeShareButton(BuildContext context, String studyName) {
+  //   return IconButton(
+  //     onPressed: () {
+  //       ModiModal.openBottomSheet(
+  //         context,
+  //         widget: Padding(
+  //           padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
+  //           child: Share(
+  //             title: '[$studyName] 초대가 왔어요!',
+  //             message: '가입 후 스터디를 시작해보세요',
+  //             path: '/studies/$studyId',
+  //             contentType: 'study',
+  //             itemId: '$studyId',
+  //             onTap: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ),
+  //         height: 221,
+  //       );
+  //     },
+  //     icon: Image.asset('asset/share.png'),
+  //   );
+  // }
 
   Widget makeLikeButton(BuildContext context) {
     final viewModel = context.watch<StudyViewModel>();
