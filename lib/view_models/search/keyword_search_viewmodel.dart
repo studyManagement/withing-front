@@ -12,6 +12,7 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
   }
 
   bool _isLoading = false;
+  bool _isInitLoading = true;
   String _selectedFilterValue = '최신순';
   String _selectedKeywordValue = '';
   int _studyCount = 0;
@@ -28,6 +29,9 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
 
   @override
   List<SearchedStudyInfo> get studyList => _searchedStudies;
+
+  @override
+  bool get isInitLoading => _isInitLoading;
 
   @override
   Future<void> scrollListener() async {
@@ -77,6 +81,7 @@ class KeywordSearchViewModel extends SearchedStudiesViewModel
           0
       );
     }
+    _isInitLoading = false;
     notifyListeners();
   }
 

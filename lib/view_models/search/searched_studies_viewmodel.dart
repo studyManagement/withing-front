@@ -6,6 +6,7 @@ abstract class SearchedStudiesViewModel {
   dynamic get selectedValue;
   String get filterValue;
   List<SearchedStudyInfo>? get studyList;
+  bool get isInitLoading;
   Future<void> search();
   Future<void> scrollListener();
   void updateSearchFilterValue(String value);

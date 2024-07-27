@@ -12,7 +12,23 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
     search();
   }
 
+  bool _disposed = false;
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  notifyListeners() {
+    if (!_disposed) {
+      super.notifyListeners();
+    }
+  }
+
   bool _isLoading = false;
+  bool _isInitLoading = true;
   String _selectedFilterValue = '최신순';
   int _selectedCategoryValue = 0;
   int _studyCount = 0;
@@ -31,6 +47,9 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
   List<SearchedStudyInfo> get studyList => _searchedStudies;
 
   @override
+  bool get isInitLoading => _isInitLoading;
+
+  @override
   Future<void> scrollListener() async {
     if (_isLoading) return;
     _isLoading = true;
@@ -47,7 +66,6 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
     notifyListeners();
   }
 
-
   /// update search category
   set searchCategory(int newValue) {
     _selectedCategoryValue = newValue;
@@ -61,28 +79,31 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
     notifyListeners();
   }
 
+
   /// category initial search api
   @override
   Future<void> search() async {
     // 개수 조회
-    _studyCount = await _studySearchService.callCategoryCountApi(_selectedCategoryValue);
+    _studyCount =
+        await _studySearchService.callCategoryCountApi(_selectedCategoryValue);
     notifyListeners();
 
-   if(_searchedStudies.length < _studyCount) {
+    if (_searchedStudies.length < _studyCount) {
       _searchedStudies = await _studySearchService.callSearchApi(
           getFilter(_selectedFilterValue), // 정렬 키워드
           categories[_selectedCategoryValue], // 카테고리 이름
           "category",
           size,
-          0
-      );
+          0);
     }
+    _isInitLoading = false;
     notifyListeners();
   }
 
   /// fetch category search - 스크롤시 추가
   Future<void> fetchStudiesWithCategory() async {
-    int page = _searchedStudies.isNotEmpty ? _searchedStudies.length ~/ size : 0;
+    int page =
+        _searchedStudies.isNotEmpty ? _searchedStudies.length ~/ size : 0;
 
     if (_searchedStudies.length < _studyCount) {
       List<SearchedStudyInfo>? newStudies =
@@ -91,8 +112,7 @@ class CategorySearchViewModel extends SearchedStudiesViewModel
               categories[_selectedCategoryValue], // 카테고리 이름
               "category",
               size,
-              page
-      );
+              page);
 
       _searchedStudies.addAll(newStudies);
       notifyListeners();

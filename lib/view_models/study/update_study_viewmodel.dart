@@ -198,7 +198,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyImageUuid));
       notifyListeners();
       if (!_context.mounted) return;
-      _context.go('/studies/$_studyId');
+      _context.go('/studies/$_studyId', extra: true);
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
