@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/image/circle_image.dart';
+import 'package:provider/provider.dart';
 import '../../../common/theme/theme_resources.dart';
 import '../../../common/components/gray100_divider.dart';
 import '../../../common/components/study_categories_widget.dart';
@@ -22,42 +23,49 @@ class AutomatedStudyListView extends StatelessWidget {
     List<SearchedStudyInfo> studyList = viewModel.studyList ?? [];
 
     return Expanded(
-        child: (studyList.isEmpty)
-            ? ModiException(['등록된 스터디가 없어요.'])
-            : NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification scrollInfo) {
-                  if (scrollInfo.metrics.pixels >=
-                      scrollInfo.metrics.maxScrollExtent) {
-                    viewModel.scrollListener();
-                  }
-                  return true;
-                },
-                child: ListView.separated(
-                  controller:
-                      (scrollController == null) ? null : scrollController,
-                  physics: (scrollController == null)
-                      ? NeverScrollableScrollPhysics()
-                      : null,
-                  itemCount: searchesCount,
-                  itemBuilder: (context, index) => (index < searchesCount)
-                      ? _StudyCard(studyList[index])
-                      : null,
-                  separatorBuilder: (context, index) => const Gray100Divider(),
-                ),
-              ));
+        child: (viewModel.isInitLoading)
+            ? const Center(child: CircularProgressIndicator())
+            : studyList.isEmpty
+                ? ModiException(['등록된 스터디가 없어요.'])
+                : NotificationListener<ScrollNotification>(
+                    onNotification: (ScrollNotification scrollInfo) {
+                      if (scrollInfo.metrics.pixels >=
+                          scrollInfo.metrics.maxScrollExtent) {
+                        viewModel.scrollListener();
+                      }
+                      return true;
+                    },
+                    child: ListView.separated(
+                      controller:
+                          (scrollController == null) ? null : scrollController,
+                      physics: (scrollController == null)
+                          ? NeverScrollableScrollPhysics()
+                          : null,
+                      itemCount: searchesCount,
+                      itemBuilder: (context, index) => (index < searchesCount)
+                          ? _StudyCard(
+                              info: studyList[index],
+                              onTap: () => context.push(
+                                  '/studies/${studyList[index].id}'))
+                          : null,
+                      separatorBuilder: (context, index) =>
+                          const Gray100Divider(),
+                    ),
+                  ));
   }
 }
 
 class _StudyCard extends StatelessWidget {
   final SearchedStudyInfo info;
+  final Function() onTap;
 
-  const _StudyCard(this.info);
+  const _StudyCard({required this.info, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push('/studies/${info.id}');
+        onTap();
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -74,8 +82,8 @@ class _StudyCard extends StatelessWidget {
                 ('정기 모임', getRegularMeetingString(info.meetingSchedules)),
               ],
             ),
-            if(info.categories.every((e) => e.isNotEmpty))
-            StudyCategoriesWidget(categories: info.categories),
+            if (info.categories.every((e) => e.isNotEmpty))
+              StudyCategoriesWidget(categories: info.categories),
           ],
         ),
       ),

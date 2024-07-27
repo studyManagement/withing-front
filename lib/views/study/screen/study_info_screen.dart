@@ -4,6 +4,7 @@ import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/layout/responsive_size.dart';
 import 'package:modi/common/modal/modi_modal.dart';
+import 'package:modi/common/root_tab.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/service/search/study_search_service.dart';
@@ -24,10 +25,12 @@ import '../widgets/study_notices.dart';
 
 class StudyInfoScreen extends StatelessWidget {
   final int studyId;
+  final bool refreshFlag;
 
   const StudyInfoScreen({
     super.key,
     required this.studyId,
+    required this.refreshFlag
   });
 
   @override
@@ -35,6 +38,7 @@ class StudyInfoScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     bool isTabletPrt = screenWidth >= tabletPortrait;
     StudyViewModel vm = context.watch<StudyViewModel>();
+
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
 
@@ -46,12 +50,11 @@ class StudyInfoScreen extends StatelessWidget {
       leader: IconButton(
         icon: const Icon(Icons.arrow_back_ios),
         onPressed: () => {
-          if (studyId == -1)
-            {context.go('/')}
-          else
-            {
-              context.pop(),
-            }
+          if (studyId == -1) {context.go('/')}
+          else {
+            if(refreshFlag) context.replace('/search')
+            else context.pop()
+          }
         },
       ),
       actions: [

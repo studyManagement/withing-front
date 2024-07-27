@@ -29,7 +29,7 @@ class CreateStudyScreen extends StatelessWidget {
                 onTap: (viewModel.checkEverythingFilled())
                     ? () {
                         viewModel.createStudy().then((_) => context
-                            .pushReplacement('/studies/${viewModel.studyId}'));
+                            .pushReplacement('/studies/${viewModel.studyId}',extra: true));
                       }
                     : null,
                 text: '생성하기',

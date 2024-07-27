@@ -34,10 +34,13 @@ import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
+import '../../service/search/study_search_service.dart';
 import '../../service/user/user_service.dart';
 import '../../view_models/my/update_profile_viewmodel.dart';
+import '../../view_models/search/category_search_viewmodel.dart';
 import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
+import '../../views/search/screen/category_search_screen.dart';
 
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
@@ -138,6 +141,10 @@ class RouterService {
                   },
                 ),
                 GoRoute(
+                  path: 'search',
+                  builder: (context, state) => const RootTab(index: 1),
+                ),
+                GoRoute(
                   path: 'search/result',
                   builder: (context, state) => const KeywordSearchScreen(),
                 ),
@@ -148,12 +155,15 @@ class RouterService {
                 GoRoute(
                   path: 'studies/:studyId',
                   builder: (context, state) {
+                    final refreshFlag = state.extra ?? false;
                     return ChangeNotifierProvider(
                         create: (_) =>
                             StudyViewModel(context, getIt<StudyService>()),
                         child: StudyInfoScreen(
-                          studyId: int.parse(state.pathParameters['studyId']!),
-                        ));
+                            studyId: int.parse(
+                              state.pathParameters['studyId']!,
+                            ),
+                            refreshFlag: refreshFlag as bool));
                   },
                   routes: [
                     GoRoute(
