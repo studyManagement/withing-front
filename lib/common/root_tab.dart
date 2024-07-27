@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/di/injection.dart';
-import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/service/user/user_service.dart';
@@ -17,7 +16,8 @@ import '../views/search/screen/category_search_screen.dart';
 import 'layout/default_layout.dart';
 
 class RootTab extends StatefulWidget {
-  const RootTab({super.key});
+  final int? index;
+  const RootTab({super.key,this.index});
 
   @override
   State<RootTab> createState() => _RootTabState();
@@ -32,6 +32,9 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
     super.initState();
     tabController = TabController(length: 4, vsync: this);
     tabController.addListener(tabListener);
+    if(widget.index != null){
+      tabController.animateTo(widget.index!);
+    }
   }
 
   void tabListener() {
@@ -80,7 +83,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               ChangeNotifierProvider(
                   create: (_) => StudyListViewModel(getIt<StudyService>(),context)),
             ],
-            child: HomeScreen(),
+            child: const HomeScreen(),
           ),
           const CategorySearchScreen(),
           ChangeNotifierProvider(
