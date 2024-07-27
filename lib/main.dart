@@ -44,10 +44,11 @@ void main() async {
     DeviceOrientation.portraitUp,
     // 세로 하향 고정
     DeviceOrientation.portraitDown,
+
     // 왼쪽으로 가로 회전
-    DeviceOrientation.landscapeLeft,
-    // 오른쪽으로 가로 회전
-    DeviceOrientation.landscapeRight,
+    // DeviceOrientation.landscapeLeft,
+    // // 오른쪽으로 가로 회전
+    // DeviceOrientation.landscapeRight,
   ]);
 
   setupDependencyInjection();
