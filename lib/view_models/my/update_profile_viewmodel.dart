@@ -11,12 +11,15 @@ import 'package:modi/model/user/token_model.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 import 'package:modi/service/user/user_service.dart';
+import 'package:provider/provider.dart';
 import 'package:yaml/yaml.dart';
+import '../../common/theme/app/app_colors.dart';
 import '../../common/utils/get_image_file.dart';
 import '../../di/injection.dart';
 import '../../model/signup/signup_exception.dart';
 import '../../model/user/user_model.dart';
 import '../../service/image/image_create_service.dart';
+import '../../views/my/my_screen.dart';
 
 class UpdateProfileViewModel extends ChangeNotifier {
   final UserService _userService;
@@ -32,6 +35,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
   bool isOldImage = true;
   bool isDefault = false;
   String appVersion = '';
+  bool isLoading = true;
 
   String get nickname => _nickname;
 
@@ -40,6 +44,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
   String get userImagePath => _userImagePath;
 
   File? get userImageFile => _userImageFile;
+  Color buttonColor = AppColors.blue600;
 
   set userImageFile(File? file) {
     _userImageFile = file;
@@ -58,9 +63,17 @@ class UpdateProfileViewModel extends ChangeNotifier {
 
   UpdateProfileViewModel(this._context, this._userService);
 
-  Future<void> getAppVersion() async{
-    rootBundle.loadString("pubspec.yaml").then((yamlValue) =>
-    appVersion = loadYaml(yamlValue)['version']);
+  refreshData(){
+    _userImagePath = '';
+    fetchUserProfileImage();
+    getAppVersion();
+    notifyListeners();
+  }
+
+  Future<void> getAppVersion() async {
+    rootBundle
+        .loadString("pubspec.yaml")
+        .then((yamlValue) => appVersion = loadYaml(yamlValue)['version']);
   }
 
   Future<void> fetchUserProfileImage() async {
@@ -72,6 +85,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
         _introduce = user.introduce;
         _userImagePath = user.profileImage!;
         _userImageFile = File(_userImagePath);
+        isLoading = false;
         notifyListeners();
       } on ApiException catch (e) {
         if (!_context.mounted) return;
@@ -92,12 +106,12 @@ class UpdateProfileViewModel extends ChangeNotifier {
       }
       TokenModel token =
           await _userService.edit(_nickname, _introduce, _userImageUuid);
-
       Authentication.from(token.accessToken, token.refreshToken);
       Authentication.instance.save();
-      notifyListeners();
       _userImagePath = '';
-     _context.pop();
+      notifyListeners();
+      if(!_context.mounted) return;
+      _context.pop();
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false,
@@ -128,10 +142,12 @@ class UpdateProfileViewModel extends ChangeNotifier {
 
       message = '사용 가능한 닉네임이에요.';
       rgb = 0xFF4282FF;
+      buttonColor = AppColors.blue600;
       _nickname = nickname;
     } on SignupException catch (error) {
       message = error.cause;
       rgb = 0xFFFF416A;
+      buttonColor = AppColors.gray200;
     } finally {
       notifyListeners();
     }

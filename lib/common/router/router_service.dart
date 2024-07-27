@@ -8,7 +8,6 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/logger/logging_interface.dart';
 import 'package:modi/common/root_tab.dart';
 import 'package:modi/di/injection.dart';
-import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/schedule/schedule_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
@@ -22,7 +21,6 @@ import 'package:modi/views/create/create_study_screen.dart';
 import 'package:modi/views/login/login_screen.dart';
 import 'package:modi/views/my/my_profile_screen.dart';
 import 'package:modi/views/my/my_study_screen.dart';
-import 'package:modi/views/notification/notification_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_add_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_detail_screen.dart';
 import 'package:modi/views/schedule/study/study_schedule_screen.dart';
@@ -36,7 +34,8 @@ import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
-import '../../views/my/my_screen.dart';
+import '../../service/user/user_service.dart';
+import '../../view_models/my/update_profile_viewmodel.dart';
 import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
 
@@ -44,6 +43,7 @@ class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
   static final RouterService _instance = RouterService._privateConstructor();
   static bool _isInitialize = false;
+
   static bool get isInitialize => _isInitialize;
 
   static RouterService get instance => _instance;
@@ -94,7 +94,9 @@ class RouterService {
             (Authentication.state.isAuthentication) ? '/' : '/login',
         refreshListenable: Authentication.state,
         errorBuilder: (context, state) {
-          print(state);
+          if (kDebugMode) {
+            print(state);
+          }
           return const ErrorPage();
         },
         routes: [
@@ -106,17 +108,18 @@ class RouterService {
                 return const RootTab();
               },
               routes: [
-                GoRoute(
-                  path: 'my',
-                  builder: (context, state) => const MyScreen(),
-                ),
-                GoRoute(
-                  path: 'notification',
-                  builder: (context, state) => const NotificationScreen(),
-                ),
+                // GoRoute(
+                //   path: 'notification',
+                //   builder: (context, state) => const NotificationScreen(),
+                // ),
                 GoRoute(
                   path: 'my/profile',
-                  builder: (context, state) => MyProfileScreen(),
+                  builder: (context, state) {
+                    final viewModel = state.extra ??
+                        UpdateProfileViewModel(context, getIt<UserService>());
+                    return MyProfileScreen(
+                        viewModel: viewModel as UpdateProfileViewModel);
+                  },
                 ),
                 GoRoute(
                   path: 'my/studies/:type',
@@ -126,8 +129,9 @@ class RouterService {
                     return MultiProvider(
                       providers: [
                         ChangeNotifierProvider(
-                            create: (_) =>
-                                StudyListViewModel(getIt<StudyService>(),context),),
+                          create: (_) => StudyListViewModel(
+                              getIt<StudyService>(), context),
+                        ),
                       ],
                       child: MyStudyScreen(studyType),
                     );
@@ -338,8 +342,7 @@ class RouterService {
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
-                            getIt<StudyService>(),
-                            context),
+                            getIt<StudyService>(), context),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),
