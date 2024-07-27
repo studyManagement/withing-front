@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/share/share.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/layout/default_layout.dart';
@@ -127,9 +128,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(
-                  child: CircularProgressIndicator(),
-                )
+                CircularIndicator()
               ],
             )
           : SingleChildScrollView(
