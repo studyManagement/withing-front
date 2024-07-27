@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/image/circle_image.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/theme_resources.dart';
@@ -24,7 +25,7 @@ class AutomatedStudyListView extends StatelessWidget {
 
     return Expanded(
         child: (viewModel.isInitLoading)
-            ? const Center(child: CircularProgressIndicator())
+            ? const CircularIndicator()
             : studyList.isEmpty
                 ? ModiException(['등록된 스터디가 없어요.'])
                 : NotificationListener<ScrollNotification>(

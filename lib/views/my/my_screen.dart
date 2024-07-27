@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
@@ -31,7 +32,7 @@ class _MyScreenState extends State<MyScreen> {
       centerTitle: false,
       titleFontSize: 20,
       child: (viewModel.isLoading)
-          ? const Center(child: CircularProgressIndicator())
+          ? const CircularIndicator()
           : SafeArea(
               child: SingleChildScrollView(
                 child: Column(

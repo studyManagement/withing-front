@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/button/circle_button.dart';
 import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/input/text_input.dart';
@@ -61,7 +62,7 @@ class StudyScheduleAddScreen extends StatelessWidget {
           onTap: () => context.pop()),
       title: '일정 ${(isCreate) ? '생성' : '수정'}',
       child: (vm.isLoading)
-          ? const Center(child: CircularProgressIndicator())
+          ? const CircularIndicator()
           : Column(
               children: [
                 const StudyScheduleRegisterInformation(),

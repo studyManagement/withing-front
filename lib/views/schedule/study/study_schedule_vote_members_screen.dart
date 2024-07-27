@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/image/circle_image.dart';
 import 'package:modi/common/layout/default_layout.dart';
@@ -37,9 +38,7 @@ class StudyScheduleVoteMembersScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
+                CircularIndicator()
               ],
             )
           : (users.isEmpty)

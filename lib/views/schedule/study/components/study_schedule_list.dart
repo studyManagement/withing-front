@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/exception/modi_exception.dart';
 import 'package:modi/common/components/tag/tag.dart';
 import 'package:modi/common/theme/theme_resources.dart';
@@ -54,9 +55,7 @@ class StudyScheduleList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: CircularProgressIndicator(),
-        )
+       const CircularIndicator()
       ],
     )
         : schedules.isEmpty
