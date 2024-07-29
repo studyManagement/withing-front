@@ -51,7 +51,6 @@ class StudyManageScreen extends StatelessWidget {
                     ModiModal.openDialog(context, "스터디를 삭제하시겠어요?",
                         "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
                       viewModel.deleteStudy();
-                      context.pop();
                     }, null);
                   },
                   child: Text('스터디 삭제하기',
@@ -141,8 +140,8 @@ class StudyManageListItem extends StatelessWidget {
             ModiModal.openDialog(context, "스터디를 종료하시겠어요?",
                 "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.", true, () {
               vm.finishStudy();
-              context.pop();
-              // context.go('/home');
+              // context.pop();
+              // // context.go('/home');
             }, null);
           }
         },

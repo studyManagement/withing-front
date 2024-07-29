@@ -227,6 +227,8 @@ class StudyViewModel extends ChangeNotifier {
     try {
       await _service.finishStudy(_study!.id);
       BottomToast(context: _context, text: "스터디가 종료되었어요.").show();
+      if(!_context.mounted) return;
+      _context.go('/search');
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
@@ -239,6 +241,8 @@ class StudyViewModel extends ChangeNotifier {
     try {
       await _service.deleteStudy(_study!.id);
       BottomToast(context: _context, text: "스터디가 삭제되었어요.").show();
+      if(!_context.mounted) return;
+      _context.go('/search');
     } on ApiException catch (e) {
       if (!_context.mounted) return;
       ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
@@ -301,7 +305,7 @@ class StudyViewModel extends ChangeNotifier {
             _meetingType == MeetingType.NONE) {
           await _service.setMeetingSchedule(study!.id, _meetingSchedules);
           if (!_context.mounted) return;
-          _context.go('/studies/${study!.id}');
+          _context.go('/studies/${study!.id}',extra: true);
         } else {
           if (!_context.mounted) return;
           ModiModal.openDialog(
