@@ -40,11 +40,11 @@ class StudyScheduleVoteChoiceScreen extends StatelessWidget {
                 ),
               ),
         child: (isLoading)
-            ? const Center(
+            ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(),
+                    CircularProgressIndicator(color: AppColors.blue400),
                   ],
                 ),
               )
