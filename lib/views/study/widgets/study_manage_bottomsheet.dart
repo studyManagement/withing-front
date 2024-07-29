@@ -115,7 +115,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
         ),
         const Spacer(),
         Padding(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.only(bottom: 30),
           child: StudyBottomButton(
             color: (vm.selectedUsers.isNotEmpty) ? null : AppColors.gray200,
               onTap: () {
