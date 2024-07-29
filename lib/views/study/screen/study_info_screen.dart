@@ -52,7 +52,7 @@ class StudyInfoScreen extends StatelessWidget {
         onPressed: () => {
           if (studyId == -1) {context.go('/')}
           else {
-            if(refreshFlag) context.replace('/search')
+            if(refreshFlag) context.go('/search')
             else context.pop()
           }
         },

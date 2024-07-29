@@ -9,6 +9,7 @@ import 'package:modi/common/modal/action_sheet_params.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
+import 'package:modi/common/theme/theme_resources.dart';
 import 'package:modi/view_models/schedule/model/schedule_detail.dart';
 import 'package:modi/view_models/schedule/schedule_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
@@ -154,11 +155,11 @@ class StudyScheduleDetailScreen extends StatelessWidget {
               icon: const Icon(Icons.more_horiz)),
       ],
       child: (scheduleDetail.id == -1)
-          ? const Center(
+          ? Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [CircularProgressIndicator()],
+          children: [CircularProgressIndicator(color: AppColors.blue400,)],
         ),
       )
           : Padding(

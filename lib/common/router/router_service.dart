@@ -106,6 +106,10 @@ class RouterService {
           GoRoute(
               path: '/login', builder: (context, state) => const LoginScreen()),
           GoRoute(
+            path: '/search',
+            builder: (context, state) => const RootTab(index: 1),
+          ),
+          GoRoute(
               path: '/',
               builder: (context, state) {
                 return const RootTab();
@@ -139,10 +143,6 @@ class RouterService {
                       child: MyStudyScreen(studyType),
                     );
                   },
-                ),
-                GoRoute(
-                  path: 'search',
-                  builder: (context, state) => const RootTab(index: 1),
                 ),
                 GoRoute(
                   path: 'search/result',
