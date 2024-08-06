@@ -53,6 +53,7 @@ class StudyViewModel extends ChangeNotifier {
   bool _isAfter = true;
   bool _hasLike = false;
   bool hasPost = false;
+  bool isLoading = true;
   int numOfPosts = 0;
   List<BoardModel> posts = [];
 
@@ -141,6 +142,7 @@ class StudyViewModel extends ChangeNotifier {
     if (_study == null) {
       try {
         _study = StudyView.from(await _service.fetchStudyInfo(studyId));
+        isLoading = false;
         leaderId = _study!.leaderId;
         studyMembers = study!.users.length;
         _users = _study!.users;

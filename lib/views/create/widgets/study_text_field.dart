@@ -48,7 +48,9 @@ class _StudyTextFieldState extends State<StudyTextField> {
   @override
   void initState(){
     super.initState();
-    controller = TextEditingController();
+    controller = TextEditingController(text: (widget.type == NewStudyType.studyName)
+        ? widget.viewModel.studyName
+        : widget.viewModel.studyDescription);
   }
   @override
   Widget build(BuildContext context) {

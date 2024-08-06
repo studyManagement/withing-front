@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
@@ -33,7 +34,7 @@ class StudyUpdateScreen extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           title: getNewStudyTitle(isCreate: false),
-          child: SingleChildScrollView(
+          child: (viewModel.isLoading) ? const CircularIndicator() : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

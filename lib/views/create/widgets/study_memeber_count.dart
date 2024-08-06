@@ -38,7 +38,7 @@ class _StudyMemberCountState extends State<StudyMemberCount> {
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController();
+    controller = TextEditingController(text: widget.viewModel.studyMemberCount.toString());
   }
 
   @override

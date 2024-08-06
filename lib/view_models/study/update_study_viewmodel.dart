@@ -65,6 +65,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
   bool _isOldImage = true;
+  bool isLoading = true;
 
   @override
   bool checkEverythingFilled() {
@@ -118,7 +119,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   void updateSelectedCategoryIndices() {
     _selectedCategoryIndices = _selectedCategories
-        .map((category) => getStudyCategories().indexOf(category)+1)
+        .map((category) => getStudyCategories().indexOf(category) + 1)
         .toList();
   }
 
@@ -171,8 +172,10 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _studyImageFile = File(_studyImagePath);
       _studyDescription = study.explanation;
       _selectedCategories = List.from(study.categories)..remove('');
+      updateSelectedCategoryIndices();
       _studyMemberCount = study.max;
       setStudyNameAdnDescription();
+      isLoading = false;
       notifyListeners();
     } on ApiException catch (e) {
       if (!_context.mounted) return;
@@ -183,10 +186,10 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   Future<void> updateStudyInfo() async {
     try {
-      if(_studyImageUuid.isEmpty) {
+      if (_studyImageUuid.isEmpty) {
         _studyImageFile = await fileFromImageUrl(_studyImagePath);
-        _studyImageUuid =
-        await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
+        _studyImageUuid = await getIt<ImageCreateService>()
+            .callImageCreateApi(_studyImageFile!);
       }
       await _studyService.updateStudyInfo(
           _studyId!,
