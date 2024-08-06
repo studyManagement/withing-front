@@ -190,6 +190,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
         _studyImageFile = await getImageFileFromAssets(_studyImagePath);
         _studyImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_studyImageFile!);
       }
+      print(_selectedCategoryIndices..sort());
       final StudyModel newStudy = await _studyCreateService.callCreateApi(
         _studyName,
         _studyMemberCount,

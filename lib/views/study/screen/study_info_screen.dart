@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/layout/responsive_size.dart';
@@ -82,8 +83,8 @@ class StudyInfoScreen extends StatelessWidget {
             },
             text: '가입하기'),
       ),
-      child: (vm.study == null)
-          ? Container()
+      child: (vm.isLoading)
+          ? const CircularIndicator()
           : SingleChildScrollView(
               child: SizedBox(
                 height: (isTabletPrt)
