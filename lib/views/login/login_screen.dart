@@ -142,16 +142,16 @@ class _Bottom extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: loginComponents,
           ),
-          const Padding(padding: EdgeInsets.only(bottom: 60)),
-          const Text(
-            '로그인에 문제가 있어요',
-            style: TextStyle(
-              color: Color(0xffabb6c2),
-              decoration: TextDecoration.underline,
-              decorationColor: Color(0xffabb6c2),
-              fontSize: 12,
-            ),
-          )
+          // const Padding(padding: EdgeInsets.only(bottom: 60)),
+          // const Text(
+          //   '로그인에 문제가 있어요',
+          //   style: TextStyle(
+          //     color: Color(0xffabb6c2),
+          //     decoration: TextDecoration.underline,
+          //     decorationColor: Color(0xffabb6c2),
+          //     fontSize: 12,
+          //   ),
+          // )
         ],
       ),
     );
