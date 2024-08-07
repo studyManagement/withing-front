@@ -45,62 +45,64 @@ class MainCalendarV2 extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           for (int i = 0; i < 7; i++)
-            GestureDetector(
-                onTap: () {
-                  onDaySelected(weekDateTimes[i], weekDateTimes[i]);
-                },
-                child: Container(
-                    width: 44,
-                    height: 67,
-                    decoration: (selectedDate.day == weekDateTimes[i].day)
-                        ? BoxDecoration(
-                            color: AppColors.blue600,
-                            borderRadius: BorderRadius.circular(8))
-                        : const BoxDecoration(color: Colors.transparent),
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          weekDays[i],
-                          style: TextStyle(
-                              color: (viewModel.selectedDate.day ==
-                                      weekDateTimes[i].day)
+            Expanded(
+              child: GestureDetector(
+                  onTap: () {
+                    onDaySelected(weekDateTimes[i], weekDateTimes[i]);
+                  },
+                  child: Container(
+
+                      height: 67,
+                      decoration: (selectedDate.day == weekDateTimes[i].day)
+                          ? BoxDecoration(
+                              color: AppColors.blue600,
+                              borderRadius: BorderRadius.circular(8))
+                          : const BoxDecoration(color: Colors.transparent),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            weekDays[i],
+                            style: TextStyle(
+                                color: (viewModel.selectedDate.day ==
+                                        weekDateTimes[i].day)
+                                    ? Colors.white
+                                    : AppColors.gray400),
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            weekDateTimes[i].day.toString(),
+                            style: TextStyle(
+                              color: (selectedDate.day == weekDateTimes[i].day)
                                   ? Colors.white
-                                  : AppColors.gray400),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          weekDateTimes[i].day.toString(),
-                          style: TextStyle(
-                            color: (selectedDate.day == weekDateTimes[i].day)
-                                ? Colors.white
-                                : (i == 0)
-                                    ? AppColors.red400
-                                    : ((i == 6)
-                                        ? AppColors.blue400
-                                        : AppColors.gray800),
+                                  : (i == 0)
+                                      ? AppColors.red400
+                                      : ((i == 6)
+                                          ? AppColors.blue400
+                                          : AppColors.gray800),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Container(
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: hasStudies(weekDateTimes[i]) // hasStudy
-                                ? (selectedDate.day == weekDateTimes[i].day
-                                    ? AppColors.white
-                                    : AppColors.gray200)
-                                : Colors.transparent,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(16),
+                          const SizedBox(height: 4),
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: hasStudies(weekDateTimes[i]) // hasStudy
+                                  ? (selectedDate.day == weekDateTimes[i].day
+                                      ? AppColors.white
+                                      : AppColors.gray200)
+                                  : Colors.transparent,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
-                        ),
-                      ],
-                    )))
+                        ],
+                      ))),
+            )
         ]));
   }
 }
