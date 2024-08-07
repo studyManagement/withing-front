@@ -79,12 +79,15 @@ class _DateRangeSelectorState extends State<DateRangeSelector> {
             ),
           ),
           const SizedBox(height: 20),
-          ConfirmButton(
-            onTap: () => setDates(context),
-            text: '선택 완료',
-            backgroundColor: AppColors.blue600,
-            height: 50,
-            width: MediaQuery.of(context).size.width - 32,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ConfirmButton(
+              onTap: () => setDates(context),
+              text: '선택 완료',
+              backgroundColor: AppColors.blue600,
+              height: 50,
+              width: MediaQuery.of(context).size.width - 32,
+            ),
           ),
         ],
       ),

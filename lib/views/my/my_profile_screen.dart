@@ -139,11 +139,10 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
             ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.only(left: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: InkWell(
                 onTap: () => viewModel.updateUserProfile(),
                 child: Container(
-                  width: 343,
                   height: 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
