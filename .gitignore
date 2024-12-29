@@ -51,3 +51,6 @@ linux/flutter/generated_plugin_registrant.cc
 
 # FVM Version Cache
 .fvm/
+
+# environment file
+*.env

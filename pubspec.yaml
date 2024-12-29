@@ -75,6 +75,7 @@ flutter:
     - asset/fonts/
     - asset/share/
     - .local.env
+    - .env
     - shorebird.yaml
     - pubspec.yaml
 
