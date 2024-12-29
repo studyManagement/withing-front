@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -44,38 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC8MaNy_ShEAK-6q4Rs6tr5G5v-uHPyWpQ',
-    appId: '1:941895894851:web:dfca59ffee6a06ddb311f6',
-    messagingSenderId: '941895894851',
-    projectId: 'modi-31349',
-    authDomain: 'modi-31349.firebaseapp.com',
-    storageBucket: 'modi-31349.appspot.com',
-    measurementId: 'G-D9FEK0Q63Z',
+    apiKey: '***REMOVED***',
+    appId: '1:10829227760:web:02ecfab71d1befda4a4435',
+    messagingSenderId: '10829227760',
+    projectId: 'modi-25afe',
+    authDomain: 'modi-25afe.firebaseapp.com',
+    storageBucket: 'modi-25afe.appspot.com',
+    measurementId: 'G-0BPFW3MLJ5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCrqbKr2dXJp75buRZdVLR6cJTNIiB3AKY',
-    appId: '1:941895894851:android:99d994da51ccffd4b311f6',
-    messagingSenderId: '941895894851',
-    projectId: 'modi-31349',
-    storageBucket: 'modi-31349.appspot.com',
+    apiKey: '***REMOVED***',
+    appId: '1:10829227760:android:a206337630119c804a4435',
+    messagingSenderId: '10829227760',
+    projectId: 'modi-25afe',
+    storageBucket: 'modi-25afe.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDQ2t2u1bNVqhgtg_x4Pj-WEyn-XRKSBFc',
-    appId: '1:941895894851:ios:0fa5719b16007a45b311f6',
-    messagingSenderId: '941895894851',
-    projectId: 'modi-31349',
-    storageBucket: 'modi-31349.appspot.com',
+    apiKey: '***REMOVED***',
+    appId: '1:10829227760:ios:60c701e94fb30a6e4a4435',
+    messagingSenderId: '10829227760',
+    projectId: 'modi-25afe',
+    storageBucket: 'modi-25afe.appspot.com',
     iosBundleId: 'com.modiapp.modi',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDQ2t2u1bNVqhgtg_x4Pj-WEyn-XRKSBFc',
-    appId: '1:941895894851:ios:90f76fa945a23185b311f6',
-    messagingSenderId: '941895894851',
-    projectId: 'modi-31349',
-    storageBucket: 'modi-31349.appspot.com',
-    iosBundleId: 'com.example.withing.RunnerTests',
+    apiKey: '***REMOVED***',
+    appId: '1:10829227760:ios:3d8ad6f13ce6cd354a4435',
+    messagingSenderId: '10829227760',
+    projectId: 'modi-25afe',
+    storageBucket: 'modi-25afe.appspot.com',
+    iosBundleId: 'com.example.withing',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: '***REMOVED***',
+    appId: '1:10829227760:web:ba3e673d7e823a744a4435',
+    messagingSenderId: '10829227760',
+    projectId: 'modi-25afe',
+    authDomain: 'modi-25afe.firebaseapp.com',
+    storageBucket: 'modi-25afe.appspot.com',
+    measurementId: 'G-QVGYFHT2R5',
+  );
+
 }

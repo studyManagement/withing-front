@@ -1,4 +1,4 @@
-package io.moditeam.modi
+package com.modiapp.modi
 
 import io.flutter.embedding.android.FlutterActivity
 
