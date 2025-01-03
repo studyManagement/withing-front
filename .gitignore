@@ -54,3 +54,9 @@ linux/flutter/generated_plugin_registrant.cc
 
 # environment file
 *.env
+
+# Firebase
+macos/Runner/GoogleService-Info.plist
+ios/Runner/GoogleService-Info.plist
+web/index.html
+lib/firebase_options.dart

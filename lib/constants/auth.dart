@@ -1,2 +1,0 @@
-const KAKAO_NATIVE_KEY = '***REMOVED***';
-const KAKAO_JAVSCRIPT_KEY = '***REMOVED***';

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
@@ -24,10 +25,15 @@ const String sentryDsn =
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     name: 'Modi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await dotenv.load(fileName: ".env");
+  final KAKAO_NATIVE_KEY = dotenv.env['KAKAO_NATIVE_KEY'] ?? '';
+  final KAKAO_JAVASCRIPT_KEY = dotenv.env['KAKAO_JAVASCRIPT_KEY'] ?? '';
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(
@@ -55,7 +61,7 @@ void main() async {
 
   KakaoSdk.init(
     nativeAppKey: KAKAO_NATIVE_KEY,
-    javaScriptAppKey: KAKAO_JAVSCRIPT_KEY,
+    javaScriptAppKey: KAKAO_JAVASCRIPT_KEY,
   );
 
   await Environment.initialize(BuildType.LOCAL);

@@ -34,6 +34,14 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def dotenv = new Properties()
+def envFile = file("/Users/sunjae/sunjae/withing_front/.env")
+if  (envFile.exists()) {
+    envFile.withInputStream { stream -> dotenv.load(stream)}
+} else {
+    throw new FileNotFoundException("Could not find .env file at: ${envFile.path}")
+}
+
 android {
     namespace "com.modiapp.modi"
     compileSdkVersion flutter.compileSdkVersion
@@ -61,6 +69,18 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        def kakaoKey = dotenv['KAKAO_NATIVE_KEY']
+        if (kakaoKey == null) {
+            throw new GradleException("KAKAO_NATIVE_KEY not found in .env file")
+        }
+        manifestPlaceholders += [KAKAO_NATIVE_KEY: kakaoKey]
+
+        def firebaseKey = dotenv['FIREBASE_ANDROID_KEY']
+        if (firebaseKey == null) {
+            throw new GradleException("FIREBASE_ANDROID_KEY not found in .env file")
+        }
+        resValue "string", "api_key", firebaseKey
     }
 
 //    signingConfigs {
