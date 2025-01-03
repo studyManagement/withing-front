@@ -2,8 +2,8 @@
     package="com.modiapp.modi">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="${applicationName}"
@@ -19,8 +19,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="oauth"
-                    android:scheme="kakao***REMOVED***" />
+                    android:scheme="kakao${KAKAO_NATIVE_KEY}" android:host="oauth"/>
             </intent-filter>
         </activity>
         <activity
@@ -38,40 +37,34 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
+
+            <!-- deepLink -->
             <meta-data
                 android:name="flutter_deeplinking_enabled"
                 android:value="true" />
-
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="modi.tips"
-                    android:scheme="http" />
-                <data
-                    android:host="app.moditeam.io"
-                    android:scheme="http" />
-                <data
-                    android:host="modi.tips"
-                    android:scheme="https" />
-                <data
-                    android:host="app.moditeam.io"
-                    android:scheme="https" />
+                <!-- web (http, https) schemes -->
+                <data android:scheme="http" android:host="modi.tips" />
+                <data android:scheme="https" android:host="modi.tips" />
+                <data android:scheme="http" android:host="app.moditeam.io" />
+                <data android:scheme="https" android:host="app.moditeam.io" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- custom url schemes -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="moditeam" />
+                <data android:scheme="com.modiapp.modi" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
@@ -80,5 +73,4 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

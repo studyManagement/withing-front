@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao***REMOVED***</string>
+				<string>kakao$(KAKAO_NATIVE_KEY)</string>
 			</array>
 		</dict>
 		<dict>
