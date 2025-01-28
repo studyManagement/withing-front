@@ -2,10 +2,8 @@ name: build-web-workflow
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+    branches: [ develop, main ]
+    
 env:
   AWS_REGION: ap-northeast-2
 
@@ -34,19 +32,70 @@ jobs:
       - name: Build Runner & version
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
-      - name: Flutter build app
-        run: flutter build web --release --base-href / --dart-define="BASE_URL=https://app.moditeam.io"
+      - name: Generate *.env file
+        run: |
+          echo "API_SERVER=${{ secrets.API_SERVER }}" >> .local.env
+          echo "FIREBASE_IOS_KEY=${{ secrets.FIREBASE_IOS_KEY }}" >> .env
+          echo "FIREBASE_MACOS_KEY=${{ secrets.FIREBASE_MACOS_KEY }}" >> .env
+          echo "FIREBASE_ANDROID_KEY=${{ secrets.FIREBASE_ANDROID_KEY }}" >> .env
+          echo "FIREBASE_WINDOWS_KEY=${{ secrets.FIREBASE_WINDOWS_KEY }}" >> .env
+          echo "KAKAO_NATIVE_KEY=${{ secrets.KAKAO_NATIVE_KEY }}" >> .env
+          echo "KAKAO_JAVASCRIPT_KEY=${{ secrets.KAKAO_JAVASCRIPT_KEY }}" >> .env
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+      - name: Flutter build web
+        run: flutter build web --release --base-href="/" --dart-define="BASE_URL=https://modiapp.link"
+
+      - name: Use random for fix cache
+        run: |
+          ran=$RANDOM
+          echo $ran
+          sed -i "s|flutter\.js|flutter.js?v=$ran|" ./build/web/index.html
+          sed -i "s|main\.dart\.js|main.dart.js?v=$ran|" ./build/web/flutter.js
+          sed -i "s|flutter_bootstrap\.js|flutter_bootstrap.js?v=$ran|" ./build/web/index.html
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: web-build
+          path: build/web
+  deploy:
+    name: Deploy Website to AWS Hosting
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 web_deploy s3://modiapp.link/ --recursive
+      - name: Upload to S3 🚀
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --delete --exclude "*.env"
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_PROD }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: 'build/web'
 
-      - name: Invalidate CloudFront Cache
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
+      - name: Create CloudFront Cache Invalidation ☁️
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          DISTRIBUTION: ${{ secrets.CLOUDFRONT_ID }}
+          PATHS: '/*'
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
 

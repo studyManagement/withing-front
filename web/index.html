@@ -22,14 +22,14 @@
   <meta name="og:title" content="모디"/>
   <meta name="og:description" content="모디와 함께 쉽고 즐거운 스터디를 시작해보세요"/>
   <meta name="og:type" content="website"/>
-  <meta name="og:url" content="https://modi-25afe.web.app"/>
+  <meta name="og:url" content="https://modiapp.link"/>
   <meta name="og:image" content="https://static.moditeam.io/share/opengraph.png"/>
   <meta property="description" content="모디와 함께 쉽고 즐거운 스터디를 시작해보세요"/>
   <meta property="og:site_name" content="모디"/>
   <meta property="og:title" content="모디"/>
   <meta property="og:description" content="모디와 함께 쉽고 즐거운 스터디를 시작해보세요"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://modi-25afe.web.app"/>
+  <meta property="og:url" content="https://modiapp.link"/>
   <meta property="og:image" content="https://static.moditeam.io/share/opengraph.png"/>
 
   <!-- iOS meta tags & icons -->
@@ -38,10 +38,6 @@
   <meta name="apple-mobile-web-app-title" content="withing">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
@@ -49,16 +45,15 @@
   <link rel="manifest" href="manifest.json">
 
   <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = '{{flutter_service_worker_version}}';
+        const serviceWorkerVersion = "699188904";
   </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer=""></script>
-  
-  
+
+  <script>
+  {{flutter_bootstrap_js}}
+  </script>
+
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-  
-  
+
   <style id="splash-screen-style">
     html {
       height: 100%
@@ -134,29 +129,6 @@
       <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
   </picture>
 
-  <script type="module">
- // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCj4mDeKOvQNvriOBscm3k4FPvdC2F6Qic",
-  authDomain: "modi-25afe.firebaseapp.com",
-  projectId: "modi-25afe",
-  storageBucket: "modi-25afe.firebasestorage.app",
-  messagingSenderId: "10829227760",
-  appId: "1:10829227760:web:02ecfab71d1befda4a4435",
-  measurementId: "G-0BPFW3MLJ5"
-};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-</script>
-  <script src="flutter_bootstrap.js" async></script>
 </body></html>
