@@ -83,8 +83,8 @@ class _NoticeCarousel extends StatefulWidget {
 }
 
 class _NoticeCarouselState extends State<_NoticeCarousel> {
-  final CarouselController carouselController =
-      CarouselController(); // 캐러셀 컨트롤러
+  final CarouselSliderController carouselController =
+      CarouselSliderController(); // 캐러셀 컨트롤러
   int currentIndex = 0; // 캐러셀 인디케이터 인덱스
 
   @override

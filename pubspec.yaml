@@ -31,7 +31,7 @@ dependencies:
   http: ^1.1.2
   flutter_dotenv: ^5.1.0
 
-  carousel_slider: ^4.2.1 # 캐러셀 슬라이드
+  carousel_slider: ^5.0.0 # 캐러셀 슬라이드
 
   retrofit: ^4.0.3
   retrofit_generator: ^8.0.1
