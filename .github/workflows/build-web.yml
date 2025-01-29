@@ -17,11 +17,8 @@ jobs:
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.2"
+          flutter-version: "3.27.3"
           channel: "stable"
-
-      - name: Enable desktop
-        run: flutter config --enable-web
 
       - name: Flutter clean
         run: flutter clean
@@ -48,15 +45,18 @@ jobs:
       - name: Use random for fix cache
         run: |
           ran=$RANDOM
-          echo $ran
+          echo "Cache busting random: $ran"
+          sed -i "s|flutter_bootstrap\.js|flutter_bootstrap.js?v=$ran|g" ./build/web/index.html
           sed -i "s|flutter\.js|flutter.js?v=$ran|g" ./build/web/index.html
           sed -i "s|main\.dart\.js|main.dart.js?v=$ran|g" ./build/web/flutter.js
 
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
           name: web-build
           path: build/web
+          compression-level: 0 # 압축 비활성화
+
   deploy:
     name: Deploy Website to AWS Hosting
     needs: build
@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download Artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v4
         with:
           name: web-build
           path: build/web
@@ -83,17 +83,12 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          aws s3 cp \
-            --region ap-northeast-2 \
-            build/web s3://modiapp.link \
-            --recursive
+          aws s3 sync --region ap-northeast-2 --delete build/web s3://modiapp.link 
 
       - name: Create CloudFront Cache Invalidation ☁️
-        uses: chetan/invalidate-cloudfront-action@master
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
         env:
-          DISTRIBUTION: ${{ secrets.CLOUDFRONT_ID }}
-          PATHS: '/*'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-
