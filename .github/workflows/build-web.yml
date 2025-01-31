@@ -3,9 +3,7 @@ name: build-web-workflow
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+    
 env:
   AWS_REGION: ap-northeast-2
 
@@ -19,11 +17,8 @@ jobs:
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.16.2"
+          flutter-version: "3.27.3"
           channel: "stable"
-
-      - name: Enable desktop
-        run: flutter config --enable-web
 
       - name: Flutter clean
         run: flutter clean
@@ -34,31 +29,66 @@ jobs:
       - name: Build Runner & version
         run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
-      - name: Flutter build app
-        run: flutter build web --release --base-href / --dart-define="BASE_URL=https://app.moditeam.io"
+      - name: Generate *.env file
+        run: |
+          echo "API_SERVER=${{ secrets.API_SERVER }}" >> .local.env
+          echo "FIREBASE_IOS_KEY=${{ secrets.FIREBASE_IOS_KEY }}" >> .env
+          echo "FIREBASE_MACOS_KEY=${{ secrets.FIREBASE_MACOS_KEY }}" >> .env
+          echo "FIREBASE_ANDROID_KEY=${{ secrets.FIREBASE_ANDROID_KEY }}" >> .env
+          echo "FIREBASE_WINDOWS_KEY=${{ secrets.FIREBASE_WINDOWS_KEY }}" >> .env
+          echo "KAKAO_NATIVE_KEY=${{ secrets.KAKAO_NATIVE_KEY }}" >> .env
+          echo "KAKAO_JAVASCRIPT_KEY=${{ secrets.KAKAO_JAVASCRIPT_KEY }}" >> .env
+
+      - name: Flutter build web
+        run: flutter build web --release --base-href="/" --dart-define="BASE_URL=https://modiapp.link"
 
       - name: Use random for fix cache
         run: |
           ran=$RANDOM
-          echo $ran
-          sed -i "s|flutter\.js|flutter.js?v=$ran|" ./build/web/index.html
-          sed -i "s|main\.dart\.js|main.dart.js?v=$ran|" ./build/web/flutter.js
+          echo "Cache busting random: $ran"
+          sed -i "s|flutter_bootstrap\.js|flutter_bootstrap.js?v=$ran|g" ./build/web/index.html
+          sed -i "s|flutter\.js|flutter.js?v=$ran|g" ./build/web/index.html
+          sed -i "s|main\.dart\.js|main.dart.js?v=$ran|g" ./build/web/flutter.js
 
-      - name: Make nonce
-        run: echo "nonce=$(date +%s)" > build.env
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web
+          compression-level: 0 # 압축 비활성화
 
-      - name: Run docker build
-        run: source build.env && docker build -t 731913951205.dkr.ecr.ap-northeast-2.amazonaws.com/modi-web:$nonce -f Dockerfile .
+  deploy:
+    name: Deploy Website to AWS Hosting
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: ECR Login
-        run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 731913951205.dkr.ecr.ap-northeast-2.amazonaws.com
+      - name: Upload to S3 🚀
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 sync --region ap-northeast-2 --delete build/web s3://modiapp.link 
 
-      - name: Push ECR
-        run: source build.env && docker push 731913951205.dkr.ecr.ap-northeast-2.amazonaws.com/modi-web:$nonce
+      - name: Create CloudFront Cache Invalidation ☁️
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}

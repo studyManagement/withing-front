@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:modi/common/components/spinner/dateTime/date_time_spinner.dart';
+import 'package:modi/common/components/spinner/datetime/date_time_spinner.dart';
 import 'package:modi/common/components/spinner/datetime/date_time_calculator.dart';
 import 'package:modi/common/components/spinner/datetime/generator/date_time_generator.dart';
 import 'package:modi/common/components/spinner/datetime/generator/day_generator.dart';
