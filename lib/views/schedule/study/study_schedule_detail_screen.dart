@@ -16,6 +16,7 @@ import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/authenticator/authentication.dart';
+import '../../common/share/share_button.dart';
 
 class StudyScheduleDetailScreen extends StatelessWidget {
   const StudyScheduleDetailScreen(
@@ -66,32 +67,6 @@ class StudyScheduleDetailScreen extends StatelessWidget {
         .minute.toString().padLeft(2, '0')}";
   }
 
-  Widget _makeShareButton(BuildContext context, String title, String message,
-      String path) {
-    return CircleButton(
-      onTap: () {
-        ModiModal.openBottomSheet(
-          context,
-          widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-            child: Share(
-              title: title,
-              message: message,
-              path: path,
-              contentType: 'study_schedule',
-              itemId: '$studyScheduleId',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          height: 221,
-        );
-      },
-      image: Image.asset('asset/share.png'),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     ScheduleViewModel scheduleViewModel = context.read<ScheduleViewModel>();
@@ -125,12 +100,14 @@ class StudyScheduleDetailScreen extends StatelessWidget {
     return DefaultLayout(
       title: '',
       actions: [
-        // _makeShareButton(
-        //   context,
-        //   '[$studyName] ${scheduleDetail.title}',
-        //   '스터디 일정을 확인해 주세요',
-        //   '/studies/$studyId/schedules/$studyScheduleId',
-        // ),
+        makeShareButton(
+          context,
+          title: '[$studyName] ${scheduleDetail.title}',
+          message: '스터디 일정을 확인해 주세요',
+          path: '/studies/$studyId/schedules/$studyScheduleId',
+          contentType: 'study_schedule',
+          itemId: '$studyScheduleId'
+        ),
         const SizedBox(width: 12),
         if(StudyViewModel.leaderId == Authentication.instance.userId)
           CircleButton(

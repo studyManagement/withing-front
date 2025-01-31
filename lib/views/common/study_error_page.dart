@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/layout/default_layout.dart';
-import 'package:modi/views/study/widgets/study_main_appbar.dart';
 import '../../common/components/exception/modi_exception.dart';
 
 class StudyErrorPage extends StatelessWidget {
