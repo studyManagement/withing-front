@@ -24,7 +24,7 @@ class InputPasswordModal extends StatelessWidget {
 
     return AlertDialog(
       insetPadding: EdgeInsets.zero,
-      surfaceTintColor: Colors.white,
+      backgroundColor: Colors.white,
       titlePadding: const EdgeInsets.only(top: 27, bottom: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       title: Text(

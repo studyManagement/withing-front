@@ -48,7 +48,7 @@ class StudyModal extends StatelessWidget {
     }
 
     return AlertDialog(
-      surfaceTintColor: Colors.white,
+      backgroundColor: Colors.white,
       titlePadding:
           const EdgeInsets.only(left: 12, right: 12, top: 27, bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
