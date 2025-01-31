@@ -27,7 +27,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    name: 'Modi',
+    name: 'modi',
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
