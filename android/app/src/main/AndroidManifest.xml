@@ -48,10 +48,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- web (http, https) schemes -->
-                <data android:scheme="http" android:host="modi.tips" />
-                <data android:scheme="https" android:host="modi.tips" />
-                <data android:scheme="http" android:host="app.moditeam.io" />
-                <data android:scheme="https" android:host="app.moditeam.io" />
+                <data android:scheme="http" android:host="modiapp.link" />
+                <data android:scheme="https" android:host="modiapp.link" />
             </intent-filter>
 
             <intent-filter>

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:modi/common/components/button/confirm_button.dart';
 import 'package:modi/common/components/button/value_button.dart';
 import 'package:modi/common/components/debouncer/debouncer.dart';
-import 'package:modi/common/components/spinner/dateTime/date_time_spinner.dart';
+import 'package:modi/common/components/spinner/datetime/date_time_spinner.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/common/theme/app/app_fonts.dart';
