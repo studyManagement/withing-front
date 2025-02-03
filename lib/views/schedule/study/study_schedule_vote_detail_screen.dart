@@ -20,38 +20,13 @@ import 'package:provider/provider.dart';
 import '../../../common/components/button/circle_button.dart';
 import '../../../common/components/button/confirm_button.dart';
 import '../../../common/components/table/schedule/schedule_table.dart';
+import '../../common/share/share_button.dart';
 
 class StudyScheduleVoteDetailScreen extends StatelessWidget {
   const StudyScheduleVoteDetailScreen(this.studyId, this.voteId, {super.key});
 
   final int studyId;
   final int voteId;
-
-  Widget _makeShareButton(
-      BuildContext context, String title, String message, String path) {
-    return CircleButton(
-      onTap: () {
-        ModiModal.openBottomSheet(
-          context,
-          widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 16),
-            child: Share(
-              title: title,
-              message: message,
-              path: path,
-              contentType: 'study_schedule_vote',
-              itemId: '$voteId',
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-          height: 221,
-        );
-      },
-      image: Image.asset('asset/share.png'),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +66,14 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
               ),
             ),
       actions: [
-        // _makeShareButton(
-        //   context,
-        //   '[$studyName] ${vote?.title}',
-        //   '스터디 일정을 투표해 주세요',
-        //   '/studies/$studyId/schedules/vote/$voteId',
-        // ),
+        makeShareButton(
+          context,
+          title: '[$studyName] ${vote?.title}',
+          message: '스터디 일정을 투표해 주세요.',
+          path: '/studies/$studyId/schedules/vote/$voteId',
+          contentType: 'study_schedule_vote',
+          itemId: '$voteId'
+        ),
         const SizedBox(width: 12),
         if(StudyViewModel.leaderId == Authentication.instance.userId)
         CircleButton(

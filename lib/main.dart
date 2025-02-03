@@ -25,11 +25,16 @@ const String sentryDsn =
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(
-    name: 'modi',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    await Firebase.initializeApp(
+      name: 'modi',
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   await dotenv.load(fileName: ".env");
   final KAKAO_NATIVE_KEY = dotenv.env['KAKAO_NATIVE_KEY'] ?? '';

@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,15 +34,10 @@ import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
 import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_links/uni_links.dart';
-
-import '../../service/search/study_search_service.dart';
 import '../../service/user/user_service.dart';
 import '../../view_models/my/update_profile_viewmodel.dart';
-import '../../view_models/search/category_search_viewmodel.dart';
 import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
-import '../../views/search/screen/category_search_screen.dart';
 
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();
@@ -51,25 +48,49 @@ class RouterService {
 
   static RouterService get instance => _instance;
   late final GoRouter _goRouter;
-
+  late final AppLinks _appLinks;
   GoRouter get router => _goRouter;
+
+  bool isBase64(String str) {
+    try {
+      base64.decode(str);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   initializeRoute() async {
     try {
-      Uri? uri = await getInitialUri();
-
+      _appLinks = AppLinks();
+      final Uri? uri = await _appLinks.getInitialLink();
       if (uri != null && kIsWeb) {
         _goRouter.go(uri.path);
         return;
       }
 
       if (uri != null && Platform.isIOS) {
-        _goRouter.go(uri.path);
+        _goRouter.go(utf8.decode(base64.decode(uri.path)));
       }
 
-      uriLinkStream.listen((uri) async {
-        if (uri != null && Platform.isIOS) {
-          _goRouter.go(uri.path);
+      _appLinks.uriLinkStream.listen((uri) async { // 분기 처리 필요
+        if (Platform.isIOS) {
+          var route = "";
+          const host = "modiapp:/";
+          if (uri.toString().startsWith(host)) {
+            route = uri.toString().substring(host.length);
+            route = utf8.decode(route.codeUnits);
+          }
+          else {
+            route = uri.path;
+            if (route.startsWith('/')) {
+              route = route.substring(1);
+            }
+            if (isBase64(route)) {
+              route = utf8.decode(base64Decode(route));
+            }
+          }
+          _goRouter.go(route);
         }
       });
     } catch (e) {
