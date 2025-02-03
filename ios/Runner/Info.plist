@@ -39,14 +39,12 @@
 			<string>com.modiapp.modi</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>moditeam</string>
+				<string>modiapp</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>FlutterDeepLinkingEnabled</key>
-	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
