@@ -61,7 +61,7 @@ class StudyInfoScreen extends StatelessWidget {
       ),
       actions: [
         makeShareButton(context,title: '[${vm.study?.studyName}] 초대가 왔어요!',
-                  message: '가입 후 스터디를 시작해보세요',
+                  message: '가입 후 스터디를 시작해보세요.',
                   path: '/studies/$studyId',
                   contentType: 'study',
                   itemId: '$studyId'),

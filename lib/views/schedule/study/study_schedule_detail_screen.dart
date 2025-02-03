@@ -103,7 +103,7 @@ class StudyScheduleDetailScreen extends StatelessWidget {
         makeShareButton(
           context,
           title: '[$studyName] ${scheduleDetail.title}',
-          message: '스터디 일정을 확인해 주세요',
+          message: '스터디 일정을 확인해 주세요.',
           path: '/studies/$studyId/schedules/$studyScheduleId',
           contentType: 'study_schedule',
           itemId: '$studyScheduleId'

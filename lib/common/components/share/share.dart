@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:modi/common/components/button/label_circle_button.dart';
 import 'package:modi/common/sns_content_share/sns_content_share_factory.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
@@ -80,11 +81,13 @@ class Share extends StatelessWidget {
         width: 50,
         height: 50,
       ),
-      () {
+      () async {
+        await dotenv.load(fileName: ".env");
+        String domain = dotenv.env['WEB_HOSTING'] ?? '';
         onTap();
         SNSContentShareFactory.getProvider(provider, contentType, itemId).send(
           title,
-          '$message\n\nhttps://modi.tips/_s/${base64.encode(utf8.encode(path))}',
+          '$message\n\n$domain/${base64.encode(utf8.encode(path))}',
         );
       },
     );

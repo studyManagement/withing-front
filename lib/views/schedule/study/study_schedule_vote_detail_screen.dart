@@ -69,7 +69,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
         makeShareButton(
           context,
           title: '[$studyName] ${vote?.title}',
-          message: '스터디 일정을 투표해 주세요',
+          message: '스터디 일정을 투표해 주세요.',
           path: '/studies/$studyId/schedules/vote/$voteId',
           contentType: 'study_schedule_vote',
           itemId: '$voteId'
