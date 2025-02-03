@@ -35,7 +35,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 def dotenv = new Properties()
-def envFile = file("/Users/sunjae/sunjae/withing_front/.env")
+def envFile = file("/Users/sunjae/sunjae/withing_front/withing_front/.env")
 if  (envFile.exists()) {
     envFile.withInputStream { stream -> dotenv.load(stream)}
 } else {
