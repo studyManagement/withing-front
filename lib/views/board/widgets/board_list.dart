@@ -27,7 +27,6 @@ class BoardList extends StatelessWidget {
         controller: scrollController,
         itemBuilder: (context, index) {
           return BoardItem(
-            isOnlyNotice: false,
             boardItem: list[index],
           );
         },

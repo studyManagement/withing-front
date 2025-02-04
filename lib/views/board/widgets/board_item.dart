@@ -8,99 +8,101 @@ import '../../../common/theme/app/app_colors.dart';
 import '../../../common/utils/get_created_string.dart';
 
 class BoardItem extends StatelessWidget {
-  final bool isOnlyNotice;
   final BoardModel boardItem;
 
   const BoardItem({
     super.key,
-    required this.isOnlyNotice,
     required this.boardItem,
   });
 
   @override
   Widget build(BuildContext context) {
+    bool hasImage = false;
     final viewModel = context.read<BoardViewModel>();
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            BoardInfoScreen(boardId: boardItem.id,
-                viewModel: viewModel)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => BoardInfoScreen(
+                    boardId: boardItem.id, viewModel: viewModel)));
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        padding: const EdgeInsets.all(16),
+        child: Column(children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              (isOnlyNotice)
-                  ? Offstage(
-                offstage: (isNew(boardItem.createdAt.toString()))
-                    ? false
-                    : true,
-                child: Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 3),
-                  decoration: BoxDecoration(
-                      color: AppColors.red100,
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Text(
-                    '신규',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .labelLarge
-                        ?.copyWith(color: AppColors.red400),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Offstage(
+                        offstage: (boardItem.notice) ? false : true,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 4.0),
+                          child: Image.asset('asset/notice_pin.png',
+                              width: 16, height: 16),
+                        ),
+                      ),
+                      Text(
+                        boardItem.title,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
                   ),
-                ),
+                  const SizedBox(height: 6),
+                  SizedBox(
+                    width: hasImage ? MediaQuery.of(context).size.width * 0.7 : MediaQuery.of(context).size.width-32,
+                    child: Text(
+                     boardItem.content,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(color: AppColors.gray800, fontSize: 13.0),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              if (hasImage)
+                Container( // 이미지 있으면 표시
+                width: 64,
+                height: 64,
+                decoration: ShapeDecoration(
+                  color: AppColors.gray100,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
               )
-                  : Offstage(
-                offstage: (boardItem.notice) ? false : true,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 4.0),
-                  child: Image.asset('asset/notice_pin.png',
-                      width: 16, height: 16),
-                ),
-              ),
-              Text(
-                boardItem.title,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleMedium,
-              ),
             ],
           ),
-          const SizedBox(height: 4),
-          Offstage(
-            offstage: (isOnlyNotice == true) ? true : false,
-            child: Text(
-              boardItem.content,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: AppColors.gray800, fontSize: 13.0),
-            ),
-          ),
+          const SizedBox(height: 8),
           Row(
             children: [
               Text(
-                getCreatedAt(boardItem.createdAt.toString()),
-                style: Theme
-                    .of(context)
+                '${boardItem.user.nickname} | ',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
+              ),
+              Text(
+                viewModel.postCreatedText(boardItem.createdAt.toString()),
+                style: Theme.of(context)
                     .textTheme
                     .bodySmall
                     ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
               ),
               const Spacer(),
-              if(isOnlyNotice == false) Padding(
+              Padding(
                 padding: const EdgeInsets.only(right: 4.0),
                 child: Image.asset('asset/comment.png', width: 16, height: 16),
               ),
-              if(isOnlyNotice == false) Text(boardItem.numOfComments.toString(),
-                  style: Theme
-                      .of(context)
+              Text(boardItem.numOfComments.toString(),
+                  style: Theme.of(context)
                       .textTheme
                       .bodySmall
                       ?.copyWith(color: AppColors.gray400, fontSize: 13.0))

@@ -6,7 +6,7 @@ import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../widgets/board_bottomsheet.dart';
-import '../widgets/board_header.dart';
+import '../widgets/board_content.dart';
 import '../widgets/comment_input_box.dart';
 import '../widgets/comment_list.dart';
 
@@ -66,7 +66,7 @@ class BoardInfoScreen extends StatelessWidget {
                           child: SingleChildScrollView(
                             controller: scrollController,
                             child: const Column(children: [
-                              BoardHeader(),
+                              BoardContent(),
                               Gray50Divider(
                                 dividerHeight: 6.0,
                               ),

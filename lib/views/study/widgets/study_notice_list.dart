@@ -7,14 +7,15 @@ import 'package:provider/provider.dart';
 import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../model/board/board_model.dart';
+import '../../board/screen/board_info_screen.dart';
 import '../../board/widgets/board_item.dart';
 
-class Notice extends StatelessWidget {
+class StudyNoticeList extends StatelessWidget {
   final int studyId;
   final bool isMember;
   final bool isPrivate;
 
-  const Notice(
+  const StudyNoticeList(
       {super.key,
       required this.studyId,
       required this.isMember,
@@ -68,6 +69,86 @@ class Notice extends StatelessWidget {
                   )
                 : const StudyNoticeException(isPrivate: false)
       ],
+    );
+  }
+}
+
+class _NoticeItem extends StatelessWidget {
+  final BoardModel boardItem;
+
+  const _NoticeItem({
+    super.key,
+    required this.boardItem,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = context.read<BoardViewModel>();
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            BoardInfoScreen(boardId: boardItem.id,
+                viewModel: viewModel)));
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+                  Offstage(
+                offstage: (isNew(boardItem.createdAt.toString()))
+                    ? false
+                    : true,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                      color: AppColors.red100,
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Text(
+                    '신규',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: AppColors.red400),
+                  ),
+                ),
+              ),
+              Text(
+                boardItem.title,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleMedium,
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Text(
+                '${boardItem.user.nickname} | ',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
+              ),
+              Text(
+                viewModel.postCreatedText(boardItem.createdAt.toString()),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: AppColors.gray400, fontSize: 13.0),
+              ),
+            ],
+          ),
+        ]),
+      ),
     );
   }
 }
@@ -127,8 +208,7 @@ Widget _buildCarouselItem(int studyId, List<BoardModel> sublist) {
   return ListView.separated(
     physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (context, index) {
-      return BoardItem(
-        isOnlyNotice: true,
+      return _NoticeItem(
         boardItem: sublist[index],
       );
     },

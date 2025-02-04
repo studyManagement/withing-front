@@ -23,7 +23,7 @@ import '../../../di/injection.dart';
 import '../../common/share/share_button.dart';
 import '../widgets/study_details.dart';
 import '../widgets/study_header.dart';
-import '../widgets/study_notices.dart';
+import '../widgets/study_notice_list.dart';
 
 class StudyInfoScreen extends StatelessWidget {
   final int studyId;
@@ -161,7 +161,7 @@ class StudyInfoScreen extends StatelessWidget {
                         child: Consumer<BoardViewModel>(
                             builder: (context, boardViewModel, child) {
                           boardViewModel.isMember = vm.isMember;
-                          return Notice(
+                          return StudyNoticeList(
                               studyId: studyId,
                               isMember: vm.isMember,
                               isPrivate: vm.study!.private);

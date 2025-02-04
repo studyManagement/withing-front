@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:modi/model/board/comment_model.dart';
 import 'package:modi/service/board/board_service.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
@@ -329,4 +330,23 @@ class BoardViewModel extends ChangeNotifier {
       return '공지로 등록되었어요.';
     }
   }
+
+  String postCreatedText(String createdAt) {
+    DateTime now = DateTime.now();
+    DateTime createdTime = DateTime.parse(createdAt);
+    Duration difference = now.difference(createdTime);
+
+    if (difference.inMinutes < 1) {
+      return '방금 전';
+    } else if (difference.inHours < 1) {
+      return '${difference.inMinutes}분 전';
+    } else if (difference.inHours < 24) {
+      return DateFormat('HH:mm').format(createdTime);
+    } else if (difference.inDays < 365) {
+      return DateFormat('MM.dd').format(createdTime);
+    } else {
+      return DateFormat('yyyy.MM.dd').format(createdTime);
+    }
+  }
+
 }
