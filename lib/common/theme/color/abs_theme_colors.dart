@@ -22,7 +22,7 @@ abstract class AbstractThemeColors {
   /// Text Color
   Color get headlineTextColor => AppColors.gray800;
   Color get titleTextColor => AppColors.gray800;
-  Color get bodyTextColor => AppColors.gray700;
+  Color get bodyTextColor => AppColors.gray800;
   Color get captionTextColor => AppColors.gray700;
   Color get defaultTextColor => AppColors.gray500;
   Color get whiteTextColor => AppColors.white;
