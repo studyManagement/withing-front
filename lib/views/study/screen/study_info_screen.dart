@@ -157,7 +157,7 @@ class StudyInfoScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     ChangeNotifierProvider(
                         create: (_) =>
-                            BoardViewModel(context, getIt<BoardService>()),
+                            BoardViewModel(getIt<BoardService>()),
                         child: Consumer<BoardViewModel>(
                             builder: (context, boardViewModel, child) {
                           boardViewModel.isMember = vm.isMember;

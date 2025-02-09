@@ -26,7 +26,7 @@ class StudyNoticeList extends StatelessWidget {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
     boardViewModel.setStudyId = studyId;
     if (isMember || !isPrivate) {
-      boardViewModel.fetchNotices();
+      boardViewModel.fetchNotices(context);
     }
 
     return Column(
@@ -178,7 +178,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           options: CarouselOptions(
             enableInfiniteScroll: false,
             onPageChanged: ((index, reason) {
-              widget.viewModel.fetchNotices();
+              widget.viewModel.fetchNotices(context);
               setState(() {
                 currentIndex = index;
               });

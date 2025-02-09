@@ -1,86 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modi/view_models/board/board_input_viewmodel.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/theme/app/app_colors.dart';
 import '../screen/board_info_screen.dart';
 
 enum BoardInputType { boardTitle, boardContents, comment }
 
-class BoardTextField extends StatefulWidget {
-  final BoardInputType type;
-  final bool isNew;
-  final BoardViewModel viewModel;
+class BoardTextField extends StatelessWidget {
+  final Function(String) onChanged;
+  final Function() onEditingCompleted;
 
   const BoardTextField(
       {super.key,
-      required this.type,
-      required this.isNew,
-      required this.viewModel});
-
-  @override
-  State<BoardTextField> createState() => _BoardTextFieldState();
-}
-
-class _BoardTextFieldState extends State<BoardTextField> {
-  late TextEditingController controller;
-  late String? initValue;
-  late bool isTitle;
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    isTitle = (widget.type == BoardInputType.boardTitle) ? true : false;
-    initValue = widget.isNew
-        ? null
-        : isTitle
-            ? widget.viewModel.post!.title
-            : widget.viewModel.post!.content;
-    controller = TextEditingController(text: initValue);
-  }
+      required this.onChanged,
+      required this.onEditingCompleted});
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? textStyle = (isTitle)
-        ? Theme.of(context).textTheme.titleSmall
-        : Theme.of(context).textTheme.bodySmall;
-
+    TextStyle? textStyle = Theme.of(context).textTheme.titleLarge;
+    final viewModel = context.read<BoardInputViewModel>();
     return TextFormField(
-      enabled: (widget.type == BoardInputType.comment && !widget.viewModel.isMember) ? false : true,
-      controller: controller,
+      controller: viewModel.titleController,
       onChanged: (value) {
-        widget.viewModel.isValidInput(widget.type, value);
+        onChanged(value);
       },
       onEditingComplete: () {
-        if (widget.viewModel.isValid) {
-          (widget.type == BoardInputType.comment)
-              ? {widget.viewModel.createComment(widget.viewModel.post!.id)}
-              : (widget.isNew)
-                  ? widget.viewModel.createPost().then((_) => {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BoardInfoScreen(
-                                    boardId: widget.viewModel.boardId!,
-                                    viewModel: widget.viewModel))),
-                        widget.viewModel.refreshBoardList()
-                      })
-                  : widget.viewModel.updatePost(widget.viewModel.post!.id).then(
-                      (_) =>
-                          {context.pop(), widget.viewModel.refreshBoardList()});
-          if (widget.type == BoardInputType.comment) {
-            setState(() {
-              controller.clear();
-            });
-            widget.viewModel.refreshBoardList();
-          }
-        }
+        onEditingCompleted();
       },
       autofocus: false,
       cursorHeight: 20,
@@ -88,11 +36,11 @@ class _BoardTextFieldState extends State<BoardTextField> {
       style: textStyle,
       maxLines: null,
       decoration: InputDecoration(
-        filled: (widget.type == BoardInputType.comment) ? true : false,
+        filled: false,
         fillColor: AppColors.gray50,
-        hintText: widget.viewModel.getHintText(widget.type),
+        hintText: viewModel.getHintText(BoardInputType.boardTitle),
         hintStyle: textStyle!
-            .copyWith(color: AppColors.gray200, fontWeight: FontWeight.w500),
+            .copyWith(color: AppColors.gray300, fontWeight: FontWeight.w600),
         contentPadding: const EdgeInsets.only(left: 20.0),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
