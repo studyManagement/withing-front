@@ -74,6 +74,7 @@ flutter:
     - asset/search_category/
     - asset/study_manage/
     - asset/fonts/
+    - asset/board/
     - asset/share/
     - .local.env
     - .env
