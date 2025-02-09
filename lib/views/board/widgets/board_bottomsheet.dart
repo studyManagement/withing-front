@@ -19,7 +19,7 @@ class BoardBottomSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       width: MediaQuery.of(context).size.width,
-      height: 168,
+      height: 128,
       decoration: const BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.only(
@@ -33,22 +33,7 @@ class BoardBottomSheet extends StatelessWidget {
           behavior: HitTestBehavior.translucent,
           child: Row(
             children: [
-              Text(viewModel.getToSetNoticeText(),
-                  style: Theme.of(context).textTheme.bodySmall),
-            ],
-          ),
-          onTap: () {
-            viewModel.setOrUnsetNotice();
-            context.pop();
-            // viewModel.refreshBoardList();
-          },
-        ),
-        const SizedBox(height: 12),
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          child: Row(
-            children: [
-              Text('수정하기', style: Theme.of(context).textTheme.bodySmall),
+              Text('수정하기', style: Theme.of(context).textTheme.titleSmall),
             ],
           ),
           onTap: () {
@@ -69,7 +54,7 @@ class BoardBottomSheet extends StatelessWidget {
               Text('삭제하기',
                   style: Theme.of(context)
                       .textTheme
-                      .bodySmall
+                      .titleSmall
                       ?.copyWith(color: AppColors.red400)),
             ],
           ),
@@ -80,7 +65,7 @@ class BoardBottomSheet extends StatelessWidget {
                 '',
                 true,
                 () => {
-                      viewModel.deletePost(boardId),
+                      viewModel.deletePost(context, boardId),
                       viewModel.refreshBoardList(),
                       context
                         ..pop()

@@ -19,7 +19,7 @@ class BoardList extends StatelessWidget {
       onNotification: (ScrollNotification notification) {
         if (notification.metrics.pixels ==
             notification.metrics.maxScrollExtent) {
-          vm.scrollListener(isNotice!);
+          vm.scrollListener(context, isNotice!);
         }
         return true;
       },

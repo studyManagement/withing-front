@@ -27,7 +27,6 @@ class MentionableTextField extends StatelessWidget {
       controller: viewModel.mentionableController,
       onChanged: (value) {
         onChanged(value);
-        print(viewModel.mentionableController.getTextToWordArr());
       },
       onEditingComplete: () {
         onEditingCompleted();
