@@ -47,7 +47,7 @@ class StudyScheduleVoteDetailScreen extends StatelessWidget {
     bool isLoading = vote == null;
 
     if (isLoading) {
-      studyViewModel.fetchStudyInfo(studyId);
+      studyViewModel.fetchStudyInfo(context, studyId);
       voteViewModel.fetchScheduleVote(studyId, voteId);
     }
     return DefaultLayout(

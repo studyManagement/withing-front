@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
@@ -31,7 +30,7 @@ class SetRegularMeetingScreen extends StatelessWidget {
                     : AppColors.gray400,
                 onTap: (consumer.checkDaysAndTimes(curType))
                     ? () {
-                        consumer.setMeetingSchedule(curType);
+                        consumer.setMeetingSchedule(context, curType);
                       }
                     : null,
                 text: '설정 완료'),

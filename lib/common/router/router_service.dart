@@ -144,7 +144,7 @@ class RouterService {
                   path: 'my/profile',
                   builder: (context, state) {
                     final viewModel = state.extra ??
-                        UpdateProfileViewModel(context, getIt<UserService>());
+                        UpdateProfileViewModel(getIt<UserService>());
                     return MyProfileScreen(
                         viewModel: viewModel as UpdateProfileViewModel);
                   },
@@ -158,7 +158,7 @@ class RouterService {
                       providers: [
                         ChangeNotifierProvider(
                           create: (_) => StudyListViewModel(
-                              getIt<StudyService>(), context),
+                              getIt<StudyService>()),
                         ),
                       ],
                       child: MyStudyScreen(studyType),
@@ -179,7 +179,7 @@ class RouterService {
                     final refreshFlag = state.extra ?? false;
                     return ChangeNotifierProvider(
                         create: (_) =>
-                            StudyViewModel(context, getIt<StudyService>()),
+                            StudyViewModel(getIt<StudyService>()),
                         child: StudyInfoScreen(
                             studyId: int.parse(
                               state.pathParameters['studyId']!,
@@ -259,7 +259,6 @@ class RouterService {
                                 ),
                                 ChangeNotifierProvider(
                                   create: (_) => StudyViewModel(
-                                    context,
                                     getIt<StudyService>(),
                                   ),
                                 ),
@@ -288,7 +287,6 @@ class RouterService {
                                 ),
                                 ChangeNotifierProvider(
                                   create: (_) => StudyViewModel(
-                                    context,
                                     getIt<StudyService>(),
                                   ),
                                 ),
@@ -355,7 +353,6 @@ class RouterService {
                                 ),
                                 ChangeNotifierProvider(
                                   create: (_) => StudyViewModel(
-                                    context,
                                     getIt<StudyService>(),
                                   ),
                                 ),
@@ -373,7 +370,7 @@ class RouterService {
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
                         create: (_) => UpdateStudyViewModel(
-                            getIt<StudyService>(), context),
+                            getIt<StudyService>()),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),

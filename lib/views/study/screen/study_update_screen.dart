@@ -18,13 +18,13 @@ class StudyUpdateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UpdateStudyViewModel viewModel = context.read<UpdateStudyViewModel>();
-    viewModel.getStudyInfo(studyId);
+    viewModel.getStudyInfo(context, studyId);
     return Consumer<UpdateStudyViewModel>(builder: (context, viewModel, _) {
       return DefaultLayout(
           floatingActionButton: StudyBottomButton(
               onTap: (viewModel.checkEverythingFilled())
                   ? () {
-                      viewModel.updateStudyInfo();
+                      viewModel.updateStudyInfo(context);
                     }
                   : null,
               text: '수정하기',

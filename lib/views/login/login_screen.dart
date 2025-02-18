@@ -96,7 +96,7 @@ class _Bottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SigninViewModel vm = SigninViewModel(context, getIt<SigninService>());
+    final SigninViewModel vm = SigninViewModel(getIt<SigninService>());
 
     List<Widget> loginComponents = [
       CircleButton(
@@ -106,7 +106,7 @@ class _Bottom extends StatelessWidget {
             height: 50,
           ),
           onTap: () async {
-            await vm.signin('kakao');
+            await vm.signin(context, 'kakao');
           }),
     ];
 
@@ -120,7 +120,7 @@ class _Bottom extends StatelessWidget {
               height: 50,
             ),
             onTap: () async {
-              await vm.signin('apple');
+              await vm.signin(context, 'apple');
             }),
       ]);
     }

@@ -22,7 +22,7 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    viewModel.fetchUserProfileImage();
+    viewModel.fetchUserProfileImage(context);
     return DefaultLayout(
         title: '프로필 수정',
         child: SingleChildScrollView(
@@ -77,8 +77,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                           widget: ChangeNotifierProvider(
                               create: (context) => ImagePickerViewModel(
                                   getIt<ImageUpdateService>(),
-                                  getIt<ImageCreateService>(),
-                                  context),
+                                  getIt<ImageCreateService>()),
                               child: Consumer<ImagePickerViewModel>(
                                   builder: (context, imgVm, _) {
                                 if (imgVm.isSelected) {
@@ -90,7 +89,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
                                 }
                                 return UserImageBottomSheet(
                                   onSelected: () {
-                                    imgVm.createImage().then((value) =>
+                                    imgVm.createImage(context).then((value) =>
                                         viewModel.userImageUuid =
                                             imgVm.imageUuid);
                                     viewModel.isOldImage = false;
@@ -141,7 +140,7 @@ class _UpdateProfileFormState extends State<UpdateProfileForm> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: InkWell(
-                onTap: () => viewModel.updateUserProfile(),
+                onTap: () => viewModel.updateUserProfile(context),
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(

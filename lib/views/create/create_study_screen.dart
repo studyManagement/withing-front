@@ -21,14 +21,14 @@ class CreateStudyScreen extends StatelessWidget {
     final controller = ScrollController();
     final toggleKey = GlobalKey();
     return ChangeNotifierProvider(
-      create: (_) => CreateStudyViewModel(getIt<StudyCreateService>(), context),
+      create: (_) => CreateStudyViewModel(getIt<StudyCreateService>()),
       child: Consumer<CreateStudyViewModel>(
         builder: (context, viewModel, child) {
           return DefaultLayout(
             floatingActionButton: StudyBottomButton(
                 onTap: (viewModel.checkEverythingFilled())
                     ? () {
-                        viewModel.createStudy().then((_) => context
+                        viewModel.createStudy(context).then((_) => context
                             .pushReplacement('/studies/${viewModel.studyId}',extra: true));
                       }
                     : null,

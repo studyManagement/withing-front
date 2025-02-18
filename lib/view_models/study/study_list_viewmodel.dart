@@ -17,9 +17,8 @@ import '../../service/schedule/schedule_service.dart';
 
 class StudyListViewModel extends ChangeNotifier {
   bool _disposed = false;
-
   final StudyService _service;
-  final BuildContext _context;
+
   List<StudyListView> studyList = [];
   List<UserScheduleModel> todaySchedules = [];
   List<UserScheduleModel> thisWeekSchedules = [];
@@ -27,7 +26,7 @@ class StudyListViewModel extends ChangeNotifier {
   String weekString = '';
   bool isInit = true;
 
-  StudyListViewModel(this._service, this._context);
+  StudyListViewModel(this._service);
 
   Future<void> fetchStudies(StudyType studyType) async {
     if(studyList.isEmpty) {
@@ -42,7 +41,7 @@ class StudyListViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchThisWeekSchedules() async {
+  Future<void> fetchThisWeekSchedules(BuildContext context) async {
     if(thisWeekSchedules.isEmpty && isInit) {
       try {
         thisWeekSchedules =
@@ -50,9 +49,9 @@ class StudyListViewModel extends ChangeNotifier {
         notifyListeners();
         isInit = false;
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
     }
   }

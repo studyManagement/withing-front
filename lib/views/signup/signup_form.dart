@@ -61,8 +61,7 @@ class _SignupFormState extends State<SignupForm> {
                   widget: ChangeNotifierProvider<ImagePickerViewModel>(
                     create: (context) => ImagePickerViewModel(
                         getIt<ImageUpdateService>(),
-                        getIt<ImageCreateService>(),
-                        context),
+                        getIt<ImageCreateService>()),
                     child: Consumer<ImagePickerViewModel>(
                         builder: (context, imgVm, _) {
                       if (imgVm.isSelected) {
@@ -73,7 +72,7 @@ class _SignupFormState extends State<SignupForm> {
                       }
                       return UserImageBottomSheet(
                         onSelected: () {
-                          imgVm.createImage().then((value) =>
+                          imgVm.createImage(context).then((value) =>
                               viewModel.userImageUuid = imgVm.imageUuid);
                           viewModel.isDefault = false;
                           context.pop();

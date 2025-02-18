@@ -25,7 +25,7 @@ class ImagePickerViewModel extends ChangeNotifier {
 
   final ImageUpdateService? _imageUpdateService;
   final ImageCreateService? _imageCreateService;
-  final BuildContext _context;
+
   String _imagePath = '';
   String _imageUuid = '';
   File? imageFile;
@@ -45,7 +45,7 @@ class ImagePickerViewModel extends ChangeNotifier {
   }
 
   ImagePickerViewModel(
-      this._imageUpdateService, this._imageCreateService, this._context);
+      this._imageUpdateService, this._imageCreateService);
 
   // Future<void> updateImage() async {
   //   try {
@@ -57,15 +57,15 @@ class ImagePickerViewModel extends ChangeNotifier {
   //   }
   // }
 
-  Future<void> createImage() async {
+  Future<void> createImage(BuildContext context) async {
     try {
       isSelected = true;
       _imageUuid = await _imageCreateService!.callImageCreateApi(imageFile!);
     } on ApiException catch (e) {
       isSelected = false;
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요.', e.cause, false,
+          () => context.pop(), () => null);
     }
   }
 

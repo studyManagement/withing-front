@@ -23,7 +23,6 @@ import '../../views/my/my_screen.dart';
 
 class UpdateProfileViewModel extends ChangeNotifier {
   final UserService _userService;
-  final BuildContext _context;
 
   String _nickname = Authentication.instance.nickname;
   String _introduce = Authentication.instance.introduce;
@@ -61,11 +60,11 @@ class UpdateProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  UpdateProfileViewModel(this._context, this._userService);
+  UpdateProfileViewModel(this._userService);
 
-  refreshData(){
+  refreshData(BuildContext context){
     _userImagePath = '';
-    fetchUserProfileImage();
+    fetchUserProfileImage(context);
     getAppVersion();
     notifyListeners();
   }
@@ -76,7 +75,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
         .then((yamlValue) => appVersion = loadYaml(yamlValue)['version']);
   }
 
-  Future<void> fetchUserProfileImage() async {
+  Future<void> fetchUserProfileImage(BuildContext context) async {
     // 프로필 수정 화면으로 이동 시
     if (_userImagePath.isEmpty) {
       try {
@@ -88,14 +87,14 @@ class UpdateProfileViewModel extends ChangeNotifier {
         isLoading = false;
         notifyListeners();
       } on ApiException catch (e) {
-        if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false,
-            () => _context.pop(), () => null);
+        if (!context.mounted) return;
+        ModiModal.openDialog(context, '오류가 발생했어요.', e.cause, false,
+            () => context.pop(), () => null);
       }
     }
   }
 
-  Future<void> updateUserProfile() async {
+  Future<void> updateUserProfile(BuildContext context) async {
     try {
       if (_userImageUuid.isEmpty) {
         _userImageFile = (isDefault)
@@ -110,12 +109,12 @@ class UpdateProfileViewModel extends ChangeNotifier {
       Authentication.instance.save();
       _userImagePath = '';
       notifyListeners();
-      if(!_context.mounted) return;
-      _context.pop();
+      if(!context.mounted) return;
+      context.pop();
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요.', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요.', e.cause, false,
+          () => context.pop(), () => null);
     }
   }
 

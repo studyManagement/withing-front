@@ -20,7 +20,6 @@ import 'model/study_view.dart';
 class StudyViewModel extends ChangeNotifier {
   bool _disposed = false;
   final StudyService _service;
-  final BuildContext _context;
 
   static final LoggingInterface _logger = getIt<LoggingInterface>();
 
@@ -93,7 +92,7 @@ class StudyViewModel extends ChangeNotifier {
 
   bool get hasLike => _hasLike;
 
-  StudyViewModel(this._context, this._service);
+  StudyViewModel(this._service);
 
   set meetingType(MeetingType type) {
     _meetingType = type;
@@ -138,7 +137,7 @@ class StudyViewModel extends ChangeNotifier {
     _isFilled = [for (int i = 0; i < 4; i++) false];
   }
 
-  Future<void> fetchStudyInfo(int studyId) async {
+  Future<void> fetchStudyInfo(BuildContext context, int studyId) async {
     if (_study == null) {
       try {
         _study = StudyView.from(await _service.fetchStudyInfo(studyId));
@@ -158,17 +157,17 @@ class StudyViewModel extends ChangeNotifier {
         }
         notifyListeners();
       } on ApiException catch (e) {
-        if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-            () => _context.pop(), () => null);
+        if (!context.mounted) return;
+        ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+            () => context.pop(), () => null);
       }
     }
   }
 
-  Future<void> isValidPassword() async {
+  Future<void> isValidPassword(BuildContext context) async {
     _isValidPwd = RegExp(r'^\d{4}$').hasMatch(_password);
     if (_isValidPwd) {
-      await joinStudy(_password);
+      await joinStudy(context, _password);
     }
     _password = '';
     _isChecked = _isValidPwd;
@@ -176,7 +175,7 @@ class StudyViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> joinStudy(String? password) async {
+  Future<void> joinStudy(BuildContext context, String? password) async {
     try {
       var response = await _service.joinStudy(study!.id, password);
       _logger.appEvent(
@@ -191,69 +190,70 @@ class StudyViewModel extends ChangeNotifier {
         _successToJoin = false;
         _isFull = true;
       } else if (e.code == 404) {
-        if (!_context.mounted) return;
-        ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-            () => _context.pop(), () => null);
+        if (!context.mounted) return;
+        ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+            () => context.pop(), () => null);
       }
     }
     _isChecked = true;
     notifyListeners();
   }
 
-  Future<void> pickFavoriteStudy() async {
+  Future<void> pickFavoriteStudy(BuildContext context) async {
     try {
       await _service.pickFavoriteStudy(_study!.id);
       _hasLike = true;
       notifyListeners();
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
   }
 
-  Future<void> cancelFavoriteStudy() async {
+  Future<void> cancelFavoriteStudy(BuildContext context) async {
     try {
       await _service.cancelFavoriteStudy(_study!.id);
       _hasLike = false;
       notifyListeners();
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
   }
 
   /// Admin Study
-  Future<void> finishStudy() async {
+  Future<void> finishStudy(BuildContext context) async {
     try {
       await _service.finishStudy(_study!.id);
-      BottomToast(context: _context, text: "스터디가 종료되었어요.").show();
-      if(!_context.mounted) return;
-      _context.go('/search');
+      if (!context.mounted) return;
+      BottomToast(context: context, text: "스터디가 종료되었어요.").show();
+      if(!context.mounted) return;
+      context.go('/search');
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => {_context.pop(), _context.pop()}, () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => {context.pop(), context.pop()}, () => null);
     }
     notifyListeners();
   }
 
-  Future<void> deleteStudy() async {
+  Future<void> deleteStudy(BuildContext context) async {
     try {
       await _service.deleteStudy(_study!.id);
-      BottomToast(context: _context, text: "스터디가 삭제되었어요.").show();
-      if(!_context.mounted) return;
-      _context.go('/search');
+      BottomToast(context: context, text: "스터디가 삭제되었어요.").show();
+      if(!context.mounted) return;
+      context.go('/search');
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => {_context.pop(), _context.pop()}, () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => {context.pop(), context.pop()}, () => null);
     }
     notifyListeners();
   }
 
-  Future<void> switchLeader(int studyId) async {
+  Future<void> switchLeader(BuildContext context, int studyId) async {
     try {
       final studyModel = await _service.switchLeader(studyId, selectedUsers[0]);
       _newLeaderId = studyModel.leaderId;
@@ -261,26 +261,26 @@ class StudyViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       // 변경 실패
       _isSwitched = false;
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
     notifyListeners();
   }
 
-  Future<void> forceToExitMember(int studyId) async {
+  Future<void> forceToExitMember(BuildContext context, int studyId) async {
     try {
       await _service.forceToExitMember(studyId, _selectedUsers);
       _isOut = true;
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
     notifyListeners();
   }
 
-  Future<void> setMeetingSchedule(MeetingType type) async {
+  Future<void> setMeetingSchedule(BuildContext context, MeetingType type) async {
     try {
       List<StudyMeetingSchedule> _meetingSchedules = [];
       _meetingType = type;
@@ -306,24 +306,24 @@ class StudyViewModel extends ChangeNotifier {
         if ((_meetingType != MeetingType.NONE && !_isAfter) ||
             _meetingType == MeetingType.NONE) {
           await _service.setMeetingSchedule(study!.id, _meetingSchedules);
-          if (!_context.mounted) return;
-          _context.go('/studies/${study!.id}',extra: true);
+          if (!context.mounted) return;
+          context.go('/studies/${study!.id}',extra: true);
         } else {
-          if (!_context.mounted) return;
+          if (!context.mounted) return;
           ModiModal.openDialog(
-              _context,
+              context,
               '오류가 발생했어요',
               '시작 시간이 종료 시간보다 늦을 수 없어요.',
               false,
-              () => _context.pop(),
+              () => context.pop(),
               () => null);
           return;
         }
       }
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
   }
 
@@ -468,13 +468,6 @@ class StudyViewModel extends ChangeNotifier {
   void checkRegistered() {
     // 스터디 가입 여부
     _isMember = users.any((user) => user.id == _userId);
-  }
-
-  void navigateToStudyErrorPage() {
-    Navigator.push(
-      _context,
-      MaterialPageRoute(builder: (context) => const StudyErrorPage()),
-    );
   }
 
   @override

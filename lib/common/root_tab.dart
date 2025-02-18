@@ -81,7 +81,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           MultiProvider(
             providers: [
               ChangeNotifierProvider(
-                  create: (_) => StudyListViewModel(getIt<StudyService>(),context)),
+                  create: (_) => StudyListViewModel(getIt<StudyService>())),
             ],
             child: const HomeScreen(),
           ),
@@ -90,8 +90,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
               create: (_) => UserScheduleViewModel(getIt<ScheduleService>()),
               child: const ScheduleScreen()),
           ChangeNotifierProvider(
-              create: (_) => UpdateProfileViewModel(
-                  context, getIt<UserService>()),
+              create: (_) => UpdateProfileViewModel(getIt<UserService>()),
               child: const MyScreen())
     ]
     ),

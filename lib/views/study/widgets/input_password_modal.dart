@@ -65,7 +65,7 @@ class InputPasswordModal extends StatelessWidget {
                     },
                     onSubmitted: (vm.isValidPwd)
                         ? (String data) {
-                            vm.isValidPassword().then((_) => {
+                            vm.isValidPassword(context).then((_) => {
                                   if (vm.successToJoin)
                                     {context.go('/studies/$studyId')},
                                   _controller.clear()
@@ -113,7 +113,7 @@ class InputPasswordModal extends StatelessWidget {
             const SizedBox(width: 5),
             ConfirmButton(
                 onTap:  (vm.isValidPwd) ?  () {
-                  vm.isValidPassword().then((_) => {
+                  vm.isValidPassword(context).then((_) => {
                         if (vm.successToJoin) {context.go('/studies/$studyId')},
                         _controller.clear()
                       });
