@@ -82,7 +82,7 @@ class StudyScheduleDetailScreen extends StatelessWidget {
     DateFormat dateFormatter = DateFormat('yyyy. MM. dd. HH:mm');
 
     if (scheduleDetail.id == -1) {
-      studyViewModel.fetchStudyInfo(studyId);
+      studyViewModel.fetchStudyInfo(context, studyId);
       scheduleViewModel.fetchSchedule(studyId, studyScheduleId);
     }
 

@@ -123,7 +123,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                     vm.selectedUsers.length <= maxCount) {
                   if (widget.isOut) {
                     vm
-                        .forceToExitMember(widget.studyId)
+                        .forceToExitMember(context, widget.studyId)
                         .then((_) => {
                               if (vm.isOut)
                                 {
@@ -135,7 +135,7 @@ class _StudyManageBottomSheetState extends State<StudyManageBottomSheet> {
                                 }
                             });
                   } else {
-                    vm.switchLeader(widget.studyId).then((_) => {
+                    vm.switchLeader(context, widget.studyId).then((_) => {
                           if (vm.isSwitched)
                             {
                               context.pop(),

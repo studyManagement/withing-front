@@ -15,9 +15,8 @@ import '../../views/create/widgets/study_text_field.dart';
 
 class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyService _studyService;
-  final BuildContext _context;
 
-  UpdateStudyViewModel(this._studyService, this._context);
+  UpdateStudyViewModel(this._studyService);
 
   @override
   bool get isOldImage => _isOldImage;
@@ -162,7 +161,7 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   /// call api
-  Future<void> getStudyInfo(int studyId) async {
+  Future<void> getStudyInfo(BuildContext context, int studyId) async {
     try {
       StudyModel study = await _studyService.fetchStudyInfo(studyId);
       _studyId = study.id;
@@ -178,13 +177,13 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     }
   }
 
-  Future<void> updateStudyInfo() async {
+  Future<void> updateStudyInfo(BuildContext context) async {
     try {
       if (_studyImageUuid.isEmpty) {
         _studyImageFile = await fileFromImageUrl(_studyImagePath);
@@ -200,12 +199,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyMemberCount,
               _studyImageUuid));
       notifyListeners();
-      if (!_context.mounted) return;
-      _context.go('/studies/$_studyId', extra: true);
+      if (!context.mounted) return;
+      context.go('/studies/$_studyId', extra: true);
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     } on NetworkException catch (e) {
       rethrow;
     }

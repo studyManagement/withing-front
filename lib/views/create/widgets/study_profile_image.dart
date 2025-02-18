@@ -49,8 +49,7 @@ class StudyProfileImage extends StatelessWidget {
               widget: ChangeNotifierProvider(
                   create: (_) => ImagePickerViewModel(
                       getIt<ImageUpdateService>(),
-                      getIt<ImageCreateService>(),
-                      context),
+                      getIt<ImageCreateService>()),
                   child: Consumer<ImagePickerViewModel>(
                       builder: (context, imgVm, _) {
                     if (imgVm.isSelected) {
@@ -61,7 +60,7 @@ class StudyProfileImage extends StatelessWidget {
                     }
                     return StudyImagePicker(
                       onSelected: () {
-                        imgVm.createImage().then((value) =>
+                        imgVm.createImage(context).then((value) =>
                             viewModel.studyImageUuid = imgVm.imageUuid);
                         viewModel.isDefault = imgVm.isDefault;
                         viewModel.isOldImage = false;

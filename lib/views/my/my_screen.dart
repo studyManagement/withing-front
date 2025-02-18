@@ -24,7 +24,7 @@ class _MyScreenState extends State<MyScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<UpdateProfileViewModel>();
-    viewModel.fetchUserProfileImage();
+    viewModel.fetchUserProfileImage(context);
     viewModel.getAppVersion();
 
     return DefaultLayout(

@@ -18,9 +18,8 @@ import '../../views/create/widgets/study_text_field.dart';
 
 class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   final StudyCreateService _studyCreateService;
-  final BuildContext _context;
 
-  CreateStudyViewModel(this._studyCreateService, this._context);
+  CreateStudyViewModel(this._studyCreateService);
 
   @override
   String get studyDescription => _studyDescription;
@@ -184,7 +183,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   /// create study api
-  Future<void> createStudy() async {
+  Future<void> createStudy(BuildContext context) async {
     try {
       if(_studyImageUuid.isEmpty){
         _studyImageFile = await getImageFileFromAssets(_studyImagePath);
@@ -202,9 +201,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       );
       _studyId = newStudy.id;
     } on ApiException catch (e) {
-      if (!_context.mounted) return;
-      ModiModal.openDialog(_context, '오류가 발생했어요', e.cause, false,
-          () => _context.pop(), () => null);
+      if (!context.mounted) return;
+      ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+          () => context.pop(), () => null);
     } on NetworkException catch (e) {
       rethrow;
     }

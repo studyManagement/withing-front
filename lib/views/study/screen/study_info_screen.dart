@@ -4,13 +4,9 @@ import 'package:modi/common/circular_indicator.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/layout/responsive_size.dart';
-import 'package:modi/common/modal/modi_modal.dart';
-import 'package:modi/common/root_tab.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/board/board_service.dart';
-import 'package:modi/service/search/study_search_service.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
-import 'package:modi/view_models/search/category_search_viewmodel.dart';
 import 'package:modi/view_models/study/study_viewmodel.dart';
 import 'package:modi/views/study/screen/study_manage_screen.dart';
 import 'package:modi/views/study/widgets/input_password_modal.dart';
@@ -18,7 +14,6 @@ import 'package:modi/views/study/widgets/study_main_buttons.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/authenticator/authentication.dart';
-import '../../../common/components/share/share.dart';
 import '../../../di/injection.dart';
 import '../../common/share/share_button.dart';
 import '../widgets/study_details.dart';
@@ -44,7 +39,7 @@ class StudyInfoScreen extends StatelessWidget {
     bool offstage = vm.isMember;
     vm.userId = Authentication.instance.userId;
 
-    vm.fetchStudyInfo(studyId).then((_) {
+    vm.fetchStudyInfo(context, studyId).then((_) {
       vm.getRegularMeetingStringAndSetMeetingType();
       vm.checkRegistered();
     });
@@ -127,9 +122,6 @@ class StudyInfoScreen extends StatelessWidget {
                           children: [
                             StudyMainButtons(
                               onTap: () {
-                                bool isLeader =
-                                    Authentication.instance.userId ==
-                                        vm.study!.leaderId;
                                 context.push('/studies/$studyId/schedules');
                               },
                               title: "Schedule",
@@ -211,14 +203,14 @@ class StudyInfoScreen extends StatelessWidget {
                   ),
             onPressed: () {
               (viewModel.hasLike)
-                  ? viewModel.cancelFavoriteStudy()
-                  : viewModel.pickFavoriteStudy();
+                  ? viewModel.cancelFavoriteStudy(context)
+                  : viewModel.pickFavoriteStudy(context);
             },
           );
   }
 
   void joinToPublicStudy(StudyViewModel vm, BuildContext context) {
-    vm.joinStudy(null).then((_) => {
+    vm.joinStudy(context, null).then((_) => {
           if (vm.successToJoin) {context.go('/studies/$studyId')}
         });
   }

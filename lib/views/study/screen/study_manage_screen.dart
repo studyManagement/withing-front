@@ -50,7 +50,7 @@ class StudyManageScreen extends StatelessWidget {
                   onTap: () {
                     ModiModal.openDialog(context, "스터디를 삭제하시겠어요?",
                         "스터디가 영구적으로 삭제되며,\n복구할 수 없어요.", true, () {
-                      viewModel.deleteStudy();
+                      viewModel.deleteStudy(context);
                     }, null);
                   },
                   child: Text('스터디 삭제하기',
@@ -103,7 +103,7 @@ class StudyManageListItem extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                    create: (_) => StudyViewModel(context, getIt<StudyService>()),
+                    create: (_) => StudyViewModel(getIt<StudyService>()),
                     child: Consumer<StudyViewModel>(
                         builder: (context, provider, child) {
                       return StudyManageBottomSheet(
@@ -123,7 +123,7 @@ class StudyManageListItem extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return ChangeNotifierProvider(
-                      create: (_) => StudyViewModel(context, getIt<StudyService>()),
+                      create: (_) => StudyViewModel(getIt<StudyService>()),
                       child: Consumer<StudyViewModel>(
                           builder: (context, provider, child) {
                         return StudyManageBottomSheet(
@@ -139,7 +139,7 @@ class StudyManageListItem extends StatelessWidget {
           } else if (index == 4) {
             ModiModal.openDialog(context, "스터디를 종료하시겠어요?",
                 "더 이상 스터디를 진행할 수 없으며,\n종료된 스터디에 저장돼요.", true, () {
-              vm.finishStudy();
+              vm.finishStudy(context);
               // context.pop();
               // // context.go('/home');
             }, null);
