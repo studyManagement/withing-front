@@ -105,7 +105,7 @@ class UpdatePostScreen extends StatelessWidget {
                           onChanged: (value) {
                             viewModel.isValidInput(
                                 BoardInputType.boardContents, value);
-                            viewModel.isShowUserList = value.contains('@');
+                            viewModel.isShowUserList = inputViewModel.isShowUserList();
                           },
                           onEditingCompleted: () {
                             if (viewModel.isValid) {

@@ -5,13 +5,15 @@ import '../../views/board/widgets/custom_tag_controller.dart';
 
 class BoardInputViewModel extends ChangeNotifier {
   final TextEditingController titleController;
-  final CustomTagController mentionableController;
+  //final CustomTagController mentionableController;
+  final TextEditingController mentionableController;
   final bool isMember;
 
   BoardInputViewModel(
       {String? initTitle, String? initContent, required this.isMember})
       : titleController = TextEditingController(text: initTitle ?? ''),
-        mentionableController = CustomTagController(text: initContent ?? '');
+        mentionableController = TextEditingController(text: initContent ?? '');
+      //  mentionableController = CustomTagController(text: initContent ?? '');
 
   String getHintText(BoardInputType type) {
     switch (type) {
@@ -25,17 +27,18 @@ class BoardInputViewModel extends ChangeNotifier {
   }
 
   void updateInnerText(String name) {
-    List<String> words = mentionableController.getTextToWordArr();
-    String lastWord = words.last;
-    if (lastWord.startsWith('@')) {
-      words.removeLast();
-      mentionableController.text = '${words.join(' ')} ';
-    }
-    mentionableController.text += '@$name ';
+    // List<String> words = mentionableController.getTextToWordArr();
+    // String lastWord = words.last;
+    // if (lastWord.startsWith('@')) {
+    //   words.removeLast();
+    //   mentionableController.text = '${words.join(' ')} ';
+    // }
+    // mentionableController.text += '@$name ';
   }
 
   bool isShowUserList() {
-    return mentionableController.getTextToWordArr().last.startsWith('@');
+    return false;
+    //return mentionableController.getTextToWordArr().last.startsWith('@');
   }
 
   @override
