@@ -14,7 +14,6 @@ import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/environment/environment.dart';
 import 'package:modi/common/notification/notification_service.dart';
 import 'package:modi/common/router/router_service.dart';
-import 'package:modi/constants/auth.dart';
 import 'package:modi/di/injection.dart';
 import 'package:modi/firebase_options.dart';
 import 'package:modi/withing_app.dart';
