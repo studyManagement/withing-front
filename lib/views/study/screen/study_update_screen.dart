@@ -6,6 +6,7 @@ import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/components/gray50_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/study/update_study_viewmodel.dart';
 import '../../create/widgets/create_widget_resources.dart';
@@ -17,6 +18,8 @@ class StudyUpdateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = ScrollController();
+    final toggleKey = GlobalKey();
     final UpdateStudyViewModel viewModel = context.read<UpdateStudyViewModel>();
     viewModel.getStudyInfo(context, studyId);
     return Consumer<UpdateStudyViewModel>(builder: (context, viewModel, _) {
@@ -35,6 +38,7 @@ class StudyUpdateScreen extends StatelessWidget {
               FloatingActionButtonLocation.centerDocked,
           title: getNewStudyTitle(isCreate: false),
           child: (viewModel.isLoading) ? const CircularIndicator() : SingleChildScrollView(
+            controller: controller,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,6 +60,21 @@ class StudyUpdateScreen extends StatelessWidget {
                 StudyMemberCount(
                   viewModel: viewModel,
                 ),
+                const Gray50Divider(dividerHeight: 6),
+                StudyDiscloseToggle(
+                    key: toggleKey,
+                    viewModel: viewModel,
+                    onToggleChanged: (isOn) {
+                      if (isOn) {
+                        Future.delayed(const Duration(milliseconds: 150), () {
+                          controller.animateTo(
+                            controller.position.maxScrollExtent,
+                            duration: const Duration(milliseconds: 150),
+                            curve: Curves.easeOut,
+                          );
+                        });
+                      }
+                    }),
               ],
             ),
           ));

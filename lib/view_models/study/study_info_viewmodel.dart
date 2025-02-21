@@ -6,45 +6,31 @@ enum StudyPageType { create, update }
 abstract class StudyInfoViewModel {
   // create or update study
   String get studyName;
-
   String get studyDescription;
-
+  String get password;
   List<String> get selectedCategories;
-
   List<int> get selectedCategoryIndices;
-
   int get studyMemberCount;
-
   File? get studyImageFile;
-
   String get studyImagePath;
-
+  bool get isStudyDiscloseToggled;
   bool get isStudyNameError;
-
   bool get isStudyDescriptionError;
-
   bool get isOldImage;
   bool get isDefault;
-
   String get studyImageUuid;
 
   void checkStudyNameAndDescription(NewStudyType type, String input);
-
   void updateStudyNameAndDescription(NewStudyType type, String input);
-
   void updateSelectedCategories(String option, int? maxSelectedOptions);
-
   void updateSelectedCategoryIndices();
-
-
+  void toggle();
   bool checkEverythingFilled();
 
   set studyImageFile(File? file);
-
   set memberCount(int value);
-
+  set password(String value);
   set studyImagePath(String value);
-
   set isOldImage(bool value);
   set isDefault(bool value);
   set studyImageUuid(String value);
@@ -63,7 +49,6 @@ abstract class StudyInfoViewModel {
 }
 
 /// Utils - new study
-
 String getNewStudyTitle({isCreate}) {
   if (isCreate) {
     return '스터디 생성하기';

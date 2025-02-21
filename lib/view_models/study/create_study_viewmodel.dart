@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/network_exception.dart';
-import 'package:modi/exception/image/image_exception.dart';
 import 'package:modi/model/study/study_model.dart';
-import 'package:modi/service/search/study_search_service.dart';
-import 'package:modi/view_models/search/category_search_viewmodel.dart';
 import 'package:modi/view_models/study/study_info_viewmodel.dart';
 import '../../common/requester/api_exception.dart';
 import '../../common/utils/get_image_file.dart';
 import '../../di/injection.dart';
-import '../../exception/study/study_exception.dart';
 import '../../service/create/study_create_service.dart';
 import '../../service/image/image_create_service.dart';
 import '../../views/create/widgets/study_text_field.dart';
@@ -26,6 +22,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   @override
   String get studyName => _studyName;
+
+  @override
+  String get password => _studyDisclosePassword;
 
   @override
   List<String> get selectedCategories => _selectedCategories;
@@ -72,6 +71,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   String get studyImageUuid => _studyImageUuid;
 
+  @override
   bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
 
   /// check everything filled
@@ -117,6 +117,7 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   /// update disclose toggle
+  @override
   void toggle() {
     _isStudyDiscloseToggled = !_isStudyDiscloseToggled;
     notifyListeners();
@@ -152,6 +153,19 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
     }
   }
 
+
+  /// update study password
+  @override
+  set password(String newValue) {
+    if (newValue.length == 4) {
+      _studyDisclosePassword = newValue;
+      notifyListeners();
+    } else {
+      _studyDisclosePassword = '';
+      notifyListeners();
+    }
+  }
+
   /// update study image
   @override
   set studyImageFile(File? file) {
@@ -169,17 +183,6 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   set studyImageUuid(String value) {
     _studyImageUuid = value;
     notifyListeners();
-  }
-
-  /// update study password
-  set password(String newValue) {
-    if (newValue.length == 4) {
-      _studyDisclosePassword = newValue;
-      notifyListeners();
-    } else {
-      _studyDisclosePassword = '';
-      notifyListeners();
-    }
   }
 
   /// create study api

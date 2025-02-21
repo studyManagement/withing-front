@@ -4,15 +4,15 @@ import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../view_models/study/create_study_viewmodel.dart';
+import '../../../view_models/study/study_info_viewmodel.dart';
 
 class StudyDiscloseToggle extends StatelessWidget {
   final ValueChanged<bool>? onToggleChanged;
-
-  const StudyDiscloseToggle({Key? key, this.onToggleChanged}) : super(key: key);
+  final StudyInfoViewModel viewModel;
+  const StudyDiscloseToggle({Key? key, required this.viewModel, this.onToggleChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<CreateStudyViewModel>(context);
     final bool isToggled = viewModel.isStudyDiscloseToggled;
 
     return Padding(

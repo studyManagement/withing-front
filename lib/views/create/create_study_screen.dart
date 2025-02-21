@@ -63,6 +63,7 @@ class CreateStudyScreen extends StatelessWidget {
                   const Gray50Divider(dividerHeight: 6),
                   StudyDiscloseToggle(
                       key: toggleKey,
+                      viewModel: viewModel,
                       onToggleChanged: (isOn) {
                         if (isOn) {
                           Future.delayed(const Duration(milliseconds: 150), () {
