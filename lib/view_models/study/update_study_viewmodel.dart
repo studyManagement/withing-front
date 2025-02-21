@@ -53,14 +53,21 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   String get studyImageUuid => _studyImageUuid;
 
+  @override
+  bool get isStudyDiscloseToggled => _isStudyDiscloseToggled;
+
+  @override
+  String get password => _studyDisclosePassword;
+
   int? _studyId;
   int _headCount = 0;
   String _studyImageUuid = '';
-  String _studyName = '', _studyDescription = '', _studyImagePath = '';
+  String _studyName = '', _studyDescription = '', _studyImagePath = '', _studyDisclosePassword = '';
   List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
   int _studyMemberCount = 0;
   File? _studyImageFile;
+  bool _isStudyDiscloseToggled = false;
   bool _isStudyNameError = false;
   bool _isStudyDescriptionError = false;
   bool _isOldImage = true;
@@ -104,6 +111,12 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   }
 
   @override
+  void toggle() {
+    _isStudyDiscloseToggled = !_isStudyDiscloseToggled;
+    notifyListeners();
+  }
+
+  @override
   void updateSelectedCategories(String option, int? maxSelectedOptions) {
     if (_selectedCategories.contains(option)) {
       _selectedCategories.remove(option);
@@ -126,6 +139,17 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   set memberCount(int newValue) {
     if (newValue <= 15) {
       _studyMemberCount = newValue;
+      notifyListeners();
+    }
+  }
+
+  @override
+  set password(String newValue) {
+    if (newValue.length == 4) {
+      _studyDisclosePassword = newValue;
+      notifyListeners();
+    } else {
+      _studyDisclosePassword = '';
       notifyListeners();
     }
   }
