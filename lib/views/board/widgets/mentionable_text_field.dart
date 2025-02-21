@@ -21,7 +21,7 @@ class MentionableTextField extends StatelessWidget {
     final viewModel = context.read<BoardInputViewModel>();
     TextStyle? textStyle = Theme.of(context).textTheme.bodySmall;
     bool isComment = (type == BoardInputType.comment) ? true : false;
-
+    final contentPadding = isComment ? const EdgeInsets.only(left: 10, top: 10, bottom: 10) : const EdgeInsets.symmetric(horizontal: 16, vertical: 20);
     return TextFormField(
       enabled: (isComment && !viewModel.isMember) ? false : true,
       controller: viewModel.mentionableController,
@@ -45,7 +45,7 @@ class MentionableTextField extends StatelessWidget {
         hintText: viewModel.getHintText(isComment ? BoardInputType.comment : BoardInputType.boardContents),
         hintStyle: textStyle!
             .copyWith(color: AppColors.gray300, fontWeight: FontWeight.w500),
-        contentPadding: const EdgeInsets.only(left: 20.0),
+        contentPadding: contentPadding,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(8.0),

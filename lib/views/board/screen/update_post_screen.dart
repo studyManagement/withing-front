@@ -14,6 +14,7 @@ import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/board_appbar.dart';
 import '../widgets/mentionable_text_field.dart';
 import '../widgets/post_category_selector.dart';
+import '../widgets/post_image_list_view.dart';
 import '../widgets/user_mention_list.dart';
 
 class UpdatePostScreen extends StatelessWidget {
@@ -73,7 +74,7 @@ class UpdatePostScreen extends StatelessWidget {
                                 .bodySmall
                                 ?.copyWith(color: AppColors.gray500)),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 20),
                       Consumer<BoardViewModel>(
                           builder: (context, viewModel, _) =>
                               PostCategorySelector(
@@ -117,6 +118,17 @@ class UpdatePostScreen extends StatelessWidget {
                                       });
                             }
                           }),
+                      Consumer<BoardViewModel>( // 수정 필요
+                        builder: (context, viewModel, _) => Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: SizedBox(
+                              height: 120,
+                              child: PostImageListView(
+                                  imagePathList: viewModel.imageFilePaths,
+                                  onRemove: (int index) =>
+                                      viewModel.removeImage(index))),
+                        ),
+                      ),
                       const Spacer(),
                       const Gray100Divider(),
                       Consumer<BoardViewModel>(
@@ -137,7 +149,7 @@ class UpdatePostScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 CircleButton(
-                                  onTap: () {},
+                                  onTap: () => viewModel.pickMultiPhoto(),
                                   image: Image.asset(
                                     'asset/board/photo.png',
                                     width: 32,
