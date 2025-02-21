@@ -41,7 +41,7 @@ class BoardTextField extends StatelessWidget {
         hintText: viewModel.getHintText(BoardInputType.boardTitle),
         hintStyle: textStyle!
             .copyWith(color: AppColors.gray300, fontWeight: FontWeight.w600),
-        contentPadding: const EdgeInsets.only(left: 20.0),
+        contentPadding: const EdgeInsets.only(left: 16, top: 20, bottom: 20),
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(8.0),

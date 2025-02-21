@@ -13,6 +13,12 @@ import '../../common/utils/get_image_file.dart';
 import '../../common/utils/pick_image_file.dart';
 
 class ImagePickerViewModel extends ChangeNotifier {
+  final ImageUpdateService? _imageUpdateService;
+  final ImageCreateService? _imageCreateService;
+
+  ImagePickerViewModel(
+      this._imageUpdateService, this._imageCreateService);
+
   final List<String> representativeImagesUrl = [
     'asset/user_default_image.png',
    'asset/search_category/2_certification.png',
@@ -22,10 +28,7 @@ class ImagePickerViewModel extends ChangeNotifier {
     'asset/search_category/6_programming.png',
     'asset/search_category/1_language.png'
   ];
-
-  final ImageUpdateService? _imageUpdateService;
-  final ImageCreateService? _imageCreateService;
-
+  
   String _imagePath = '';
   String _imageUuid = '';
   File? imageFile;
@@ -43,9 +46,6 @@ class ImagePickerViewModel extends ChangeNotifier {
     _isSelected = value;
     notifyListeners();
   }
-
-  ImagePickerViewModel(
-      this._imageUpdateService, this._imageCreateService);
 
   // Future<void> updateImage() async {
   //   try {
