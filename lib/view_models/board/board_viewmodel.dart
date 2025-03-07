@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -119,7 +117,7 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-/// board list scroll
+  /// board list scroll
   Future<void> scrollListener(BuildContext context, bool isNotice) async {
     if (_isLoading) return;
     _isLoading = true;
@@ -274,11 +272,9 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> pickMultiPhoto() async {
-    List<File>? pickedFiles = await pickMultiImageFile();
-    if (pickedFiles != null) {
-      imageFilePaths = pickedFiles.map((file) => file.path).toList();
-      notifyListeners();
-    }
+    final pickedFiles = await pickMultiImageFile();
+    imageFilePaths = pickedFiles.map((file) => file?.path ?? '').toList();
+    notifyListeners();
   }
 
   void removeImage(int index) {
@@ -375,7 +371,7 @@ class BoardViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       if (!context.mounted) return;
       ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-              () => context.pop(), () => null);
+          () => context.pop(), () => null);
     }
   }
 
@@ -389,7 +385,7 @@ class BoardViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       if (!context.mounted) return;
       ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-              () => context.pop(), () => null);
+          () => context.pop(), () => null);
     }
   }
 

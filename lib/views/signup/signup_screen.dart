@@ -29,7 +29,7 @@ class SignupScreen extends StatelessWidget {
         child: ChangeNotifierProvider(
           create: (context) =>
               SignupViewModel(provider, uuid, getIt<SignupService>()),
-          child: const SignupForm(),
+          child: SignupForm(),
         ),
       ),
     );

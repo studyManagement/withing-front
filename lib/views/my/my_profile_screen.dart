@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/common/layout/default_layout.dart';
@@ -24,140 +24,135 @@ class MyProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     viewModel.fetchUserProfileImage(context);
     return DefaultLayout(
-        title: '프로필 수정',
-        child: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ChangeNotifierProvider.value(
-                    value: viewModel, child: const UpdateProfileForm()))));
+      title: '프로필 수정',
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ChangeNotifierProvider.value(
+            value: viewModel,
+            child: UpdateProfileForm(),
+          ),
+        ),
+      ),
+    );
   }
 }
 
-class UpdateProfileForm extends StatefulWidget {
-  const UpdateProfileForm({super.key});
+class UpdateProfileForm extends StatelessWidget {
+  UpdateProfileForm({super.key});
 
-  @override
-  State<UpdateProfileForm> createState() => _UpdateProfileFormState();
-}
-
-class _UpdateProfileFormState extends State<UpdateProfileForm> {
   final debounce = Debouncer(milliseconds: 300);
+
+  ImageProvider _getImageProvider(
+      UpdateProfileViewModel viewModel, ImagePickerViewModel imgVm) {
+    if (imgVm.isSelected && imgVm.selectedImageProvider != null) {
+      return imgVm.selectedImageProvider!;
+    } else if (viewModel.isOldImage) {
+      return NetworkImage(viewModel.userImagePath);
+  } else {
+      return const AssetImage('asset/user_default_image.png');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<UpdateProfileViewModel>();
-    ShapeDecoration? shapeDecoration;
-
-    var image = viewModel.isDefault || viewModel.userImagePath.isEmpty
-        ? const AssetImage('asset/user_default_image.png')
-        : viewModel.isOldImage
-            ? NetworkImage(viewModel.userImagePath)
-            : FileImage(viewModel.userImageFile!);
-
-    shapeDecoration = ShapeDecoration(
-        shape: const OvalBorder(),
-        image: DecorationImage(
-          image: image as ImageProvider,
-          fit: BoxFit.cover,
-        ));
 
     return SingleChildScrollView(
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.8,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Profile(
-                    shapeDecoration: shapeDecoration,
-                    onTap: () {
-                      ModiModal.openBottomSheet(context,
-                          widget: ChangeNotifierProvider(
-                              create: (context) => ImagePickerViewModel(
-                                  getIt<ImageUpdateService>(),
-                                  getIt<ImageCreateService>()),
-                              child: Consumer<ImagePickerViewModel>(
-                                  builder: (context, imgVm, _) {
-                                if (imgVm.isSelected) {
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    viewModel.userImageFile = imgVm.imageFile;
-                                    viewModel.userImagePath = imgVm.imagePath;
-                                  });
-                                }
-                                return UserImageBottomSheet(
-                                  onSelected: () {
-                                    imgVm.createImage(context).then((value) =>
-                                        viewModel.userImageUuid =
-                                            imgVm.imageUuid);
-                                    viewModel.isOldImage = false;
-                                    viewModel.isDefault = false;
-                                    context.pop();
-                                  },
-                                  onDefault: () async {
-                                    viewModel.userImagePath =
-                                        'asset/user_default_image.png';
-                                    viewModel.isDefault = true;
-                                    context.pop();
-                                  },
-                                );
-                              })),
-                          height: 168);
+        child: ChangeNotifierProvider(
+          create: (_) => ImagePickerViewModel(
+            getIt<ImageUpdateService>(),
+            getIt<ImageCreateService>(),
+          ),
+          child: Consumer<ImagePickerViewModel>(builder: (context, imgVm, _) {
+            final shapeDecoration = ShapeDecoration(
+              shape: const OvalBorder(),
+              image: DecorationImage(
+                image: _getImageProvider(viewModel, imgVm),
+                fit: BoxFit.cover,
+              ),
+            );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Profile(
+                      shapeDecoration: shapeDecoration,
+                      onTap: () {
+                        ModiModal.openBottomSheet(
+                          context,
+                          widget: UserImageBottomSheet(
+                            onSelected: () {
+                              viewModel.isOldImage = false;
+                              viewModel.isDefault = false;
+                            },
+                            onDefault: () {
+                              viewModel.isDefault = true;
+                            },
+                            viewModel: imgVm,
+                          ),
+                          height: 168,
+                        );
+                      },
+                      bottomImagePath: 'asset/camera.png',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 60),
+                TextInput(
+                  '닉네임',
+                  '사용할 닉네임을 설정해주세요.',
+                  10,
+                  initialValue: Authentication.instance.nickname,
+                  (value) => debounce.run(() {
+                    viewModel.changeNickname(value);
+                  }),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  viewModel.message,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Color(viewModel.rgb),
+                  ),
+                ),
+                const SizedBox(height: 50),
+                TextInput(
+                  '자기소개',
+                  '짧은 문장으로 본인을 소개해보세요.',
+                  30,
+                  initialValue: Authentication.instance.introduce,
+                  (value) {
+                    viewModel.changeDescription(value);
+                  },
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    viewModel.updateUserProfile(context, imgVm.imageFile, imgVm.imagePath);
                     },
-                    bottomImagePath: 'asset/camera.png'),
-              ),
-            ),
-            const SizedBox(height: 60),
-            TextInput(
-                '닉네임',
-                '사용할 닉네임을 설정해주세요.',
-                10,
-                initialValue: Authentication.instance.nickname,
-                (value) => debounce.run(() {
-                      viewModel.changeNickname(value);
-                    })),
-            const SizedBox(height: 8),
-            Text(
-              viewModel.message,
-              style: TextStyle(
-                fontSize: 12,
-                color: Color(viewModel.rgb),
-              ),
-            ),
-            const SizedBox(height: 50),
-            TextInput(
-              '자기소개',
-              '짧은 문장으로 본인을 소개해보세요.',
-              30,
-              initialValue: Authentication.instance.introduce,
-              (value) {
-                viewModel.changeDescription(value);
-              },
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: InkWell(
-                onTap: () => viewModel.updateUserProfile(context),
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: viewModel.buttonColor),
-                  child: const Center(
-                    child: Text(
-                      '수정 완료',
-                      style: TextStyle(
-                        color: Colors.white,
+            child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: viewModel.buttonColor),
+                    child: const Center(
+                      child: Text(
+                        '수정 완료',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          }),
         ),
       ),
     );

@@ -19,8 +19,7 @@ class StudyImagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ImagePickerViewModel viewModel = context.read();
-
+    final viewModel = context.watch<ImagePickerViewModel>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -62,10 +61,10 @@ class StudyImagePicker extends StatelessWidget {
                       size: 50,
                       onTap: () {
                         viewModel.setImageFile(
-                            viewModel.representativeImagesUrl[index - 1]);
+                            viewModel.representativeImagePaths[index - 1]);
                       },
                       image: Image.asset(
-                          viewModel.representativeImagesUrl[index - 1],
+                          viewModel.representativeImagePaths[index - 1],
                           fit: BoxFit.cover),
                     );
                   }
@@ -82,7 +81,10 @@ class StudyImagePicker extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               ConfirmButton(
-                onTap: onSelected,
+                onTap: () {
+                  onSelected();
+                  viewModel.isSelected = true;
+                },
                 text: '확인',
                 backgroundColor: AppColors.blue600,
               ),
@@ -98,13 +100,16 @@ class StudyImagePicker extends StatelessWidget {
 class UserImageBottomSheet extends StatelessWidget {
   final Function() onSelected;
   final Function() onDefault;
+  final ImagePickerViewModel viewModel;
 
-  const UserImageBottomSheet({super.key, required this.onSelected, required this.onDefault});
+  const UserImageBottomSheet(
+      {super.key,
+      required this.onSelected,
+      required this.onDefault,
+      required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
-    final ImagePickerViewModel viewModel = context.read();
-
     return Container(
       padding: const EdgeInsets.only(top: 26, left: 16, right: 16),
       child: Column(
@@ -115,7 +120,11 @@ class UserImageBottomSheet extends StatelessWidget {
               onTap: () async {
                 await viewModel.takeOrPickPhoto(
                     ImageSource.gallery, ObjectType.USER);
-                onSelected();
+                if (viewModel.imageFile != null) {
+                  onSelected();
+                  viewModel.isSelected = true;
+                }
+                if (context.mounted) context.pop();
               },
               child: Text('앨범에서 가져오기',
                   style: Theme.of(context).textTheme.titleSmall)),
@@ -125,14 +134,23 @@ class UserImageBottomSheet extends StatelessWidget {
               onTap: () async {
                 await viewModel.takeOrPickPhoto(
                     ImageSource.camera, ObjectType.USER);
-                onSelected();
+                if (viewModel.imageFile != null) {
+                  onSelected();
+                  viewModel.isSelected = true;
+                }
+                if (context.mounted) context.pop();
               },
               child: Text('직접 촬영하기',
                   style: Theme.of(context).textTheme.titleSmall)),
           const SizedBox(height: 18),
           GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: () => onDefault(),
+              onTap: () {
+                viewModel.setImageFile(viewModel.representativeImagePaths[0]);
+                onDefault();
+                viewModel.isSelected = true;
+                if (context.mounted) context.pop();
+              },
               child: Text('기본 이미지로 변경',
                   style: Theme.of(context)
                       .textTheme
