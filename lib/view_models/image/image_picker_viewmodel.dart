@@ -2,18 +2,17 @@ import 'dart:io';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:modi/common/utils/take_photo.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/image/image_update_service.dart';
 import '../../common/components/picker/image/image_picker.dart';
 import '../../common/modal/modi_modal.dart';
-
 import '../../common/requester/api_exception.dart';
 import '../../common/utils/get_image_file.dart';
 import '../../common/utils/pick_image_file.dart';
+import '../../common/utils/take_photo.dart';
 
 class ImagePickerViewModel extends ChangeNotifier {
-  final List<String> representativeImagesUrl = [
+  final List<String> representativeImagePaths = [
     'asset/user_default_image.png',
    'asset/search_category/2_certification.png',
     'asset/search_category/4_exam.png',
@@ -59,8 +58,8 @@ class ImagePickerViewModel extends ChangeNotifier {
 
   Future<void> createImage() async {
     try {
-      isSelected = true;
       _imageUuid = await _imageCreateService!.callImageCreateApi(imageFile!);
+      isSelected = true;
     } on ApiException catch (e) {
       isSelected = false;
       if (!_context.mounted) return;
@@ -69,6 +68,14 @@ class ImagePickerViewModel extends ChangeNotifier {
     }
   }
 
+  ImageProvider? get selectedImageProvider {
+    if (imageFile != null && imageFile!.existsSync()) {
+      return FileImage(imageFile!);
+    } else if (imagePath.isNotEmpty) {
+      return NetworkImage(imagePath);
+    }
+    return null; // 이미지가 없으면 null을 반환
+  }
 
   takeOrPickPhoto(ImageSource source, ObjectType type) async {
     int index = (type == ObjectType.USER) ? 0 : 1;
@@ -78,12 +85,12 @@ class ImagePickerViewModel extends ChangeNotifier {
     } else {
       file = await pickImageFile();
     }
-    setImageFile((file == null) ? representativeImagesUrl[index] : file.path);
+    setImageFile((file == null) ? representativeImagePaths[index] : file.path);
   }
 
   setImageFile(String imageUrl) async {
     _imagePath = imageUrl;
-    if (representativeImagesUrl.contains(_imagePath)) {
+    if (representativeImagePaths.contains(_imagePath)) {
       // 대표 이미지
       isDefault = true;
       imageFile = await getImageFileFromAssets(_imagePath);
@@ -93,6 +100,9 @@ class ImagePickerViewModel extends ChangeNotifier {
       isDefault = false;
       imageFile = File(imageUrl);
       image = Image.file(imageFile!, fit: BoxFit.cover);
+    }
+    if (imageFile != null) {
+      isSelected = true;
     }
     notifyListeners();
   }

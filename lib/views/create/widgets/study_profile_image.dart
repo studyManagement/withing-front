@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/common/components/gray_container.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/image/image_update_service.dart';
@@ -16,62 +16,78 @@ class StudyProfileImage extends StatelessWidget {
   final StudyInfoViewModel viewModel;
   final bool isCreate;
 
-  const StudyProfileImage(
-      {super.key, required this.viewModel, required this.isCreate});
+  const StudyProfileImage({
+    super.key,
+    required this.viewModel,
+    required this.isCreate,
+  });
+
+  ImageProvider getImageProvider(ImagePickerViewModel imgVm) {
+    AssetImage defaultImage = AssetImage(imgVm.representativeImagePaths[1]);
+    if (imgVm.isSelected) {
+      return imgVm.selectedImageProvider ?? defaultImage;
+    }
+    else if (isCreate) {
+      if (viewModel.isDefault) {
+        return AssetImage(viewModel.studyImagePath);
+      } else if (viewModel.studyImageFile != null &&
+          File(viewModel.studyImageFile!.path).existsSync()) {
+        return FileImage(viewModel.studyImageFile!);
+      }
+    } else {
+      if (viewModel.isOldImage) {
+        return NetworkImage(viewModel.studyImagePath);
+      } else if (viewModel.studyImageFile != null &&
+          File(viewModel.studyImageFile!.path).existsSync()) {
+        return FileImage(viewModel.studyImageFile!);
+      }
+    }
+    // 기본 이미지
+    return defaultImage;
+  }
 
   @override
   Widget build(BuildContext context) {
-    ShapeDecoration? shapeDecoration;
-    var image;
-
-    if (isCreate) {
-      image = viewModel.isDefault
-          ? AssetImage(viewModel.studyImagePath)
-          : FileImage(viewModel.studyImageFile!);
-    } else {
-      image = viewModel.isOldImage
-          ? NetworkImage(viewModel.studyImagePath)
-          : FileImage(viewModel.studyImageFile!);
-    }
-    shapeDecoration = ShapeDecoration(
-        shape: const OvalBorder(),
-        color: AppColors.blue100,
-        image: (viewModel.studyImagePath.isEmpty) ? null :DecorationImage(
-          image: image as ImageProvider,
-          fit: BoxFit.cover,
-        ));
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 50),
-      child: Profile(
-        shapeDecoration: shapeDecoration,
-        onTap: () {
-          ModiModal.openBottomSheet(context,
-              widget: ChangeNotifierProvider(
-                  create: (_) => ImagePickerViewModel(
-                      getIt<ImageUpdateService>(),
-                      getIt<ImageCreateService>(),
-                      context),
-                  child: Consumer<ImagePickerViewModel>(
-                      builder: (context, imgVm, _) {
-                    if (imgVm.isSelected) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        viewModel.studyImageFile = imgVm.imageFile;
-                        viewModel.studyImagePath = imgVm.imagePath;
-                      });
-                    }
-                    return StudyImagePicker(
-                      onSelected: () {
-                        imgVm.createImage().then((value) =>
-                            viewModel.studyImageUuid = imgVm.imageUuid);
-                        viewModel.isDefault = imgVm.isDefault;
-                        viewModel.isOldImage = false;
-                        context.pop();
-                      },
-                    );
-                  })),
-              height: 496);
-        },
-        bottomImagePath: 'asset/camera.png',
+      child: ChangeNotifierProvider<ImagePickerViewModel>(
+        create: (context) => ImagePickerViewModel(
+          getIt<ImageUpdateService>(),
+          getIt<ImageCreateService>(),
+          context,
+        ),
+        child: Consumer<ImagePickerViewModel>(builder: (context, imgVm, _) {
+          final shapeDecoration = ShapeDecoration(
+            shape: const OvalBorder(),
+            color: AppColors.blue100,
+            image: DecorationImage(
+              image: getImageProvider(imgVm),
+              fit: BoxFit.cover,
+            ),
+          );
+          return Profile(
+            shapeDecoration: shapeDecoration,
+            onTap: () {
+              ModiModal.openBottomSheet(
+                context,
+                widget: ChangeNotifierProvider.value(
+                  value: imgVm,
+                  child: StudyImagePicker(
+                        onSelected: () {
+                          viewModel.isDefault = imgVm.isDefault;
+                          viewModel.isOldImage = false;
+                          viewModel.studyImagePath = imgVm.imagePath;
+                          viewModel.studyImageFile = imgVm.imageFile;
+                          context.pop();
+                        },
+                      ),
+                ),
+                height: 496,
+              );
+            },
+            bottomImagePath: 'asset/camera.png',
+          );
+        }),
       ),
     );
   }

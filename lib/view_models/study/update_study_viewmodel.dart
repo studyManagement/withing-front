@@ -169,7 +169,6 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       _headCount = study.headcount;
       _studyName = study.studyName;
       _studyImagePath = study.studyImage!;
-      _studyImageFile = File(_studyImagePath);
       _studyDescription = study.explanation;
       _selectedCategories = List.from(study.categories)..remove('');
       updateSelectedCategoryIndices();
@@ -186,11 +185,9 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   Future<void> updateStudyInfo() async {
     try {
-      if (_studyImageUuid.isEmpty) {
-        _studyImageFile = await fileFromImageUrl(_studyImagePath);
-        _studyImageUuid = await getIt<ImageCreateService>()
-            .callImageCreateApi(_studyImageFile!);
-      }
+      _studyImageFile ??= await getImageFileFromAssets('asset/search_category/2_certification.png');
+      _studyImageUuid = await getIt<ImageCreateService>()
+          .callImageCreateApi(_studyImageFile!);
       await _studyService.updateStudyInfo(
           _studyId!,
           UpdatedStudyInfo(

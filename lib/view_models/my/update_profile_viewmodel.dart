@@ -5,13 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/common/authenticator/authentication.dart';
 import 'package:modi/common/modal/modi_modal.dart';
 import 'package:modi/common/requester/api_exception.dart';
-import 'package:modi/common/root_tab.dart';
-import 'package:modi/common/router/router_service.dart';
 import 'package:modi/model/user/token_model.dart';
-import 'package:modi/service/image/image_update_service.dart';
 import 'package:modi/service/signup/signup_service.dart';
 import 'package:modi/service/user/user_service.dart';
-import 'package:provider/provider.dart';
 import 'package:yaml/yaml.dart';
 import '../../common/theme/app/app_colors.dart';
 import '../../common/utils/get_image_file.dart';
@@ -19,7 +15,6 @@ import '../../di/injection.dart';
 import '../../model/signup/signup_exception.dart';
 import '../../model/user/user_model.dart';
 import '../../service/image/image_create_service.dart';
-import '../../views/my/my_screen.dart';
 
 class UpdateProfileViewModel extends ChangeNotifier {
   final UserService _userService;
@@ -63,7 +58,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
 
   UpdateProfileViewModel(this._context, this._userService);
 
-  refreshData(){
+  refreshData() {
     _userImagePath = '';
     fetchUserProfileImage();
     getAppVersion();
@@ -84,8 +79,8 @@ class UpdateProfileViewModel extends ChangeNotifier {
         _nickname = user.nickname;
         _introduce = user.introduce;
         _userImagePath = user.profileImage!;
-        _userImageFile = File(_userImagePath);
         isLoading = false;
+        isOldImage = true;
         notifyListeners();
       } on ApiException catch (e) {
         if (!_context.mounted) return;
@@ -95,22 +90,22 @@ class UpdateProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateUserProfile() async {
+  Future<void> updateUserProfile(File? imageFile, String imagePath) async {
+    _userImageFile = imageFile;
+    _userImagePath = imagePath;
     try {
-      if (_userImageUuid.isEmpty) {
-        _userImageFile = (isDefault)
-            ? await getImageFileFromAssets(_userImagePath)
-            : await fileFromImageUrl(_userImagePath);
-        _userImageUuid = await getIt<ImageCreateService>()
-            .callImageCreateApi(_userImageFile!);
+      if (isDefault) {
+        _userImageFile =  await getImageFileFromAssets(_userImagePath);
       }
+      _userImageUuid =
+          await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
       TokenModel token =
           await _userService.edit(_nickname, _introduce, _userImageUuid);
       Authentication.from(token.accessToken, token.refreshToken);
       Authentication.instance.save();
       _userImagePath = '';
       notifyListeners();
-      if(!_context.mounted) return;
+      if (!_context.mounted) return;
       _context.pop();
     } on ApiException catch (e) {
       if (!_context.mounted) return;

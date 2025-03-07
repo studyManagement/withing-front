@@ -17,15 +17,18 @@ class SignupViewModel extends ChangeNotifier {
 
   final String _provider;
   final String _uuid;
-  late String _introduce;
+  late String _introduce = '';
   late String _nickname;
   String _userImagePath = 'asset/user_default_image.png';
   late String _userImageUuid;
   File? _userImageFile;
-  bool isOldImage = false; /// always false
+  bool isOldImage = false;
+
+  /// always false
   bool isDefault = true;
 
   String get userImagePath => _userImagePath;
+
   File? get userImageFile => _userImageFile;
 
   String message = '2-10자, 띄어쓰기 및 특수문자 불가';
@@ -35,16 +38,17 @@ class SignupViewModel extends ChangeNotifier {
 
   SignupViewModel(this._provider, this._uuid, this._service);
 
-  set userImageUuid(String value){
+  set userImageUuid(String value) {
     _userImageUuid = value;
     notifyListeners();
   }
+
   set userImageFile(File? file) {
     _userImageFile = file;
     notifyListeners();
   }
 
-  set userImagePath(String value){
+  set userImagePath(String value) {
     _userImagePath = value;
     notifyListeners();
   }
@@ -87,19 +91,26 @@ class SignupViewModel extends ChangeNotifier {
     _introduce = introduce;
   }
 
-  createImage(BuildContext context) async {
-    try{
-      _userImageFile = await getImageFileFromAssets((isDefault) ? 'asset/user_default_image.png' : _userImagePath);
-      _userImageUuid = await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
+  createImage(BuildContext context, File? imageFile) async {
+    try {
+      if (isDefault) {
+        _userImageFile =
+            await getImageFileFromAssets('asset/user_default_image.png');
+      } else {
+        _userImageFile = imageFile;
+      }
+      _userImageUuid =
+          await getIt<ImageCreateService>().callImageCreateApi(_userImageFile!);
     } on ApiException catch (e) {
       ModiModal.openDialog(context, '문제가 발생했어요', e.cause, false, null, null);
     }
   }
 
-  signup(BuildContext context) async {
+  signup(BuildContext context, File? imageFile) async {
     try {
-      await createImage(context);
-      await _service.signup(_provider, _nickname, _uuid, _userImageUuid, _introduce);
+      await createImage(context, imageFile);
+      await _service.signup(
+          _provider, _nickname, _uuid, _userImageUuid, _introduce);
 
       if (!context.mounted) return;
       context.go('/');
