@@ -26,14 +26,14 @@ class CreateStudyScreen extends StatelessWidget {
         builder: (context, viewModel, child) {
           return DefaultLayout(
             floatingActionButton: StudyBottomButton(
-                onTap: (viewModel.checkEverythingFilled())
+                onTap: (viewModel.isFormValid())
                     ? () {
                         viewModel.createStudy(context).then((_) => context
                             .pushReplacement('/studies/${viewModel.studyId}',extra: true));
                       }
                     : null,
                 text: '생성하기',
-                color: (viewModel.checkEverythingFilled())
+                color: (viewModel.isFormValid())
                     ? null
                     : AppColors.gray200),
             floatingActionButtonLocation:

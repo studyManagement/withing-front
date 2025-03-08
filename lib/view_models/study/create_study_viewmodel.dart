@@ -38,8 +38,8 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   @override
   File? get studyImageFile => _studyImageFile;
 
-  bool _isStudyNameError = false;
-  bool _isStudyDescriptionError = false;
+  bool _isStudyNameValid = false;
+  bool _isStudyDescriptionValid = false;
   bool _isStudyDiscloseToggled = false;
   String _studyName = '';
   String _studyDescription = '';
@@ -55,10 +55,10 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   List<int> _selectedCategoryIndices = [];
 
   @override
-  bool get isStudyNameError => _isStudyNameError;
+  bool get isStudyNameValid => _isStudyNameValid;
 
   @override
-  bool get isStudyDescriptionError => _isStudyDescriptionError;
+  bool get isStudyDescriptionValid => _isStudyDescriptionValid;
 
   @override
   String get studyImagePath => _studyImagePath;
@@ -76,9 +76,9 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
 
   /// check everything filled
   @override
-  bool checkEverythingFilled() {
-    if (_isStudyNameError &&
-        _isStudyDescriptionError &&
+  bool isFormValid() {
+    if (_isStudyNameValid &&
+        _isStudyDescriptionValid &&
         (!_isStudyDiscloseToggled || _studyDisclosePassword.length == 4) &&
         _studyMemberCount > 0) {
       return true;
@@ -92,11 +92,11 @@ class CreateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   void checkStudyNameAndDescription(NewStudyType type, String input) {
     switch (type) {
       case NewStudyType.studyName:
-        _isStudyNameError =
+        _isStudyNameValid =
             validateInput(NewStudyType.studyName, input, r'^.{2,20}$');
         break;
       case NewStudyType.studyDescription:
-        _isStudyDescriptionError =
+        _isStudyDescriptionValid =
             validateInput(NewStudyType.studyDescription, input, r'^.{1,65}$');
         break;
     }

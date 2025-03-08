@@ -8,14 +8,15 @@ part of 'study_model.dart';
 
 _$StudyModelImpl _$$StudyModelImplFromJson(Map<String, dynamic> json) =>
     _$StudyModelImpl(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       studyName: json['studyName'] as String,
-      max: json['max'] as int,
-      headcount: json['headcount'] as int,
+      max: (json['max'] as num).toInt(),
+      headcount: (json['headcount'] as num).toInt(),
       private: json['private'] as bool,
+      password: json['password'] as String?,
       finished: json['finished'] as bool,
       explanation: json['explanation'] as String,
-      leaderId: json['leaderId'] as int,
+      leaderId: (json['leaderId'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       deadline: json['deadline'] == null
           ? null
@@ -40,6 +41,7 @@ Map<String, dynamic> _$$StudyModelImplToJson(_$StudyModelImpl instance) =>
       'max': instance.max,
       'headcount': instance.headcount,
       'private': instance.private,
+      'password': instance.password,
       'finished': instance.finished,
       'explanation': instance.explanation,
       'leaderId': instance.leaderId,

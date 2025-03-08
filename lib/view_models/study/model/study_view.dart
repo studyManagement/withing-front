@@ -8,6 +8,7 @@ class StudyView {
   int max;
   int headcount;
   bool private;
+  String? password;
   bool finished;
   String explanation;
   int leaderId;
@@ -24,6 +25,7 @@ class StudyView {
       this.max,
       this.headcount,
       this.private,
+      this.password,
       this.finished,
       this.explanation,
       this.leaderId,
@@ -41,6 +43,7 @@ class StudyView {
       model.max,
       model.headcount,
       model.private,
+      model.password,
       model.finished,
       model.explanation,
       model.leaderId,

@@ -145,6 +145,7 @@ class StudyViewModel extends ChangeNotifier {
         leaderId = _study!.leaderId;
         studyMembers = study!.users.length;
         _users = _study!.users;
+        _password = _study!.password ?? '';
         checkRegistered();
         if (!_isMember) {
           List<StudyListModel> myPickStudies =

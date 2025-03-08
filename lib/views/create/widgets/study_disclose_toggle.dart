@@ -6,14 +6,35 @@ import 'package:provider/provider.dart';
 import '../../../view_models/study/create_study_viewmodel.dart';
 import '../../../view_models/study/study_info_viewmodel.dart';
 
-class StudyDiscloseToggle extends StatelessWidget {
+class StudyDiscloseToggle extends StatefulWidget {
   final ValueChanged<bool>? onToggleChanged;
   final StudyInfoViewModel viewModel;
   const StudyDiscloseToggle({Key? key, required this.viewModel, this.onToggleChanged}) : super(key: key);
 
   @override
+  State<StudyDiscloseToggle> createState() => _StudyDiscloseToggleState();
+}
+
+class _StudyDiscloseToggleState extends State<StudyDiscloseToggle> {
+  late final TextEditingController passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    passwordController = TextEditingController(
+      text: widget.viewModel.password.isNotEmpty ? widget.viewModel.password : '',
+    );
+  }
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bool isToggled = viewModel.isStudyDiscloseToggled;
+    final bool isToggled = widget.viewModel.isStudyDiscloseToggled;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 48),
@@ -37,8 +58,8 @@ class StudyDiscloseToggle extends StatelessWidget {
                 inactiveTrackColor: AppColors.gray150,
                 value: isToggled,
                 onChanged: (value) {
-                  viewModel.toggle();
-                  onToggleChanged!(value);
+                  widget.viewModel.toggle();
+                  widget.onToggleChanged!(value);
                 },
               ),
             ],
@@ -48,7 +69,7 @@ class StudyDiscloseToggle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 6.0, bottom: 16.0),
+                  padding: const EdgeInsets.only(top: 6.0, bottom: 6.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -71,42 +92,39 @@ class StudyDiscloseToggle extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: 54,
-                  height: 22,
-                  child: TextField(
-                    onChanged: (value) {
-                      if (value != '') viewModel.password = value;
-                    },
-                    decoration: InputDecoration(
-                      counterText: '',
-                      hintText: '0000',
-                      hintStyle:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: AppColors.gray200,
-                              ),
-                      border: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.gray150),
-                      ),
-                      enabledBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.gray150),
-                      ),
-                      focusedBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.gray150),
-                      ),
-                      focusedErrorBorder: const UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.gray150),
-                      ),
+                TextField(
+                  controller: passwordController,
+                  onChanged: (value) {
+                    if (value != '') widget.viewModel.password = value;
+                  },
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: widget.viewModel.password == '' ? '0000' : null,
+                    hintStyle:
+                        Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: AppColors.gray200,
+                            ),
+                    border: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.gray150),
                     ),
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    cursorHeight: 16,
-                    cursorWidth: 1.5,
-                    cursorColor: AppColors.blue500,
-                    maxLength: 4,
-                    keyboardType: TextInputType.number,
+                    enabledBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.gray150),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.black),
+                    ),
+                    focusedErrorBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.gray150),
+                    ),
                   ),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  cursorHeight: 16,
+                  cursorWidth: 1.5,
+                  cursorColor: AppColors.blue500,
+                  maxLength: 4,
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 40)
               ],
