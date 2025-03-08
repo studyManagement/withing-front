@@ -45,10 +45,10 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   int get studyMemberCount => _studyMemberCount;
 
   @override
-  bool get isStudyNameError => _isStudyNameError;
+  bool get isStudyNameValid => _isStudyNameValid;
 
   @override
-  bool get isStudyDescriptionError => _isStudyDescriptionError;
+  bool get isStudyDescriptionValid => _isStudyDescriptionValid;
 
   @override
   String get studyImageUuid => _studyImageUuid;
@@ -62,21 +62,25 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   int? _studyId;
   int _headCount = 0;
   String _studyImageUuid = '';
-  String _studyName = '', _studyDescription = '', _studyImagePath = '', _studyDisclosePassword = '';
+  String _studyName = '',
+      _studyDescription = '',
+      _studyImagePath = '',
+      _studyDisclosePassword = '';
   List<String> _selectedCategories = [];
   List<int> _selectedCategoryIndices = [];
   int _studyMemberCount = 0;
   File? _studyImageFile;
   bool _isStudyDiscloseToggled = false;
-  bool _isStudyNameError = false;
-  bool _isStudyDescriptionError = false;
+  bool _isStudyNameValid = false;
+  bool _isStudyDescriptionValid = false;
   bool _isOldImage = true;
   bool isLoading = true;
 
   @override
-  bool checkEverythingFilled() {
-    if (_isStudyNameError &&
-        _isStudyDescriptionError &&
+  bool isFormValid() {
+    if (_isStudyNameValid &&
+        _isStudyDescriptionValid &&
+        (!_isStudyDiscloseToggled || _studyDisclosePassword.length == 4) &&
         _studyMemberCount >= _headCount) {
       return true;
     }
@@ -87,11 +91,11 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
   void checkStudyNameAndDescription(NewStudyType type, String input) {
     switch (type) {
       case NewStudyType.studyName:
-        _isStudyNameError =
+        _isStudyNameValid =
             validateInput(NewStudyType.studyName, input, r'^.{2,20}$');
         break;
       case NewStudyType.studyDescription:
-        _isStudyDescriptionError =
+        _isStudyDescriptionValid =
             validateInput(NewStudyType.studyDescription, input, r'^.{1,65}$');
         break;
     }
@@ -198,6 +202,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
       updateSelectedCategoryIndices();
       _studyMemberCount = study.max;
       setStudyNameAdnDescription();
+      _isStudyDiscloseToggled = study.private;
+      _studyDisclosePassword = study.password ?? '';
       isLoading = false;
       notifyListeners();
     } on ApiException catch (e) {
@@ -220,6 +226,8 @@ class UpdateStudyViewModel extends StudyInfoViewModel with ChangeNotifier {
               _studyDescription,
               _selectedCategoryIndices..sort(),
               _studyMemberCount,
+              _isStudyDiscloseToggled,
+              _studyDisclosePassword,
               _studyImageUuid));
       isLoading = false;
       if (!context.mounted) return;

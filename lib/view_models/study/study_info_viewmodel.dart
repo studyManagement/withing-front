@@ -14,8 +14,8 @@ abstract class StudyInfoViewModel {
   File? get studyImageFile;
   String get studyImagePath;
   bool get isStudyDiscloseToggled;
-  bool get isStudyNameError;
-  bool get isStudyDescriptionError;
+  bool get isStudyNameValid;
+  bool get isStudyDescriptionValid;
   bool get isOldImage;
   bool get isDefault;
   String get studyImageUuid;
@@ -25,7 +25,7 @@ abstract class StudyInfoViewModel {
   void updateSelectedCategories(String option, int? maxSelectedOptions);
   void updateSelectedCategoryIndices();
   void toggle();
-  bool checkEverythingFilled();
+  bool isFormValid();
 
   set studyImageFile(File? file);
   set memberCount(int value);

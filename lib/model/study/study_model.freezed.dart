@@ -12,7 +12,7 @@ part of 'study_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 StudyModel _$StudyModelFromJson(Map<String, dynamic> json) {
   return _StudyModel.fromJson(json);
@@ -25,6 +25,7 @@ mixin _$StudyModel {
   int get max => throw _privateConstructorUsedError;
   int get headcount => throw _privateConstructorUsedError;
   bool get private => throw _privateConstructorUsedError;
+  String? get password => throw _privateConstructorUsedError;
   bool get finished => throw _privateConstructorUsedError;
   String get explanation => throw _privateConstructorUsedError;
   int get leaderId => throw _privateConstructorUsedError;
@@ -54,6 +55,7 @@ abstract class $StudyModelCopyWith<$Res> {
       int max,
       int headcount,
       bool private,
+      String? password,
       bool finished,
       String explanation,
       int leaderId,
@@ -83,6 +85,7 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
     Object? max = null,
     Object? headcount = null,
     Object? private = null,
+    Object? password = freezed,
     Object? finished = null,
     Object? explanation = null,
     Object? leaderId = null,
@@ -114,6 +117,10 @@ class _$StudyModelCopyWithImpl<$Res, $Val extends StudyModel>
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
               as bool,
+      password: freezed == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String?,
       finished: null == finished
           ? _value.finished
           : finished // ignore: cast_nullable_to_non_nullable
@@ -168,6 +175,7 @@ abstract class _$$StudyModelImplCopyWith<$Res>
       int max,
       int headcount,
       bool private,
+      String? password,
       bool finished,
       String explanation,
       int leaderId,
@@ -195,6 +203,7 @@ class __$$StudyModelImplCopyWithImpl<$Res>
     Object? max = null,
     Object? headcount = null,
     Object? private = null,
+    Object? password = freezed,
     Object? finished = null,
     Object? explanation = null,
     Object? leaderId = null,
@@ -226,6 +235,10 @@ class __$$StudyModelImplCopyWithImpl<$Res>
           ? _value.private
           : private // ignore: cast_nullable_to_non_nullable
               as bool,
+      password: freezed == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String?,
       finished: null == finished
           ? _value.finished
           : finished // ignore: cast_nullable_to_non_nullable
@@ -275,6 +288,7 @@ class _$StudyModelImpl implements _StudyModel {
       required this.max,
       required this.headcount,
       required this.private,
+      required this.password,
       required this.finished,
       required this.explanation,
       required this.leaderId,
@@ -301,6 +315,8 @@ class _$StudyModelImpl implements _StudyModel {
   final int headcount;
   @override
   final bool private;
+  @override
+  final String? password;
   @override
   final bool finished;
   @override
@@ -340,7 +356,7 @@ class _$StudyModelImpl implements _StudyModel {
 
   @override
   String toString() {
-    return 'StudyModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, finished: $finished, explanation: $explanation, leaderId: $leaderId, createdAt: $createdAt, deadline: $deadline, studyImage: $studyImage, categories: $categories, meetingSchedules: $meetingSchedules, users: $users)';
+    return 'StudyModel(id: $id, studyName: $studyName, max: $max, headcount: $headcount, private: $private, password: $password, finished: $finished, explanation: $explanation, leaderId: $leaderId, createdAt: $createdAt, deadline: $deadline, studyImage: $studyImage, categories: $categories, meetingSchedules: $meetingSchedules, users: $users)';
   }
 
   @override
@@ -355,6 +371,8 @@ class _$StudyModelImpl implements _StudyModel {
             (identical(other.headcount, headcount) ||
                 other.headcount == headcount) &&
             (identical(other.private, private) || other.private == private) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
             (identical(other.finished, finished) ||
                 other.finished == finished) &&
             (identical(other.explanation, explanation) ||
@@ -383,6 +401,7 @@ class _$StudyModelImpl implements _StudyModel {
       max,
       headcount,
       private,
+      password,
       finished,
       explanation,
       leaderId,
@@ -414,6 +433,7 @@ abstract class _StudyModel implements StudyModel {
       required final int max,
       required final int headcount,
       required final bool private,
+      required final String? password,
       required final bool finished,
       required final String explanation,
       required final int leaderId,
@@ -437,6 +457,8 @@ abstract class _StudyModel implements StudyModel {
   int get headcount;
   @override
   bool get private;
+  @override
+  String? get password;
   @override
   bool get finished;
   @override

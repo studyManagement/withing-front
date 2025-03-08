@@ -13,6 +13,7 @@ class StudyModel with _$StudyModel {
     required int max,
     required int headcount,
     required bool private,
+    required String? password,
     required bool finished,
     required String explanation,
     required int leaderId,

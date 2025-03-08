@@ -55,8 +55,8 @@ class _StudyTextFieldState extends State<StudyTextField> {
   @override
   Widget build(BuildContext context) {
     final bool isValidation = (widget.type == NewStudyType.studyName)
-        ? widget.viewModel.isStudyNameError
-        : widget.viewModel.isStudyDescriptionError;
+        ? widget.viewModel.isStudyNameValid
+        : widget.viewModel.isStudyDescriptionValid;
     final int maxLength = (widget.type == NewStudyType.studyName) ? 20 : 65;
 
     return Padding(

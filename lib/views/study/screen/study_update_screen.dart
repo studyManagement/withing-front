@@ -25,13 +25,13 @@ class StudyUpdateScreen extends StatelessWidget {
     return Consumer<UpdateStudyViewModel>(builder: (context, viewModel, _) {
       return DefaultLayout(
           floatingActionButton: StudyBottomButton(
-              onTap: (viewModel.checkEverythingFilled())
+              onTap: (viewModel.isFormValid())
                   ? () {
                       viewModel.updateStudyInfo(context);
                     }
                   : null,
               text: '수정하기',
-              color: (viewModel.checkEverythingFilled())
+              color: (viewModel.isFormValid())
                   ? null
                   : AppColors.gray200),
           floatingActionButtonLocation:
