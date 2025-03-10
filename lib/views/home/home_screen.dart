@@ -29,6 +29,7 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -36,15 +37,15 @@ class _HomeScreen extends State<HomeScreen> {
     final StudyListViewModel vm = context.watch<StudyListViewModel>();
     vm.fetchThisWeekSchedules(context);
 
-    void onDaySelected(DateTime selectedDate, DateTime focusedDate) { // 그날 일정만 보여 주기
+    void onDaySelected(DateTime selectedDate) { // 그날 일정만 보여 주기
       setState(() {
         this.selectedDate = selectedDate;
-        vm.fetchStudies(StudyType.MY);
+        vm.fetchStudies(context, StudyType.MY);
         vm.filterSchedules(selectedDate);
         vm.setSelectedDate(this.selectedDate);
       });
     }
-    onDaySelected(selectedDate, selectedDate);
+    onDaySelected(selectedDate);
 
     return DefaultLayout(
       title: '이번주 일정',

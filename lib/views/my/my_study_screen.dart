@@ -19,7 +19,7 @@ class MyStudyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StudyListViewModel vm = context.read<StudyListViewModel>();
-    vm.fetchStudies(StudyType.from(studyType));
+    vm.fetchStudies(context, StudyType.from(studyType));
 
     return DefaultLayout(
       resizeToAvoidBottomInset: false,
