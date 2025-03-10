@@ -106,7 +106,7 @@ class UpdatePostScreen extends StatelessWidget {
                           onChanged: (value) {
                             viewModel.isValidInput(
                                 BoardInputType.boardContents, value);
-                            viewModel.isShowUserList = inputViewModel.isShowUserList();
+                            viewModel.isShowUserList = inputViewModel.isShowUserList;
                           },
                           onEditingCompleted: () {
                             if (viewModel.isValid) {
@@ -137,8 +137,8 @@ class UpdatePostScreen extends StatelessWidget {
                               ? UserMentionList(
                               users: viewModel.studyMembers,
                               onSelected: (user) {
-                                inputViewModel.updateInnerText(user.nickname);
-                                viewModel.addMentionedUserList(user);
+                                inputViewModel.onTagSelected(user.nickname);
+                                viewModel.addMentionedUserList(BoardInputType.boardContents, user, inputViewModel.text);
                               })
                               : Padding(
                             padding: const EdgeInsets.symmetric(
@@ -158,7 +158,7 @@ class UpdatePostScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 12),
                                 CircleButton(
-                                  onTap: () {},
+                                  onTap: () => viewModel.isShowUserList = true,
                                   image: Image.asset(
                                     'asset/board/mention.png',
                                     width: 32,

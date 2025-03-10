@@ -5,15 +5,16 @@ import '../../views/board/widgets/custom_tag_controller.dart';
 
 class BoardInputViewModel extends ChangeNotifier {
   final TextEditingController titleController;
-  //final CustomTagController mentionableController;
-  final TextEditingController mentionableController;
+  final CustomTagController mentionableController;
   final bool isMember;
+
+  String get text => mentionableController.text;
+  bool get isShowUserList => mentionableController.getTextToWordArr().last.startsWith('@');
 
   BoardInputViewModel(
       {String? initTitle, String? initContent, required this.isMember})
       : titleController = TextEditingController(text: initTitle ?? ''),
-        mentionableController = TextEditingController(text: initContent ?? '');
-      //  mentionableController = CustomTagController(text: initContent ?? '');
+        mentionableController = CustomTagController(text: initContent ?? '');
 
   String getHintText(BoardInputType type) {
     switch (type) {
@@ -26,19 +27,8 @@ class BoardInputViewModel extends ChangeNotifier {
     }
   }
 
-  void updateInnerText(String name) {
-    // List<String> words = mentionableController.getTextToWordArr();
-    // String lastWord = words.last;
-    // if (lastWord.startsWith('@')) {
-    //   words.removeLast();
-    //   mentionableController.text = '${words.join(' ')} ';
-    // }
-    // mentionableController.text += '@$name ';
-  }
-
-  bool isShowUserList() {
-    return false;
-    //return mentionableController.getTextToWordArr().last.startsWith('@');
+  void onTagSelected(String name) {
+    mentionableController.updateInnerText(name); // 선택한 태그 추가
   }
 
   @override
