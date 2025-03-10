@@ -8,7 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../common/theme/app/app_colors.dart';
 
 class MainCalendarV2 extends StatelessWidget {
-  final OnDaySelected onDaySelected;
+  final Function(DateTime) onDaySelected;
   final DateTime selectedDate;
 
   const MainCalendarV2({
@@ -48,7 +48,7 @@ class MainCalendarV2 extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                   onTap: () {
-                    onDaySelected(weekDateTimes[i], weekDateTimes[i]);
+                    onDaySelected(weekDateTimes[i]);
                   },
                   child: Container(
 

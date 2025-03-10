@@ -139,10 +139,12 @@ class MyStudyList extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   regularMeeting,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: AppColors.gray400,
                     fontWeight: AppFonts.fontWeight500,
                     fontSize: 13,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

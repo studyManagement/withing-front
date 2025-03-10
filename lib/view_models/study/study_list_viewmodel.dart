@@ -24,30 +24,36 @@ class StudyListViewModel extends ChangeNotifier {
   List<UserScheduleModel> thisWeekSchedules = [];
   late DateTime selectedDate = DateTime.now();
   String weekString = '';
-  bool isInit = true;
+  bool _isInit = true;
+  bool _isLoading = true;
 
   StudyListViewModel(this._service);
 
-  Future<void> fetchStudies(StudyType studyType) async {
-    if(studyList.isEmpty) {
-      List<StudyListModel> studyModels = await _service.fetchMyStudies(
-          studyType);
-      List<StudyListView> studyViews =
-      studyModels.map((e) => StudyListView.from(e)).toList();
-
-      studyList = studyViews;
-
-      notifyListeners();
+  Future<void> fetchStudies(BuildContext context, StudyType studyType) async {
+    if(studyList.isEmpty && _isLoading) {
+      try {
+        List<StudyListModel> studyModels = await _service.fetchMyStudies(
+            studyType);
+        List<StudyListView> studyViews =
+        studyModels.map((e) => StudyListView.from(e)).toList();
+        studyList = studyViews;
+        notifyListeners();
+        _isLoading = false;
+      } on ApiException catch (e) {
+        if (!context.mounted) return;
+        ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
+                () => context.pop(), () => null);
+      }
     }
   }
 
   Future<void> fetchThisWeekSchedules(BuildContext context) async {
-    if(thisWeekSchedules.isEmpty && isInit) {
+    if(thisWeekSchedules.isEmpty && _isInit) {
       try {
         thisWeekSchedules =
         await getIt<ScheduleService>().fetchThisWeekSchedule();
         notifyListeners();
-        isInit = false;
+        _isInit = false;
     } on ApiException catch (e) {
       if (!context.mounted) return;
       ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
