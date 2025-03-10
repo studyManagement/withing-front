@@ -24,7 +24,6 @@ class BoardInfoScreen extends StatelessWidget {
   void loadBoardInfo(BuildContext context) {
     viewModel.fetchBoardInfo(context, boardId);
     viewModel.fetchComments(context, boardId);
-    viewModel.isShowUserList = false;
     viewModel.fetchStudyMembers();
   }
 
@@ -92,8 +91,8 @@ class BoardInfoScreen extends StatelessWidget {
                                   users: viewModel.studyMembers,
                                   onSelected: (user) {
                                     inputViewModel
-                                        .updateInnerText(user.nickname);
-                                    viewModel.addMentionedUserList(user);
+                                        .onTagSelected(user.nickname);
+                                    viewModel.addMentionedUserList(BoardInputType.comment, user, inputViewModel.text);
                                   }),
                             Container(
                                 padding: const EdgeInsets.symmetric(
@@ -104,7 +103,7 @@ class BoardInfoScreen extends StatelessWidget {
                                       viewModel.isValidInput(
                                           BoardInputType.boardContents, value);
                                       viewModel.isShowUserList =
-                                          inputViewModel.isShowUserList();
+                                          inputViewModel.isShowUserList;
                                     },
                                     onEditingCompleted: () {
                                       if (viewModel.isValid) {

@@ -176,6 +176,7 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> fetchBoardInfo(BuildContext context, int boardId) async {
     try {
+      _isShowUserList = false;
       _post = await _service.fetchBoardInfo(_studyId!, boardId);
       boardTitle = _post!.title;
       boardContents = post!.content;
@@ -266,9 +267,7 @@ class BoardViewModel extends ChangeNotifier {
   /// utils
   Future<void> fetchStudyMembers() async {
     final _study = await getIt<StudyService>().fetchStudyInfo(studyId!);
-    _users = _study.users
-        .where((e) => e.id != Authentication.instance.userId)
-        .toList();
+    _users = _study.users;
   }
 
   Future<void> pickMultiPhoto() async {
@@ -289,7 +288,8 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addMentionedUserList(UserModel user) {
+  void addMentionedUserList(BoardInputType type, UserModel user, String newValue) {
+    isValidInput(type, newValue);
     if (!_mentionedUserList.contains(user.id)) {
       _mentionedUserList.add(user.id);
     }
