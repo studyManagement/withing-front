@@ -27,16 +27,13 @@ class BoardMainScreen extends StatelessWidget {
     viewModel.boardContents = '';
     viewModel.boardTitle = '';
     viewModel.isShowUserList = false;
-    viewModel.updateSelectedCategory(0);
+    viewModel.selectedPostCategoryType = PostCategoryType.FREE;
   }
 
   void loadBoardList(BuildContext context, BoardViewModel vm) {
     vm.setStudyId = studyId;
     vm.isMember = isMember!;
-    vm.fetchNotices(context);
-    if (isNotice == false) {
-      vm.fetchBoardList(context);
-    }
+    vm.fetchBoardList(context);
     vm.isRefreshed = false;
   }
 
@@ -73,20 +70,16 @@ class BoardMainScreen extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (!isNotice)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 6),
-                    child: PostCategorySelector(
-                        postCategories: [
-                              PostCategory(
-                                  id: -1,
-                                  name: '전체',
-                                  activeIcon: '',
-                                  inactiveIcon: '')
-                            ] +
-                            vm.postCategories,
-                        selectedIndex: vm.selectedPostCategoryIndex),
-                  ),
+                  if (!isNotice)
+                    Padding(
+                        padding: const EdgeInsets.only(top: 16, bottom: 6),
+                        child: PostCategorySelector(
+                            postCategories: vm.postCategories,
+                            selectedPostCategoryType:
+                                vm.selectedPostCategoryType,
+                            onTap: (category) {
+                              vm.fetchBoardList(context, category: category);
+                            })),
                   Expanded(
                       child: vm.hasPost
                           ? BoardList(

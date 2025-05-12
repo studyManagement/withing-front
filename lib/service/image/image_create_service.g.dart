@@ -6,7 +6,7 @@ part of 'image_create_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _ImageCreateApi implements ImageCreateApi {
   _ImageCreateApi(
@@ -20,7 +20,7 @@ class _ImageCreateApi implements ImageCreateApi {
 
   @override
   Future<String> create(File image) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'multipart/form-data'};
     _headers.removeWhere((k, v) => v == null);
@@ -49,8 +49,8 @@ class _ImageCreateApi implements ImageCreateApi {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data!;
-    return value;
+    final _value = _result.data!;
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

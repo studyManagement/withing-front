@@ -6,7 +6,7 @@ part of 'study_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _StudyApi implements StudyApi {
   _StudyApi(
@@ -20,10 +20,10 @@ class _StudyApi implements StudyApi {
 
   @override
   Future<List<StudyListModel>> fetchMyStudies(String key) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'key': key};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<StudyListModel>>(Options(
       method: 'GET',
@@ -41,18 +41,18 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => StudyListModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
   Future<StudyModel> fetchStudyInfo(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
       method: 'GET',
@@ -70,8 +70,8 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
+    final _value = StudyModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -79,7 +79,7 @@ class _StudyApi implements StudyApi {
     int id,
     Map<String, dynamic> data,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -101,16 +101,16 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
+    final _value = StudyModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
   Future<StudyModel> finishStudy(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
       method: 'PATCH',
@@ -128,16 +128,16 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
+    final _value = StudyModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
   Future<StudyModel> deleteStudy(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
       method: 'DELETE',
@@ -155,8 +155,8 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
+    final _value = StudyModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -164,10 +164,10 @@ class _StudyApi implements StudyApi {
     int id,
     int userId,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<StudyModel>(Options(
       method: 'PATCH',
@@ -185,8 +185,8 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
+    final _value = StudyModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -194,7 +194,7 @@ class _StudyApi implements StudyApi {
     int id,
     Map<String, dynamic> data,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -215,8 +215,8 @@ class _StudyApi implements StudyApi {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data;
-    return value;
+    final _value = _result.data;
+    return _value;
   }
 
   @override
@@ -224,7 +224,7 @@ class _StudyApi implements StudyApi {
     int id,
     Map<String, dynamic> data,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -245,8 +245,8 @@ class _StudyApi implements StudyApi {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data;
-    return value;
+    final _value = _result.data;
+    return _value;
   }
 
   @override
@@ -254,7 +254,7 @@ class _StudyApi implements StudyApi {
     int id,
     List<StudyMeetingSchedule> data,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = data.map((e) => e.toJson()).toList();
@@ -275,16 +275,16 @@ class _StudyApi implements StudyApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = StudyModel.fromJson(_result.data!);
-    return value;
+    final _value = StudyModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
   Future<dynamic> pickFavoriteStudy(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'POST',
       headers: _headers,
@@ -301,16 +301,16 @@ class _StudyApi implements StudyApi {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data;
-    return value;
+    final _value = _result.data;
+    return _value;
   }
 
   @override
   Future<dynamic> cancelFavoriteStudy(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
       method: 'DELETE',
       headers: _headers,
@@ -327,8 +327,8 @@ class _StudyApi implements StudyApi {
           _dio.options.baseUrl,
           baseUrl,
         ))));
-    final value = _result.data;
-    return value;
+    final _value = _result.data;
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

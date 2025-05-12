@@ -6,7 +6,7 @@ part of 'schedule_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _ScheduleApi implements ScheduleApi {
   _ScheduleApi(
@@ -20,10 +20,10 @@ class _ScheduleApi implements ScheduleApi {
 
   @override
   Future<List<ScheduleModel>> fetchStudySchedules(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<ScheduleModel>>(Options(
       method: 'GET',
@@ -41,10 +41,10 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => ScheduleModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
@@ -52,10 +52,10 @@ class _ScheduleApi implements ScheduleApi {
     int id,
     int studyScheduleId,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<ScheduleDetailModel>(Options(
       method: 'GET',
@@ -73,8 +73,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleDetailModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleDetailModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -85,7 +85,7 @@ class _ScheduleApi implements ScheduleApi {
     String startAt,
     String endAt,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
@@ -111,8 +111,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -124,7 +124,7 @@ class _ScheduleApi implements ScheduleApi {
     String startAt,
     String endAt,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
@@ -150,8 +150,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -159,10 +159,10 @@ class _ScheduleApi implements ScheduleApi {
     int id,
     int scheduleId,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<ScheduleModel>>(Options(
       method: 'DELETE',
@@ -180,18 +180,18 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => ScheduleModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
   Future<List<ScheduleVoteModel>> fetchScheduleVotes(int id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<ScheduleVoteModel>>(Options(
       method: 'GET',
@@ -209,11 +209,11 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) =>
             ScheduleVoteModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
@@ -221,10 +221,10 @@ class _ScheduleApi implements ScheduleApi {
     int id,
     int voteId,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ScheduleVoteModel>(Options(
       method: 'GET',
@@ -242,8 +242,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleVoteModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleVoteModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -255,7 +255,7 @@ class _ScheduleApi implements ScheduleApi {
     String startAt,
     String endAt,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
@@ -282,8 +282,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleVoteModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleVoteModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -292,7 +292,7 @@ class _ScheduleApi implements ScheduleApi {
     int scheduleId,
     List<VoteDateTimeModel> selectedList,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = selectedList.map((e) => e.toJson()).toList();
@@ -313,8 +313,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleVoteModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleVoteModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -322,10 +322,10 @@ class _ScheduleApi implements ScheduleApi {
     int id,
     int voteId,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ScheduleVoteModel>(Options(
       method: 'PUT',
@@ -343,8 +343,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleVoteModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleVoteModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -352,10 +352,10 @@ class _ScheduleApi implements ScheduleApi {
     int id,
     int voteId,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ScheduleVoteModel>(Options(
       method: 'DELETE',
@@ -373,8 +373,8 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ScheduleVoteModel.fromJson(_result.data!);
-    return value;
+    final _value = ScheduleVoteModel.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -382,13 +382,13 @@ class _ScheduleApi implements ScheduleApi {
     String date,
     int size,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'date': date,
       r'size': size,
     };
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<UserScheduleModel>>(Options(
       method: 'GET',
@@ -406,19 +406,19 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) =>
             UserScheduleModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   @override
   Future<List<UserScheduleModel>> fetchThisWeekSchedule() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<UserScheduleModel>>(Options(
       method: 'GET',
@@ -436,11 +436,11 @@ class _ScheduleApi implements ScheduleApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) =>
             UserScheduleModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

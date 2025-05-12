@@ -6,7 +6,7 @@ part of 'signin_service.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _SigninApi implements SigninApi {
   _SigninApi(
@@ -23,14 +23,14 @@ class _SigninApi implements SigninApi {
     String accessToken,
     String provider,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{
       r'X-Exclude-Access-Token': 'true',
       r'Authorization': accessToken,
     };
     _headers.removeWhere((k, v) => v == null);
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<SigninModel>(Options(
       method: 'POST',
@@ -48,8 +48,8 @@ class _SigninApi implements SigninApi {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = SigninModel.fromJson(_result.data!);
-    return value;
+    final _value = SigninModel.fromJson(_result.data!);
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

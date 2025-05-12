@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:modi/common/components/gray100_divider.dart';
 import 'package:modi/common/layout/default_layout.dart';
-import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/view_models/board/board_input_viewmodel.dart';
+import 'package:modi/view_models/board/model/post_category.dart';
 import 'package:modi/views/board/widgets/board_submit_button.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
 import 'package:modi/views/board/widgets/post_image_list_view.dart';
 import 'package:modi/views/board/widgets/user_mention_list.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common/components/button/circle_button.dart';
 import '../../../common/modal/modi_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../../../di/injection.dart';
 import '../../../view_models/board/board_viewmodel.dart';
-import '../../../view_models/image/image_picker_viewmodel.dart';
 import '../widgets/mentionable_text_field.dart';
 import '../widgets/post_category_selector.dart';
 import 'board_info_screen.dart';
@@ -36,7 +32,7 @@ class CreatePostScreen extends StatelessWidget {
         context
           ..pop()
           ..pop();
-        viewModel.updateSelectedCategory(-1);
+        viewModel.updatePostCategoryType(PostCategoryType.ALL);
         viewModel.imageFilePaths = [];
       },
       null,
@@ -99,9 +95,9 @@ class CreatePostScreen extends StatelessWidget {
                         Consumer<BoardViewModel>(
                             builder: (context, viewModel, _) =>
                                 PostCategorySelector(
-                                  postCategories: viewModel.postCategories,
-                                  selectedIndex:
-                                      viewModel.selectedPostCategoryIndex,
+                                  postCategories: viewModel.postCategories.sublist(1),
+                                  selectedPostCategoryType:
+                                      viewModel.selectedPostCategoryType,
                                 )),
                         const SizedBox(height: 20),
                         const Gray100Divider(),

@@ -3,7 +3,6 @@ import 'package:retrofit/retrofit.dart';
 import 'package:modi/common/requester/api_exception.dart';
 import 'package:modi/common/requester/network_exception.dart';
 import 'package:retrofit/http.dart';
-import '../../exception/study/study_exception.dart';
 import '../../model/board/board_model.dart';
 import '../../model/board/comment_model.dart';
 import '../../view_models/board/model/post.dart';
@@ -17,7 +16,7 @@ abstract class BoardApi {
   @GET('/studies/{id}/boards')
   Future<List<BoardModel>> fetchBoardList(
     @Path("id") int id,
-    @Query("isNotice") bool isNotice,
+    @Query("category") String category,
     @Query("size") int size,
     @Query("page") int page,
   );
@@ -58,10 +57,10 @@ class BoardService {
   BoardService(this._boardApi);
 
   Future<List<BoardModel>> fetchBoardList(
-      int studyId, bool isNotice, int size, int page) async {
+      int studyId, String category, int size, int page) async {
     try {
       final List<BoardModel> notices =
-          await _boardApi.fetchBoardList(studyId, isNotice, size, page);
+          await _boardApi.fetchBoardList(studyId, category, size, page);
       return notices;
     } on ApiException catch (e) {
       rethrow;

@@ -79,8 +79,8 @@ class UpdatePostScreen extends StatelessWidget {
                           builder: (context, viewModel, _) =>
                               PostCategorySelector(
                                 postCategories: viewModel.postCategories,
-                                selectedIndex:
-                                    viewModel.selectedPostCategoryIndex,
+                                selectedPostCategoryType:
+                                    viewModel.selectedPostCategoryType,
                               )),
                       const SizedBox(height: 20),
                       const Gray100Divider(),

@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modi/common/authenticator/authenticator.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/view_models/board/model/post_category.dart';
+import 'package:modi/view_models/search/category_search_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
@@ -26,7 +27,7 @@ class StudyNoticeList extends StatelessWidget {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
     boardViewModel.setStudyId = studyId;
     if (isMember || !isPrivate) {
-      boardViewModel.fetchNotices(context);
+      boardViewModel.fetchBoardList(context, category: PostCategoryType.NOTICE);
     }
 
     return Column(
@@ -178,7 +179,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           options: CarouselOptions(
             enableInfiniteScroll: false,
             onPageChanged: ((index, reason) {
-              widget.viewModel.fetchNotices(context);
+              widget.viewModel.fetchBoardList(context, category: PostCategoryType.NOTICE);
               setState(() {
                 currentIndex = index;
               });
