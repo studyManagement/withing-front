@@ -186,15 +186,15 @@ class CreatePostScreen extends StatelessWidget {
                                       height: 32,
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
-                                  CircleButton(
-                                    onTap: () => viewModel.isShowUserList = true,
-                                    image: Image.asset(
-                                      'asset/board/mention.png',
-                                      width: 32,
-                                      height: 32,
-                                    ),
-                                  ),
+                                  // const SizedBox(width: 12),
+                                  // CircleButton(
+                                  //   onTap: () => viewModel.isShowUserList = true,
+                                  //   image: Image.asset(
+                                  //     'asset/board/mention.png',
+                                  //     width: 32,
+                                  //     height: 32,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             );
