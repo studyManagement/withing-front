@@ -140,27 +140,6 @@ class BoardViewModel extends ChangeNotifier {
     _isLoading = false;
   }
 
-  // Future<void> fetchNotices(BuildContext context) async {
-  //   try {
-  //     List<BoardModel> newNotices = [];
-  //     int page = notices.isEmpty ? 0 : (notices.length ~/ SIZE);
-  //     if (hasNextNotices) {
-  //       newNotices = await _service.fetchBoardList(_studyId!, true, SIZE, page);
-  //       if (newNotices.length < SIZE) {
-  //         hasNextNotices = false;
-  //       }
-  //     }
-  //     if (newNotices.isNotEmpty) {
-  //       notices.addAll(newNotices);
-  //       hasPost = true;
-  //       notifyListeners();
-  //     }
-  //   } on StudyException catch (e) {
-  //     if (!context.mounted) return;
-  //     ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-  //         () => context.pop(), () => null);
-  //   }
-  // }
 
   Future<void> fetchBoardList(BuildContext context, {PostCategoryType? category}) async {
     try {
@@ -393,51 +372,4 @@ class BoardViewModel extends ChangeNotifier {
       return '게시글 수정이 완료되었습니다.';
     }
   }
-
-  // /// notices
-  // Future<void> setNotice(BuildContext context, int boardId) async {
-  //   try {
-  //     await _service.setNotice(_studyId!, boardId);
-  //     refreshBoardList();
-  //     if (!context.mounted) return;
-  //     BottomToast(context: context, text: toastText()).show();
-  //     notifyListeners();
-  //   } on ApiException catch (e) {
-  //     if (!context.mounted) return;
-  //     ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-  //             () => context.pop(), () => null);
-  //   }
-  // }
-  //
-  // Future<void> unsetNotice(BuildContext context, int boardId) async {
-  //   try {
-  //     await _service.unsetNotice(_studyId!, boardId);
-  //     refreshBoardList();
-  //     if (!context.mounted) return;
-  //     BottomToast(context: context, text: toastText()).show();
-  //     notifyListeners();
-  //   } on ApiException catch (e) {
-  //     if (!context.mounted) return;
-  //     ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-  //             () => context.pop(), () => null);
-  //   }
-  // }
-  //
-  // void setOrUnsetNotice(BuildContext context) {
-  //   if (_isNotice == true) {
-  //     unsetNotice(context, post!.id);
-  //     _isNotice = false;
-  //   } else {
-  //     setNotice(context, post!.id);
-  //     _isNotice = true;
-  //   }
-  // }
-  //
-  // String toastText() {
-  //   if (!_isNotice!) {
-  //     return '공지 등록이 취소되었어요.';
-  //   } else {
-  //     return '공지로 등록되었어요.';
-  //   }
-  // }
 }
