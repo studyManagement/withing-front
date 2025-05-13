@@ -12,7 +12,7 @@ part of 'board_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 BoardModel _$BoardModelFromJson(Map<String, dynamic> json) {
   return _BoardModel.fromJson(json);
@@ -22,11 +22,12 @@ BoardModel _$BoardModelFromJson(Map<String, dynamic> json) {
 mixin _$BoardModel {
   int get id => throw _privateConstructorUsedError;
   UserModel get user => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  List<String> get images => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   int get numOfComments => throw _privateConstructorUsedError;
-  bool get notice => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,11 +44,12 @@ abstract class $BoardModelCopyWith<$Res> {
   $Res call(
       {int id,
       UserModel user,
+      String category,
       String title,
       String content,
+      List<String> images,
       DateTime createdAt,
-      int numOfComments,
-      bool notice});
+      int numOfComments});
 
   $UserModelCopyWith<$Res> get user;
 }
@@ -67,11 +69,12 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
   $Res call({
     Object? id = null,
     Object? user = null,
+    Object? category = null,
     Object? title = null,
     Object? content = null,
+    Object? images = null,
     Object? createdAt = null,
     Object? numOfComments = null,
-    Object? notice = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -82,6 +85,10 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -90,6 +97,10 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -98,10 +109,6 @@ class _$BoardModelCopyWithImpl<$Res, $Val extends BoardModel>
           ? _value.numOfComments
           : numOfComments // ignore: cast_nullable_to_non_nullable
               as int,
-      notice: null == notice
-          ? _value.notice
-          : notice // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 
@@ -125,11 +132,12 @@ abstract class _$$BoardModelImplCopyWith<$Res>
   $Res call(
       {int id,
       UserModel user,
+      String category,
       String title,
       String content,
+      List<String> images,
       DateTime createdAt,
-      int numOfComments,
-      bool notice});
+      int numOfComments});
 
   @override
   $UserModelCopyWith<$Res> get user;
@@ -148,11 +156,12 @@ class __$$BoardModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? user = null,
+    Object? category = null,
     Object? title = null,
     Object? content = null,
+    Object? images = null,
     Object? createdAt = null,
     Object? numOfComments = null,
-    Object? notice = null,
   }) {
     return _then(_$BoardModelImpl(
       id: null == id
@@ -163,6 +172,10 @@ class __$$BoardModelImplCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserModel,
+      category: null == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -171,6 +184,10 @@ class __$$BoardModelImplCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -179,10 +196,6 @@ class __$$BoardModelImplCopyWithImpl<$Res>
           ? _value.numOfComments
           : numOfComments // ignore: cast_nullable_to_non_nullable
               as int,
-      notice: null == notice
-          ? _value.notice
-          : notice // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -193,11 +206,13 @@ class _$BoardModelImpl implements _BoardModel {
   const _$BoardModelImpl(
       {required this.id,
       required this.user,
+      required this.category,
       required this.title,
       required this.content,
+      required final List<String> images,
       required this.createdAt,
-      required this.numOfComments,
-      required this.notice});
+      required this.numOfComments})
+      : _images = images;
 
   factory _$BoardModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BoardModelImplFromJson(json);
@@ -207,19 +222,27 @@ class _$BoardModelImpl implements _BoardModel {
   @override
   final UserModel user;
   @override
+  final String category;
+  @override
   final String title;
   @override
   final String content;
+  final List<String> _images;
+  @override
+  List<String> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
+
   @override
   final DateTime createdAt;
   @override
   final int numOfComments;
-  @override
-  final bool notice;
 
   @override
   String toString() {
-    return 'BoardModel(id: $id, user: $user, title: $title, content: $content, createdAt: $createdAt, numOfComments: $numOfComments, notice: $notice)';
+    return 'BoardModel(id: $id, user: $user, category: $category, title: $title, content: $content, images: $images, createdAt: $createdAt, numOfComments: $numOfComments)';
   }
 
   @override
@@ -229,19 +252,29 @@ class _$BoardModelImpl implements _BoardModel {
             other is _$BoardModelImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.user, user) || other.user == user) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.content, content) || other.content == content) &&
+            const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.numOfComments, numOfComments) ||
-                other.numOfComments == numOfComments) &&
-            (identical(other.notice, notice) || other.notice == notice));
+                other.numOfComments == numOfComments));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, user, title, content, createdAt, numOfComments, notice);
+      runtimeType,
+      id,
+      user,
+      category,
+      title,
+      content,
+      const DeepCollectionEquality().hash(_images),
+      createdAt,
+      numOfComments);
 
   @JsonKey(ignore: true)
   @override
@@ -261,11 +294,12 @@ abstract class _BoardModel implements BoardModel {
   const factory _BoardModel(
       {required final int id,
       required final UserModel user,
+      required final String category,
       required final String title,
       required final String content,
+      required final List<String> images,
       required final DateTime createdAt,
-      required final int numOfComments,
-      required final bool notice}) = _$BoardModelImpl;
+      required final int numOfComments}) = _$BoardModelImpl;
 
   factory _BoardModel.fromJson(Map<String, dynamic> json) =
       _$BoardModelImpl.fromJson;
@@ -275,15 +309,17 @@ abstract class _BoardModel implements BoardModel {
   @override
   UserModel get user;
   @override
+  String get category;
+  @override
   String get title;
   @override
   String get content;
   @override
+  List<String> get images;
+  @override
   DateTime get createdAt;
   @override
   int get numOfComments;
-  @override
-  bool get notice;
   @override
   @JsonKey(ignore: true)
   _$$BoardModelImplCopyWith<_$BoardModelImpl> get copyWith =>

@@ -11,7 +11,6 @@ import '../../../common/modal/modi_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/board/board_input_viewmodel.dart';
 import '../../../view_models/board/board_viewmodel.dart';
-import '../widgets/board_appbar.dart';
 import '../widgets/mentionable_text_field.dart';
 import '../widgets/post_category_selector.dart';
 import '../widgets/post_image_list_view.dart';
@@ -24,7 +23,6 @@ class UpdatePostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // viewModel.selectedPostCategoryIndex = ?? 초기화
     return ChangeNotifierProvider.value(
       value: viewModel,
       child: DefaultLayout(
@@ -76,9 +74,9 @@ class UpdatePostScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Consumer<BoardViewModel>(
-                          builder: (context, viewModel, _) =>
+                          builder: (context, viewModFel, _) =>
                               PostCategorySelector(
-                                postCategories: viewModel.postCategories,
+                                postCategories: viewModel.postCategories.sublist(1),
                                 selectedPostCategoryType:
                                     viewModel.selectedPostCategoryType,
                               )),

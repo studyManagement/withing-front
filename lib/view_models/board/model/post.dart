@@ -1,7 +1,9 @@
 class Post {
+  String category;
   String title;
   String contents;
+  List<String>? images;
 
-  Post(this.title,this.contents);
+  Post({required this.category, required this.title, required this.contents, this.images});
 
 }

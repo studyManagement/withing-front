@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/model/board/board_model.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/view_models/board/model/post_category.dart';
 import 'package:modi/views/board/screen/board_info_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
@@ -19,6 +20,7 @@ class BoardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasImage = false;
     final viewModel = context.read<BoardViewModel>();
+    final postCategory = viewModel.postCategories.firstWhere((e) => e.type.name == boardItem.category);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -36,21 +38,16 @@ class BoardItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Offstage(
-                        offstage: (boardItem.notice) ? false : true,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: Image.asset('asset/notice_pin.png',
-                              width: 16, height: 16),
-                        ),
-                      ),
-                      Text(
-                        boardItem.title,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
+                      Image.asset(postCategory.inactiveIcon, width: 20, height: 20),
+                      const SizedBox(width: 2),
+                      Text(postCategory.name, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.gray400))
                     ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    boardItem.title,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 6),
                   SizedBox(

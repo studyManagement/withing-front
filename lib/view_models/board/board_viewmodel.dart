@@ -22,7 +22,7 @@ class BoardViewModel extends ChangeNotifier {
   final int SIZE = 20;
   int? _studyId;
   int? _boardId;
-  PostCategoryType _selectedPostCategoryType = PostCategoryType.ALL;
+  PostCategoryType selectedPostCategoryType = PostCategoryType.ALL;
   bool isRefreshed = true;
   bool _isLoading = false;
   bool _isValid = false;
@@ -33,8 +33,9 @@ class BoardViewModel extends ChangeNotifier {
   bool hasPost = false;
   bool isMember = false;
   bool _isShowUserList = false;
-  String _title = '';
-  String _contents = '';
+  String _boardTitle = '';
+  String _boardContents = '';
+  PostCategory? _boardCategory;
   String _comment = '';
   BoardModel? _post;
   List<BoardModel> posts = [];
@@ -92,28 +93,27 @@ class BoardViewModel extends ChangeNotifier {
 
   int? get boardId => _boardId;
 
-  PostCategoryType get selectedPostCategoryType => _selectedPostCategoryType;
-
   set setStudyId(int studyId) {
     _studyId = studyId;
   }
 
   void updatePostCategoryType(PostCategoryType type) {
-    _selectedPostCategoryType = type;
+    selectedPostCategoryType = type;
     notifyListeners();
   }
 
-  set selectedPostCategoryType(PostCategoryType type) {
-    _selectedPostCategoryType = type;
-  }
-
   set boardTitle(String title) {
-    _title = title;
+    _boardTitle = title;
     notifyListeners();
   }
 
   set boardContents(String contents) {
-    _contents = contents;
+    _boardContents = contents;
+    notifyListeners();
+  }
+
+  set boardCategory(PostCategory category) {
+    _boardCategory = category;
     notifyListeners();
   }
 
@@ -144,7 +144,7 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> fetchBoardList(BuildContext context, {PostCategoryType? category}) async {
     try {
       if (category != null) {
-        refreshBoardList();
+        refreshBoardList(category: category);
       }
 
       if (!hasNextPosts) return;
@@ -152,7 +152,7 @@ class BoardViewModel extends ChangeNotifier {
       int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
       final newPosts = await _service.fetchBoardList(
         _studyId!,
-        _selectedPostCategoryType.name,
+        selectedPostCategoryType.name,
         SIZE,
         page,
       );
@@ -186,7 +186,8 @@ class BoardViewModel extends ChangeNotifier {
       _post = await _service.fetchBoardInfo(_studyId!, boardId);
       boardTitle = _post!.title;
       boardContents = post!.content;
-
+      boardCategory = postCategories.firstWhere((e) => e.type.name == post!.category);
+      selectedPostCategoryType = (_boardCategory?.type ?? postCategories[1].type);
       notifyListeners();
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
@@ -212,7 +213,7 @@ class BoardViewModel extends ChangeNotifier {
     if (_isValid) {
       try {
         BoardModel newPost =
-        await _service.createPost(_studyId!, Post(_title, _contents));
+        await _service.createPost(_studyId!, Post(title: _boardTitle, contents: _boardContents, category: selectedPostCategoryType.name));
         _boardId = newPost.id;
         notifyListeners();
       } on ApiException catch (e) {
@@ -227,7 +228,7 @@ class BoardViewModel extends ChangeNotifier {
     if (_isValid) {
       try {
         BoardModel boardModel = await _service.updatePost(
-            _studyId!, boardId, Post(_title, _contents));
+            _studyId!, boardId, Post(title: _boardTitle, contents: _boardContents, category: selectedPostCategoryType.name));
         _post = boardModel;
         _boardId = boardModel.id;
         notifyListeners();
@@ -305,7 +306,7 @@ class BoardViewModel extends ChangeNotifier {
       case BoardInputType.boardTitle:
         _isValid = (value
             .trim()
-            .isNotEmpty && _contents
+            .isNotEmpty && _boardContents
             .trim()
             .isNotEmpty)
             ? true
@@ -315,7 +316,7 @@ class BoardViewModel extends ChangeNotifier {
       case BoardInputType.boardContents:
         _isValid = (value
             .trim()
-            .isNotEmpty && _title
+            .isNotEmpty && _boardTitle
             .trim()
             .isNotEmpty)
             ? true
@@ -331,12 +332,14 @@ class BoardViewModel extends ChangeNotifier {
     if (type != BoardInputType.comment) notifyListeners();
   }
 
-  void refreshBoardList() {
+  void refreshBoardList({PostCategoryType? category}) {
     posts = [];
     hasPost = false;
     hasNextPosts = true;
     hasNextNotices = true;
     isRefreshed = true;
+    selectedPostCategoryType = category ?? PostCategoryType.ALL;
+
   }
 
   String postCreatedText(String createdAt) {
