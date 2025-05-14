@@ -10,10 +10,12 @@ import '../../../common/utils/get_created_string.dart';
 
 class BoardItem extends StatelessWidget {
   final BoardModel boardItem;
+  final bool hasTag;
 
   const BoardItem({
     super.key,
     required this.boardItem,
+    required this.hasTag,
   });
 
   @override
@@ -37,6 +39,7 @@ class BoardItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (hasTag)
                   Row(
                     children: [
                       Image.asset(postCategory.inactiveIcon, width: 20, height: 20),

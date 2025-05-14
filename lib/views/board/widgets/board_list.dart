@@ -7,7 +7,8 @@ import 'board_item.dart';
 
 class BoardList extends StatelessWidget {
   final bool? isNotice;
-  const BoardList({super.key,this.isNotice});
+  final bool hasTag;
+  const BoardList({super.key, this.isNotice, this.hasTag = false});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class BoardList extends StatelessWidget {
         itemBuilder: (context, index) {
           return BoardItem(
             boardItem: list[index],
+            hasTag: hasTag,
           );
         },
         separatorBuilder: (context, index) {

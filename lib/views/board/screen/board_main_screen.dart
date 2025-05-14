@@ -85,6 +85,7 @@ class BoardMainScreen extends StatelessWidget {
                       child: vm.hasPost
                           ? BoardList(
                               isNotice: isNotice,
+                        hasTag: vm.selectedPostCategoryType == PostCategoryType.ALL,
                             )
                           : const NoPost())
                 ])));
