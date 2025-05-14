@@ -95,7 +95,7 @@ class BoardService {
   Future<BoardModel> createPost(int studyId, Post newPost) async {
     try {
       final BoardModel boardModel = await _boardApi.createPost(
-          studyId, {"title": newPost.title, "content": newPost.contents, "category": newPost.category});
+          studyId, {"title": newPost.title, "content": newPost.contents, "category": newPost.category, "images": newPost.images});
       return boardModel;
     } on ApiException catch (e) {
       rethrow;
@@ -108,7 +108,7 @@ class BoardService {
       int studyId, int boardId, Post updatedPost) async {
     try {
       final BoardModel boardModel = await _boardApi.updatePost(studyId, boardId,
-          {"title": updatedPost.title, "content": updatedPost.contents, "category": updatedPost.category});
+          {"title": updatedPost.title, "content": updatedPost.contents, "category": updatedPost.category, "images": updatedPost.images});
       return boardModel;
     } on ApiException catch (e) {
       rethrow;

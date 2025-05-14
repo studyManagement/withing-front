@@ -66,10 +66,15 @@ class BoardContent extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(vm.post!.content, style: Theme.of(context).textTheme.bodySmall),
-          // const SizedBox(height: 20),
-          // const SizedBox(
-          //   height: 120,
-          //     child: PostImageListView(imagePathList: ['']))
+          if (vm.boardImageUrls.isNotEmpty)
+          Column(
+            children: [
+              const SizedBox(height: 20),
+              SizedBox(
+                  height: 120,
+                  child: PostImageListView(imagePathList: vm.boardImageUrls))
+            ],
+          ),
         ],
       ),
     );

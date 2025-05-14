@@ -32,6 +32,7 @@ class UpdatePostScreen extends StatelessWidget {
             onPressed: () {
               ModiModal.openDialog(context, '글 작성을 취소하시겠어요?',
                   '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
+                viewModel.imageFilePaths = [];
                 context
                   ..pop()
                   ..pop();
@@ -116,7 +117,8 @@ class UpdatePostScreen extends StatelessWidget {
                                       });
                             }
                           }),
-                      Consumer<BoardViewModel>( // 수정 필요
+                      if(viewModel.imageFilePaths.isNotEmpty)
+                      Consumer<BoardViewModel>(
                         builder: (context, viewModel, _) => Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: SizedBox(

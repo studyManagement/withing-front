@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:modi/common/utils/get_image_file.dart';
 import 'package:modi/model/board/comment_model.dart';
 import 'package:modi/model/user/user_model.dart';
 import 'package:modi/service/board/board_service.dart';
+import 'package:modi/service/image/image_create_service.dart';
 import 'package:modi/service/study/study_service.dart';
 import 'package:modi/view_models/board/model/post_category.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
@@ -48,11 +52,11 @@ class BoardViewModel extends ChangeNotifier {
   List<CommentModel> comments = [];
   List<PostCategory> postCategories = [
     PostCategory(
-        id: 0,
-        name: "전체",
-        type: PostCategoryType.ALL,
-        activeIcon: '',
-        inactiveIcon: '',
+      id: 0,
+      name: "전체",
+      type: PostCategoryType.ALL,
+      activeIcon: '',
+      inactiveIcon: '',
     ),
     PostCategory(
       id: 1,
@@ -83,12 +87,19 @@ class BoardViewModel extends ChangeNotifier {
   List<String> get boardImageUrls => _boardImageUrls; //  이미지 업로드 시 파일 경로 저장
 
   BoardModel? get post => _post;
+
   List<UserModel> get studyMembers => _users;
+
   bool get isValid => _isValid;
+
   bool get isAddedComment => _isAddedComment;
+
   bool get isFirst => _isFirst;
+
   bool get isShowUserList => _isShowUserList;
+
   int? get studyId => _studyId;
+
   int? get boardId => _boardId;
 
   set setStudyId(int studyId) {
@@ -138,7 +149,8 @@ class BoardViewModel extends ChangeNotifier {
     _isLoading = false;
   }
 
-  Future<void> fetchBoardList(BuildContext context, {bool reset = false}) async {
+  Future<void> fetchBoardList(BuildContext context,
+      {bool reset = false}) async {
     try {
       if (reset) {
         posts = [];
@@ -150,7 +162,8 @@ class BoardViewModel extends ChangeNotifier {
       int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
 
       if (hasNextPosts == true) {
-        newPosts = await _service.fetchBoardList(_studyId!, selectedPostCategoryType.name, SIZE, page);
+        newPosts = await _service.fetchBoardList(
+            _studyId!, selectedPostCategoryType.name, SIZE, page);
         if (newPosts.length < SIZE) {
           hasNextPosts = false;
         }
@@ -168,13 +181,11 @@ class BoardViewModel extends ChangeNotifier {
         '오류가 발생했어요',
         e.cause,
         false,
-            () => context.pop(),
-            () => null,
+        () => context.pop(),
+        () => null,
       );
     }
   }
-
-
 
   Future<void> fetchBoardInfo(BuildContext context, int boardId) async {
     try {
@@ -183,15 +194,22 @@ class BoardViewModel extends ChangeNotifier {
       boardTitle = _post!.title;
       boardContents = post!.content;
       boardImageUrls = post!.images;
-      boardCategory = postCategories.firstWhere((e) => e.type.name == post!.category);
-      selectedPostCategoryType = (_boardCategory?.type ?? postCategories[1].type);
+      if (boardImageUrls.isNotEmpty) {
+        final imageFiles = await Future.wait(
+            boardImageUrls.map((url) => getImageFileFromUrl(url)));
+        imageFilePaths = imageFiles.map((file) => file!.path).toList();
+      }
+      boardCategory =
+          postCategories.firstWhere((e) => e.type.name == post!.category);
+      selectedPostCategoryType =
+          (_boardCategory?.type ?? postCategories[1].type);
       notifyListeners();
       isValidInput(BoardInputType.boardTitle, _post!.title);
       isValidInput(BoardInputType.boardContents, post!.content);
     } on ApiException catch (e) {
       if (!context.mounted) return;
       ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-              () => context.pop(), () => null);
+          () => context.pop(), () => null);
     }
   }
 
@@ -202,22 +220,28 @@ class BoardViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       if (!context.mounted) return;
       ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-              () => context.pop(), () => null);
+          () => context.pop(), () => null);
     }
   }
 
   Future<void> createPost(BuildContext context) async {
     if (_isValid) {
       try {
-        // 이미지가 있으면, 이미지 먼저 등록 후 uuid 리스트 보냄.
-        BoardModel newPost =
-        await _service.createPost(_studyId!, Post(title: _boardTitle, contents: _boardContents, category: selectedPostCategoryType.name));
+        // 이미지 먼저 등록 후 uuid 리스트 보냄.
+        final imageUuidList = await getImageUuidList(imageFilePaths);
+        BoardModel newPost = await _service.createPost(
+            _studyId!,
+            Post(
+                title: _boardTitle,
+                contents: _boardContents,
+                category: selectedPostCategoryType.name,
+                images: imageUuidList));
         _boardId = newPost.id;
         notifyListeners();
       } on ApiException catch (e) {
         if (!context.mounted) return;
         ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-                () => context.pop(), () => null);
+            () => context.pop(), () => null);
       }
     }
   }
@@ -226,14 +250,19 @@ class BoardViewModel extends ChangeNotifier {
     if (_isValid) {
       try {
         BoardModel boardModel = await _service.updatePost(
-            _studyId!, boardId, Post(title: _boardTitle, contents: _boardContents, category: selectedPostCategoryType.name));
+            _studyId!,
+            boardId,
+            Post(
+                title: _boardTitle,
+                contents: _boardContents,
+                category: selectedPostCategoryType.name));
         _post = boardModel;
         _boardId = boardModel.id;
         notifyListeners();
       } on ApiException catch (e) {
         if (!context.mounted) return;
         ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-                () => context.pop(), () => null);
+            () => context.pop(), () => null);
       }
     }
   }
@@ -248,17 +277,15 @@ class BoardViewModel extends ChangeNotifier {
     } on ApiException catch (e) {
       if (!context.mounted) return;
       ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-              () => context.pop(), () => null);
+          () => context.pop(), () => null);
     }
   }
 
   Future<void> createComment(BuildContext context, int boardId) async {
-    if (_isValid && _comment
-        .trim()
-        .isNotEmpty) {
+    if (_isValid && _comment.trim().isNotEmpty) {
       try {
         CommentModel newComment =
-        await _service.createComments(_studyId!, boardId, _comment);
+            await _service.createComments(_studyId!, boardId, _comment);
         comments.add(newComment);
         comment = '';
         _isAddedComment = true;
@@ -266,7 +293,7 @@ class BoardViewModel extends ChangeNotifier {
       } on ApiException catch (e) {
         if (!context.mounted) return;
         ModiModal.openDialog(context, '오류가 발생했어요', e.cause, false,
-                () => context.pop(), () => null);
+            () => context.pop(), () => null);
       }
     }
   }
@@ -283,6 +310,19 @@ class BoardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<String>> getImageUuidList(List<String> imageFilePaths) async {
+    if (imageFilePaths.isEmpty) {
+      return [];
+    }
+    List<String> imageUuidList = [];
+    if (imageFilePaths.isNotEmpty) {
+      final imageCreateService = getIt<ImageCreateService>();
+      imageUuidList = await Future.wait(imageFilePaths.map(
+              (path) => imageCreateService.callImageCreateApi(File(path))));
+    }
+    return imageUuidList;
+  }
+
   void updatePostCategoryType(PostCategoryType type) {
     selectedPostCategoryType = type;
     notifyListeners();
@@ -295,8 +335,8 @@ class BoardViewModel extends ChangeNotifier {
     }
   }
 
-  void addMentionedUserList(BoardInputType type, UserModel user,
-      String newValue) {
+  void addMentionedUserList(
+      BoardInputType type, UserModel user, String newValue) {
     isValidInput(type, newValue);
     if (!_mentionedUserList.contains(user.id)) {
       _mentionedUserList.add(user.id);
@@ -307,29 +347,19 @@ class BoardViewModel extends ChangeNotifier {
   void isValidInput(BoardInputType type, String value) {
     switch (type) {
       case BoardInputType.boardTitle:
-        _isValid = (value
-            .trim()
-            .isNotEmpty && _boardContents
-            .trim()
-            .isNotEmpty)
+        _isValid = (value.trim().isNotEmpty && _boardContents.trim().isNotEmpty)
             ? true
             : false;
         boardTitle = value;
 
       case BoardInputType.boardContents:
-        _isValid = (value
-            .trim()
-            .isNotEmpty && _boardTitle
-            .trim()
-            .isNotEmpty)
+        _isValid = (value.trim().isNotEmpty && _boardTitle.trim().isNotEmpty)
             ? true
             : false;
         boardContents = value;
 
       case BoardInputType.comment:
-        _isValid = (value
-            .trim()
-            .isNotEmpty) ? true : false;
+        _isValid = (value.trim().isNotEmpty) ? true : false;
         comment = value;
     }
     if (type != BoardInputType.comment) notifyListeners();

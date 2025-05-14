@@ -20,9 +20,10 @@ class BoardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool hasImage = false;
     final viewModel = context.read<BoardViewModel>();
+    final hasImage = boardItem.images.isNotEmpty;
     final postCategory = viewModel.postCategories.firstWhere((e) => e.type.name == boardItem.category);
+
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -32,51 +33,86 @@ class BoardItem extends StatelessWidget {
                     boardId: boardItem.id, viewModel: viewModel)));
       },
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (hasTag)
-                  Row(
-                    children: [
-                      Image.asset(postCategory.inactiveIcon, width: 20, height: 20),
-                      const SizedBox(width: 2),
-                      Text(postCategory.name, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.gray400))
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    boardItem.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 6),
-                  SizedBox(
-                    width: hasImage ? MediaQuery.of(context).size.width * 0.7 : MediaQuery.of(context).size.width-32,
-                    child: Text(
-                     boardItem.content,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: AppColors.gray800, fontSize: 13.0),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (hasTag)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Image.asset(postCategory.inactiveIcon, width: 20, height: 20),
+                          const SizedBox(width: 2),
+                          Text(postCategory.name, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.gray400))
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Text(
+                      boardItem.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 6),
+                    SizedBox(
+                      width: hasImage ? MediaQuery.of(context).size.width * 0.7 : MediaQuery.of(context).size.width-32,
+                      child: Text(
+                       boardItem.content,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: AppColors.gray800, fontSize: 13.0),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const Spacer(),
               if (hasImage)
-                Container( // 이미지 있으면 표시
-                width: 64,
-                height: 64,
-                decoration: ShapeDecoration(
-                  color: AppColors.gray100,
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: ShapeDecoration(
+                    color: AppColors.gray100,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8))),
-              )
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      boardItem.images[0],
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return Container(
+                            color: AppColors.gray150,
+                            child: Center(
+                                child: Transform.scale(
+                                  scale: 0.6,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.gray600,
+                                  ),
+                                )),
+                          );
+                        }
+                      },
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Container(color: AppColors.gray150);
+                      },
+                    ),
+                  ),
+                )
             ],
           ),
           const SizedBox(height: 8),
