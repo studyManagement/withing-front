@@ -33,7 +33,8 @@ class BoardMainScreen extends StatelessWidget {
   void loadBoardList(BuildContext context, BoardViewModel vm) {
     vm.setStudyId = studyId;
     vm.isMember = isMember!;
-    vm.fetchBoardList(context);
+    vm.selectedPostCategoryType = isNotice ? PostCategoryType.NOTICE : PostCategoryType.ALL;
+    vm.fetchBoardList(context, reset: true);
     vm.isRefreshed = false;
   }
 
@@ -43,7 +44,7 @@ class BoardMainScreen extends StatelessWidget {
       create: (_) => BoardViewModel(getIt<BoardService>()),
       child: Consumer<BoardViewModel>(builder: (context, vm, child) {
         if (vm.isRefreshed) {
-          loadBoardList(context, vm);
+           loadBoardList(context, vm);
         }
         return DefaultLayout(
             title: (isNotice == true) ? '공지' : '게시판',
@@ -78,7 +79,7 @@ class BoardMainScreen extends StatelessWidget {
                             selectedPostCategoryType:
                                 vm.selectedPostCategoryType,
                             onTap: (category) {
-                              vm.fetchBoardList(context, category: category);
+                              vm.fetchBoardList(context, reset: true);
                             })),
                   Expanded(
                       child: vm.hasPost

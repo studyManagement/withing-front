@@ -13,7 +13,7 @@ class BoardList extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final vm = context.watch<BoardViewModel>();
-    List<BoardModel> list = (isNotice!) ? vm.notices : vm.notices + vm.posts;
+    List<BoardModel> list = vm.posts;
 
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification notification) {

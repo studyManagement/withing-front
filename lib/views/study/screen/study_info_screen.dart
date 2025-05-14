@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/authenticator/authentication.dart';
 import '../../../di/injection.dart';
+import '../../../view_models/board/model/post_category.dart';
 import '../../common/share/share_button.dart';
 import '../widgets/study_details.dart';
 import '../widgets/study_header.dart';
@@ -24,11 +25,8 @@ class StudyInfoScreen extends StatelessWidget {
   final int studyId;
   final bool refreshFlag;
 
-  const StudyInfoScreen({
-    super.key,
-    required this.studyId,
-    required this.refreshFlag
-  });
+  const StudyInfoScreen(
+      {super.key, required this.studyId, required this.refreshFlag});
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +45,19 @@ class StudyInfoScreen extends StatelessWidget {
       leader: IconButton(
         icon: const Icon(Icons.arrow_back_ios),
         onPressed: () => {
-          if (studyId == -1) {context.go('/')}
-          else {
-            if(refreshFlag) context.go('/search')
-            else context.pop()
-          }
+          if (studyId == -1)
+            {context.go('/')}
+          else
+            {if (refreshFlag) context.go('/search') else context.pop()}
         },
       ),
       actions: [
-        makeShareButton(context,title: '[${vm.study?.studyName}] 초대가 왔어요!',
-                  message: '가입 후 스터디를 시작해보세요.',
-                  path: '/studies/$studyId',
-                  contentType: 'study',
-                  itemId: '$studyId'),
+        makeShareButton(context,
+            title: '[${vm.study?.studyName}] 초대가 왔어요!',
+            message: '가입 후 스터디를 시작해보세요.',
+            path: '/studies/$studyId',
+            contentType: 'study',
+            itemId: '$studyId'),
         makeLikeButton(context)
       ],
       centerTitle: true,
@@ -147,17 +145,20 @@ class StudyInfoScreen extends StatelessWidget {
                       color: AppColors.gray100,
                     ),
                     const SizedBox(height: 10),
-                    ChangeNotifierProvider(
-                        create: (_) =>
-                            BoardViewModel(getIt<BoardService>()),
-                        child: Consumer<BoardViewModel>(
-                            builder: (context, boardViewModel, child) {
-                          boardViewModel.isMember = vm.isMember;
-                          return StudyNoticeList(
-                              studyId: studyId,
-                              isMember: vm.isMember,
-                              isPrivate: vm.study!.private);
-                        })),
+                    ChangeNotifierProvider(create: (_) {
+                      final boardViewModel = BoardViewModel(getIt<BoardService>());
+                      boardViewModel.setStudyId = studyId;
+                      boardViewModel.isMember = vm.isMember;
+                      boardViewModel.isPrivate = vm.study!.private;
+                      boardViewModel.selectedPostCategoryType = PostCategoryType.NOTICE;
+                      if (vm.isMember || vm.study!.private) {
+                        boardViewModel.fetchBoardList(context, reset: true);
+                      }
+                      return boardViewModel;
+                    }, child: Consumer<BoardViewModel>(
+                        builder: (context, boardViewModel, child) {
+                      return const StudyNoticeList();
+                    })),
                   ],
                 ),
               ),

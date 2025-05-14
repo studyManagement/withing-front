@@ -28,18 +28,21 @@ class BoardViewModel extends ChangeNotifier {
   bool _isValid = false;
   bool _isAddedComment = false;
   bool _isFirst = true;
-  bool hasNextNotices = true;
   bool hasNextPosts = true;
   bool hasPost = false;
   bool isMember = false;
+  bool isPrivate = false;
   bool _isShowUserList = false;
+
   String _boardTitle = '';
   String _boardContents = '';
   PostCategory? _boardCategory;
+  List<String> _boardImageUrls = []; // 기존 게시글의 이미지 url
+
   String _comment = '';
   BoardModel? _post;
   List<BoardModel> posts = [];
-  List<BoardModel> notices = [];
+
   List<BoardModel> allPost = [];
   List<UserModel> _users = [];
   List<CommentModel> comments = [];
@@ -74,32 +77,22 @@ class BoardViewModel extends ChangeNotifier {
     ),
   ];
 
-  List<int> _mentionedUserList = [];
-  List<String> imageFilePaths = []; //  다중 이미지 저장 리스트
+  final List<int> _mentionedUserList = [];
+
+  List<String> imageFilePaths = []; //  이미지 업로드 시 파일 경로 저장
+  List<String> get boardImageUrls => _boardImageUrls; //  이미지 업로드 시 파일 경로 저장
 
   BoardModel? get post => _post;
-
   List<UserModel> get studyMembers => _users;
-
   bool get isValid => _isValid;
-
   bool get isAddedComment => _isAddedComment;
-
   bool get isFirst => _isFirst;
-
   bool get isShowUserList => _isShowUserList;
-
   int? get studyId => _studyId;
-
   int? get boardId => _boardId;
 
   set setStudyId(int studyId) {
     _studyId = studyId;
-  }
-
-  void updatePostCategoryType(PostCategoryType type) {
-    selectedPostCategoryType = type;
-    notifyListeners();
   }
 
   set boardTitle(String title) {
@@ -114,6 +107,11 @@ class BoardViewModel extends ChangeNotifier {
 
   set boardCategory(PostCategory category) {
     _boardCategory = category;
+    notifyListeners();
+  }
+
+  set boardImageUrls(List<String> imageUrls) {
+    _boardImageUrls = imageUrls;
     notifyListeners();
   }
 
@@ -140,25 +138,22 @@ class BoardViewModel extends ChangeNotifier {
     _isLoading = false;
   }
 
-
-  Future<void> fetchBoardList(BuildContext context, {PostCategoryType? category}) async {
+  Future<void> fetchBoardList(BuildContext context, {bool reset = false}) async {
     try {
-      if (category != null) {
-        refreshBoardList(category: category);
+      if (reset) {
+        posts = [];
+        hasPost = false;
+        hasNextPosts = true;
       }
 
-      if (!hasNextPosts) return;
-
+      List<BoardModel> newPosts = [];
       int page = posts.isEmpty ? 0 : (posts.length ~/ SIZE);
-      final newPosts = await _service.fetchBoardList(
-        _studyId!,
-        selectedPostCategoryType.name,
-        SIZE,
-        page,
-      );
 
-      if (newPosts.length < SIZE) {
-        hasNextPosts = false;
+      if (hasNextPosts == true) {
+        newPosts = await _service.fetchBoardList(_studyId!, selectedPostCategoryType.name, SIZE, page);
+        if (newPosts.length < SIZE) {
+          hasNextPosts = false;
+        }
       }
 
       if (newPosts.isNotEmpty) {
@@ -180,12 +175,14 @@ class BoardViewModel extends ChangeNotifier {
   }
 
 
+
   Future<void> fetchBoardInfo(BuildContext context, int boardId) async {
     try {
       _isShowUserList = false;
       _post = await _service.fetchBoardInfo(_studyId!, boardId);
       boardTitle = _post!.title;
       boardContents = post!.content;
+      boardImageUrls = post!.images;
       boardCategory = postCategories.firstWhere((e) => e.type.name == post!.category);
       selectedPostCategoryType = (_boardCategory?.type ?? postCategories[1].type);
       notifyListeners();
@@ -212,6 +209,7 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> createPost(BuildContext context) async {
     if (_isValid) {
       try {
+        // 이미지가 있으면, 이미지 먼저 등록 후 uuid 리스트 보냄.
         BoardModel newPost =
         await _service.createPost(_studyId!, Post(title: _boardTitle, contents: _boardContents, category: selectedPostCategoryType.name));
         _boardId = newPost.id;
@@ -275,13 +273,18 @@ class BoardViewModel extends ChangeNotifier {
 
   /// utils
   Future<void> fetchStudyMembers() async {
-    final _study = await getIt<StudyService>().fetchStudyInfo(studyId!);
-    _users = _study.users;
+    final study = await getIt<StudyService>().fetchStudyInfo(studyId!);
+    _users = study.users;
   }
 
   Future<void> pickMultiPhoto() async {
     final pickedFiles = await pickMultiImageFile();
     imageFilePaths = pickedFiles.map((file) => file?.path ?? '').toList();
+    notifyListeners();
+  }
+
+  void updatePostCategoryType(PostCategoryType type) {
+    selectedPostCategoryType = type;
     notifyListeners();
   }
 
@@ -336,10 +339,7 @@ class BoardViewModel extends ChangeNotifier {
     posts = [];
     hasPost = false;
     hasNextPosts = true;
-    hasNextNotices = true;
     isRefreshed = true;
-    selectedPostCategoryType = category ?? PostCategoryType.ALL;
-
   }
 
   String postCreatedText(String createdAt) {

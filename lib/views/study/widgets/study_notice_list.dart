@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
-import 'package:modi/view_models/board/model/post_category.dart';
 import 'package:provider/provider.dart';
 import '../../../common/components/gray100_divider.dart';
 import '../../../common/theme/app/app_colors.dart';
@@ -11,23 +10,11 @@ import '../../board/screen/board_info_screen.dart';
 import '../../board/widgets/board_item.dart';
 
 class StudyNoticeList extends StatelessWidget {
-  final int studyId;
-  final bool isMember;
-  final bool isPrivate;
-
-  const StudyNoticeList(
-      {super.key,
-      required this.studyId,
-      required this.isMember,
-      required this.isPrivate});
+  const StudyNoticeList({super.key});
 
   @override
   Widget build(BuildContext context) {
     BoardViewModel boardViewModel = context.watch<BoardViewModel>();
-    boardViewModel.setStudyId = studyId;
-    if (isMember || !isPrivate) {
-      boardViewModel.fetchBoardList(context, category: PostCategoryType.NOTICE);
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +30,7 @@ class StudyNoticeList extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  context.push('/studies/$studyId/notice/$isMember');
+                  context.push('/studies/${boardViewModel.studyId}/notice/${boardViewModel.isMember}');
                 },
                 child: Offstage(
                   offstage: (boardViewModel.hasPost) ? false : true,
@@ -60,12 +47,12 @@ class StudyNoticeList extends StatelessWidget {
             ],
           ),
         ),
-        (!isMember && isPrivate)
+        (!boardViewModel.isMember && boardViewModel.isPrivate)
             ? const StudyNoticeException(isPrivate: true)
             : (boardViewModel.hasPost)
                 ? _NoticeCarousel(
                     viewModel: boardViewModel,
-                    studyId: studyId,
+                    studyId: boardViewModel.studyId!,
                   )
                 : const StudyNoticeException(isPrivate: false)
       ],
@@ -77,7 +64,6 @@ class _NoticeItem extends StatelessWidget {
   final BoardModel boardItem;
 
   const _NoticeItem({
-    super.key,
     required this.boardItem,
   });
 
@@ -170,7 +156,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    int numOfNotice = widget.viewModel.notices.length;
+    int numOfNotice = widget.viewModel.posts.length;
     return Column(
       children: [
         CarouselSlider.builder(
@@ -178,7 +164,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           options: CarouselOptions(
             enableInfiniteScroll: false,
             onPageChanged: ((index, reason) {
-              widget.viewModel.fetchBoardList(context, category: PostCategoryType.NOTICE);
+              widget.viewModel.fetchBoardList(context, reset: true);
               setState(() {
                 currentIndex = index;
               });
@@ -190,7 +176,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           itemBuilder: (context, index, realIndex) {
             final int startIndex = index * 3;
             final int endIndex = (index + 1) * 3;
-            final List<BoardModel> sublist = widget.viewModel.notices.sublist(
+            final List<BoardModel> sublist = widget.viewModel.posts.sublist(
               startIndex,
               endIndex > numOfNotice ? numOfNotice : endIndex,
             );
