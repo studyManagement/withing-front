@@ -164,7 +164,7 @@ class _NoticeCarouselState extends State<_NoticeCarousel> {
           options: CarouselOptions(
             enableInfiniteScroll: false,
             onPageChanged: ((index, reason) {
-              widget.viewModel.fetchBoardList(context, reset: true);
+              widget.viewModel.fetchBoardList(context);
               setState(() {
                 currentIndex = index;
               });
