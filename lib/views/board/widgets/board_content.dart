@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modi/common/components/image/circle_image.dart';
 import 'package:modi/common/utils/get_created_string.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
-import 'package:modi/views/board/widgets/post_image_list_view.dart';
+import 'package:modi/views/board/widgets/post_network_image_list_view.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/components/gray_container.dart';
@@ -72,7 +72,7 @@ class BoardContent extends StatelessWidget {
               const SizedBox(height: 20),
               SizedBox(
                   height: 120,
-                  child: PostImageListView(imagePathList: vm.boardImageUrls))
+                  child: PostNetworkImageListView(imageUrls: vm.boardImageUrls))
             ],
           ),
         ],

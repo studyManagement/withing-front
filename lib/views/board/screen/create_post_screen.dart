@@ -6,7 +6,6 @@ import 'package:modi/view_models/board/board_input_viewmodel.dart';
 import 'package:modi/view_models/board/model/post_category.dart';
 import 'package:modi/views/board/widgets/board_submit_button.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
-import 'package:modi/views/board/widgets/post_image_list_view.dart';
 import 'package:modi/views/board/widgets/user_mention_list.dart';
 import 'package:provider/provider.dart';
 import '../../../common/components/button/circle_button.dart';
@@ -15,6 +14,7 @@ import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/mentionable_text_field.dart';
 import '../widgets/post_category_selector.dart';
+import '../widgets/post_file_image_list_view.dart';
 import 'board_info_screen.dart';
 
 class CreatePostScreen extends StatelessWidget {
@@ -33,7 +33,7 @@ class CreatePostScreen extends StatelessWidget {
           ..pop()
           ..pop();
         viewModel.updatePostCategoryType(PostCategoryType.ALL);
-        viewModel.imageFilePaths = [];
+        viewModel.imageFiles = [];
       },
       null,
     );
@@ -150,8 +150,7 @@ class CreatePostScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 16),
                             child: SizedBox(
                                 height: 120,
-                                child: PostImageListView(
-                                    imagePathList: viewModel.imageFilePaths,
+                                child: PostFileImageListView(
                                     onRemove: (int index) =>
                                         viewModel.removeImage(index))),
                           ),

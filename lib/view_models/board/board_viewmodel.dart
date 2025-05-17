@@ -83,12 +83,14 @@ class BoardViewModel extends ChangeNotifier {
 
   final List<int> _mentionedUserList = [];
 
-  List<String> imageFilePaths = []; //  이미지 업로드 시 파일 경로 저장
+  List<File> imageFiles = []; // 이미지 업로드 시 파일 저장
   List<String> get boardImageUrls => _boardImageUrls; //  이미지 업로드 시 파일 경로 저장
 
   BoardModel? get post => _post;
 
   List<UserModel> get studyMembers => _users;
+
+  bool get isLoading => _isLoading;
 
   bool get isValid => _isValid;
 
@@ -195,9 +197,10 @@ class BoardViewModel extends ChangeNotifier {
       boardContents = post!.content;
       boardImageUrls = post!.images;
       if (boardImageUrls.isNotEmpty) {
-        final imageFiles = await Future.wait(
-            boardImageUrls.map((url) => getImageFileFromUrl(url)));
-        imageFilePaths = imageFiles.map((file) => file!.path).toList();
+        final filesWithNull = await Future.wait(
+          boardImageUrls.map((url) => getImageFileFromUrl(url)),
+        );
+        imageFiles = filesWithNull.whereType<File>().toList();
       }
       boardCategory =
           postCategories.firstWhere((e) => e.type.name == post!.category);
@@ -228,7 +231,7 @@ class BoardViewModel extends ChangeNotifier {
     if (_isValid) {
       try {
         // 이미지 먼저 등록 후 uuid 리스트 보냄.
-        final imageUuidList = await getImageUuidList(imageFilePaths);
+        final imageUuidList = await getImageUuidList(imageFiles);
         BoardModel newPost = await _service.createPost(
             _studyId!,
             Post(
@@ -249,13 +252,15 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> updatePost(BuildContext context, int boardId) async {
     if (_isValid) {
       try {
+        final imageUuidList = await getImageUuidList(imageFiles);
         BoardModel boardModel = await _service.updatePost(
             _studyId!,
             boardId,
             Post(
                 title: _boardTitle,
                 contents: _boardContents,
-                category: selectedPostCategoryType.name));
+                category: selectedPostCategoryType.name,
+              images: imageUuidList));
         _post = boardModel;
         _boardId = boardModel.id;
         notifyListeners();
@@ -306,19 +311,21 @@ class BoardViewModel extends ChangeNotifier {
 
   Future<void> pickMultiPhoto() async {
     final pickedFiles = await pickMultiImageFile();
-    imageFilePaths = pickedFiles.map((file) => file?.path ?? '').toList();
+    if (pickedFiles.isNotEmpty) {
+      imageFiles += pickedFiles.whereType<File>().toList();
+    }
     notifyListeners();
   }
 
-  Future<List<String>> getImageUuidList(List<String> imageFilePaths) async {
-    if (imageFilePaths.isEmpty) {
+  Future<List<String>> getImageUuidList(List<File> files) async {
+    if (files.isEmpty) {
       return [];
     }
     List<String> imageUuidList = [];
-    if (imageFilePaths.isNotEmpty) {
+    if (files.isNotEmpty) {
       final imageCreateService = getIt<ImageCreateService>();
-      imageUuidList = await Future.wait(imageFilePaths.map(
-              (path) => imageCreateService.callImageCreateApi(File(path))));
+      imageUuidList = await Future.wait(files.map(
+              (file) => imageCreateService.callImageCreateApi(file)));
     }
     return imageUuidList;
   }
@@ -329,8 +336,8 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   void removeImage(int index) {
-    if (index >= 0 && index < imageFilePaths.length) {
-      imageFilePaths.removeAt(index);
+    if (index >= 0 && index < imageFiles.length) {
+      imageFiles.removeAt(index);
       notifyListeners();
     }
   }

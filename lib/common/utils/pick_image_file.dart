@@ -10,7 +10,7 @@ Future<File?> pickImageFile() async {
 
 Future<List<File?>> pickMultiImageFile() async {
   ImagePicker imagePicker = ImagePicker();
-  final xFiles = await imagePicker.pickMultiImage();
+  final xFiles = await imagePicker.pickMultiImage(limit: 5);
 
   if (xFiles.isNotEmpty) {
     final files = await Future.wait(xFiles.map((e) async {

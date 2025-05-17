@@ -26,6 +26,7 @@ class BoardMainScreen extends StatelessWidget {
     viewModel.isValid = false;
     viewModel.boardContents = '';
     viewModel.boardTitle = '';
+    viewModel.imageFiles = [];
     viewModel.isShowUserList = false;
     viewModel.selectedPostCategoryType = PostCategoryType.FREE;
   }

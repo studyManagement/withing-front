@@ -13,7 +13,7 @@ import '../../../view_models/board/board_input_viewmodel.dart';
 import '../../../view_models/board/board_viewmodel.dart';
 import '../widgets/mentionable_text_field.dart';
 import '../widgets/post_category_selector.dart';
-import '../widgets/post_image_list_view.dart';
+import '../widgets/post_file_image_list_view.dart';
 import '../widgets/user_mention_list.dart';
 
 class UpdatePostScreen extends StatelessWidget {
@@ -32,7 +32,7 @@ class UpdatePostScreen extends StatelessWidget {
             onPressed: () {
               ModiModal.openDialog(context, '글 작성을 취소하시겠어요?',
                   '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
-                viewModel.imageFilePaths = [];
+                viewModel.imageFiles = [];
                 context
                   ..pop()
                   ..pop();
@@ -117,14 +117,12 @@ class UpdatePostScreen extends StatelessWidget {
                                       });
                             }
                           }),
-                      if(viewModel.imageFilePaths.isNotEmpty)
                       Consumer<BoardViewModel>(
                         builder: (context, viewModel, _) => Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: SizedBox(
                               height: 120,
-                              child: PostImageListView(
-                                  imagePathList: viewModel.imageFilePaths,
+                              child: PostFileImageListView(
                                   onRemove: (int index) =>
                                       viewModel.removeImage(index))),
                         ),
