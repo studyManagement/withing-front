@@ -50,7 +50,7 @@ class StudyNoticeList extends StatelessWidget {
         (!boardViewModel.isMember && boardViewModel.isPrivate)
             ? const StudyNoticeException(isPrivate: true)
             : (boardViewModel.hasPost)
-                ? _NoticeCarousel(
+                ? _NoticeSlider(
                     viewModel: boardViewModel,
                     studyId: boardViewModel.studyId!,
                   )
@@ -139,17 +139,17 @@ class _NoticeItem extends StatelessWidget {
   }
 }
 
-class _NoticeCarousel extends StatefulWidget {
+class _NoticeSlider extends StatefulWidget {
   final int studyId;
   final BoardViewModel viewModel;
 
-  const _NoticeCarousel({required this.studyId, required this.viewModel});
+  const _NoticeSlider({required this.studyId, required this.viewModel});
 
   @override
-  State<_NoticeCarousel> createState() => _NoticeCarouselState();
+  State<_NoticeSlider> createState() => _NoticeCarouselState();
 }
 
-class _NoticeCarouselState extends State<_NoticeCarousel> {
+class _NoticeCarouselState extends State<_NoticeSlider> {
   final CarouselSliderController carouselController =
       CarouselSliderController(); // 캐러셀 컨트롤러
   int currentIndex = 0; // 캐러셀 인디케이터 인덱스
