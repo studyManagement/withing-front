@@ -312,7 +312,8 @@ class BoardViewModel extends ChangeNotifier {
   Future<void> pickMultiPhoto() async {
     final pickedFiles = await pickMultiImageFile();
     if (pickedFiles.isNotEmpty) {
-      imageFiles += pickedFiles.whereType<File>().toList();
+      final count = 5 - imageFiles.length;
+      imageFiles += pickedFiles.take(count).whereType<File>().toList();
     }
     notifyListeners();
   }

@@ -148,11 +148,9 @@ class CreatePostScreen extends StatelessWidget {
                         Consumer<BoardViewModel>(
                           builder: (context, viewModel, _) => Padding(
                             padding: const EdgeInsets.only(left: 16),
-                            child: SizedBox(
-                                height: 120,
-                                child: PostFileImageListView(
-                                    onRemove: (int index) =>
-                                        viewModel.removeImage(index))),
+                            child: PostFileImageListView(
+                                onRemove: (int index) =>
+                                    viewModel.removeImage(index)),
                           ),
                         ),
                       ],
