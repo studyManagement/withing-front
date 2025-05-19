@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -93,8 +95,6 @@ class NotificationService {
 
   Future<void> initialize() async {
     await _requestPermission();
-
-    //logger.info(await FirebaseMessaging.instance.getToken());
 
     FirebaseMessaging.onMessage.listen(_foregroundHandler);
     FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
