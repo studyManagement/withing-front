@@ -34,8 +34,7 @@ class BoardMainScreen extends StatelessWidget {
   void loadBoardList(BuildContext context, BoardViewModel vm) {
     vm.setStudyId = studyId;
     vm.isMember = isMember!;
-    vm.selectedPostCategoryType = isNotice ? PostCategoryType.NOTICE : PostCategoryType.ALL;
-    vm.fetchBoardList(context, reset: true);
+    vm.fetchBoardList(context, reset: true, category: isNotice ? PostCategoryType.NOTICE : PostCategoryType.ALL);
     vm.isRefreshed = false;
   }
 

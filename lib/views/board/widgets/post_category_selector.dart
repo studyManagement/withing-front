@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modi/view_models/board/board_viewmodel.dart';
 import 'package:modi/view_models/board/model/post_category.dart';
-import 'package:provider/provider.dart';
 import '../../../common/theme/app/app_colors.dart';
 
 class PostCategorySelector extends StatelessWidget {
@@ -10,7 +8,10 @@ class PostCategorySelector extends StatelessWidget {
   final Function(PostCategoryType category) onTap;
 
   const PostCategorySelector(
-      {super.key, required this.postCategories, required this.selectedCategoryType, required this.onTap});
+      {super.key,
+      required this.postCategories,
+      required this.selectedCategoryType,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,13 @@ class PostCategorySelector extends StatelessWidget {
         direction: Axis.horizontal,
         children: postCategories
             .map((e) => _PostCategoryTag(
+                key: ValueKey(e.type),
                 title: e.name,
-                iconPath: e.id == 0 ? null : e.type == selectedCategoryType ? e.activeIcon : e.inactiveIcon,
+                iconPath: e.id == 0
+                    ? null
+                    : e.type == selectedCategoryType
+                        ? e.activeIcon
+                        : e.inactiveIcon,
                 onTap: () => onTap(e.type),
                 isSelected: e.type == selectedCategoryType))
             .toList(),
@@ -33,13 +39,14 @@ class PostCategorySelector extends StatelessWidget {
 
 class _PostCategoryTag extends StatelessWidget {
   final String title;
-  String? iconPath;
+  final String? iconPath;
   final Function()? onTap;
   final bool isSelected;
   final bool isNew;
 
-  _PostCategoryTag(
-      {required this.title,
+  const _PostCategoryTag(
+      {super.key,
+      required this.title,
       this.iconPath,
       required this.onTap,
       this.isSelected = false,
