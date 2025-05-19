@@ -4,6 +4,7 @@ import 'package:modi/common/components/gray100_divider.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/board/board_input_viewmodel.dart';
 import 'package:modi/view_models/board/model/post_category.dart';
+import 'package:modi/view_models/search/category_search_viewmodel.dart';
 import 'package:modi/views/board/widgets/board_submit_button.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
 import 'package:modi/views/board/widgets/user_mention_list.dart';
@@ -32,7 +33,7 @@ class CreatePostScreen extends StatelessWidget {
         context
           ..pop()
           ..pop();
-        viewModel.updatePostCategoryType(PostCategoryType.ALL);
+        viewModel.fetchBoardList(context, reset: true, category: PostCategoryType.ALL);
         viewModel.imageFiles = [];
       },
       null,
@@ -96,8 +97,10 @@ class CreatePostScreen extends StatelessWidget {
                             builder: (context, viewModel, _) =>
                                 PostCategorySelector(
                                   postCategories: viewModel.postCategories.sublist(1),
-                                  selectedPostCategoryType:
-                                      viewModel.selectedPostCategoryType,
+                                  selectedCategoryType: viewModel.selectedPostCategoryType,
+                                  onTap: (category) {
+                                    viewModel.updatePostCategoryType(category);
+                                  },
                                 )),
                         const SizedBox(height: 20),
                         const Gray100Divider(),

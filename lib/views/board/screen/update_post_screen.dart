@@ -11,6 +11,7 @@ import '../../../common/modal/modi_modal.dart';
 import '../../../common/theme/app/app_colors.dart';
 import '../../../view_models/board/board_input_viewmodel.dart';
 import '../../../view_models/board/board_viewmodel.dart';
+import '../../../view_models/board/model/post_category.dart';
 import '../widgets/mentionable_text_field.dart';
 import '../widgets/post_category_selector.dart';
 import '../widgets/post_file_image_list_view.dart';
@@ -32,10 +33,11 @@ class UpdatePostScreen extends StatelessWidget {
             onPressed: () {
               ModiModal.openDialog(context, '글 작성을 취소하시겠어요?',
                   '페이지를 벗어나면\n입력된 내용이 모두 사라져요.', true, () {
-                viewModel.imageFiles = [];
                 context
                   ..pop()
                   ..pop();
+                viewModel.fetchBoardList(context, category: PostCategoryType.ALL);
+                viewModel.imageFiles = [];
               }, null);
             }),
         centerTitle: true,
@@ -75,11 +77,13 @@ class UpdatePostScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Consumer<BoardViewModel>(
-                          builder: (context, viewModFel, _) =>
+                          builder: (context, viewModel, _) =>
                               PostCategorySelector(
                                 postCategories: viewModel.postCategories.sublist(1),
-                                selectedPostCategoryType:
-                                    viewModel.selectedPostCategoryType,
+                                selectedCategoryType: viewModel.selectedPostCategoryType,
+                                onTap: (category) {
+                                  viewModel.updatePostCategoryType(category);
+                                },
                               )),
                       const SizedBox(height: 20),
                       const Gray100Divider(),

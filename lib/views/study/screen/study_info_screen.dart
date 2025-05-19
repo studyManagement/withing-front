@@ -150,7 +150,7 @@ class StudyInfoScreen extends StatelessWidget {
                       boardViewModel.setStudyId = studyId;
                       boardViewModel.isMember = vm.isMember;
                       boardViewModel.isPrivate = vm.study!.private;
-                      boardViewModel.selectedPostCategoryType = PostCategoryType.NOTICE;
+                      boardViewModel.selectedBoardListCategoryType = PostCategoryType.NOTICE;
                       if (vm.isMember || vm.study!.private) {
                         boardViewModel.fetchBoardList(context, reset: true);
                       }

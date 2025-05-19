@@ -5,6 +5,7 @@ import 'package:modi/common/components/gray50_divider.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/view_models/board/board_input_viewmodel.dart';
 import 'package:modi/view_models/board/board_viewmodel.dart';
+import 'package:modi/view_models/board/model/post_category.dart';
 import 'package:modi/views/board/widgets/board_text_field.dart';
 import 'package:modi/views/board/widgets/mentionable_text_field.dart';
 import 'package:provider/provider.dart';

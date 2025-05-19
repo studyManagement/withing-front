@@ -77,16 +77,15 @@ class BoardMainScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 16, bottom: 6),
                         child: PostCategorySelector(
                             postCategories: vm.postCategories,
-                            selectedPostCategoryType:
-                                vm.selectedPostCategoryType,
+                            selectedCategoryType: vm.selectedBoardListCategoryType,
                             onTap: (category) {
-                              vm.fetchBoardList(context, reset: true);
+                              vm.fetchBoardList(context, reset: true, category: category);
                             })),
                   Expanded(
                       child: vm.hasPost
                           ? BoardList(
                               isNotice: isNotice,
-                        hasTag: vm.selectedPostCategoryType == PostCategoryType.ALL,
+                        hasTag: vm.selectedBoardListCategoryType == PostCategoryType.ALL,
                             )
                           : const NoPost())
                 ])));

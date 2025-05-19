@@ -6,15 +6,14 @@ import '../../../common/theme/app/app_colors.dart';
 
 class PostCategorySelector extends StatelessWidget {
   final List<PostCategory> postCategories;
-  final PostCategoryType selectedPostCategoryType;
-  final Function(PostCategoryType category)? onTap;
+  final PostCategoryType selectedCategoryType;
+  final Function(PostCategoryType category) onTap;
 
   const PostCategorySelector(
-      {super.key, required this.postCategories, required this.selectedPostCategoryType, this.onTap});
+      {super.key, required this.postCategories, required this.selectedCategoryType, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.read<BoardViewModel>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Wrap(
@@ -23,14 +22,9 @@ class PostCategorySelector extends StatelessWidget {
         children: postCategories
             .map((e) => _PostCategoryTag(
                 title: e.name,
-                iconPath: e.id == 0 ? null : e.type == selectedPostCategoryType ? e.activeIcon : e.inactiveIcon,
-                onTap: () {
-                  viewModel.updatePostCategoryType(e.type);
-                  if (onTap != null) {
-                    onTap!(e.type);
-                  }
-                },
-                isSelected: e.type == selectedPostCategoryType))
+                iconPath: e.id == 0 ? null : e.type == selectedCategoryType ? e.activeIcon : e.inactiveIcon,
+                onTap: () => onTap(e.type),
+                isSelected: e.type == selectedCategoryType))
             .toList(),
       ),
     );

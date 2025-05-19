@@ -26,7 +26,8 @@ class BoardViewModel extends ChangeNotifier {
   final int SIZE = 20;
   int? _studyId;
   int? _boardId;
-  PostCategoryType selectedPostCategoryType = PostCategoryType.ALL;
+  PostCategoryType selectedBoardListCategoryType = PostCategoryType.ALL;
+  PostCategoryType selectedPostCategoryType = PostCategoryType.FREE;
   bool isRefreshed = true;
   bool _isLoading = false;
   bool _isValid = false;
@@ -152,9 +153,10 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchBoardList(BuildContext context,
-      {bool reset = false}) async {
+      {bool reset = false, PostCategoryType? category}) async {
     try {
-      if (reset) {
+      if (reset || category != null) {
+        if (category != null && category != selectedBoardListCategoryType) selectedBoardListCategoryType = category;
         posts = [];
         hasPost = false;
         hasNextPosts = true;
@@ -165,7 +167,7 @@ class BoardViewModel extends ChangeNotifier {
 
       if (hasNextPosts == true) {
         newPosts = await _service.fetchBoardList(
-            _studyId!, selectedPostCategoryType.name, SIZE, page);
+            _studyId!, selectedBoardListCategoryType.name, SIZE, page);
         if (newPosts.length < SIZE) {
           hasNextPosts = false;
         }
@@ -374,6 +376,9 @@ class BoardViewModel extends ChangeNotifier {
   }
 
   void refreshBoardList({PostCategoryType? category}) {
+    if (category != null && category != selectedBoardListCategoryType) {
+      selectedBoardListCategoryType = category;
+    }
     posts = [];
     hasPost = false;
     hasNextPosts = true;
