@@ -76,7 +76,7 @@ class _PostCategoryTag extends StatelessWidget {
                 if (iconPath != null)
                   Padding(
                     padding: const EdgeInsets.only(right: 2),
-                    child: Image.asset(iconPath!),
+                    child: Image.asset(iconPath!, gaplessPlayback: true),
                   ),
                 Text(title,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
