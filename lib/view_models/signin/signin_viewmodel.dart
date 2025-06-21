@@ -43,7 +43,7 @@ class SigninViewModel {
         );
        return;
       }
-      
+
       if (!context.mounted) return;
       context.go('/');
     } on AuthenticationException catch (e) {

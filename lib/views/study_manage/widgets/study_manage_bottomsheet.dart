@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
-import 'package:modi/views/study/widgets/study_member_list_item.dart';
+import 'package:modi/views/study_manage/widgets/study_member_list_item.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../common/components/bottom_toast.dart';

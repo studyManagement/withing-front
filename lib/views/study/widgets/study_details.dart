@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../view_models/study/study_viewmodel.dart';
 import '../../../common/theme/app/app_colors.dart';
-import '../screen/study_member_screen.dart';
+import '../../study_manage/screen/study_member_screen.dart';
 
 class StudyDetails extends StatelessWidget {
   const StudyDetails({super.key});

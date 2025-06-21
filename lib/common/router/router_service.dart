@@ -32,12 +32,12 @@ import 'package:modi/views/schedule/study/study_schedule_vote_detail_screen.dart
 import 'package:modi/views/search/screen/keyword_search_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
-import 'package:modi/views/study/screen/study_update_screen.dart';
 import 'package:provider/provider.dart';
 import '../../service/user/user_service.dart';
 import '../../view_models/my/update_profile_viewmodel.dart';
 import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
+import '../../views/study_manage/screen/study_update_screen.dart';
 
 class RouterService {
   final LoggingInterface _logger = getIt<LoggingInterface>();

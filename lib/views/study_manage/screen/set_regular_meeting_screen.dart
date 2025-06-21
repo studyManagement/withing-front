@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:modi/common/components/study_bottom_button.dart';
 import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
-import 'package:modi/views/study/widgets/meeting_days_selector.dart';
+import 'package:modi/views/study_manage/widgets/meeting_days_selector.dart';
 import 'package:provider/provider.dart';
 import '../../../service/study/MeetingType.dart';
 import '../../../view_models/study/study_viewmodel.dart';
