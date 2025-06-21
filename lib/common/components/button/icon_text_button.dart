@@ -4,10 +4,13 @@ import '../../theme/app/app_colors.dart';
 import '../../theme/app/app_fonts.dart';
 
 class IconTextButton extends StatelessWidget {
-  final double _height;
-  final Image _image;
-  final String _text;
-  final Function() _onTap;
+  final double height;
+  final Widget image;
+  final String text;
+  final Function() onTap;
+
+  const IconTextButton({super.key, required this.height, required this.image, required this.text, required this.onTap});
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +18,10 @@ class IconTextButton extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
       ),
-      onPressed: _onTap,
+      onPressed: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 38),
-        height: _height,
+        height: height,
         decoration: BoxDecoration(
           color: AppColors.gray50,
           borderRadius: BorderRadius.circular(20),
@@ -27,9 +30,9 @@ class IconTextButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _image,
+            image,
             Text(
-              _text,
+              text,
               style: const TextStyle(
                 color: AppColors.gray800,
                 fontSize: 14,
@@ -41,7 +44,4 @@ class IconTextButton extends StatelessWidget {
       ),
     );
   }
-
-  const IconTextButton(this._height, this._image, this._text, this._onTap,
-      {super.key});
 }

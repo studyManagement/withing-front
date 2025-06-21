@@ -32,9 +32,11 @@ import 'package:modi/views/schedule/study/study_schedule_vote_detail_screen.dart
 import 'package:modi/views/search/screen/keyword_search_screen.dart';
 import 'package:modi/views/signup/signup_screen.dart';
 import 'package:modi/views/study/screen/study_info_screen.dart';
+import 'package:modi/views/study_manage/screen/add_member_screen.dart';
 import 'package:provider/provider.dart';
 import '../../service/user/user_service.dart';
 import '../../view_models/my/update_profile_viewmodel.dart';
+import '../../view_models/study/add_member_viewmodel.dart';
 import '../../views/schedule/study/study_schedule_vote_confirm_screen.dart';
 import '../../views/schedule/study/study_schedule_vote_members_screen.dart';
 import '../../views/study_manage/screen/study_update_screen.dart';
@@ -49,6 +51,7 @@ class RouterService {
   static RouterService get instance => _instance;
   late final GoRouter _goRouter;
   late final AppLinks _appLinks;
+
   GoRouter get router => _goRouter;
 
   bool isBase64(String str) {
@@ -73,15 +76,15 @@ class RouterService {
         _goRouter.go(utf8.decode(base64.decode(uri.path)));
       }
 
-      _appLinks.uriLinkStream.listen((uri) async { // 분기 처리 필요
+      _appLinks.uriLinkStream.listen((uri) async {
+        // 분기 처리 필요
         if (Platform.isIOS) {
           var route = "";
           const host = "modiapp:/";
           if (uri.toString().startsWith(host)) {
             route = uri.toString().substring(host.length);
             route = utf8.decode(route.codeUnits);
-          }
-          else {
+          } else {
             route = uri.path;
             if (route.startsWith('/')) {
               route = route.substring(1);
@@ -157,8 +160,8 @@ class RouterService {
                     return MultiProvider(
                       providers: [
                         ChangeNotifierProvider(
-                          create: (_) => StudyListViewModel(
-                              getIt<StudyService>()),
+                          create: (_) =>
+                              StudyListViewModel(getIt<StudyService>()),
                         ),
                       ],
                       child: MyStudyScreen(studyType),
@@ -178,8 +181,7 @@ class RouterService {
                   builder: (context, state) {
                     final refreshFlag = state.extra ?? false;
                     return ChangeNotifierProvider(
-                        create: (_) =>
-                            StudyViewModel(getIt<StudyService>()),
+                        create: (_) => StudyViewModel(getIt<StudyService>()),
                         child: StudyInfoScreen(
                             studyId: int.parse(
                               state.pathParameters['studyId']!,
@@ -369,13 +371,21 @@ class RouterService {
                     GoRoute(
                       path: 'manage/edit',
                       builder: (context, state) => ChangeNotifierProvider(
-                        create: (_) => UpdateStudyViewModel(
-                            getIt<StudyService>()),
+                        create: (_) =>
+                            UpdateStudyViewModel(getIt<StudyService>()),
                         child: StudyUpdateScreen(
                             studyId:
                                 int.parse(state.pathParameters['studyId']!)),
                       ),
                     ),
+                    GoRoute(
+                        path: 'manage/add',
+                        builder: (context, state) => ChangeNotifierProvider(
+                            create: (_) =>
+                                AddMemberViewModel(getIt<StudyService>()),
+                            child: AddMemberScreen(
+                                studyId: int.parse(
+                                    state.pathParameters['studyId']!)))),
                     GoRoute(
                       path: 'boards', // 게시판
                       builder: (context, state) => BoardMainScreen(

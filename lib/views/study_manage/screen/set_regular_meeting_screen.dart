@@ -5,6 +5,7 @@ import 'package:modi/common/layout/default_layout.dart';
 import 'package:modi/common/theme/app/app_colors.dart';
 import 'package:modi/views/study_manage/widgets/meeting_days_selector.dart';
 import 'package:provider/provider.dart';
+import '../../../common/components/button/custom_radio_tile.dart';
 import '../../../service/study/MeetingType.dart';
 import '../../../view_models/study/study_viewmodel.dart';
 import '../widgets/meeting_time_picker.dart';
@@ -74,32 +75,32 @@ class SetRegularMeetingScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                        Row(
-                          children: [
-                            const CustomRadioButton(type: MeetingType.DAILY),
-                            const SizedBox(width: 10),
-                            Text('매일',
-                                style: Theme.of(context).textTheme.titleSmall),
-                          ],
-                        ),
+                        CustomRadioTile<MeetingType>(
+                            value: MeetingType.DAILY,
+                            groupValue: viewModel.meetingType,
+                            onChanged: (value) {
+                              if (value != null)
+                                viewModel.initMeetingSchedule(value);
+                            },
+                            title: "매일"),
                         const SizedBox(width: 20),
-                        Row(
-                          children: [
-                            const CustomRadioButton(type: MeetingType.WEEKLY),
-                            const SizedBox(width: 10),
-                            Text('매주',
-                                style: Theme.of(context).textTheme.titleSmall),
-                          ],
-                        ),
+                        CustomRadioTile<MeetingType>(
+                            value: MeetingType.WEEKLY,
+                            groupValue: viewModel.meetingType,
+                            onChanged: (value) {
+                              if (value != null)
+                                viewModel.initMeetingSchedule(value);
+                            },
+                            title: "매주"),
                         const SizedBox(width: 20),
-                        Row(
-                          children: [
-                            const CustomRadioButton(type: MeetingType.NONE),
-                            const SizedBox(width: 10),
-                            Text('설정안함',
-                                style: Theme.of(context).textTheme.titleSmall),
-                          ],
-                        ),
+                        CustomRadioTile<MeetingType>(
+                            value: MeetingType.NONE,
+                            groupValue: viewModel.meetingType,
+                            onChanged: (value) {
+                              if (value != null)
+                                viewModel.initMeetingSchedule(value);
+                            },
+                            title: "설정안함"),
                         //  const SizedBox(width: 20),
                       ],
                     ),
@@ -126,31 +127,5 @@ class SetRegularMeetingScreen extends StatelessWidget {
             ),
           );
         }));
-  }
-}
-
-class CustomRadioButton extends StatelessWidget {
-  final MeetingType type;
-
-  const CustomRadioButton({super.key, required this.type});
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<StudyViewModel>();
-    return Radio(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
-            return AppColors.blue400;
-          }
-          return null;
-        }),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        visualDensity:
-            const VisualDensity(horizontal: VisualDensity.minimumDensity),
-        value: type,
-        groupValue: viewModel.meetingType,
-        onChanged: (value) {
-          viewModel.initMeetingSchedule(value!);
-        });
   }
 }
