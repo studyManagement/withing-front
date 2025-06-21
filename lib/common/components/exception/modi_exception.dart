@@ -17,6 +17,7 @@ class ModiException extends StatelessWidget {
           (e) => Center(
             child: Text(
               e,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: AppFonts.fontWeight500,
@@ -25,7 +26,7 @@ class ModiException extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 40),
+
       ],
     );
   }

@@ -54,6 +54,7 @@ class StudyManageScreen extends StatelessWidget {
         icon: 'asset/study_manage/member_add_38.png',
         title: '스터디 가입 신청',
         onTap: (context, vm) {
+          context.push('/studies/$studyId/manage/add');
         },
       ),
       StudyManageItem(

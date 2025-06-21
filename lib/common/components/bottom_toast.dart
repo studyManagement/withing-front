@@ -6,8 +6,9 @@ import '../theme/app/app_colors.dart';
 class BottomToast {
   final BuildContext context;
   final String text;
+  final Color backgroundColor;
 
-  BottomToast({required this.context, required this.text});
+  BottomToast({required this.context, required this.text, this.backgroundColor = AppColors.blue400});
 
   get fToast => FToast();
 
@@ -16,7 +17,7 @@ class BottomToast {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: AppColors.blue400,
+        color: backgroundColor,
       ),
       child: Row(
         children: [
