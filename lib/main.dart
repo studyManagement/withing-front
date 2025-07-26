@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -21,6 +22,14 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 const String sentryDsn =
     'https://1f4f92d5383cd9332c6e636bdeab4674@o4506934796943360.ingest.us.sentry.io/4506934797991936';
+
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -97,6 +106,7 @@ void main() async {
       Sentry.captureException(exception, stackTrace: stackTrace);
     });
   } else {
+    HttpOverrides.global = new MyHttpOverrides();
     runApp(const WithingApp());
   }
 }
